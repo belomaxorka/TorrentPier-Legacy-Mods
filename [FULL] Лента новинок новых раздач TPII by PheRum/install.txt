@@ -1,0 +1,502 @@
+##############################################################
+## Название мода: Лента новинок последних раздач
+## Автор мода: PheRum < pherum@mail.ru || ICQ: 580403056 || http://reactorr.org >
+## Описание мода: Мод позволяет видеть новые раздачи на трекере в виде ленты последних релизов.
+##
+## Уровень инсталяции: простой
+## Время установки: 5 минут
+##############################################################
+
+#
+#--[SQL]--------------------------------
+#
+
+INSERT INTO `bb_config` VALUES ('last_added', '1');
+INSERT INTO `bb_config` VALUES ('new_poster', '0');
+INSERT INTO `bb_config` VALUES ('limit_poster', '30');
+ALTER TABLE `bb_topics` ADD  `topic_image` VARCHAR( 255 ) NOT NULL DEFAULT  '';
+INSERT INTO `bb_cron` VALUES ('', 1, 'Очистка мини постеров', 'clear_poster.php', 'weekly', '1', '06:00:00', 30, '', '', NULL, 0, '', 0, 0, 0);
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+config.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+	'bb_login_err'   => array('memcache',   array()),
+
+#
+#-----[ AFTER ADD ]-------------------------------------
+#
+
+	'lenta'          => array('memcache',   array()),
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+admin_board.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+			'SEED_BONUS_USER_REGDATE' => $new['seed_bonus_user_regdate'],
+
+#
+#-----[ AFTER ADD ]-------------------------------------
+#
+
+			'LAST_ADDED_ON'  => $new['last_added'],
+			'NEW_POSTER'     => $new['new_poster'],
+			'LIMIT_POSTER'   => $new['limit_poster'],
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+includes/sessions.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+'hl_tr'    => 1,     // show cursor in tracker.php
+
+#
+#-----[ ADD ]------------------------------------------
+#
+
+'poster'   => 1,     // show mini posters
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+includes/page_header.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+	'USE_TABLESORTER'    		=> !empty($page_cfg['use_tablesorter']),
+
+#
+#-----[ ADD ]------------------------------------------
+#
+
+	'LAST_ADDED'                => ($bb_cfg['last_added'] && BB_SCRIPT == 'index'),
+	'POSTER'                    => $user->opt_js['poster'],
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+includes/functions_torrent.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+	if ($reg_mode == 'request' || $reg_mode == 'newtopic')
+	{
+		$mess = sprintf($lang['BT_REGISTERED'], "download.php?id=$attach_id");
+		exit_redirect($mess, $post_id, $forum_id);
+	}
+
+#
+#-----[ AFTER ADD ]------------------------------------------
+#
+
+	if ($bb_cfg['last_added']) CACHE('lenta')->rm();
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+	if ($mode == 'request')
+	{
+		exit_redirect($lang['BT_UNREGISTERED'], $post_id, $forum_id);
+	}
+
+#
+#-----[ AFTER ADD ]------------------------------------------
+#
+
+	if ($bb_cfg['last_added']) CACHE('lenta')->rm();
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+index.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+$page_cfg['load_tpl_vars'] = array(
+
+#
+#-----[ BEFORE ADD ]------------------------------------------
+#
+
+$page_cfg['include_bbcode_js'] = true;
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+$showhide = isset($_GET['sh']) ? (int) $_GET['sh'] : 0;
+
+#
+#-----[ AFTER ADD ]------------------------------------------
+#
+
+$hide_poster_opt  = isset($user->opt_js['h_poster']) ? (string) $user->opt_js['h_poster'] : 0;
+$hide_poster_user = array_flip(explode('-', $hide_poster_opt));
+$showposter = isset($_GET['sp']) ? (int) $_GET['sp'] : 0;
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+	$template->assign_vars(array(
+		'H_C_AL_MESS'  => ($hide_cat_opt && !$showhide) ? true : false
+	));
+
+#
+#-----[ AFTER ADD ]------------------------------------------
+#
+
+	if ($bb_cfg['last_added'])
+	{
+		$template->assign_block_vars('h_p', array(
+			'H_C_ID'     => $cid,
+			'H_C_TITLE'  => $cat_title_html[$cid],
+			'H_C_CHEKED' => in_array($cid, preg_split("/[-]+/", $hide_poster_opt)) ? 'checked' : '',
+		));
+
+		$template->assign_vars(array(
+			'H_P_AL_MESS'  => ($hide_poster_opt && !$showposter) ? true : false
+		));
+	}
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+// Allow cron
+if (IS_AM)
+
+#
+#-----[ BEFORE ADD ]------------------------------------------
+#
+
+// Постеры раздач
+if ($bb_cfg['last_added'] && $user->opt_js['poster'] && !IS_GUEST)
+{
+	if (!$last_added = CACHE('lenta')->get("last_added$hide_poster_opt"))
+	{
+		$cat_ids = ($hide_poster_opt) ? implode(',', array_flip($hide_poster_user)) : 0;
+		$last_added = DB()->fetch_rowset("SELECT tr.topic_id, tr.forum_id,
+			tr.size, t.topic_title, t.topic_image, f.forum_name, u.username, u.user_rank
+			FROM  ". BB_BT_TORRENTS ." tr
+			LEFT JOIN ". BB_TOPICS ." t  ON tr.topic_id = t.topic_id
+			LEFT JOIN ". BB_FORUMS ." f  ON tr.forum_id = f.forum_id
+			LEFT JOIN ". BB_USERS  ." u  ON tr.poster_id = u.user_id
+			WHERE tr.forum_id NOT IN (". $bb_cfg['trash_forum_id'] .")
+				AND f.cat_id NOT IN($cat_ids)
+				AND f.allow_porno_topic = 0
+				AND f.allow_reg_tracker = 1
+				AND f.auth_view IN(0,1)
+			ORDER BY tr.reg_time DESC LIMIT ". $bb_cfg['limit_poster']);
+		CACHE('lenta')->set("last_added$hide_poster_opt", $last_added, 3600);
+	}
+
+	$template->assign_vars(array(
+		'LENTA' => ($last_added) ? true : false,
+	));
+
+	if ($last_added)
+	{
+		foreach ($last_added as $row)
+		{
+			$poster_full = !empty($row['topic_image']) ? $row['topic_image'] : 'images/noposter_full.png';
+			$template->assign_block_vars('last_added', array(
+				'FORUM_NAME'  => $row['forum_name'],
+				'FORUM_ID'    => $row['forum_id'],
+				'TOPIC_ID'	  => $row['topic_id'],
+				'TITLE'	      => wbr(str_short($row['topic_title'], 50)),
+				'USER_NAME'   => profile_url($row),
+				'SIZE'        => humn_size($row['size']),
+				'POSTER_FULL' => $poster_full,
+			));
+		}
+	}
+	else
+ 	{
+		$template->assign_block_vars('last_added', array());
+	}
+}
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+posting.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+		if (defined('TORRENT_ATTACH_ID') && $bb_cfg['bt_newtopic_auto_reg'] && !$error_msg)
+
+#
+#-----[ BEFORE ADD ]------------------------------------------
+#
+
+		// Постеры раздач
+		if ($bb_cfg['last_added'])
+		{
+			if ($mode == 'newtopic' && defined('TORRENT_ATTACH_ID') || defined('TORRENT_ATTACH_ID') && $bb_cfg['bt_newtopic_auto_reg'] && !$error_msg)
+			{
+				$row = DB()->fetch_row("SELECT post_text FROM ". BB_POSTS_TEXT ." WHERE post_id = $post_id");
+					preg_match_all('/\[gposter=right\](.*?)\[\/gposter\]/i', $row['post_text'], $poster7, PREG_SET_ORDER);
+					preg_match_all('/\[gposter=left\](.*?)\[\/gposter\]/i', $row['post_text'], $poster6, PREG_SET_ORDER);
+					preg_match_all('/\[gposter\](.*?)\[\/gposter\]/i', $row['post_text'], $poster5, PREG_SET_ORDER);
+					preg_match_all('/\[poster\](.*?)\[\/poster\]/i', $row['post_text'], $poster4, PREG_SET_ORDER);
+					preg_match_all('/\[img=right\](.*?)\[\/img\]/i', $row['post_text'], $poster3, PREG_SET_ORDER);
+					preg_match_all('/\[img=left\](.*?)\[\/img\]/i', $row['post_text'], $poster2, PREG_SET_ORDER);
+					preg_match_all('/\[img\](.*?)\[\/img\]/i', $row['post_text'], $poster1, PREG_SET_ORDER);
+				$url = '';
+				if (isset($poster7[0][1])) $url = $poster7[0][1];
+				elseif (isset($poster6[0][1])) $url = $poster6[0][1];
+				elseif (isset($poster5[0][1])) $url = $poster5[0][1];
+				elseif (isset($poster4[0][1])) $url = $poster4[0][1];
+				elseif (isset($poster3[0][1])) $url = $poster3[0][1];
+				elseif (isset($poster2[0][1])) $url = $poster2[0][1];
+				elseif (isset($poster1[0][1])) $url = $poster1[0][1];
+				DB()->query("UPDATE ". BB_TOPICS ." SET topic_image = '$url' WHERE topic_id = $topic_id ");
+				CACHE('lenta')->rm();
+			}
+		}
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+modcp.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+			$msg = ($result) ? $lang['TOPICS_REMOVED'] : $lang['NO_TOPICS_REMOVED'];
+
+#
+#-----[ BEFORE ADD ]------------------------------------------
+#
+
+			if ($bb_cfg['last_added']) CACHE('lenta')->rm();
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+admin_board.tpl
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+<!-- ENDIF / CONFIG_MODS -->
+
+#
+#-----[ BEFORE ADD ]-------------------------------------
+#
+
+<tr class="row3 med">
+	<td class="bold tCenter" colspan="2">Лента последних релизов</td>
+</tr>
+<tr>
+	<td><h4>Включить ленту новинок</h4></td>
+	<td>
+		<label><input type="radio" name="last_added" value="1" <!-- IF LAST_ADDED_ON -->checked="checked"<!-- ENDIF --> />{L_YES}</label>&nbsp;&nbsp;
+		<label><input type="radio" name="last_added" value="0" <!-- IF not LAST_ADDED_ON -->checked="checked"<!-- ENDIF --> />{L_NO}</label>
+	</td>
+</tr>
+<tr>
+	<td><h4>Использовать плагин для мини постеров?</h4><h6>Изменяет стиль картинок</h6></td>
+	<td>
+		<label><input type="radio" name="new_poster" value="1" <!-- IF NEW_POSTER -->checked="checked"<!-- ENDIF --> />{L_YES}</label>&nbsp;&nbsp;
+		<label><input type="radio" name="new_poster" value="0" <!-- IF not NEW_POSTER -->checked="checked"<!-- ENDIF --> />{L_NO}</label>
+	</td>
+</tr>
+<tr>
+	<td><h4>Количество раздач в ленте</h4></td>
+	<td><input class="post" type="text" name="limit_poster" value="{LIMIT_POSTER}" size="15" maxlength="4" /></td>
+</tr>
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+page_header.tpl
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+		else {
+			$img.one('load', function(){ imgFit(this, maxW) });
+			$v.empty().append($img);
+			if ($.browser.msie) {
+				$v.after('<wbr>');
+			}
+		}
+	});
+
+#
+#-----[ AFTER ADD ]------------------------------------------
+#
+
+	$('var.posterImg', context).each(function(){
+		var $v = $(this);
+		var src = $v.attr('title');
+		var $img = $('<img src="'+ src +'" class="'+ $v.attr('class') +'" width="260px;" alt="{L_LOADING}" border="0" />');
+		$img = fixPostImage($img);
+		$v.empty().append($img);
+		if ($.browser.msie) {
+			$v.after('<wbr>');
+		}
+	});
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+	</table>
+</div><!--/only-new-options-->
+<!-- ENDIF / SHOW_ONLY_NEW_MENU -->
+
+#
+#-----[ AFTER ADD ]------------------------------------------
+#
+
+<!-- IF LAST_ADDED -->
+<div class="menu-sub" id="hi-poster">
+	<table cellspacing="1" cellpadding="4">
+	<tr>
+		<th>Опции ленты новинок</th>
+	</tr>
+	<tr>
+		<td>
+			<fieldset id="ajax-topics">
+			<legend>Настройка ленты</legend>
+			<div class="pad_4">
+				<label><input type="checkbox" <!-- IF POSTER -->{CHECKED}<!-- ENDIF --> onclick="user.set('poster', this.checked ? 1 : 0);" />Показывать ленту постеров</label>
+			</div>
+			</fieldset>
+			<!-- IF POSTER -->
+			<fieldset id="user_hide_poster">
+			<legend>Скрыть постеры из разделов</legend>
+			<div id="h-poster-ctl" class="pad_4 nowrap">
+				<form autocomplete="off">
+					<!-- BEGIN h_p -->
+					<label><input class="h-poster-cbx" type="checkbox" value="{h_p.H_C_ID}" {h_p.H_C_CHEKED} />{h_p.H_C_TITLE}</label>
+					<!-- END h_p -->
+				</form>
+				<div class="spacer_6"></div>
+				<div class="tCenter">
+					<!-- IF H_P_AL_MESS -->
+					<input style="width: 100px;" type="button" onclick="$('input.h-poster-cbx').attr('checked',false); $('input#sec_h_poster').click(); return false;" value="Сбросить">
+					<!-- ENDIF -->
+					<input id="sec_h_poster" type="button" onclick="set_h_poster();" style="width: 100px;" value="Отправить">
+					<script type="text/javascript">
+					function set_h_poster ()
+					{
+						h_posters = [];
+						$.each($('input.h-poster-cbx:checked'), function(i,el){
+							h_posters.push( $(this).val() );
+						});
+						user.set('h_poster', h_posters.join('-'), 365, true);
+					}
+					</script>
+				</div>
+			</div>
+			</fieldset>
+			<!-- ENDIF -->
+		</td>
+	</tr>
+	<!-- IF not POSTER -->
+	<tr>
+		<td class="cat tCenter pad_4"><input type="button" value="{L_SUBMIT}" onclick="window.location.reload();" /></td>
+	</tr>
+	<!-- ENDIF -->
+	</table>
+</div>
+<!-- ENDIF -->
+
+<!-- IF LAST_ADDED && POSTER && LOGGED_IN -->
+<script type="text/javascript" src="{SITE_URL}misc/js/jquery.cluetip.js"></script>
+<script type="text/javascript" src="{SITE_URL}misc/js/jquery.scrollable.js"></script>
+<script type="text/javascript" src="{SITE_URL}misc/js/jquery.mousewheel.js"></script>
+<!-- IF $bb_cfg['new_poster'] --><script type="text/javascript" src="{SITE_URL}misc/js/cvi_glossy_lib.js"></script><!-- ENDIF -->
+<link type="text/css" rel="stylesheet" href="{SITE_URL}templates/default/css/cluetip.css"/>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('div.load-local').cluetip({local:true, cursor: 'pointer',showTitle: true,arrows: true});
+		$("div.scrollable").scrollable({size: 8, items: "#thumbs", hoverClass: "hover", keyboard: true, loop: false });
+	});
+</script>
+
+<table cellpadding="0" cellspacing="0" class="poster">
+<tr>
+	<td>
+	<!-- root element for scrollable -->
+	<div class="scrollable">
+		<div id="thumbs">
+			<!-- BEGIN last_added -->
+			<div class="load-local" rel="#loadme_{last_added.TOPIC_ID}" title="{last_added.TITLE}" onclick="top.location.href='viewtopic.php?t={last_added.TOPIC_ID}';" onmouseover="initPostImages($('#loadme_{last_added.TOPIC_ID}'));">
+				<a href="viewtopic.php?t={last_added.TOPIC_ID}"><img src="thumb.php?t={last_added.TOPIC_ID}" alt="" <!-- IF $bb_cfg['new_poster'] -->onload="cvi_glossy.add(this,{radius:30,nogradient:true,angle:-33,shadow:30});"<!-- ENDIF -->></a>&nbsp;
+				<div style="display:none;" id="loadme_{last_added.TOPIC_ID}">
+					<center><var class="posterImg" title="{last_added.POSTER_FULL}" alt="" border="0">&#10;</var></center>
+					<br /> {L_FORUM}: <b>{last_added.FORUM_NAME}</b>
+					<br /> {L_AUTHOR}: <b>{last_added.USER_NAME}</b>
+					<br /> {L_SIZE}: <b>{last_added.SIZE}</b>
+				</div>
+			</div>
+			<!-- END last_added -->
+		</div>
+	</div>
+	</td>
+</tr>
+</table>
+<!-- ENDIF -->
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+index.tpl
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+<a class="menu-root" href="#only-new-options">{L_DISPLAYING_OPTIONS}</a>
+
+#
+#-----[ BEFORE ADD ]------------------------------------------
+#
+
+<!-- IF LAST_ADDED --><a class="menu-root" href="#hi-poster">Постеры</a> &middot; <!-- ENDIF -->
+
+#
+#-----[ SAVE/CLOSE ALL FILES ]------------------------------------------
+#
