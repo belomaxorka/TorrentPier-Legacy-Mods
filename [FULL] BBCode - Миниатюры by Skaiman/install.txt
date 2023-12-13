@@ -41,7 +41,7 @@ HTML;
 ----------[ ВСТАВИТЬ ПОСЛЕ ]---------------------------------------------------------------------
 
 			"#\[thumb\]($img_exp)\[/thumb\]\s*#i" 	                 => $tpl['thumb'],
-			
+
 ----------[ ОТКРЫТЬ ]----------------------------------------------------------------------------
 
 styles/templates/default/posting_editor.tpl
@@ -60,7 +60,7 @@ bbcode.addTag("codeSpoiler", "spoiler", null, "",  ctrl);
 
 ----------[ ВСТАВИТЬ ПОСЛЕ ]---------------------------------------------------------------------
 
-bbcode.addTag("codeThumb", "thumb", null, "", ctrl);	
+bbcode.addTag("codeThumb", "thumb", null, "", ctrl);
 
 ----------[ ОТКРЫТЬ ]----------------------------------------------------------------------------
 
@@ -98,8 +98,8 @@ styles/templates/default/page_header.tpl
 
 ----------[ ВСТАВИТЬ ДО ]------------------------------------------------------------------------
 
-<link rel="stylesheet" type="text/css" href="{SITE_URL}library/lightcase/css/lightcase.css" /> 
-<script type="text/javascript" src="{SITE_URL}library/lightcase/js/lightcase.js"></script> 
+<link rel="stylesheet" type="text/css" href="{SITE_URL}library/lightcase/css/lightcase.css" />
+<script type="text/javascript" src="{SITE_URL}library/lightcase/js/lightcase.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready(function($) {
 		$('a[data-rel^=lightcase]').lightcase();
@@ -112,14 +112,14 @@ styles/templates/default/css/main.css
 
 ----------[ В КОНЕЦ ВСТАВИТЬ ]-------------------------------------------------------------------
 
-[class*="lightcase-icon-"]::before
-{
-  text-decoration: none;
+[class*="lightcase-icon-"]::before {
+	text-decoration: none;
 }
-.light_img
-{
-  max-width: 200px;
-  max-height: 100px;
-  margin: 5px;
+
+.light_img {
+	max-width: 200px;
+	max-height: 100px;
+	margin: 5px;
 }
-----------[ СОХРАНИТЬ ВСЕ ]-----------------------------------------------------------------------		
+
+----------[ СОХРАНИТЬ ВСЕ ]-----------------------------------------------------------------------
