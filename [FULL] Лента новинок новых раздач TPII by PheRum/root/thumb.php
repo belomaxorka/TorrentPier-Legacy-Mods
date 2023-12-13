@@ -9,6 +9,10 @@ require(BB_ROOT . 'common.php');
  * Polyfill for message_die
  */
 if (!function_exists('message_die')) {
+	if (!defined(GENERAL_MESSAGE)) {
+		define('GENERAL_MESSAGE', '');
+	}
+
 	function message_die($type = '', $msg = '')
 	{
 		bb_die($msg);
