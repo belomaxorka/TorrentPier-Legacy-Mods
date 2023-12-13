@@ -10,7 +10,7 @@
 switch ($mode)
 {
 ----------------------------- Перед добавить -----------------------------
-if(!empty($_POST['token'])) $mode = 'register';
+if (!empty($_POST['token'])) $mode = 'register';
 ----------------------------- Открыть library/includes/ucp/register.php и найти -----------------------------
 // submit
 if ($submit && !$errors)
@@ -48,7 +48,7 @@ if (!empty($_POST['token']))
 }
 else
 {
-	if(!empty($_POST['ulogin']))
+	if (!empty($_POST['ulogin']))
 	{
 		$tp_data['ULOGIN'] = $_POST['ulogin'];
 	}
@@ -56,7 +56,7 @@ else
 ----------------------------- Далее найти -----------------------------
 $new_user_id = DB()->sql_nextid();
 ----------------------------- После добавить -----------------------------
-if(!empty($_POST['ulogin'])) DB()->query("INSERT INTO bb_ulogin VALUES (NULL, $new_user_id, '" . DB()->escape($_POST['ulogin']) . "')");
+if (!empty($_POST['ulogin'])) DB()->query("INSERT INTO bb_ulogin VALUES (NULL, $new_user_id, '" . DB()->escape($_POST['ulogin']) . "')");
 ----------------------------- Открыть library/config.php и добавить -----------------------------
 // Регистрация и вход через uLogin
 $bb_cfg['ulogin_shown'] = 'vkontakte,odnoklassniki,mailru,facebook';
