@@ -1,11 +1,15 @@
 <script type="text/javascript">
-	ajax.callback.del_imgs = function(data)
-	{
-		$('span#del_imgs_'+data.del_imgs).html(data.html);
+	ajax.callback.del_imgs = function (data) {
+		$('span#del_imgs_' + data.del_imgs).html(data.html);
 		$('div#gen_tags').html(data.gen_tags);
 	}
 </script>
-<style type="text/css">.poster{ max-width: 300px;max-height: 450px;}</style>
+<style type="text/css">
+	.poster {
+		max-width: 300px;
+		max-height: 450px;
+	}
+</style>
 <div class="nav">
 	<p class="floatR">
 		<a href="gallery.php?dir={SESSION_USER_ID}">{L_MY_IMGS}</a>
@@ -30,7 +34,6 @@
 			</div>
 		</td>
 	</tr>
-
 	<tr class="row1">
 		<td>
 			<!-- BEGIN upload -->
@@ -91,7 +94,6 @@
 			<!-- ENDIF / IMGS_ALL_TAGS -->
 		</td>
 	</tr>
-
 	<tr>
 		<td class="catBottom" colspan="2">
 			<form enctype="multipart/form-data" method="post" id="data" action="gallery.php">
