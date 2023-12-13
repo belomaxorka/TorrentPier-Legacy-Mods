@@ -30,7 +30,6 @@ $bb_cfg['imgs'] = array(
 	'delete_img'	=> true,							// удалять картинку, при удалении топика или поста
 	'limit_imgs'	=> '5',								// ограничение колличество картинок за одну загрузку
 	'imgs_page'		=> '10',							// Картинок на страницу
-	'watermark'     => BB_PATH . 'styles/images/logo/logo.png', // Водяной знак (изображение в формате .png только!) (false - чтобы отключить)
 );
 
 /////////////////////////////////////////////////
@@ -184,22 +183,6 @@ function get_imgfile_path ($id, $ext_id, $name, $thumb = false)
 		$img_create	= imagecreatetruecolor($new_width, $this->cfg['thumb_height']);
 
 		imagecopyresampled($img_create, $img, 0, 0, 0, 0, $new_width, $this->cfg['thumb_height'], imagesx($img), imagesy($img));
-
-		// Добавление водяного знака
-		if (is_file($this->cfg['watermark']))
-		{
-			// Положение водяного знака
-			$watermark_position_right = 10; // относительно правого края
-			$watermark_position_bottom = 10; // относительно низа
-
-			$watermark = imagecreatefrompng($this->cfg['watermark']); // Получаем водяной знай
-			$watermark_sx = imagesx($watermark);
-			$watermark_sy = imagesy($watermark);
-
-			// Добавляем водяной знак на картинку
-			imagecopy($img_create, $watermark, imagesx($img_create) - $watermark_sx - $watermark_position_right, imagesy($img_create) - $watermark_sy - $watermark_position_bottom, 0, 0, imagesx($watermark), imagesy($watermark));
-			imagedestroy($watermark);
-		}
 
 		if (($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpg') OR ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpeg'))
 		{
