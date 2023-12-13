@@ -1,23 +1,19 @@
 <script type="text/javascript">
-	ajax.callback.del_imgs = function (data) {
-		$('span#del_imgs_' + data.del_imgs).html(data.html);
+	ajax.callback.del_imgs = function(data)
+	{
+		$('span#del_imgs_'+data.del_imgs).html(data.html);
 		$('div#gen_tags').html(data.gen_tags);
 	}
 </script>
-<style type="text/css">
-	.poster {
-		max-width: 300px;
-		max-height: 450px;
-	}
-</style>
+<style type="text/css">.poster{ max-width: 300px;max-height: 450px;}</style>
 <div class="nav">
 	<p class="floatR">
 		<a href="gallery.php?dir={SESSION_USER_ID}">{L_MY_IMGS}</a>
 	</p>
-	<div class="clear"></div>
+		<div class="clear"></div>
 </div>
 <table cellpadding="3" cellspacing="1" border="0" class="bordered w100">
-	<tr>
+	<tr> 
 		<td class="catTitle" nowrap>{L_GALLERY}</td>
 	</tr>
 	<tr>
@@ -32,8 +28,10 @@
 				<span class="bold">{L_MAX_WIDTH}:</span> {$bb_cfg['imgs']['max_width']}<br/>
 				<!-- IF USER_DIR --><span class="bold">{L_DIR_SIZE}:</span> {USER_DIR_SIZE}<!-- ENDIF / USER_DIR -->
 			</div>
+			
 		</td>
 	</tr>
+
 	<tr class="row1">
 		<td>
 			<!-- BEGIN upload -->
@@ -53,7 +51,7 @@
 						<span id="del_imgs_{upload.ID}" title="{L_DEL_IMGS}" class="clickable tCenter gen bold" onclick="ajax.exec({action: 'del_imgs', imgs: '{BB_ROOT}{upload.IMG}<!-- IF upload.THUMB -->, {BB_ROOT}{upload.THUMB}<!-- ENDIF / upload.THUMB -->', all_imgs: $('input#all_imgs').val() }); $('#delete_{upload.ID}').hide(); return false">{L_DELETE}</span>
 					</td>
 				</tr>
-			</table>
+			</table>	
 			<!-- END upload -->
 
 			<!-- IF USER_DIR -->
@@ -83,7 +81,7 @@
 			<!-- ENDIF / USER_DIR -->
 
 			<!-- IF IMGS_ALL_TAGS -->
-			<div class="tCenter" id="gen_tags">
+			<div class="tCenter" id="gen_tags">			
 				<input type="text" onClick="this.select();" readonly value='{IMGS_ALL}' class="mrg_4 w90" name="all_imgs" id="all_imgs" /><br/>
 				<input type="text" onClick="this.select();" readonly value='{IMGS_TAGS_IMG}' class="mrg_4 w90" /><br/>
 				<!-- IF IMGS_TAGS_THUMB -->
@@ -94,6 +92,7 @@
 			<!-- ENDIF / IMGS_ALL_TAGS -->
 		</td>
 	</tr>
+
 	<tr>
 		<td class="catBottom" colspan="2">
 			<form enctype="multipart/form-data" method="post" id="data" action="gallery.php">
