@@ -1,7 +1,7 @@
 ---------------------------------------------------------------------------------------
 --------------------------- Регистрация и вход через uLogin ---------------------------
 - Автор: Man197
-- Версия: v1.1.2
+- Версия: v1.1.3
 - Ссылка: https://torrentpier.com/resources/registracija-i-vxod-cherez-ulogin.270
 ---------------------------------------------------------------------------------------
 
@@ -10,8 +10,15 @@
 switch ($mode)
 {
 ----------------------------- Перед добавить -----------------------------
-if(!empty($_POST['token'])) $mode = 'register';
+if (!empty($_POST['token'])) $mode = 'register';
 ----------------------------- Открыть library/includes/ucp/register.php и найти -----------------------------
+$can_register = (IS_GUEST || IS_ADMIN);
+----------------------------- Перед добавить -----------------------------
+if ($bb_cfg['ulogin_account_auto_activate'] && !empty($_POST['ulogin']))
+{
+	$bb_cfg['reg_email_activation'] = false;
+}
+----------------------------- Далее найти -----------------------------
 // submit
 if ($submit && !$errors)
 ----------------------------- Перед добавить -----------------------------
@@ -56,11 +63,12 @@ else
 ----------------------------- Далее найти -----------------------------
 $new_user_id = DB()->sql_nextid();
 ----------------------------- После добавить -----------------------------
-if(!empty($_POST['ulogin'])) DB()->query("INSERT INTO bb_ulogin VALUES (NULL, $new_user_id, '" . DB()->escape($_POST['ulogin']) . "')");
+if (!empty($_POST['ulogin'])) DB()->query("INSERT INTO bb_ulogin VALUES (NULL, $new_user_id, '" . DB()->escape($_POST['ulogin']) . "')");
 ----------------------------- Открыть library/config.php и добавить -----------------------------
 // Регистрация и вход через uLogin
 $bb_cfg['ulogin_shown'] = 'vkontakte,odnoklassniki,mailru,facebook';
 $bb_cfg['ulogin_hidden'] = 'twitter,google,yandex,livejournal,liveid,soundcloud,steam,foursquare,youtube';
+$bb_cfg['ulogin_account_auto_activate'] = true; // Автоматическая активация аккаунта после регистрации
 ----------------------------- Открыть page_header.tpl и найти -----------------------------
 <a href="{U_SEND_PASSWORD}">{L_FORGOTTEN_PASSWORD}</a>
 ----------------------------- Заменить на -----------------------------
