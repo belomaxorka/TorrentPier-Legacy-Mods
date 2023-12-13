@@ -1,0 +1,125 @@
+﻿##############################################################
+## MOD Title: Thumbnail image
+## MOD Author: Skaiman
+## MOD Version: 1.0.2
+## MOD Description: Добавляет вв-код для просмотра изображений в режиме слайдшоу
+## Installation Level: Легко
+## Installation Time: 5 минут
+## Files To Edit: 6
+##                library/includes/bbcode.php
+##                styles/templates/default/posting_editor.tpl
+##                library/language/ru/main.php
+##                library/language/en/main.php
+##                styles/templates/default/page_header.tpl
+##                styles/templates/default/css/main.css
+##
+##############################################################
+
+----------[ ЗАГРУЗИТЬ ]--------------------------------------------------------------------------
+
+Папку library
+
+----------[ ОТКРЫТЬ ]----------------------------------------------------------------------------
+
+library/includes/bbcode.php
+
+----------[ НАЙТИ ]------------------------------------------------------------------------------
+
+// Image
+
+----------[ ВСТАВИТЬ ДО ]------------------------------------------------------------------------
+
+// Thumb
+$bbcode_tpl['thumb'] = <<<HTML
+	<a href="\\1" data-rel="lightcase:myCollection:slideshow"><img src="\\1" class="light_img" title="Клик для увеличения"></a>
+HTML;
+
+----------[ НАЙТИ ]------------------------------------------------------------------------------
+
+            '#\[font="([\w\- \']+)"\]#isu'                           => '<span style="font-family: $1;">',
+
+----------[ ВСТАВИТЬ ПОСЛЕ ]---------------------------------------------------------------------
+
+			"#\[thumb\]($img_exp)\[/thumb\]\s*#i" 	                 => $tpl['thumb'],
+			
+----------[ ОТКРЫТЬ ]----------------------------------------------------------------------------
+
+styles/templates/default/posting_editor.tpl
+
+----------[ НАЙТИ ]------------------------------------------------------------------------------
+
+<input type="button" value="{L_SPOILER}" name="codeSpoiler" title="{L_SPOILER}" style="width: 65px;" />
+
+----------[ ВСТАВИТЬ ПОСЛЕ ]---------------------------------------------------------------------
+
+<input type="button" value="{L_THUMB}" name="codeThumb" title="{L_THUMB_TITLE}" />
+
+----------[ НАЙТИ ]------------------------------------------------------------------------------
+
+bbcode.addTag("codeSpoiler", "spoiler", null, "",  ctrl);
+
+----------[ ВСТАВИТЬ ПОСЛЕ ]---------------------------------------------------------------------
+
+bbcode.addTag("codeThumb", "thumb", null, "", ctrl);	
+
+----------[ ОТКРЫТЬ ]----------------------------------------------------------------------------
+
+library/language/ru/main.php
+
+----------[ НАЙТИ ]------------------------------------------------------------------------------
+
+$lang['URL_TITLE'] = 'Ссылка (Ctrl+W)';
+
+----------[ ВСТАВИТЬ ПОСЛЕ ]---------------------------------------------------------------------
+
+$lang['THUMB'] = 'Миниатюра';
+$lang['THUMB_TITLE'] = 'Миниатюра: [thumb]http://image_url[/thumb]';
+
+----------[ ОТКРЫТЬ ]----------------------------------------------------------------------------
+
+library/language/en/main.php
+
+----------[ НАЙТИ ]------------------------------------------------------------------------------
+
+$lang['URL_TITLE'] = 'Insert URL: [url]http://url[/url] or [url=http://url]URL text[/url] (Ctrl+W)';
+
+----------[ ВСТАВИТЬ ПОСЛЕ ]---------------------------------------------------------------------
+
+$lang['THUMB'] = 'Thumb';
+$lang['THUMB_TITLE'] = 'Thumbnail image: [thumb]http://image_url[/thumb]';
+
+----------[ ОТКРЫТЬ ]----------------------------------------------------------------------------
+
+styles/templates/default/page_header.tpl
+
+----------[ НАЙТИ ]------------------------------------------------------------------------------
+
+<!-- IF INCLUDE_BBCODE_JS -->
+
+----------[ ВСТАВИТЬ ДО ]------------------------------------------------------------------------
+
+<link rel="stylesheet" type="text/css" href="{SITE_URL}library/lightcase/css/lightcase.css" /> 
+<script type="text/javascript" src="{SITE_URL}library/lightcase/js/lightcase.js"></script> 
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$('a[data-rel^=lightcase]').lightcase();
+	});
+</script>
+
+----------[ ОТКРЫТЬ ]----------------------------------------------------------------------------
+
+styles/templates/default/css/main.css
+
+----------[ В КОНЕЦ ВСТАВИТЬ ]-------------------------------------------------------------------
+
+[class*="lightcase-icon-"]::before
+{
+  text-decoration: none;
+}
+.light_img
+{
+  max-width: 200px;
+  max-height: 100px;
+  margin: 5px;
+}
+----------[ СОХРАНИТЬ ВСЕ ]-----------------------------------------------------------------------		

@@ -1,0 +1,68 @@
+===============================================
+- BBCode: Упоминания
+-----------------------------------------------
+- Версия: v1.0.1
+- Автор: belomaxorka
+- Ссылка: https://torrentpier.com/resources/bbcode-upominanija.272/
+===============================================
+
+======================= открыть styles/js/bbcode.js и найти =======================
+this.insertAtCursor("[b]" + name + '[/b], ');
+======================= заменить на =======================
+this.insertAtCursor("[@]" + name + '[/@], ');
+======================= открыть posting_editor.tpl и найти =======================
+<input type="button" value="s" name="codeS" title="{L_STRIKEOUT}" style="width: 25px; text-decoration: line-through;" />&nbsp;&nbsp;
+======================= вставить ниже =======================
+<input type="button" value="@" name="codeMention" title="{L_MENTION}" style="width: 25px;" />
+======================= далее найти =======================
+bbcode.addTag("codeQuote", "quote", null, "Q", ctrl);
+======================= вставить ниже =======================
+bbcode.addTag("codeMention", "@", null, "", ctrl);
+======================= открыть library/ajax/posts.php и найти =======================
+<input type="button" value="s" name="codeS" title="'. $lang['STRIKEOUT'] .'" style="width: 25px; text-decoration: line-through;" />&nbsp;&nbsp;
+======================= вставить ниже =======================
+<input type="button" value="@" name="codeMention" title="'. $lang['MENTION'] .'" style="width: 25px;" />
+======================= далее найти =======================
+bbcode.addTag("codeQuote", "quote", null, "Q", ctrl);
+======================= вставить ниже =======================
+bbcode.addTag("codeMention", "@", null, "", ctrl);
+======================= открыть library/language/ru/main.php (или другой язык) и найти =======================
+$lang['QUOTE_TITLE'] = 'Цитата: [quote]текст[/quote] (Ctrl+Q)';
+======================= вставить ниже =======================
+$lang['MENTION'] = 'Упомянуть: [@]имя, имя2[/@], текст...';
+======================= открыть library/includes/bbcode.php и найти =======================
+// [code]
+======================= вставить выше =======================
+// [@] (Select user)
+$text = preg_replace_callback('#\[@\](.*?)\[/@\]#isu', [&$this, 'get_username_callback'], $text);
+======================= далее найти =======================
+	return $this->tpl['code_open'] . $code . $this->tpl['code_close'];
+}
+======================= вставить ниже =======================
+/**
+ * Callback to [@] (Select username)
+ *
+ * @param $m
+ * @return string
+ * @throws Exception
+ */
+function get_username_callback($m)
+{
+	$users = explode(',', $m[1]);
+	$output = [];
+
+	foreach ($users as $user)
+	{
+		if (!$user_data = get_userdata(get_user_id(trim($user))))
+		{
+			$output[] = '[b]' . $user . '[/b]';
+		}
+		else
+		{
+			$output[] = profile_url($user_data);
+		}
+	}
+
+	return implode(', ', $output);
+}
+======================= сохранить все файлы :D =======================

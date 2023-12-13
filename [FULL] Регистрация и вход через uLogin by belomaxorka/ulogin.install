@@ -1,0 +1,86 @@
+---------------------------------------------------------------------------------------
+--------------------------- Регистрация и вход через uLogin ---------------------------
+- Автор: Man197
+- Версия: v1.1.2
+- Ссылка: https://torrentpier.com/resources/registracija-i-vxod-cherez-ulogin.270
+---------------------------------------------------------------------------------------
+
+----------------------------- Начало -----------------------------
+----------------------------- Открыть profile.php и найти -----------------------------
+switch ($mode)
+{
+----------------------------- Перед добавить -----------------------------
+if(!empty($_POST['token'])) $mode = 'register';
+----------------------------- Открыть library/includes/ucp/register.php и найти -----------------------------
+// submit
+if ($submit && !$errors)
+----------------------------- Перед добавить -----------------------------
+$tp_data['ULOGIN'] = 0;
+if (!empty($_POST['token']))
+{
+	require_once (INC_DIR .'class.ulogin.php');
+	$uLogin = new uLogin();
+
+	if ($row = $uLogin->auth())
+	{
+		$user->session_create($row);
+
+		$redirect_url = (defined('FIRST_LOGON')) ? $bb_cfg['first_logon_redirect_url'] : $_SERVER['QUERY_STRING'];
+		if ($redirect_url == '/login.php' || $redirect_url == 'login.php') $redirect_url = 'index.php';
+
+		redirect($redirect_url);
+	}
+
+	$db_data = array(
+		'username'		    => clean_username($uLogin->name()),
+		'user_password'		=> $uLogin->password(defined('NEWPASSWD_LENGTH') ? NEWPASSWD_LENGTH : 8),
+		'user_email'		=> strtolower($uLogin->email()),
+		'user_from' 		=> $uLogin->from(),
+	);
+
+	$tp_data = array(
+		'CAN_EDIT_USERNAME' => true,
+		'USERNAME'		    => clean_username($uLogin->name()),
+		'USER_PASSWORD'		=> $uLogin->password(defined('NEWPASSWD_LENGTH') ? NEWPASSWD_LENGTH : 8),
+		'USER_EMAIL'		=> strtolower($uLogin->email()),
+		'ULOGIN'            => $uLogin->identity(),
+	);
+}
+else
+{
+	if(!empty($_POST['ulogin']))
+	{
+		$tp_data['ULOGIN'] = $_POST['ulogin'];
+	}
+}
+----------------------------- Далее найти -----------------------------
+$new_user_id = DB()->sql_nextid();
+----------------------------- После добавить -----------------------------
+if(!empty($_POST['ulogin'])) DB()->query("INSERT INTO bb_ulogin VALUES (NULL, $new_user_id, '" . DB()->escape($_POST['ulogin']) . "')");
+----------------------------- Открыть library/config.php и добавить -----------------------------
+// Регистрация и вход через uLogin
+$bb_cfg['ulogin_shown'] = 'vkontakte,odnoklassniki,mailru,facebook';
+$bb_cfg['ulogin_hidden'] = 'twitter,google,yandex,livejournal,liveid,soundcloud,steam,foursquare,youtube';
+----------------------------- Открыть page_header.tpl и найти -----------------------------
+<a href="{U_SEND_PASSWORD}">{L_FORGOTTEN_PASSWORD}</a>
+----------------------------- Заменить на -----------------------------
+<a href="{U_SEND_PASSWORD}">{L_FORGOTTEN_PASSWORD}</a>
+<script src="https://ulogin.ru/js/ulogin.js"></script>
+&#0183; войти через: <span id="uLogin" x-ulogin-params="display=small&fields=first_name,last_name,email,photo&optional=bdate,country,city&providers={$bb_cfg['ulogin_shown']}&hidden={$bb_cfg['ulogin_hidden']}&redirect_uri={SITE_URL}profile.php"></span>
+----------------------------- Выполнить SQL запрос -----------------------------
+CREATE TABLE IF NOT EXISTS `bb_ulogin` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` int(10) NOT NULL,
+  `identity` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+----------------------------- Открыть usercp_register.tpl и найти -----------------------------
+<input type="hidden" name="user_timezone" value="{USER_TIMEZONE}" />
+<!-- ENDIF -->
+----------------------------- После добавить -----------------------------
+<!-- IF ULOGIN --><input type="hidden" name="ulogin" value="{ULOGIN}" /><!-- ENDIF -->
+----------------------------- Далее найти -----------------------------
+<input id="pass" type="<!-- IF SHOW_PASS -->text<!-- ELSE -->password<!-- ENDIF -->" name="new_pass" size="35" maxlength="32" value="" />&nbsp;
+----------------------------- Заменить на -----------------------------
+<input id="pass" type="<!-- IF SHOW_PASS || ULOGIN -->text<!-- ELSE -->password<!-- ENDIF -->" name="new_pass" size="35" maxlength="32" value="<!-- IF ULOGIN -->{USER_PASSWORD}<!-- ENDIF -->" />&nbsp;
+----------------------------- Конец -----------------------------

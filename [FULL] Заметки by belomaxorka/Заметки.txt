@@ -1,0 +1,61 @@
+===============================================
+- Мод заметки администратора
+-----------------------------------------------
+- Версия: 1.1.0
+- Автор: druid
+===============================================
+
+======================= выполнить SQL запрос =======================
+INSERT INTO bb_config VALUES ('admin_note', 'Hello, world!');
+======================= открыть library/language/ru/main.php и добавить в конце =======================
+// Заметки администратора
+$lang['ADMIN_NOTES'] = 'Заметки администратора';
+$lang['NOTE_SAVE'] = 'Сохранить заметку';
+$lang['NOTE_SAVED'] = 'Заметка успешно сохранена!';
+======================= открыть admin/index.php и найти =======================
+'AVATAR_DIR_SIZE'
+======================= ниже вставить =======================
+'ADMIN_NOTE' => $bb_cfg['admin_note'],
+======================= открыть library/ajax/manage_admin.php и добавить внутри switch =======================
+case 'admin_note':
+	$note = (string)$this->request['note'];
+	bb_update_config(array('admin_note' => $note));
+	$this->response['note_saved'] = $lang['NOTE_SAVED'];
+	break;
+======================= открыть styles/templates/admin/index.tpl и найти =======================
+$('#cache').html(data.cache_html);
+======================= ниже вставить =======================
+$('#res_note').html(data.note_saved);
+======================= далее найти =======================
+ajax.manage_admin = function (mode) {
+	ajax.exec({
+		action  : 'manage_admin',
+		mode    : mode,
+		user_id : ''
+	});
+};
+======================= заменить на =======================
+ajax.manage_admin = function (mode, note = '') {
+	ajax.exec({
+		action: 'manage_admin',
+		mode: mode,
+		user_id: '',
+		note: note
+	});
+};
+======================= далее в удобное место вставить (желательно выше <a name="online"></a>) =======================
+<table class="forumline">
+	<tr>
+		<th colspan="2">{L_ADMIN_NOTES}</th>
+	</tr>
+	<tr>
+		<td class="row1 tCenter">
+			<textarea style="white-space: pre-wrap;" rows="10" cols="100" id="admin_note" name="admin_note">{ADMIN_NOTE}</textarea>
+		</td>
+		<td class="row2 tCenter">
+			<input type="button" class="liteoption" value="{L_NOTE_SAVE}" onclick="ajax.manage_admin('admin_note', $('#admin_note').val()); return false;"/>
+			<div style="margin-top: 10px;" class="seedmed" id="res_note"></div>
+		</td>
+	</tr>
+</table>
+======================= сохранить все файлы :D =======================

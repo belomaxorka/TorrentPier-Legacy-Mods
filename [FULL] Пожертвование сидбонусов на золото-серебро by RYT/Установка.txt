@@ -1,0 +1,181 @@
+|==================================================|
+| Мод написан by RYT                               |
+| Мод обновлен by belomaxorka                      |
+|==================================================|
+| Версия: 1.1.2                                    |
+| Тестировалось на TorrentPier LTS 2.1.5           |
+|==================================================|
+
+=====Выполнить SQL запрос======
+
+DROP TABLE IF EXISTS `bb_bt_tor_bonus`;
+CREATE TABLE `bb_bt_tor_bonus`
+(
+	`id`               int(11)               NOT NULL auto_increment,
+	`attach_id`        mediumint(8) unsigned NOT NULL default '0',
+	`user_id`          int(11)               NOT NULL default '0',
+	`time`             int(11)               NOT NULL default '0',
+	`tor_bonus_silver` float(16, 2)          NOT NULL default '0.00',
+	`tor_bonus_gold`   float(16, 2)          NOT NULL default '0.00',
+	PRIMARY KEY (`id`)
+) ENGINE = MyISAM
+  DEFAULT CHARSET = utf8;
+
+=====config.php в самый конец======
+
+// Пожертвование сидбонусов
+$bb_cfg['tor_bonus'] = true; // Вкл/выкл
+$bb_cfg['tor_bonus_silver'] = '1000'; // Стоимость серебра
+$bb_cfg['tor_bonus_gold'] = '2000'; // Стоимость золота
+
+=====language/ru/main.php в самый конец======
+
+// Пожертвование сидбонусов
+$lang['ERRORS_TOR_TYPE_GOLD'] = 'Раздача уже имеет статус золота';
+$lang['ERRORS_TOR_TYPE_TEXT'] = 'Введены не корректные данные';
+$lang['ERRORS_NO_BONUS_USER'] = 'У Вас нет столько СидБонусов';
+$lang['ERRORS_TOR_TYPE_BONUS'] = 'С данной раздачи снято серебро/золото';
+$lang['ERRORS_NOUSERS_TOR_BONUS'] = 'Нет пожертвований';
+$lang['ERRORS_TOR_TUPE_BONUS'] = 'С данной раздачи снято серебро/золото';
+$lang['ERRORS_MAX_TOR_BONUS'] = 'Раздача уже имее максимальное кол-во СидБонусов';
+$lang['SEED_BONUS_PRESENT'] = 'Уже набрано: <b class="seed">%s</b>';
+$lang['SEED_BONUS_REMAINING'] = 'Осталось набрать: <b class="leech">%s</b>';
+$lang['SEED_BONUS_ME'] = 'У Вас: <b class="points">%s</b>';
+$lang['TOR_BONUS_SILVER'] = 'Спасибо за Ваше пожертвование на серебро';
+$lang['TOR_BONUS_SILVER_TO'] = 'Спасибо, Вы установили серебро';
+$lang['TOR_BONUS_GOLD'] = 'Спасибо за Ваше пожертвование на золото';
+$lang['TOR_BONUS_GOLD_TO'] = 'Спасибо, Вы установили золото';
+$lang['TOR_BONUS_NUMBER'] = 'Сколько отдать';
+$lang['TOR_BONUS_TYPE_SILVER'] = 'Добавить СидБонусы на серебро';
+$lang['TOR_BONUS_TYPE_GOLD'] = 'Добавить СидБонусы на золото';
+$lang['TOR_BONUS_USERS_WHO'] = 'Кем добавлено';
+$lang['TOR_BONUS_USERS_HOW'] = 'Сколько добавлено';
+$lang['TOR_BONUS_USERS_WHAT'] = 'Добавлено на';
+$lang['TOR_BONUS_USERS_TIME'] = 'Дата добавления';
+$lang['BUTONS_USERS'] = 'Кто добавил на серебро/золото';
+$lang['RELEASER_BONUS_ADD'] = 'Отблагодарить за Релиз СидБонусами';
+$lang['POINTS_MESSAGE'] = 'Пользователь %s подарил Вам СидБонус в размере [b]%s[/b].[br][br][align=right][i]Сообщение сгенерировано автоматически.[/i][/align]';
+$lang['POINTS_SUBJECT'] = 'Вам отправили СидБонус за %s';
+$lang['RELEASER_BONUS'] = 'Вы отправили СидБонусамы за релиз';
+
+=====library/attach_mod/displaying_torrent.php======
+
+== Найти:
+
+global $bb_cfg,
+
+== Добавить после:
+
+$tr_cfg,
+
+== Найти (второй раз):
+
+$template->assign_block_vars('postrow.attach.tor_reged', array(
+
+== Добавить перед:
+
+// Пожертвование сидбонусов
+if ($tor_info['tor_type'] == 0)
+{
+	$tor_bonus_type = '<input class="liteoption" onclick="ajax.tor_bonus(\'tor_bonus_info\'); return false;" type="submit" value="'.$lang['TOR_BONUS_TYPE_SILVER'].'" />';
+}
+elseif ($tor_info['tor_type'] == 2)
+{
+	$tor_bonus_type = '<input class="liteoption" onclick="ajax.tor_bonus(\'tor_bonus_info\'); return false;" type="submit" value="'.$lang['TOR_BONUS_TYPE_GOLD'].'" />';
+}
+elseif ($tor_info['tor_type'] == 1)
+{
+	$tor_bonus_type = '';
+}
+
+== Найти:
+
+'TOR_SILVER_GOLD' => $tor_type,
+
+== Добавить после:
+
+// Пожертвование сидбонусов
+'TOR_BONUS_ACTIVE' => $bb_cfg['tor_bonus'] && $tr_cfg['gold_silver_enabled'],
+'TOR_BONUS_TYPE' => $tor_bonus_type,
+'TOR_BONUS_WHO' => '<input class="liteoption" onclick="ajax.tor_bonus(\'list\'); return false;" type="submit" value="'.$lang['BUTONS_USERS'].'" />',
+'REL_ADD_BONUS' => '<input class="liteoption" onclick="ajax.tor_bonus(\'release_add_list\'); return false;" type="submit" value="'.$lang['RELEASER_BONUS_ADD'].'" />',
+
+=====viewtopic_attach.tpl======
+
+== Найти:
+
+<td>{postrow.attach.tor_reged.TORRENT_SIZE}
+
+== Добавить после:
+
+<!-- IF postrow.attach.tor_reged.TOR_BONUS_ACTIVE -->&nbsp;{postrow.attach.tor_reged.TOR_BONUS_TYPE}&nbsp;{postrow.attach.tor_reged.TOR_BONUS_WHO}&nbsp;{postrow.attach.tor_reged.REL_ADD_BONUS}<!-- ENDIF -->
+
+== Найти:
+
+<table class="attach bordered med">
+	<tr class="row3">
+		<th colspan="3" class="{postrow.attach.tor_reged.DL_LINK_CLASS}">
+
+== Добавить перед:
+
+<!-- IF postrow.attach.tor_reged.TOR_BONUS_ACTIVE -->
+<script type="text/javascript">
+	ajax.tor_bonus = function(mode) {
+		ajax.exec({
+			action : 'tor_bonus',
+			mode   : mode,
+			bonus  : $('#bonus').val(),
+			bonus_transfer : $('#bonus_transfer').val(),
+			attach_id : {postrow.attach.tor_reged.ATTACH_ID}
+		});
+	};
+	ajax.callback.tor_bonus = function(data) {
+		$('#'+data.mode).toggle().html(data.html);
+		if(data.title) alert(data.title);
+		if(data.url) document.location.href = data.url;
+	};
+</script>
+<!-- ENDIF -->
+
+== Найти:
+
+<script type="text/javascript">
+function humn_size (size) {
+	var i = 0;
+	var units = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+	while ((size/1024) >= 1) {
+		size = size/1024;
+
+== Добавить перед:
+
+<!-- IF postrow.attach.tor_reged.TOR_BONUS_ACTIVE -->
+<div id="tor_bonus_info" style="display:none;"></div>
+<div id="list" style="display:none;"></div>
+<div id="release_add_list" style="display:none;"></div>
+<!-- ENDIF -->
+
+=====ajax.php======
+
+== Найти:
+
+'avatar'            => array('user'),
+
+== Добавить после:
+
+'tor_bonus'         => array('user'),
+
+== Найти:
+
+function sitemap()
+{
+	require(AJAX_DIR .'sitemap.php');
+}
+
+== Добавить после:
+
+function tor_bonus()
+{
+	require(AJAX_DIR .'tor_bonus.php');
+}
+
+=====Сохранить все файлы======
