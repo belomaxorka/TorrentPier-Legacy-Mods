@@ -3,21 +3,7 @@ icq: 590-700-200
 Описание: Локальная галерея
 Если вам понравился мод можете отблагодарить автора яндекс деньги 410011534461433
 
-/////////////////////////////////////////////////
-Открыть config.php
-найти
-// Group avatars
-$bb_cfg['group_avatars'] = array(
-	'allowed_ext' => array('gif','jpg','jpeg','png'), // разрешенные форматы файлов
-	'max_size'    => 300*1024,                        // размер аватары в байтах
-	'max_height'  => 300,                             // высота аватара в px
-	'max_width'   => 300,                             // ширина аватара в px
-	'no_avatar'   => 'gallery/noavatar.png',          // дефолтная аватара
-	'upload_path' => BB_ROOT . 'data/avatars/',       // путь к директории с аватарами
-	'up_allowed'  => true,                            // разрешить загрузку аватар
-);
-
-после вставить
+------------------------------ [ Открыть config.php и в самом низу вставить ] ------------------------------
 // Gallery
 $bb_cfg['imgs'] = array(
 	'allowed_ext' 	=> array('gif','jpg','jpeg','png'),	// разрешенные форматы файлов
@@ -28,18 +14,14 @@ $bb_cfg['imgs'] = array(
 	'up_allowed'	=> true,							// разрешить загрузку изображений
 	'thumb_height'	=> 200,								// высота для миниатюр
 	'delete_img'	=> true,							// удалять картинку, при удалении топика или поста
-	'limit_imgs'	=> '5',								// ограничение колличество картинок за одну загрузку
-	'imgs_page'		=> '10',							// Картинок на страницу
+	'limit_imgs'	=> '5',								// ограничение на количество картинок за одну загрузку
+	'imgs_page'		=> '10',							// картинок на страницу
 );
-
-/////////////////////////////////////////////////
-Открыть main.php (языковые переменные)
-В самом низу вставить
-
-// Галерея, автор Zenden
+------------------------------ [ Открыть main.php (языковые переменные) и в самом низу вставить ] ------------------------------
+// Галерея
 $lang['GALLERY'] = 'Галерея';
 $lang['ALLOWED_EXT'] = 'Разрешенные форматы файлов';
-$lang['MAX_SIZE'] = 'Размер изображения в байтах';
+$lang['MAX_SIZE'] = 'Размер изображения';
 $lang['MAX_HEIGHT'] = 'Высота изображения в px';
 $lang['MAX_WIDTH'] = 'Ширина изображения в px';
 $lang['SCREENSHOTS'] = 'Скриншоты';
@@ -52,86 +34,61 @@ $lang['IMGS_LIMIT'] = 'За один раз можно загрузить не �
 $lang['MY_IMGS'] = 'Мои картинки';
 $lang['ALL_UPLOAD'] = 'Всего загружено';
 $lang['DIR_SIZE'] = 'Размер директории';
-
-/////////////////////////////////////////////////
-Открыть: ajax.php
-
-найти
-		'post_mod_comment'  => array('mod'),
-
-поле вставить
-		'del_imgs'			=> array('mod'),
-
-найти
-	function sitemap()
-	{
-		require(AJAX_DIR .'sitemap.php');
-	}
-
-поле вставить
-	function del_imgs()
-	{
-		global $lang;
-
-		$img		= (string) $this->request['imgs'];
-		$all_img	= isset($this->request['all_imgs']) ? (string) $this->request['all_imgs'] : false;
-
-		$all_img	= explode(' ', $all_img);
-		$all_img	= str_replace(FULL_URL, BB_ROOT, $all_img);
-		$img		= explode(', ', $img);
-
-		foreach ($img as $data)
-		{
-			if (file_exists($data))
-			{
-				unlink($data);
-			}
-			$imgs[] = $data;
-		}
-
-		$all_img = array_diff($all_img, $imgs);
-
-		foreach($all_img as $imgs_del)
-		{
-			$ext = substr(strrchr(basename($imgs_del), '.'), 1);
-			$img_all_imgs = str_replace('.'.$ext, '_thumb.'.$ext, $imgs_del);
-
-			$imgs_all[]				= $imgs_del;
-			$imgs_tags_img[]		= '[img]'.$imgs_del.'[/img]';
-			$imgs_tags_thumb[]		= '[url='.$imgs_del.'][img]'.$img_all_imgs.'[/img][/url]';
-			$imgs_tags_spoiler[]	= '[url='.$imgs_del.'][img]'.$img_all_imgs.'[/img][/url]';
-		}
-
-		if(!empty($img_all_imgs))
-		{
-			$thumb = file_exists($img_all_imgs) ? '<input type="text" onClick="this.select();" readonly value="'.implode(' ', str_replace(BB_ROOT, FULL_URL, $imgs_tags_thumb)).'" class="mrg_4 w90"><br/>' : false;
-			$html = '<div class="tCenter" id="gen_tags">
-					<input type="text" onClick="this.select();" name="all_imgs" id="all_imgs" readonly value="'.implode(' ', str_replace(BB_ROOT, FULL_URL, $imgs_all)).'" class="mrg_4 w90"><br/>
-					<input type="text" onClick="this.select();" readonly value="'.implode(' ', str_replace(BB_ROOT, FULL_URL, $imgs_tags_img)).'" class="mrg_4 w90"><br/>
-					'.$thumb.'
-					<input type="text" onClick="this.select();" readonly value=[spoiler="'.$lang['SCREENSHOTS'].'"]'.implode(' ', str_replace(BB_ROOT, FULL_URL, $imgs_tags_spoiler)).'[/spoiler] class="mrg_4 w90">
-				</div>';
-		}
-		else
-		{
-			$html = false;
-		}
-
-		$this->response['gen_tags'] = $html;
-	}
-
-/////////////////////////////////////////////////
-Открыть function.php
-найти
-
-function get_avatar_path ($id, $ext_id, $base_path = null, $first_div = 10000, $sec_div = 100)
+------------------------------ [ Открыть ajax.php и найти ] ------------------------------
+'post_mod_comment'  => array('mod'),
+------------------------------ [ После вставить ] ------------------------------
+'del_imgs'			=> array('mod'),
+------------------------------ [ Далее найти ] ------------------------------
+function sitemap()
 {
-	global $bb_cfg;
-	$base_path = isset($base_path) ? $base_path : $bb_cfg['avatars']['upload_path'];
-	return get_path_from_id($id, $ext_id, $base_path, $first_div, $sec_div);
+	require(AJAX_DIR .'sitemap.php');
 }
+------------------------------ [ После вставить ] ------------------------------
+function del_imgs()
+{
+	global $lang;
 
-после вставить
+	$img = (string)$this->request['imgs'];
+	$all_img = isset($this->request['all_imgs']) ? (string)$this->request['all_imgs'] : false;
+
+	$all_img = explode(' ', $all_img);
+	$all_img = str_replace(FULL_URL, BB_ROOT, $all_img);
+	$img = explode(', ', $img);
+
+	foreach ($img as $data) {
+		if (file_exists($data)) {
+			unlink($data);
+		}
+		$imgs[] = $data;
+	}
+
+	$all_img = array_diff($all_img, $imgs);
+
+	foreach ($all_img as $imgs_del) {
+		$ext = substr(strrchr(basename($imgs_del), '.'), 1);
+		$img_all_imgs = str_replace('.' . $ext, '_thumb.' . $ext, $imgs_del);
+
+		$imgs_all[] = $imgs_del;
+		$imgs_tags_img[] = '[img]' . $imgs_del . '[/img]';
+		$imgs_tags_thumb[] = '[url=' . $imgs_del . '][img]' . $img_all_imgs . '[/img][/url]';
+		$imgs_tags_spoiler[] = '[url=' . $imgs_del . '][img]' . $img_all_imgs . '[/img][/url]';
+	}
+
+	if (!empty($img_all_imgs)) {
+		$thumb = file_exists($img_all_imgs) ? '<input type="text" onClick="this.select();" readonly value="' . implode(' ', str_replace(BB_ROOT, FULL_URL, $imgs_tags_thumb)) . '" class="mrg_4 w90"><br/>' : false;
+		$html = '<div class="tCenter" id="gen_tags">
+					<input type="text" onClick="this.select();" name="all_imgs" id="all_imgs" readonly value="' . implode(' ', str_replace(BB_ROOT, FULL_URL, $imgs_all)) . '" class="mrg_4 w90"><br/>
+					<input type="text" onClick="this.select();" readonly value="' . implode(' ', str_replace(BB_ROOT, FULL_URL, $imgs_tags_img)) . '" class="mrg_4 w90"><br/>
+					' . $thumb . '
+					<input type="text" onClick="this.select();" readonly value=[spoiler="' . $lang['SCREENSHOTS'] . '"]' . implode(' ', str_replace(BB_ROOT, FULL_URL, $imgs_tags_spoiler)) . '[/spoiler] class="mrg_4 w90">
+				</div>';
+	} else {
+		$html = false;
+	}
+
+	$this->response['gen_tags'] = $html;
+}
+------------------------------ [ Открыть functions.php и в самом низу вставить ] ------------------------------
 function get_imgfile_path ($id, $ext_id, $name, $thumb = false)
 {
 	global $bb_cfg;
@@ -140,223 +97,179 @@ function get_imgfile_path ($id, $ext_id, $name, $thumb = false)
 	$ext = isset($bb_cfg['file_id_ext'][$ext_id]) ? $bb_cfg['file_id_ext'][$ext_id] : '';
 	return "$base_path/$id/" . md5($name) . $thumb . ($ext ? ".$ext" : '');
 }
+------------------------------ [ Открыть function_upload.php и найти ] ------------------------------
+else if ($mode == 'attach')
+{
+	$file_path = get_attach_path($params['topic_id']);
+	return $this->_move($file_path);
+}
+------------------------------ [ После вставить ] ------------------------------
+else if ($mode == 'imgfile')
+{
+	$file_path = get_imgfile_path($params['user_id'], $this->file_ext_id, $params['user_id'].$this->file['name'].$this->file['size']);
+	return $this->_move($file_path);
+}
+------------------------------ [ Далее в самом низу перед последней фигурной скобкой вставить ] ------------------------------
+function thumb($path)
+{
+	global $bb_cfg, $userdata;
 
-/////////////////////////////////////////////////
-Открыть function_upload.php
-
-найти
-
-		else if ($mode == 'attach')
-		{
-			$file_path = get_attach_path($params['topic_id']);
-			return $this->_move($file_path);
-		}
-
-после вставить
-		else if ($mode == 'imgfile')
-		{
-			$file_path = get_imgfile_path($params['user_id'], $this->file_ext_id, $params['user_id'].$this->file['name'].$this->file['size']);
-			return $this->_move($file_path);
-		}
-
-В самом низу перед последней фигурной скобкой вставить
-	function thumb ($path)
-	{
-		global $bb_cfg, $userdata;
-
-		if (($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpg') OR ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpeg'))
-		{
-			$img = imagecreatefromjpeg($path);
-		}
-		elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'png')
-		{
-			$img = imagecreatefrompng($path);
-		}
-		elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'gif')
-		{
-			$img = imagecreatefromgif($path);
-		}
-
-		$resize		= imagesy($img)/imagesx($img);
-		$new_width	= $this->cfg['thumb_height']/$resize;
-		$out_img	= get_imgfile_path($userdata['user_id'], $this->file_ext_id, $userdata['user_id'].$this->file['name'].$this->file['size'], true);
-		$img_create	= imagecreatetruecolor($new_width, $this->cfg['thumb_height']);
-
-		imagecopyresampled($img_create, $img, 0, 0, 0, 0, $new_width, $this->cfg['thumb_height'], imagesx($img), imagesy($img));
-
-		if (($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpg') OR ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpeg'))
-		{
-			imagejpeg($img_create, $out_img, 75);
-		}
-		elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'png')
-		{
-			imagepng($img_create, $out_img);
-		}
-		elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'gif')
-		{
-			imagegif($img_create, $out_img);
-		}
-
-		imagedestroy($img);
-		imagedestroy($img_create);
+	if (($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpg') or ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpeg')) {
+		$img = imagecreatefromjpeg($path);
+	} elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'png') {
+		$img = imagecreatefrompng($path);
+	} elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'gif') {
+		$img = imagecreatefromgif($path);
 	}
 
-/////////////////////////////////////////////////
-Открыть function_admin.php
+	$resize = imagesy($img) / imagesx($img);
+	$new_width = $this->cfg['thumb_height'] / $resize;
+	$out_img = get_imgfile_path($userdata['user_id'], $this->file_ext_id, $userdata['user_id'] . $this->file['name'] . $this->file['size'], true);
+	$img_create = imagecreatetruecolor($new_width, $this->cfg['thumb_height']);
 
-найти
+	imagecopyresampled($img_create, $img, 0, 0, 0, 0, $new_width, $this->cfg['thumb_height'], imagesx($img), imagesy($img));
+
+	if (($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpg') or ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpeg')) {
+		imagejpeg($img_create, $out_img, 75);
+	} elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'png') {
+		imagepng($img_create, $out_img);
+	} elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'gif') {
+		imagegif($img_create, $out_img);
+	}
+
+	imagedestroy($img);
+	imagedestroy($img_create);
+}
+------------------------------ [ Открыть function_admin.php и найти ] ------------------------------
 function topic_delete ($mode_or_topic_id, $forum_id = null, $prune_time = 0, $prune_all = false)
 {
 	global $lang, $log_action;
-
-	заменить на
-
+------------------------------ [ Заменить на ] ------------------------------
 function topic_delete ($mode_or_topic_id, $forum_id = null, $prune_time = 0, $prune_all = false)
 {
 	global $bb_cfg, $lang, $log_action;
-
-найти
+------------------------------ [ Далее найти ] ------------------------------
 // Get topics count
-	$row = DB()->fetch_row("SELECT COUNT(*) AS topics_count FROM $tmp_delete_topics");
-
-ниже вставить
-	if ($bb_cfg['imgs']['delete_img'])
-	{
-		$data = DB()->fetch_row("
+$row = DB()->fetch_row("SELECT COUNT(*) AS topics_count FROM $tmp_delete_topics");
+------------------------------ [ Вставить ниже ] ------------------------------
+if ($bb_cfg['imgs']['delete_img']) {
+	$data = DB()->fetch_row("
 			SELECT ph.post_html
 			FROM $tmp_delete_topics tmp
-			LEFT JOIN ". BB_POSTS ." p USING(topic_id)
-			LEFT JOIN ". BB_POSTS_HTML ." ph ON(p.post_id = ph.post_id)
+			LEFT JOIN " . BB_POSTS . " p USING(topic_id)
+			LEFT JOIN " . BB_POSTS_HTML . " ph ON(p.post_id = ph.post_id)
 		");
 
-		preg_match_all('#<var.*?title="(.*?)"#', $data['post_html'], $img);
-		preg_match_all('#<a href="(.*?)"#', $data['post_html'], $url_img);
+	preg_match_all('#<var.*?title="(.*?)"#', $data['post_html'], $img);
+	preg_match_all('#<a href="(.*?)"#', $data['post_html'], $url_img);
 
-		$url_img	= array_slice($url_img, 1);
-		$img		= array_slice($img, 1);
-		$url		= array_merge($url_img[0], $img[0]);
+	$url_img = array_slice($url_img, 1);
+	$img = array_slice($img, 1);
+	$url = array_merge($url_img[0], $img[0]);
 
-		foreach(array_unique($url) as $imgs_del)
-		{
-			$path = str_replace(FULL_URL, BB_ROOT, $imgs_del);
+	foreach (array_unique($url) as $imgs_del) {
+		$path = str_replace(FULL_URL, BB_ROOT, $imgs_del);
 
-			if (file_exists($path))
-			{
-				unlink($path);
-			}
+		if (file_exists($path)) {
+			unlink($path);
 		}
 	}
-
-если установлен мод https://torrentpier.me/threads/thumbnails.287/
-	if ($bb_cfg['imgs']['delete_img'])
-	{
-		$data = DB()->fetch_row("
+}
+------------------------------ [ Если установлен мод - https://torrentpier.me/threads/thumbnails.287/ ] ------------------------------
+if ($bb_cfg['imgs']['delete_img']) {
+	$data = DB()->fetch_row("
 			SELECT ph.post_html
 			FROM $tmp_delete_topics tmp
-			LEFT JOIN ". BB_POSTS ." p USING(topic_id)
-			LEFT JOIN ". BB_POSTS_HTML ." ph ON(p.post_id = ph.post_id)
+			LEFT JOIN " . BB_POSTS . " p USING(topic_id)
+			LEFT JOIN " . BB_POSTS_HTML . " ph ON(p.post_id = ph.post_id)
 		");
 
-		preg_match_all('#<var.*?title="(.*?)"#', $data['post_html'], $img); //это регулярка
-		preg_match_all('#<a href="(.*?)"#', $data['post_html'], $url_img); //это тоже
-		preg_match_all('#<img src="(.*?)".*?class="thumb"#', $data['post_html'], $url_img_th);
+	preg_match_all('#<var.*?title="(.*?)"#', $data['post_html'], $img); //это регулярка
+	preg_match_all('#<a href="(.*?)"#', $data['post_html'], $url_img); //это тоже
+	preg_match_all('#<img src="(.*?)".*?class="thumb"#', $data['post_html'], $url_img_th);
 
-		$url_img	= array_slice($url_img, 1);
-		$img		= array_slice($img, 1);
-		$url_img_th	= array_slice($url_img_th, 1);
-		$url		= array_merge($url_img[0], $img[0], $url_img_th[0]);
+	$url_img = array_slice($url_img, 1);
+	$img = array_slice($img, 1);
+	$url_img_th = array_slice($url_img_th, 1);
+	$url = array_merge($url_img[0], $img[0], $url_img_th[0]);
 
-		foreach(array_unique($url) as $imgs_del)
-		{
-			$path = str_replace(FULL_URL, BB_ROOT, $imgs_del);
-			$ext = substr(strrchr(basename($imgs_del), '.'), 1);
-			$img_th = str_replace('.'.$ext, '_thumb.'.$ext, $imgs_del);
+	foreach (array_unique($url) as $imgs_del) {
+		$path = str_replace(FULL_URL, BB_ROOT, $imgs_del);
+		$ext = substr(strrchr(basename($imgs_del), '.'), 1);
+		$img_th = str_replace('.' . $ext, '_thumb.' . $ext, $imgs_del);
 
-			if (file_exists($path))
-			{
-				unlink($path);
-			}
+		if (file_exists($path)) {
+			unlink($path);
+		}
 
-			if (file_exists($img_th))
-			{
-				unlink($img_th);
-			}
+		if (file_exists($img_th)) {
+			unlink($img_th);
 		}
 	}
-
-найти
+}
+------------------------------ [ Далее найти ] ------------------------------
 function post_delete ($mode_or_post_id, $user_id = null, $exclude_first = true)
 {
 	global $log_action;
-
-заменить на
+------------------------------ [ Заменить на ] ------------------------------
 function post_delete ($mode_or_post_id, $user_id = null, $exclude_first = true)
 {
 	global $log_action, $bb_cfg;
-
-найти
-	// Deleted posts count
-	$row = DB()->fetch_row("SELECT COUNT(*) AS posts_count FROM $tmp_delete_posts");
-
-ниже вставить
-	if ($bb_cfg['imgs']['delete_img'])
-	{
-		$data = DB()->fetch_row("
+------------------------------ [ Далее найти ] ------------------------------
+// Deleted posts count
+$row = DB()->fetch_row("SELECT COUNT(*) AS posts_count FROM $tmp_delete_posts");
+------------------------------ [ Вставить ниже ] ------------------------------
+if ($bb_cfg['imgs']['delete_img']) {
+	$data = DB()->fetch_row("
 			SELECT ph.post_html
 			FROM $tmp_delete_posts tmp
-			LEFT JOIN ". BB_POSTS_HTML ." ph USING(post_id)
+			LEFT JOIN " . BB_POSTS_HTML . " ph USING(post_id)
 		");
 
-		preg_match_all('#<var.*?title="(.*?)"#', $data['post_html'], $img);
-		preg_match_all('#<a href="(.*?)"#', $data['post_html'], $url_img);
+	preg_match_all('#<var.*?title="(.*?)"#', $data['post_html'], $img);
+	preg_match_all('#<a href="(.*?)"#', $data['post_html'], $url_img);
 
-		$url_img	= array_slice($url_img, 1);
-		$img		= array_slice($img, 1);
-		$url		= array_merge($url_img[0], $img[0]);
+	$url_img = array_slice($url_img, 1);
+	$img = array_slice($img, 1);
+	$url = array_merge($url_img[0], $img[0]);
 
-		foreach(array_unique($url) as $imgs_del)
-		{
-			$path = str_replace(FULL_URL, BB_ROOT, $imgs_del);
+	foreach (array_unique($url) as $imgs_del) {
+		$path = str_replace(FULL_URL, BB_ROOT, $imgs_del);
 
-			if (file_exists($path))
-			{
-				unlink($path);
-			}
+		if (file_exists($path)) {
+			unlink($path);
 		}
 	}
-
-если установлен мод https://torrentpier.me/threads/thumbnails.287/Ё
-	if ($bb_cfg['imgs']['delete_img'])
-	{
-		$data = DB()->fetch_row("
+}
+------------------------------ [ Если установлен мод - https://torrentpier.me/threads/thumbnails.287/ ] ------------------------------
+if ($bb_cfg['imgs']['delete_img']) {
+	$data = DB()->fetch_row("
 			SELECT ph.post_html
 			FROM $tmp_delete_posts tmp
-			LEFT JOIN ". BB_POSTS_HTML ." ph USING(post_id)
+			LEFT JOIN " . BB_POSTS_HTML . " ph USING(post_id)
 		");
 
-		preg_match_all('#<var.*?title="(.*?)"#', $data['post_html'], $img);
-		preg_match_all('#<a href="(.*?)"#', $data['post_html'], $url_img);
-		preg_match_all('#<img src="(.*?)".*?class="thumb"#', $data['post_html'], $url_img_th);
+	preg_match_all('#<var.*?title="(.*?)"#', $data['post_html'], $img);
+	preg_match_all('#<a href="(.*?)"#', $data['post_html'], $url_img);
+	preg_match_all('#<img src="(.*?)".*?class="thumb"#', $data['post_html'], $url_img_th);
 
-		$url_img	= array_slice($url_img, 1);
-		$img		= array_slice($img, 1);
-		$url_img_th	= array_slice($url_img_th, 1);
-		$url		= array_merge($url_img[0], $img[0], $url_img_th[0]);
+	$url_img = array_slice($url_img, 1);
+	$img = array_slice($img, 1);
+	$url_img_th = array_slice($url_img_th, 1);
+	$url = array_merge($url_img[0], $img[0], $url_img_th[0]);
 
-		foreach(array_unique($url) as $imgs_del)
-		{
-			$path = str_replace(FULL_URL, BB_ROOT, $imgs_del);
-			$ext = substr(strrchr(basename($imgs_del), '.'), 1);
-			$img_th = str_replace('.'.$ext, '_thumb.'.$ext, $imgs_del);
+	foreach (array_unique($url) as $imgs_del) {
+		$path = str_replace(FULL_URL, BB_ROOT, $imgs_del);
+		$ext = substr(strrchr(basename($imgs_del), '.'), 1);
+		$img_th = str_replace('.' . $ext, '_thumb.' . $ext, $imgs_del);
 
-			if (file_exists($path))
-			{
-				unlink($path);
-			}
+		if (file_exists($path)) {
+			unlink($path);
+		}
 
-			if (file_exists($img_th))
-			{
-				unlink($img_th);
-			}
+		if (file_exists($img_th)) {
+			unlink($img_th);
 		}
 	}
+}
+------------------------------ [ Сохранить все файлы ] ------------------------------
