@@ -21,7 +21,7 @@ $user->session_start();
 // Кто просматривает тему
 if (!$userdata['user_id'] != GUEST_UID)
 {
-	DB()->query("UPDATE " . BB_USERS . " SET curpage_topic = $topic_id, curpage_topic_time = " . TIMENOW . " WHERE user_id = {$userdata['user_id']}");
+	DB()->query("UPDATE " . BB_USERS . " SET curpage_topic = $topic_id, curpage_topic_time = " . TIMENOW . " WHERE user_id = {$userdata['user_id']} LIMIT 1");
 
 	$sql = DB()->fetch_rowset("SELECT username, user_id, user_rank, curpage_topic_time
 		FROM " . BB_USERS . "
