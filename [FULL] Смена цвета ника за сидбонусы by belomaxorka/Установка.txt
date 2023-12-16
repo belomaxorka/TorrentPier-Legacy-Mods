@@ -25,9 +25,12 @@ $lang['COLOR_NICK_DESC'] = 'Обменять бонусные очки на вы
 ============================================================================================================================
 
 ========================= [Открыть library/includes/ucp/bonus.php и найти] =========================
+$upload_row = unserialize($bb_cfg['bonus_upload']);
 $price_row  = unserialize($bb_cfg['bonus_upload_price']);
 ====================================================================================================
 
 ========================= [Добавить ниже] =========================
-$color_row  = unserialize($bb_cfg['bonus_nick_color']);
+// Смена цвета ника за сидбонусы
+$nick_color_row = unserialize($bb_cfg['bonus_nick_color']);
+$price_nick_color_row  = unserialize($bb_cfg['bonus_nick_color_price']);
 ===================================================================
