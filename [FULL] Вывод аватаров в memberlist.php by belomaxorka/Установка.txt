@@ -1,0 +1,17 @@
+Автор: belomaxorka
+
+P.S: Данный мод установлен по умолчанию начиная с версии v2.3.1-rc1, а так же в LTS начиная с версии v2.1.5-2023.10.
+
+======= Открыть memberlist.php и найти =======
+$sql = "SELECT username,
+======= Вставить после (в этой же строке) =======
+avatar_ext_id,
+======= Далее найти =======
+$template->assign_block_vars('memberrow', array(
+======= Вставить ниже =======
+'AVATAR_IMG' => get_avatar($row['user_id'], $row['avatar_ext_id'], !bf($row['user_opt'], 'user_opt', 'dis_avatar'), '', 50, 50),
+======= Открыть memberlist.tpl (внутри вашего шаблона) и найти =======
+<td><b>{memberrow.USER}</b></td>
+======= Заменить на =======
+<td><div>{memberrow.AVATAR_IMG}</div><b>{memberrow.USER}</b></td>
+======= Сохранить все файлы =======
