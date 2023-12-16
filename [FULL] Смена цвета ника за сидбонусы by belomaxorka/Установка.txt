@@ -20,4 +20,3 @@ $price_row  = unserialize($bb_cfg['bonus_upload_price']);
 ========================= [Добавить ниже] =========================
 $color_row  = unserialize($bb_cfg['bonuc_nick_color']);
 ===================================================================
-
