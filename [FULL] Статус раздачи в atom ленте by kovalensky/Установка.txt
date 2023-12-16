@@ -1,0 +1,15 @@
+Автор: kovalensky
+
+======= Открыть library/includes/functions_atom.php и найти =======
+$topic_title = $topic['topic_title'];
+======= Вставить выше =======
+$tor_status = '';
+if (isset($topic['tor_status']))
+{
+	$tor_status = " ({$lang['TOR_STATUS_NAME'][$topic['tor_status']]})";
+}
+======= Далее найти =======
+$atom .= "	<title type=\"html\"><![CDATA[$updated$topic_title$tor_size]]></title>\n";
+======= Заменить на =======
+$atom .= "	<title type=\"html\"><![CDATA[$updated$topic_title$tor_status$tor_size]]></title>\n";
+======= Сохранить файл =======
