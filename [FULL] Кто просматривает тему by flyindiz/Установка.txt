@@ -19,7 +19,7 @@ $user->session_start();
 
 ------------- [ Ниже вставить ] -------------
 // Кто просматривает тему
-if (!$userdata['user_id'] != GUEST_UID)
+if ($userdata['user_id'] != GUEST_UID)
 {
 	DB()->query("UPDATE " . BB_USERS . " SET curpage_topic = $topic_id, curpage_topic_time = " . TIMENOW . " WHERE user_id = {$userdata['user_id']} LIMIT 1");
 
