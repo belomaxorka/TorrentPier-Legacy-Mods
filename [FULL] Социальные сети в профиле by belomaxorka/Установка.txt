@@ -64,12 +64,11 @@ $lang['SEARCH_FOR_USERFIELD_STEAM'] = 'Поиск пользователей с 
 ================================================================
 
 ======================= [ Далее найти ] =======================
-/**
-*  Twitter (edit)
-*/
+$tp_data['USER_TELEGRAM'] = $pr_data['user_telegram'];
+break;
 ===============================================================
 
-======================= [ Перед вставить ] =======================
+======================= [ Ниже вставить ] =======================
 /**
  *  Telegram (edit)
  */
@@ -85,6 +84,57 @@ case 'user_telegram':
 		$db_data['user_telegram'] = (string) $telegram;
 	}
 	$tp_data['USER_TELEGRAM'] = $pr_data['user_telegram'];
+	break;
+
+/**
+ *  VK (edit)
+ */
+case 'user_vk':
+	$vk = isset($_POST['user_vk']) ? (string) $_POST['user_vk'] : $pr_data['user_vk'];
+	if ($submit && $vk != $pr_data['user_vk'])
+	{
+		if ($vk != '' && !preg_match("#^[a-zA-Z0-9_]{1,15}$#", $vk))
+		{
+			$errors[] = $lang['VK_ERROR'];
+		}
+		$pr_data['user_vk'] = $vk;
+		$db_data['user_vk'] = (string) $vk;
+	}
+	$tp_data['USER_VK'] = $pr_data['user_vk'];
+	break;
+
+/**
+ *  OK.ru (edit)
+ */
+case 'user_okru':
+	$okru = isset($_POST['user_okru']) ? (string) $_POST['user_okru'] : $pr_data['user_okru'];
+	if ($submit && $okru != $pr_data['user_okru'])
+	{
+		if ($okru != '' && !preg_match("#^[a-zA-Z0-9_]{1,15}$#", $okru))
+		{
+			$errors[] = $lang['OKRU_ERROR'];
+		}
+		$pr_data['user_okru'] = $okru;
+		$db_data['user_okru'] = (string) $okru;
+	}
+	$tp_data['USER_OKRU'] = $pr_data['user_okru'];
+	break;
+
+/**
+ *  Steam (edit)
+ */
+case 'user_steam':
+	$steam = isset($_POST['user_steam']) ? (string) $_POST['user_steam'] : $pr_data['user_steam'];
+	if ($submit && $steam != $pr_data['user_steam'])
+	{
+		if ($steam != '' && !preg_match("#^[a-zA-Z0-9_]{1,15}$#", $steam))
+		{
+			$errors[] = $lang['STEAM_ERROR'];
+		}
+		$pr_data['user_steam'] = $steam;
+		$db_data['user_steam'] = (string) $steam;
+	}
+	$tp_data['USER_STEAM'] = $pr_data['user_steam'];
 	break;
 ==================================================================
 
