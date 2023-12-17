@@ -23,12 +23,16 @@ ALTER TABLE `bb_users` ADD `user_steam` varchar(15) NOT NULL DEFAULT '';
 // Социальные сети
 $lang['TELEGRAM'] = 'Telegram';
 $lang['TELEGRAM_ERROR'] = 'You entered an invalid Telegram login';
+$lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Searching for users with an Telegram matching %s';
 $lang['VK'] = 'VK';
 $lang['VK_ERROR'] = 'You entered an invalid VK login';
+$lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Searching for users with an VK matching %s';
 $lang['OKRU'] = 'OK.ru';
 $lang['OKRU_ERROR'] = 'You entered an invalid OK.ru login';
+$lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Searching for users with an OK.ru matching %s';
 $lang['STEAM'] = 'Steam';
 $lang['STEAM_ERROR'] = 'You entered an invalid Steam login';
+$lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Searching for users with an Steam matching %s';
 ===============================================================================================================
 
 ======================= [ Открыть library/language/ru/main.php и в самый конец вставить ] =======================
@@ -47,6 +51,18 @@ $lang['STEAM_ERROR'] = 'Вы ввели некорректный логин Stea
 $lang['SEARCH_FOR_USERFIELD_STEAM'] = 'Поиск пользователей с логином в Steam %s';
 ===============================================================================================================
 
+======================= [ Открыть library/includes/ucp/register.php и найти ] =======================
+'user_twitter'     => true,
+=====================================================================================================
+
+======================= [ Ниже вставть ] =======================
+// Социальные сети
+'user_twitter' => true,
+'user_vk' => true,
+'user_okru' => true,
+'user_steam' => true,
+================================================================
+
 ======================= [ Открыть library/includes/ucp/viewprofile.php и найти ] =======================
 'TWITTER'              => $profiledata['user_twitter'],
 ========================================================================================================
@@ -57,6 +73,57 @@ $lang['SEARCH_FOR_USERFIELD_STEAM'] = 'Поиск пользователей с 
 'VK' => $profiledata['user_vk'],
 'OKRU' => $profiledata['user_okru'],
 'STEAM' => $profiledata['user_steam'],
+================================================================
+
+======================= [ Далее найти ] =======================
+/**
+*  Twitter (edit)
+*/
+===============================================================
+
+======================= [ Перед вставить ] =======================
+/**
+ *  Telegram (edit)
+ */
+case 'user_telegram':
+	$telegram = isset($_POST['user_telegram']) ? (string) $_POST['user_telegram'] : $pr_data['user_telegram'];
+	if ($submit && $telegram != $pr_data['user_telegram'])
+	{
+		if ($telegram != '' && !preg_match("#^[a-zA-Z0-9_]{1,15}$#", $telegram))
+		{
+			$errors[] = $lang['TELEGRAM_ERROR'];
+		}
+		$pr_data['user_telegram'] = $telegram;
+		$db_data['user_telegram'] = (string) $telegram;
+	}
+	$tp_data['USER_TELEGRAM'] = $pr_data['user_telegram'];
+	break;
+==================================================================
+
+======================= [ Открыть usercp_register.tpl и найти ] =======================
+<tr>
+	<td class="prof-title">{L_TWITTER}:</td>
+	<td><input type="text" name="user_twitter" size="30" maxlength="15" value="{USER_TWITTER}" /></td>
+</tr>
+=======================================================================================
+
+======================= [ Ниже вставть ] =======================
+<tr>
+	<td class="prof-title">{L_TELEGRAM}:</td>
+	<td><input type="text" name="user_telegram" size="30" maxlength="15" value="{USER_TELEGRAM}" /></td>
+</tr>
+<tr>
+	<td class="prof-title">{L_VK}:</td>
+	<td><input type="text" name="user_vk" size="30" maxlength="15" value="{USER_VK}" /></td>
+</tr>
+<tr>
+	<td class="prof-title">{L_OKRU}:</td>
+	<td><input type="text" name="user_okru" size="30" maxlength="15" value="{USER_OKRU}" /></td>
+</tr>
+<tr>
+	<td class="prof-title">{L_STEAM}:</td>
+	<td><input type="text" name="user_steam" size="30" maxlength="15" value="{USER_STEAM}" /></td>
+</tr>
 ================================================================
 
 ======================= [ Открыть admin/admin_user_search.php и найти ] =======================
@@ -85,3 +152,11 @@ case 'steam':
 	$field = 'user_steam';
 	break;
 ================================================================
+
+======================= [ Открыть styles/templates/admin/admin_user_search.tpl и найти ] =======================
+<option value="twitter">{L_TWITTER}</option>
+================================================================================================================
+
+======================= [ После вставить (В ЭТОЙ ЖЕ СТРОКЕ!) ] =======================
+<option value="telegram">{L_TELEGRAM}</option><option value="vk">{L_VK}</option><option value="okru">{L_OKRU}</option><option value="steam">{L_STEAM}</option>
+======================================================================================
