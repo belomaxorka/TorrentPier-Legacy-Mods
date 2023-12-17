@@ -218,7 +218,7 @@ case 'user_steam':
 	<th>{L_OKRU}:</th>
 	<td class="tLeft med" id="user_okru">
 		<span class="editable">
-			<a target="_blank" href="https://ok.ru/{OKRU}">{OKRU}</a>
+			<a target="_blank" href="https://ok.ru/profile/{OKRU}">{OKRU}</a>
 		</span>
 	</td>
 </tr>
@@ -228,7 +228,7 @@ case 'user_steam':
 	<th>{L_STEAM}:</th>
 	<td class="tLeft med" id="user_steam">
 		<span class="editable">
-			<a target="_blank" href="https://steamcommunity.com/profiles/{STEAM}">{STEAM}</a>
+			<a target="_blank" href="https://steamcommunity.com/id/{STEAM}">{STEAM}</a>
 		</span>
 	</td>
 </tr>
