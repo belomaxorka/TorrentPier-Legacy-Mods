@@ -27,7 +27,7 @@ if ($userdata['user_id'] != GUEST_UID)
 		WHERE curpage_topic = $topic_id
 		AND (curpage_topic_time >= " . (TIMENOW - 300) . ") LIMIT 1");
 
-	if ($sql)
+	if (!$sql)
 	{
 		DB()->query("UPDATE " . BB_USERS . " SET curpage_topic = $topic_id, curpage_topic_time = " . TIMENOW . " WHERE user_id = {$userdata['user_id']} LIMIT 1");
 	}
