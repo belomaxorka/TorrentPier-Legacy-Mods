@@ -1,6 +1,6 @@
 |================ Социальные сети в профиле ================|
 | Автор: belomaxorka                                        |
-| Версия: v1.0.0                                            |
+| Версия: v1.1.0                                            |
 |                                                           |
 | Описание: Добавляет пользователю возможность указать      |
 | дополнительные социальные сети, помимо стандартных.       |
@@ -289,6 +289,7 @@ case 'user_telegram':
 	}
 	$this->response['new_value'] = $this->request['value'];
 	break;
+
 case 'user_vk':
 	if ($value && !preg_match("#^[a-zA-Z0-9_]{1,15}$#", $value))
 	{
@@ -296,6 +297,7 @@ case 'user_vk':
 	}
 	$this->response['new_value'] = $this->request['value'];
 	break;
+
 case 'user_okru':
 	if ($value && !preg_match("#^[a-zA-Z0-9_]{1,15}$#", $value))
 	{
@@ -303,6 +305,7 @@ case 'user_okru':
 	}
 	$this->response['new_value'] = $this->request['value'];
 	break;
+
 case 'user_steam':
 	if ($value && !preg_match("#^[a-zA-Z0-9_]{1,15}$#", $value))
 	{
