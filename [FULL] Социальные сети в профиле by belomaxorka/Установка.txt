@@ -76,7 +76,7 @@ case 'user_telegram':
 	$telegram = isset($_POST['user_telegram']) ? (string) $_POST['user_telegram'] : $pr_data['user_telegram'];
 	if ($submit && $telegram != $pr_data['user_telegram'])
 	{
-		if ($telegram != '' && !preg_match("#^[a-zA-Z0-9_]{1,15}$#", $telegram))
+		if ($telegram != '' && !preg_match("/^[A-Za-z\d_]{5,32}$/", $telegram))
 		{
 			$errors[] = $lang['TELEGRAM_ERROR'];
 		}
@@ -283,7 +283,7 @@ case 'user_twitter':
 ======================= [ Ниже вставть ] =======================
 // Социальные сети
 case 'user_telegram':
-	if ($value && !preg_match("#^[a-zA-Z0-9_]{1,15}$#", $value))
+	if ($value && !preg_match("/^[A-Za-z\d_]{5,32}$/", $value))
 	{
 		$this->ajax_die($lang['TELEGRAM_ERROR']);
 	}
