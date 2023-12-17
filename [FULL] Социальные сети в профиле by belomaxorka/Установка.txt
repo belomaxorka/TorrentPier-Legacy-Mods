@@ -1,0 +1,20 @@
+|================ Социальные сети в профиле ================|
+| Автор: belomaxorka                                        |
+| Версия: v1.0.0                                            |
+|                                                           |
+| Описание: Добавляет пользователю возможность указать      |
+| дополнительные социальные сети, помимо станлартных.       |
+|                                                           |
+| Добавляет:                                                |
+| - ВКонтакте                                               |
+| - Одноклассники                                           |
+| - Steam                                                   |
+| - Telegram                                                |
+|===========================================================|
+
+======================= [SQL] =======================
+ALTER TABLE `bb_users` ADD `user_vk` varchar(15) NOT NULL DEFAULT '';
+ALTER TABLE `bb_users` ADD `user_telegram` varchar(15) NOT NULL DEFAULT '';
+ALTER TABLE `bb_users` ADD `user_okru` varchar(15) NOT NULL DEFAULT '';
+ALTER TABLE `bb_users` ADD `user_steam` varchar(15) NOT NULL DEFAULT '';
+=====================================================
