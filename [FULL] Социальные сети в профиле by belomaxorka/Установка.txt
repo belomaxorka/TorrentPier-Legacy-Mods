@@ -269,3 +269,45 @@ case 'steam':
 ======================= [ После вставить (В ЭТОЙ ЖЕ СТРОКЕ!) ] =======================
 <option value="telegram">{L_TELEGRAM}</option><option value="vk">{L_VK}</option><option value="okru">{L_OKRU}</option><option value="steam">{L_STEAM}</option>
 ======================================================================================
+
+======================= [ Открыть ajax/edit_user_profile.php и найти ] =======================
+case 'user_twitter':
+	if ($value && !preg_match("#^[a-zA-Z0-9_]{1,15}$#", $value))
+	{
+		$this->ajax_die($lang['TWITTER_ERROR']);
+	}
+	$this->response['new_value'] = $this->request['value'];
+	break;
+==============================================================================================
+
+======================= [ Ниже вставть ] =======================
+// Социальные сети
+case 'user_telegram':
+	if ($value && !preg_match("#^[a-zA-Z0-9_]{1,15}$#", $value))
+	{
+		$this->ajax_die($lang['TELEGRAM_ERROR']);
+	}
+	$this->response['new_value'] = $this->request['value'];
+	break;
+case 'user_vk':
+	if ($value && !preg_match("#^[a-zA-Z0-9_]{1,15}$#", $value))
+	{
+		$this->ajax_die($lang['VK_ERROR']);
+	}
+	$this->response['new_value'] = $this->request['value'];
+	break;
+case 'user_okru':
+	if ($value && !preg_match("#^[a-zA-Z0-9_]{1,15}$#", $value))
+	{
+		$this->ajax_die($lang['OKRU_ERROR']);
+	}
+	$this->response['new_value'] = $this->request['value'];
+	break;
+case 'user_steam':
+	if ($value && !preg_match("#^[a-zA-Z0-9_]{1,15}$#", $value))
+	{
+		$this->ajax_die($lang['STEAM_ERROR']);
+	}
+	$this->response['new_value'] = $this->request['value'];
+	break;
+================================================================
