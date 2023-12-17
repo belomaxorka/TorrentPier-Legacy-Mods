@@ -12,9 +12,76 @@
 | - Telegram                                                |
 |===========================================================|
 
-======================= [SQL] =======================
+======================= [ SQL ] =======================
 ALTER TABLE `bb_users` ADD `user_vk` varchar(15) NOT NULL DEFAULT '';
 ALTER TABLE `bb_users` ADD `user_telegram` varchar(15) NOT NULL DEFAULT '';
 ALTER TABLE `bb_users` ADD `user_okru` varchar(15) NOT NULL DEFAULT '';
 ALTER TABLE `bb_users` ADD `user_steam` varchar(15) NOT NULL DEFAULT '';
 =====================================================
+
+======================= [ Открыть library/language/en/main.php и в самый конец вставить ] =======================
+// Социальные сети
+$lang['TELEGRAM'] = 'Telegram';
+$lang['TELEGRAM_ERROR'] = 'You entered an invalid Telegram login';
+$lang['VK'] = 'VK';
+$lang['VK_ERROR'] = 'You entered an invalid VK login';
+$lang['OKRU'] = 'OK.ru';
+$lang['OKRU_ERROR'] = 'You entered an invalid OK.ru login';
+$lang['STEAM'] = 'Steam';
+$lang['STEAM_ERROR'] = 'You entered an invalid Steam login';
+===============================================================================================================
+
+======================= [ Открыть library/language/ru/main.php и в самый конец вставить ] =======================
+// Социальные сети
+$lang['TELEGRAM'] = 'Telegram';
+$lang['TELEGRAM_ERROR'] = 'Вы ввели некорректный логин Telegram';
+$lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Поиск пользователей с логином в Telegram %s';
+$lang['VK'] = 'ВКонтакте';
+$lang['VK_ERROR'] = 'Вы ввели некорректный логин ВКонтакте';
+$lang['SEARCH_FOR_USERFIELD_VK'] = 'Поиск пользователей с логином в ВКонтакте %s';
+$lang['OKRU'] = 'Одноклассники';
+$lang['OKRU_ERROR'] = 'Вы ввели некорректный логин Одноклассники';
+$lang['SEARCH_FOR_USERFIELD_OKRU'] = 'Поиск пользователей с логином в Одноклассниках %s';
+$lang['STEAM'] = 'Steam';
+$lang['STEAM_ERROR'] = 'Вы ввели некорректный логин Steam';
+$lang['SEARCH_FOR_USERFIELD_STEAM'] = 'Поиск пользователей с логином в Steam %s';
+===============================================================================================================
+
+======================= [ Открыть library/includes/ucp/viewprofile.php и найти ] =======================
+'TWITTER'              => $profiledata['user_twitter'],
+========================================================================================================
+
+======================= [ Ниже вставть ] =======================
+// Социальные сети
+'TELEGRAM' => $profiledata['user_telegram'],
+'VK' => $profiledata['user_vk'],
+'OKRU' => $profiledata['user_okru'],
+'STEAM' => $profiledata['user_steam'],
+================================================================
+
+======================= [ Открыть admin/admin_user_search.php и найти ] =======================
+case 'twitter':
+	$text = sprintf($lang['SEARCH_FOR_USERFIELD_TWITTER'],$text);
+	$field = 'user_twitter';
+	break;
+===============================================================================================
+
+======================= [ Ниже вставть ] =======================
+// Социальные сети
+case 'telegram':
+	$text = sprintf($lang['SEARCH_FOR_USERFIELD_TELEGRAM'], $text);
+	$field = 'user_telegram';
+	break;
+case 'vk':
+	$text = sprintf($lang['SEARCH_FOR_USERFIELD_VK'], $text);
+	$field = 'user_vk';
+	break;
+case 'okru':
+	$text = sprintf($lang['SEARCH_FOR_USERFIELD_OKRU'], $text);
+	$field = 'user_okru';
+	break;
+case 'steam':
+	$text = sprintf($lang['SEARCH_FOR_USERFIELD_STEAM'], $text);
+	$field = 'user_steam';
+	break;
+================================================================
