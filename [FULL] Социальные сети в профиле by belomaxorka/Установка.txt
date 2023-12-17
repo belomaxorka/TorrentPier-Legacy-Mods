@@ -57,7 +57,7 @@ $lang['SEARCH_FOR_USERFIELD_STEAM'] = 'Поиск пользователей с 
 
 ======================= [ Ниже вставть ] =======================
 // Социальные сети
-'user_twitter' => true,
+'user_telegram' => true,
 'user_vk' => true,
 'user_okru' => true,
 'user_steam' => true,
@@ -127,9 +127,20 @@ case 'user_telegram':
 ================================================================
 
 ======================= [ Открыть usercp_viewprofile.tpl и найти ] =======================
+<var class="ajax-params">{action: "edit_user_profile", id: "user_twitter",  editableType: "yesno-twitter"}</var>
+==========================================================================================
+
+======================= [ Ниже вставть ] =======================
+<var class="ajax-params">{action: "edit_user_profile", id: "user_telegram"}</var>
+<var class="ajax-params">{action: "edit_user_profile", id: "user_vk"}</var>
+<var class="ajax-params">{action: "edit_user_profile", id: "user_okru"}</var>
+<var class="ajax-params">{action: "edit_user_profile", id: "user_steam"}</var>
+================================================================
+
+======================= [ Далее найти ] =======================
 </table>
 <!--/user_contacts-->
-==========================================================================================
+===============================================================
 
 ======================= [ Перед вставить ] =======================
 <!-- IF TELEGRAM -->
@@ -137,7 +148,7 @@ case 'user_telegram':
 	<th>{L_TELEGRAM}:</th>
 	<td class="tLeft med" id="user_telegram">
 		<span class="editable">
-			<a href="https://t.me/{TELEGRAM}">{TELEGRAM}</a>
+			<a target="_blank" href="https://t.me/{TELEGRAM}">{TELEGRAM}</a>
 		</span>
 	</td>
 </tr>
@@ -147,7 +158,7 @@ case 'user_telegram':
 	<th>{L_VK}:</th>
 	<td class="tLeft med" id="user_vk">
 		<span class="editable">
-			<a href="https://vk.com/{VK}">{VK}</a>
+			<a target="_blank" href="https://vk.com/{VK}">{VK}</a>
 		</span>
 	</td>
 </tr>
@@ -157,7 +168,7 @@ case 'user_telegram':
 	<th>{L_OKRU}:</th>
 	<td class="tLeft med" id="user_okru">
 		<span class="editable">
-			<a href="https://ok.ru/{OKRU}">{OKRU}</a>
+			<a target="_blank" href="https://ok.ru/{OKRU}">{OKRU}</a>
 		</span>
 	</td>
 </tr>
@@ -167,7 +178,7 @@ case 'user_telegram':
 	<th>{L_STEAM}:</th>
 	<td class="tLeft med" id="user_steam">
 		<span class="editable">
-			<a href="https://steamcommunity.com/profiles/{STEAM}">{STEAM}</a>
+			<a target="_blank" href="https://steamcommunity.com/profiles/{STEAM}">{STEAM}</a>
 		</span>
 	</td>
 </tr>
