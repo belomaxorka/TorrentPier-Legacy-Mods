@@ -25,10 +25,10 @@ $lang['TELEGRAM'] = 'Telegram';
 $lang['TELEGRAM_ERROR'] = 'You entered an invalid Telegram login';
 $lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Searching for users with an Telegram matching %s';
 $lang['VK'] = 'VK';
-$lang['VK_ERROR'] = 'You entered an invalid VK login';
+$lang['VK_ERROR'] = 'You entered an invalid VK ID';
 $lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Searching for users with an VK matching %s';
 $lang['OKRU'] = 'OK.ru';
-$lang['OKRU_ERROR'] = 'You entered an invalid OK.ru login';
+$lang['OKRU_ERROR'] = 'You entered an invalid OK.ru ID';
 $lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Searching for users with an OK.ru matching %s';
 $lang['STEAM'] = 'Steam';
 $lang['STEAM_ERROR'] = 'You entered an invalid Steam login';
@@ -39,16 +39,16 @@ $lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Searching for users with an Steam matc
 // Социальные сети
 $lang['TELEGRAM'] = 'Telegram';
 $lang['TELEGRAM_ERROR'] = 'Вы ввели некорректный логин Telegram';
-$lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Поиск пользователей с логином в Telegram %s';
+$lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Поиск пользователей с логином %s в Telegram';
 $lang['VK'] = 'ВКонтакте';
-$lang['VK_ERROR'] = 'Вы ввели некорректный логин ВКонтакте';
-$lang['SEARCH_FOR_USERFIELD_VK'] = 'Поиск пользователей с логином в ВКонтакте %s';
+$lang['VK_ERROR'] = 'Вы ввели некорректный ID ВКонтакте';
+$lang['SEARCH_FOR_USERFIELD_VK'] = 'Поиск пользователей с ID %s в ВКонтакте';
 $lang['OKRU'] = 'Одноклассники';
-$lang['OKRU_ERROR'] = 'Вы ввели некорректный логин Одноклассники';
-$lang['SEARCH_FOR_USERFIELD_OKRU'] = 'Поиск пользователей с логином в Одноклассниках %s';
+$lang['OKRU_ERROR'] = 'Вы ввели некорректный ID Одноклассники';
+$lang['SEARCH_FOR_USERFIELD_OKRU'] = 'Поиск пользователей с ID %s в Одноклассниках';
 $lang['STEAM'] = 'Steam';
 $lang['STEAM_ERROR'] = 'Вы ввели некорректный логин Steam';
-$lang['SEARCH_FOR_USERFIELD_STEAM'] = 'Поиск пользователей с логином в Steam %s';
+$lang['SEARCH_FOR_USERFIELD_STEAM'] = 'Поиск пользователей с логином %s в Steam';
 ===============================================================================================================
 
 ======================= [ Открыть library/includes/ucp/register.php и найти ] =======================
@@ -61,18 +61,6 @@ $lang['SEARCH_FOR_USERFIELD_STEAM'] = 'Поиск пользователей с 
 'user_vk' => true,
 'user_okru' => true,
 'user_steam' => true,
-================================================================
-
-======================= [ Открыть library/includes/ucp/viewprofile.php и найти ] =======================
-'TWITTER'              => $profiledata['user_twitter'],
-========================================================================================================
-
-======================= [ Ниже вставть ] =======================
-// Социальные сети
-'TELEGRAM' => $profiledata['user_telegram'],
-'VK' => $profiledata['user_vk'],
-'OKRU' => $profiledata['user_okru'],
-'STEAM' => $profiledata['user_steam'],
 ================================================================
 
 ======================= [ Далее найти ] =======================
@@ -125,6 +113,66 @@ case 'user_telegram':
 	<td><input type="text" name="user_steam" size="30" maxlength="15" value="{USER_STEAM}" /></td>
 </tr>
 ================================================================
+
+======================= [ Открыть library/includes/ucp/viewprofile.php и найти ] =======================
+'TWITTER'              => $profiledata['user_twitter'],
+========================================================================================================
+
+======================= [ Ниже вставть ] =======================
+// Социальные сети
+'TELEGRAM' => $profiledata['user_telegram'],
+'VK' => $profiledata['user_vk'],
+'OKRU' => $profiledata['user_okru'],
+'STEAM' => $profiledata['user_steam'],
+================================================================
+
+======================= [ Открыть usercp_viewprofile.tpl и найти ] =======================
+</table>
+<!--/user_contacts-->
+==========================================================================================
+
+======================= [ Перед вставить ] =======================
+<!-- IF TELEGRAM -->
+<tr>
+	<th>{L_TELEGRAM}:</th>
+	<td class="tLeft med" id="user_telegram">
+		<span class="editable">
+			<a href="https://t.me/{TELEGRAM}">{TELEGRAM}</a>
+		</span>
+	</td>
+</tr>
+<!-- ENDIF -->
+<!-- IF VK -->
+<tr>
+	<th>{L_VK}:</th>
+	<td class="tLeft med" id="user_vk">
+		<span class="editable">
+			<a href="https://vk.com/{VK}">{VK}</a>
+		</span>
+	</td>
+</tr>
+<!-- ENDIF -->
+<!-- IF OKRU -->
+<tr>
+	<th>{L_OKRU}:</th>
+	<td class="tLeft med" id="user_okru">
+		<span class="editable">
+			<a href="https://ok.ru/{OKRU}">{OKRU}</a>
+		</span>
+	</td>
+</tr>
+<!-- ENDIF -->
+<!-- IF STEAM -->
+<tr>
+	<th>{L_STEAM}:</th>
+	<td class="tLeft med" id="user_steam">
+		<span class="editable">
+			<a href="https://steamcommunity.com/profiles/{STEAM}">{STEAM}</a>
+		</span>
+	</td>
+</tr>
+<!-- ENDIF -->
+==================================================================
 
 ======================= [ Открыть admin/admin_user_search.php и найти ] =======================
 case 'twitter':
