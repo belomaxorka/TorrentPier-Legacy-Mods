@@ -1,0 +1,71 @@
+|================ [Addon] Вывод в топик ================|
+| Автор: Conteo                                         |
+| Дополнение для мода: Социальные сети в профиле        |
+|                                                       |
+| Описание: Данное дополнение добавляет вывод           |
+| социальных сетей в топике.                            |
+|=======================================================|
+
+======================= [ Открыть viewtopic.php и найти ] =======================
+
+$first_post = DB()->fetch_rowset("
+	SELECT
+		u.username, u.user_id, u.user_rank, u.user_posts, u.user_from,
+
+======================= [ После u.user_from (В ЭТОЙ ЖЕ СТРОКЕ) вставить ] =======================
+
+u.user_vk, u.user_telegram, u.user_okru, u.user_steam,
+
+======================= [ Далее найти ] =======================
+
+// 2. All others posts
+$sql = "
+	SELECT
+		u.username, u.user_id, u.user_rank, u.user_posts, u.user_from,
+
+======================= [ После u.user_from (В ЭТОЙ ЖЕ СТРОКЕ) вставить ] =======================
+
+u.user_vk, u.user_telegram, u.user_okru, u.user_steam,
+
+======================= [ Далее найти ] =======================
+
+$post_id          = $postrow[$i]['post_id'];
+
+======================= [ Выше вставить ] =======================
+
+// [Addon] Вывод в топик
+$poster_steam     = !empty($postrow[$i]['user_steam']) ? $postrow[$i]['user_steam'] : '';
+$poster_okru      = !empty($postrow[$i]['user_okru']) ? $postrow[$i]['user_okru'] : '';
+$poster_telegram  = !empty($postrow[$i]['user_telegram']) ? $postrow[$i]['user_telegram'] : '';
+$poster_vk        = !empty($postrow[$i]['user_vk']) ? $postrow[$i]['user_vk'] : '';
+
+======================= [ Далее найти ] =======================
+
+'PROFILE'            => $profile_btn,
+
+======================= [ Ниже вставить ] =======================
+
+// [Addon] Вывод в топик
+'POSTER_STEAM'       => $poster_steam,
+'POSTER_OKRU'        => $poster_okru,
+'POSTER_TELEGRAM'    => $poster_telegram,
+'POSTER_VK'          => $poster_vk,
+
+======================= [ Открыть /styles/templates/default и найти ] =======================
+
+<!-- IF postrow.POSTER_FROM --><p class="from"><em>{L_LOCATION}:</em> {postrow.POSTER_FROM}</p><!-- ENDIF -->
+
+======================= [ Ниже вставить ] =======================
+
+<!-- IF postrow.POSTER_TELEGRAM --><p class="joined"><em>{L_TELEGRAM}:</em> <a href="https://t.me/{postrow.POSTER_TELEGRAM}" target="_blank">{postrow.POSTER_TELEGRAM}</a></p><!-- ENDIF -->
+<!-- IF postrow.POSTER_VK --><p class="joined"><em>{L_VK}:</em> <a href="https://vk.com/{postrow.POSTER_VK}" target="_blank">{postrow.POSTER_VK}</a></p><!-- ENDIF -->
+<!-- IF postrow.POSTER_OKRU --><p class="joined"><em>{L_OKRU}:</em> <a href="https://ok.ru/profile/{postrow.POSTER_OKRU}" target="_blank">{postrow.POSTER_OKRU}</a></p><!-- ENDIF -->
+<!-- IF postrow.POSTER_STEAM --><p class="joined"><em>{L_STEAM}:</em> <a href="https://steamcommunity.com/id/{postrow.POSTER_STEAM}" target="_blank">{postrow.POSTER_STEAM}</a></p><!-- ENDIF -->
+
+=================================================================
+
+Если желаете добавить инконки соц.сетей, пример:
+
+<!-- IF postrow.POSTER_VK --><p class="joined"><em>{L_VK}:</em> <a href="https://vk.com/{postrow.POSTER_VK}" target="_blank">{postrow.POSTER_VK} <img src="styles/images/vk.png" style="position: relative;top: 4px;width: 16px;"></a></p><!-- ENDIF -->
+
+=================================================================
