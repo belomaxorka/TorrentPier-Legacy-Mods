@@ -474,7 +474,7 @@ $('var.posterImg').each(function(){
 		<div id="thumbs">
 			<!-- BEGIN last_added -->
 			<div class="load-local" rel="#loadme_{last_added.TOPIC_ID}" title="{last_added.TITLE}" onclick="top.location.href='{TOPIC_URL}{last_added.TOPIC_ID}';" onmouseover="initPostImages($('#loadme_{last_added.TOPIC_ID}'));">
-				<a href="{TOPIC_URL}{last_added.TOPIC_ID}"><img src="thumb.php?t={last_added.TOPIC_ID}" alt="" <!-- IF $bb_cfg['new_poster'] -->onload="cvi_glossy.add(this, { radius: 30, nogradient: true, angle: -33, shadow: 30 });"<!-- ENDIF -->></a>&nbsp;
+				<a href="{TOPIC_URL}{last_added.TOPIC_ID}"><img src="thumb.php?t={last_added.TOPIC_ID}" alt="{last_added.TITLE}" <!-- IF $bb_cfg['new_poster'] -->onload="cvi_glossy.add(this, { radius: 30, nogradient: true, angle: -33, shadow: 30 });"<!-- ENDIF -->></a>&nbsp;
 				<div style="display: none;" id="loadme_{last_added.TOPIC_ID}">
 					<center><var class="posterImg" title="{last_added.POSTER_FULL}" alt="" border="0">&#10;</var></center>
 					<br /> {L_FORUM}: <b>{last_added.FORUM_NAME}</b>
