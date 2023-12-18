@@ -5,6 +5,7 @@
 ##
 ## Адаптация: belomaxorka
 ## Версия: v1.1.2
+## Совместимость: v2.1.5 / LTS
 ##
 ## Уровень инсталяции: простой
 ## Время установки: 5 минут
@@ -24,45 +25,45 @@ INSERT INTO `bb_cron` VALUES ('', 1, 'Очистка мини постеров',
 #-----[ OPEN ]------------------------------------------
 #
 
-config.php
+library/config.php
 
 #
 #-----[ FIND ]------------------------------------------
 #
 
-	'bb_login_err'  => array('filecache', array()),
+'bb_login_err'  => array('filecache', array()),
 
 #
 #-----[ AFTER ADD ]-------------------------------------
 #
 
-	'lenta'         => array('filecache', array()),
+'lenta'         => array('filecache', array()),
 
 #
 #-----[ OPEN ]------------------------------------------
 #
 
-admin_board.php
+admin/admin_board.php
 
 #
 #-----[ FIND ]------------------------------------------
 #
 
-			'SEED_BONUS_USER_REGDATE' => $new['seed_bonus_user_regdate'],
+'SEED_BONUS_USER_REGDATE' => $new['seed_bonus_user_regdate'],
 
 #
 #-----[ AFTER ADD ]-------------------------------------
 #
 
-			'LAST_ADDED_ON'  => $new['last_added'],
-			'NEW_POSTER'     => $new['new_poster'],
-			'LIMIT_POSTER'   => $new['limit_poster'],
+'LAST_ADDED_ON'  => $new['last_added'],
+'NEW_POSTER'     => $new['new_poster'],
+'LIMIT_POSTER'   => $new['limit_poster'],
 
 #
 #-----[ OPEN ]------------------------------------------
 #
 
-includes/sessions.php
+library/includes/sessions.php
 
 #
 #-----[ FIND ]------------------------------------------
@@ -80,51 +81,53 @@ includes/sessions.php
 #-----[ OPEN ]------------------------------------------
 #
 
-includes/page_header.php
+library/includes/page_header.php
 
 #
 #-----[ FIND ]------------------------------------------
 #
 
-	'USE_TABLESORTER'    		=> !empty($page_cfg['use_tablesorter']),
+'USE_TABLESORTER'    => !empty($page_cfg['use_tablesorter']),
 
 #
 #-----[ ADD ]------------------------------------------
 #
 
-	'LAST_ADDED'                => ($bb_cfg['last_added'] && BB_SCRIPT == 'index'),
-	'POSTER'                    => $user->opt_js['poster'],
+'LAST_ADDED' => ($bb_cfg['last_added'] && BB_SCRIPT == 'index'),
+'POSTER' => $user->opt_js['poster'],
 
 #
 #-----[ OPEN ]------------------------------------------
 #
 
-includes/functions_torrent.php
+library/includes/functions_torrent.php
 
 #
 #-----[ FIND ]------------------------------------------
 #
 
-	if ($reg_mode == 'request' || $reg_mode == 'newtopic')
-	{
-		$mess = sprintf($lang['BT_REGISTERED'], "download.php?id=$attach_id");
-		exit_redirect($mess, $post_id, $forum_id);
-	}
+if ($reg_mode == 'request' || $reg_mode == 'newtopic')
+{
+	set_die_append_msg($forum_id, $topic_id);
+	$mess = sprintf($lang['BT_REGISTERED'], DOWNLOAD_URL . $attach_id);
+	bb_die($mess);
+}
 
 #
 #-----[ AFTER ADD ]------------------------------------------
 #
 
-	if ($bb_cfg['last_added']) CACHE('lenta')->rm();
+if ($bb_cfg['last_added']) CACHE('lenta')->rm();
 
 #
 #-----[ FIND ]------------------------------------------
 #
 
-	if ($mode == 'request')
-	{
-		exit_redirect($lang['BT_UNREGISTERED'], $post_id, $forum_id);
-	}
+if ($mode == 'request')
+{
+	set_die_append_msg($forum_id, $topic_id);
+	bb_die($lang['BT_UNREGISTERED']);
+}
 
 #
 #-----[ AFTER ADD ]------------------------------------------
