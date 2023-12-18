@@ -6,7 +6,7 @@ $clear_dir = BB_ROOT . 'thumbnail'; // Директория в которой х
 
 $dir = opendir($clear_dir);
 while (($file = readdir($dir))) {
-	if (is_file($clear_dir . "/" . $file)) {
-		unlink($clear_dir . "/" . $file);
+	if (is_file($clear_dir . '/' . $file)) {
+		unlink($clear_dir . '/' . $file);
 	}
 }

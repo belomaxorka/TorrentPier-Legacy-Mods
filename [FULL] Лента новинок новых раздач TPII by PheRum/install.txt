@@ -133,7 +133,7 @@ if ($mode == 'request')
 #-----[ AFTER ADD ]------------------------------------------
 #
 
-	if ($bb_cfg['last_added']) CACHE('lenta')->rm();
+if ($bb_cfg['last_added']) CACHE('lenta')->rm();
 
 #
 #-----[ OPEN ]------------------------------------------
@@ -171,26 +171,26 @@ $showposter = isset($_GET['sp']) ? (int) $_GET['sp'] : 0;
 #-----[ FIND ]------------------------------------------
 #
 
-	$template->assign_vars(array(
-		'H_C_AL_MESS'  => ($hide_cat_opt && !$showhide) ? true : false
-	));
+$template->assign_vars(array(
+	'H_C_AL_MESS'  => ($hide_cat_opt && !$showhide) ? true : false,
+));
 
 #
 #-----[ AFTER ADD ]------------------------------------------
 #
 
-	if ($bb_cfg['last_added'])
-	{
-		$template->assign_block_vars('h_p', array(
-			'H_C_ID'     => $cid,
-			'H_C_TITLE'  => $cat_title_html[$cid],
-			'H_C_CHEKED' => in_array($cid, preg_split("/[-]+/", $hide_poster_opt)) ? 'checked' : '',
-		));
+if ($bb_cfg['last_added'])
+{
+	$template->assign_block_vars('h_p', array(
+		'H_C_ID'     => $cid,
+		'H_C_TITLE'  => $cat_title_html[$cid],
+		'H_C_CHEKED' => in_array($cid, preg_split("/[-]+/", $hide_poster_opt)) ? 'checked' : '',
+	));
 
-		$template->assign_vars(array(
-			'H_P_AL_MESS'  => ($hide_poster_opt && !$showposter) ? true : false
-		));
-	}
+	$template->assign_vars(array(
+		'H_P_AL_MESS'  => ($hide_poster_opt && !$showposter) ? true : false,
+	));
+}
 
 #
 #-----[ FIND ]------------------------------------------
@@ -260,37 +260,39 @@ posting.php
 #-----[ FIND ]------------------------------------------
 #
 
-		if (defined('TORRENT_ATTACH_ID') && $bb_cfg['bt_newtopic_auto_reg'] && !$error_msg)
+if (defined('TORRENT_ATTACH_ID') && $bb_cfg['bt_newtopic_auto_reg'] && !$error_msg)
 
 #
 #-----[ BEFORE ADD ]------------------------------------------
 #
 
-		// Постеры раздач
-		if ($bb_cfg['last_added'])
-		{
-			if ($mode == 'newtopic' && defined('TORRENT_ATTACH_ID') || defined('TORRENT_ATTACH_ID') && $bb_cfg['bt_newtopic_auto_reg'] && !$error_msg)
-			{
-				$row = DB()->fetch_row("SELECT post_text FROM ". BB_POSTS_TEXT ." WHERE post_id = $post_id");
-					preg_match_all('/\[gposter=right\](.*?)\[\/gposter\]/i', $row['post_text'], $poster7, PREG_SET_ORDER);
-					preg_match_all('/\[gposter=left\](.*?)\[\/gposter\]/i', $row['post_text'], $poster6, PREG_SET_ORDER);
-					preg_match_all('/\[gposter\](.*?)\[\/gposter\]/i', $row['post_text'], $poster5, PREG_SET_ORDER);
-					preg_match_all('/\[poster\](.*?)\[\/poster\]/i', $row['post_text'], $poster4, PREG_SET_ORDER);
-					preg_match_all('/\[img=right\](.*?)\[\/img\]/i', $row['post_text'], $poster3, PREG_SET_ORDER);
-					preg_match_all('/\[img=left\](.*?)\[\/img\]/i', $row['post_text'], $poster2, PREG_SET_ORDER);
-					preg_match_all('/\[img\](.*?)\[\/img\]/i', $row['post_text'], $poster1, PREG_SET_ORDER);
-				$url = '';
-				if (isset($poster7[0][1])) $url = $poster7[0][1];
-				elseif (isset($poster6[0][1])) $url = $poster6[0][1];
-				elseif (isset($poster5[0][1])) $url = $poster5[0][1];
-				elseif (isset($poster4[0][1])) $url = $poster4[0][1];
-				elseif (isset($poster3[0][1])) $url = $poster3[0][1];
-				elseif (isset($poster2[0][1])) $url = $poster2[0][1];
-				elseif (isset($poster1[0][1])) $url = $poster1[0][1];
-				DB()->query("UPDATE ". BB_TOPICS ." SET topic_image = '$url' WHERE topic_id = $topic_id ");
-				CACHE('lenta')->rm();
-			}
-		}
+// Постеры раздач
+if ($bb_cfg['last_added'])
+{
+	if ($mode == 'newtopic' && defined('TORRENT_ATTACH_ID') || defined('TORRENT_ATTACH_ID') && $bb_cfg['bt_newtopic_auto_reg'] && !$error_msg)
+	{
+		$row = DB()->fetch_row("SELECT post_text FROM ". BB_POSTS_TEXT ." WHERE post_id = $post_id");
+		preg_match_all('/\[gposter=right\](.*?)\[\/gposter\]/i', $row['post_text'], $poster7, PREG_SET_ORDER);
+		preg_match_all('/\[gposter=left\](.*?)\[\/gposter\]/i', $row['post_text'], $poster6, PREG_SET_ORDER);
+		preg_match_all('/\[gposter\](.*?)\[\/gposter\]/i', $row['post_text'], $poster5, PREG_SET_ORDER);
+		preg_match_all('/\[poster\](.*?)\[\/poster\]/i', $row['post_text'], $poster4, PREG_SET_ORDER);
+		preg_match_all('/\[img=right\](.*?)\[\/img\]/i', $row['post_text'], $poster3, PREG_SET_ORDER);
+		preg_match_all('/\[img=left\](.*?)\[\/img\]/i', $row['post_text'], $poster2, PREG_SET_ORDER);
+		preg_match_all('/\[img\](.*?)\[\/img\]/i', $row['post_text'], $poster1, PREG_SET_ORDER);
+
+		$url = '';
+		if (isset($poster7[0][1])) $url = $poster7[0][1];
+		elseif (isset($poster6[0][1])) $url = $poster6[0][1];
+		elseif (isset($poster5[0][1])) $url = $poster5[0][1];
+		elseif (isset($poster4[0][1])) $url = $poster4[0][1];
+		elseif (isset($poster3[0][1])) $url = $poster3[0][1];
+		elseif (isset($poster2[0][1])) $url = $poster2[0][1];
+		elseif (isset($poster1[0][1])) $url = $poster1[0][1];
+
+		DB()->query("UPDATE ". BB_TOPICS ." SET topic_image = '$url' WHERE topic_id = $topic_id ");
+		CACHE('lenta')->rm();
+	}
+}
 
 #
 #-----[ OPEN ]------------------------------------------
@@ -302,19 +304,19 @@ modcp.php
 #-----[ FIND ]------------------------------------------
 #
 
-			$msg = ($result) ? $lang['TOPICS_REMOVED'] : $lang['NO_TOPICS_REMOVED'];
+$msg = ($result) ? $lang['TOPICS_REMOVED'] : $lang['NO_TOPICS_REMOVED'];
 
 #
 #-----[ BEFORE ADD ]------------------------------------------
 #
 
-			if ($bb_cfg['last_added']) CACHE('lenta')->rm();
+if ($bb_cfg['last_added']) CACHE('lenta')->rm();
 
 #
 #-----[ OPEN ]------------------------------------------
 #
 
-admin_board.tpl
+styles/templates/admin/admin_board.tpl
 
 #
 #-----[ FIND ]------------------------------------------
@@ -352,41 +354,34 @@ admin_board.tpl
 #-----[ OPEN ]------------------------------------------
 #
 
-page_header.tpl
+styles/templates/default/page_header.tpl
 
 #
 #-----[ FIND ]------------------------------------------
 #
 
-		else {
-			$img.one('load', function(){ imgFit(this, maxW) });
-			$v.empty().append($img);
-			if ($.browser.msie) {
-				$v.after('<wbr>');
-			}
-		}
-	});
+</script>
+<!-- ENDIF / INCLUDE_BBCODE_JS -->
 
 #
-#-----[ AFTER ADD ]------------------------------------------
+#-----[ BEFORE ADD ]------------------------------------------
 #
 
-	$('var.posterImg', context).each(function(){
-		var $v = $(this);
-		var src = $v.attr('title');
-		var $img = $('<img src="'+ src +'" class="'+ $v.attr('class') +'" width="260px;" alt="{L_LOADING}" border="0" />');
-		$img = fixPostImage($img);
-		$v.empty().append($img);
-		if ($.browser.msie) {
-			$v.after('<wbr>');
-		}
-	});
+$('var.posterImg').each(function(){
+	var $v = $(this);
+	var src = $v.attr('title');
+	var $img = $('<img src="'+ src +'" class="'+ $v.attr('class') +'" width="260px;" alt="{L_LOADING}" border="0" />');
+	$img = fixPostImage($img);
+	$v.empty().append($img);
+	if ($.browser.msie) {
+		$v.after('<wbr>');
+	}
+});
 
 #
 #-----[ FIND ]------------------------------------------
 #
 
-	</table>
 </div><!--/only-new-options-->
 <!-- ENDIF / SHOW_ONLY_NEW_MENU -->
 
@@ -489,7 +484,7 @@ page_header.tpl
 #-----[ OPEN ]------------------------------------------
 #
 
-index.tpl
+styles/templates/default/index.tpl
 
 #
 #-----[ FIND ]------------------------------------------

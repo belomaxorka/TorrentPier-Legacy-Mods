@@ -5,27 +5,13 @@ define('BB_SCRIPT', 'thumb');
 define('BB_ROOT', './');
 require(BB_ROOT . 'common.php');
 
-/**
- * Polyfill for message_die
- */
-if (!function_exists('message_die')) {
-	if (!defined(GENERAL_MESSAGE)) {
-		define('GENERAL_MESSAGE', '');
-	}
-
-	function message_die($type = '', $msg = '')
-	{
-		bb_die($msg);
-	}
-}
-
 // Start session management
 $user->session_start();
 
 // Получаем id раздачи (темы)
 $topic_id = (int)request_var('t', '0');
 if (!$topic_id) {
-	message_die(GENERAL_MESSAGE, 'NO_TOPIC_ID');
+	bb_die('NO_TOPIC_ID');
 }
 
 // Получаем данные о раздаче из базы
@@ -35,7 +21,7 @@ $row = DB()->fetch_row("SELECT pt.post_text
 			LEFT JOIN " . BB_POSTS_TEXT . " pt ON(pt.post_id = tr.post_id)
 		WHERE t.topic_id  = $topic_id");
 if (!$row) {
-	message_die(GENERAL_MESSAGE, 'NO_TOPIC');
+	bb_die('NO_TOPIC');
 }
 
 // Поддерживаемые теги изображений
@@ -88,9 +74,10 @@ if (@fopen($thumb_file, "r")) {
 			header('Content-Disposition: filename=' . $filename);
 			break;
 		default:
-			message_die(GENERAL_MESSAGE, 'Unknown filetype: ' . $filetype);
+			bb_die('Unknown filetype: ' . $filetype);
 			break;
 	}
+
 	readfile($thumb_file); // Выводим
 	exit;
 } else {
@@ -130,12 +117,11 @@ if (@fopen($thumb_file, "r")) {
 					$poster = ImageCreateFromGIF($url);
 					break;
 				default:
-					message_die(GENERAL_MESSAGE, 'Unknown filetype: ' . $filetype);
+					bb_die('Unknown filetype: ' . $filetype);
 					break;
 			}
 
 			$max_width = 100; // Уменьшение по ширине
-
 			$thumb_width = $max_width;
 			$thumb_height = ($poster_height * $max_width) / $poster_width;
 
@@ -169,12 +155,14 @@ if (@fopen($thumb_file, "r")) {
 					ImageGIF($thumb, $thumb_file);
 					break;
 				default:
-					message_die(GENERAL_MESSAGE, 'Unknown filetype: ' . $filetype);
+					bb_die('Unknown filetype: ' . $filetype);
 					break;
 			}
+
 			// Закрываем
 			imagedestroy($thumb);
 			imagedestroy($poster);
+
 			// Выводим
 			readfile($thumb_file);
 			exit;
