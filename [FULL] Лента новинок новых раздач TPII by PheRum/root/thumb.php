@@ -6,7 +6,7 @@ define('BB_ROOT', './');
 require(BB_ROOT . 'common.php');
 
 // Start session management
-$user->session_start();
+$user->session_start(array('req_login' => true));
 
 // Получаем id раздачи (темы)
 $topic_id = (int)request_var('t', '0');
