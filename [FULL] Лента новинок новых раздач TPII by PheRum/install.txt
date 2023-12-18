@@ -425,7 +425,7 @@ $('var.posterImg').each(function(){
 				<div class="spacer_6"></div>
 				<div class="tCenter">
 					<!-- IF H_P_AL_MESS -->
-					<input style="width: 100px;" type="button" onclick="$('input.h-poster-cbx').attr('checked',false); $('input#sec_h_poster').click(); return false;" value="Сбросить">
+					<input style="width: 100px;" type="button" onclick="$('input.h-poster-cbx').attr('checked', false); $('input#sec_h_poster').click(); return false;" value="Сбросить">
 					<!-- ENDIF -->
 					<input id="sec_h_poster" type="button" onclick="set_h_poster();" style="width: 100px;" value="Отправить">
 					<script type="text/javascript">
