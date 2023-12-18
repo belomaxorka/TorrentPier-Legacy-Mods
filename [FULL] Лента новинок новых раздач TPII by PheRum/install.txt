@@ -37,6 +37,7 @@ library/config.php
 #-----[ AFTER ADD ]-------------------------------------
 #
 
+// Постеры раздач
 'lenta'         => array('filecache', array()),
 
 #
@@ -55,6 +56,7 @@ admin/admin_board.php
 #-----[ AFTER ADD ]-------------------------------------
 #
 
+// Постеры раздач
 'LAST_ADDED_ON'  => $new['last_added'],
 'NEW_POSTER'     => $new['new_poster'],
 'LIMIT_POSTER'   => $new['limit_poster'],
@@ -75,6 +77,7 @@ library/includes/sessions.php
 #-----[ ADD ]------------------------------------------
 #
 
+// Постеры раздач
 'poster'   => 1,     // show mini posters
 
 #
@@ -93,6 +96,7 @@ library/includes/page_header.php
 #-----[ ADD ]------------------------------------------
 #
 
+// Постеры раздач
 'LAST_ADDED' => ($bb_cfg['last_added'] && BB_SCRIPT == 'index'),
 'POSTER' => $user->opt_js['poster'],
 
@@ -117,6 +121,7 @@ if ($reg_mode == 'request' || $reg_mode == 'newtopic')
 #-----[ AFTER ADD ]------------------------------------------
 #
 
+// Постеры раздач
 if ($bb_cfg['last_added']) CACHE('lenta')->rm();
 
 #
@@ -133,6 +138,7 @@ if ($mode == 'request')
 #-----[ AFTER ADD ]------------------------------------------
 #
 
+// Постеры раздач
 if ($bb_cfg['last_added']) CACHE('lenta')->rm();
 
 #
@@ -163,6 +169,7 @@ $showhide = isset($_GET['sh']) ? (int) $_GET['sh'] : 0;
 #-----[ AFTER ADD ]------------------------------------------
 #
 
+// Постеры раздач
 $hide_poster_opt  = isset($user->opt_js['h_poster']) ? (string) $user->opt_js['h_poster'] : 0;
 $hide_poster_user = array_flip(explode('-', $hide_poster_opt));
 $showposter = isset($_GET['sp']) ? (int) $_GET['sp'] : 0;
@@ -179,6 +186,7 @@ $template->assign_vars(array(
 #-----[ AFTER ADD ]------------------------------------------
 #
 
+// Постеры раздач
 if ($bb_cfg['last_added'])
 {
 	$template->assign_block_vars('h_p', array(
@@ -232,7 +240,7 @@ if ($bb_cfg['last_added'] && $user->opt_js['poster'] && !IS_GUEST)
 	{
 		foreach ($last_added as $row)
 		{
-			$poster_full = !empty($row['topic_image']) ? $row['topic_image'] : 'images/noposter_full.png';
+			$poster_full = !empty($row['topic_image']) ? $row['topic_image'] : 'styles/images/noposter_full.png';
 			$template->assign_block_vars('last_added', array(
 				'FORUM_NAME'  => $row['forum_name'],
 				'FORUM_ID'    => $row['forum_id'],
@@ -310,6 +318,7 @@ $msg = ($result) ? $lang['TOPICS_REMOVED'] : $lang['NO_TOPICS_REMOVED'];
 #-----[ BEFORE ADD ]------------------------------------------
 #
 
+// Постеры раздач
 if ($bb_cfg['last_added']) CACHE('lenta')->rm();
 
 #
@@ -367,6 +376,7 @@ styles/templates/default/page_header.tpl
 #-----[ BEFORE ADD ]------------------------------------------
 #
 
+// Постеры раздач
 $('var.posterImg').each(function(){
 	var $v = $(this);
 	var src = $v.attr('title');
