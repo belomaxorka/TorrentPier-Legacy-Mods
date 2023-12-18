@@ -36,8 +36,8 @@ preg_match_all('/\[img\](.*?)\[\/img\]/i', $row['post_text'], $poster1, PREG_SET
 
 // Настройки
 $no_poster_img_name = 'noposter.png'; // Имя файла плейсхолдера (для релизов, в которых нет постера)
-$no_poster = BB_ROOT . 'images/' . $no_poster_img_name; // Абсолютный путь до файла плейсхолдера
-$folder = BB_ROOT . 'thumbnail'; // Папка куда сохраняем
+$no_poster = BB_ROOT . 'styles/images/' . $no_poster_img_name; // Абсолютный путь до файла плейсхолдера
+$folder = BB_ROOT . 'data/thumbnails'; // Папка куда сохраняем
 
 $url = empty($url) ? $no_poster_img_name : '';
 if (isset($poster8[0][1])) $url = $poster8[0][1];
