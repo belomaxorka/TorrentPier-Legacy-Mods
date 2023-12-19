@@ -1,6 +1,6 @@
 |================ Социальные сети в профиле ================|
 | Автор: belomaxorka                                        |
-| Версия: v1.1.1                                            |
+| Версия: v1.1.2                                            |
 |                                                           |
 | Описание: Добавляет пользователю возможность указать      |
 | дополнительные социальные сети, помимо стандартных.       |
@@ -22,33 +22,33 @@ ALTER TABLE `bb_users` ADD `user_steam` varchar(15) NOT NULL DEFAULT '';
 ======================= [ Открыть library/language/en/main.php и в самый конец вставить ] =======================
 // Социальные сети
 $lang['TELEGRAM'] = 'Telegram';
-$lang['TELEGRAM_ERROR'] = 'You entered an invalid Telegram login';
+$lang['TELEGRAM_ERROR'] = 'You entered an invalid Telegram profile';
 $lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Searching for users with an Telegram matching %s';
 $lang['VK'] = 'VK';
-$lang['VK_ERROR'] = 'You entered an invalid VK ID';
-$lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Searching for users with an VK matching %s';
+$lang['VK_ERROR'] = 'You entered an invalid VK profile';
+$lang['SEARCH_FOR_USERFIELD_VK'] = 'Searching for users with an VK matching %s';
 $lang['OKRU'] = 'OK.ru';
-$lang['OKRU_ERROR'] = 'You entered an invalid OK.ru ID';
-$lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Searching for users with an OK.ru matching %s';
+$lang['OKRU_ERROR'] = 'You entered an invalid OK.ru profile';
+$lang['SEARCH_FOR_USERFIELD_OKRU'] = 'Searching for users with an OK.ru matching %s';
 $lang['STEAM'] = 'Steam';
-$lang['STEAM_ERROR'] = 'You entered an invalid Steam login';
-$lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Searching for users with an Steam matching %s';
+$lang['STEAM_ERROR'] = 'You entered an invalid Steam profile';
+$lang['SEARCH_FOR_USERFIELD_STEAM'] = 'Searching for users with an Steam matching %s';
 ===============================================================================================================
 
 ======================= [ Открыть library/language/ru/main.php и в самый конец вставить ] =======================
 // Социальные сети
 $lang['TELEGRAM'] = 'Telegram';
-$lang['TELEGRAM_ERROR'] = 'Вы ввели некорректный логин Telegram';
-$lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Поиск пользователей с логином %s в Telegram';
+$lang['TELEGRAM_ERROR'] = 'Вы указали некорректный профиль Telegram';
+$lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Поиск пользователей с профилем %s в Telegram';
 $lang['VK'] = 'ВКонтакте';
-$lang['VK_ERROR'] = 'Вы ввели некорректный ID ВКонтакте';
-$lang['SEARCH_FOR_USERFIELD_VK'] = 'Поиск пользователей с ID %s в ВКонтакте';
+$lang['VK_ERROR'] = 'Вы указали некорректный профиль ВКонтакте';
+$lang['SEARCH_FOR_USERFIELD_VK'] = 'Поиск пользователей с профилем %s в ВКонтакте';
 $lang['OKRU'] = 'Одноклассники';
-$lang['OKRU_ERROR'] = 'Вы ввели некорректный ID Одноклассники';
-$lang['SEARCH_FOR_USERFIELD_OKRU'] = 'Поиск пользователей с ID %s в Одноклассниках';
+$lang['OKRU_ERROR'] = 'Вы указали некорректный профиль Одноклассники';
+$lang['SEARCH_FOR_USERFIELD_OKRU'] = 'Поиск пользователей с профилем %s в Одноклассниках';
 $lang['STEAM'] = 'Steam';
-$lang['STEAM_ERROR'] = 'Вы ввели некорректный логин Steam';
-$lang['SEARCH_FOR_USERFIELD_STEAM'] = 'Поиск пользователей с логином %s в Steam';
+$lang['STEAM_ERROR'] = 'Вы указали некорректный профиль Steam';
+$lang['SEARCH_FOR_USERFIELD_STEAM'] = 'Поиск пользователей с профилем %s в Steam';
 ===============================================================================================================
 
 ======================= [ Открыть library/includes/ucp/register.php и найти ] =======================
