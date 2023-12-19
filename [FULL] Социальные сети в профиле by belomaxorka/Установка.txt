@@ -14,7 +14,7 @@
 
 ======================= [ SQL ] =======================
 ALTER TABLE `bb_users` ADD `user_vk` varchar(15) NOT NULL DEFAULT '';
-ALTER TABLE `bb_users` ADD `user_telegram` varchar(15) NOT NULL DEFAULT '';
+ALTER TABLE `bb_users` ADD `user_telegram` varchar(32) NOT NULL DEFAULT '';
 ALTER TABLE `bb_users` ADD `user_okru` varchar(15) NOT NULL DEFAULT '';
 ALTER TABLE `bb_users` ADD `user_steam` varchar(15) NOT NULL DEFAULT '';
 =====================================================
@@ -148,7 +148,7 @@ case 'user_steam':
 ======================= [ Ниже вставть ] =======================
 <tr>
 	<td class="prof-title">{L_TELEGRAM}:</td>
-	<td><input type="text" name="user_telegram" size="30" maxlength="15" value="{USER_TELEGRAM}" /></td>
+	<td><input type="text" name="user_telegram" size="30" maxlength="32" value="{USER_TELEGRAM}" /></td>
 </tr>
 <tr>
 	<td class="prof-title">{L_VK}:</td>
