@@ -66,6 +66,9 @@ $poster_vk        = !empty($postrow[$i]['user_vk']) ? $postrow[$i]['user_vk'] : 
 
 Если желаете добавить инконки соц.сетей, пример:
 
-<!-- IF postrow.POSTER_VK --><p class="joined"><em>{L_VK}:</em> <a href="https://vk.com/{postrow.POSTER_VK}" target="_blank">{postrow.POSTER_VK} <img src="styles/images/vk.png" style="position: relative;top: 4px;width: 16px;"></a></p><!-- ENDIF -->
+<!-- IF postrow.POSTER_TELEGRAM --><p class="joined"><em>{L_TELEGRAM}:</em>&nbsp;<img src="{SITE_URL}styles/images/telegram.svg" width="16" height="16">&nbsp;<a href="https://t.me/{postrow.POSTER_TELEGRAM}" target="_blank">{postrow.POSTER_TELEGRAM}</a></p><!-- ENDIF -->
+<!-- IF postrow.POSTER_VK --><p class="joined"><em>{L_VK}:</em>&nbsp;<img src="{SITE_URL}styles/images/vk.svg" width="16" height="16">&nbsp;<a href="https://vk.com/{postrow.POSTER_VK}" target="_blank">{postrow.POSTER_VK}</a></p><!-- ENDIF -->
+<!-- IF postrow.POSTER_OKRU --><p class="joined"><em>{L_OKRU}:</em>&nbsp;<img src="{SITE_URL}styles/images/okru.svg" width="16" height="16">&nbsp;<a href="https://ok.ru/profile/{postrow.POSTER_OKRU}" target="_blank">{postrow.POSTER_OKRU}</a></p><!-- ENDIF -->
+<!-- IF postrow.POSTER_STEAM --><p class="joined"><em>{L_STEAM}:</em>&nbsp;<img src="{SITE_URL}styles/images/steam.svg" width="16" height="16">&nbsp;<a href="https://steamcommunity.com/id/{postrow.POSTER_STEAM}" target="_blank">{postrow.POSTER_STEAM}</a></p><!-- ENDIF -->
 
 =================================================================
