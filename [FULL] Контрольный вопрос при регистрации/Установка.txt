@@ -8,6 +8,7 @@
 |============================================================================|
 
 ================== [ Добавить в library/config.php в самом конце ] ==================
+// Контрольный вопрос при регистрации
 $bb_cfg['humanizer'] = array(
 	'enabled' => true,
 	'combinations' => array(
@@ -26,3 +27,19 @@ $bb_cfg['humanizer'] = array(
 	)
 );
 =====================================================================================
+
+================== [ Добавить в library/language/en/main.php в самом конце ] ==================
+// Контрольный вопрос при регистрации
+$lang['HUMANIZER'] = 'Security Question';
+$lang['HUMANIZER_EXPLAIN'] = 'The answer can be written using any letter case. If you find it difficult to answer, contact the resource administrator.';
+$lang['HUMANIZER_INVALID_ANSWER'] = 'You have entered the wrong answer';
+$lang['HUMANIZER_CORRECT_ANSWER'] = 'You answered the question correctly!';
+===============================================================================================
+
+================== [ Добавить в library/language/ru/main.php в самом конце ] ==================
+// Контрольный вопрос при регистрации
+$lang['HUMANIZER'] = 'Контрольный вопрос';
+$lang['HUMANIZER_EXPLAIN'] = 'Ответ может быть написан с использованием любого регистра букв. Если затрудняетесь с ответом, то обратитесь к администратору ресурса.';
+$lang['HUMANIZER_INVALID_ANSWER'] = 'Вы указали неправильный ответ';
+$lang['HUMANIZER_CORRECT_ANSWER'] = 'Вы правильно ответили на вопрос!';
+===============================================================================================
