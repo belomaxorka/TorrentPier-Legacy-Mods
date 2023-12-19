@@ -23,16 +23,16 @@ ALTER TABLE `bb_users` ADD `user_steam` varchar(15) NOT NULL DEFAULT '';
 // Социальные сети
 $lang['TELEGRAM'] = 'Telegram';
 $lang['TELEGRAM_ERROR'] = 'You entered an invalid Telegram profile';
-$lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Searching for users with an Telegram matching %s';
+$lang['SEARCH_FOR_USERFIELD_TELEGRAM'] = 'Searching for users with Telegram matching %s';
 $lang['VK'] = 'VK';
 $lang['VK_ERROR'] = 'You entered an invalid VK profile';
-$lang['SEARCH_FOR_USERFIELD_VK'] = 'Searching for users with an VK matching %s';
+$lang['SEARCH_FOR_USERFIELD_VK'] = 'Searching for users with VK matching %s';
 $lang['OKRU'] = 'OK.ru';
 $lang['OKRU_ERROR'] = 'You entered an invalid OK.ru profile';
-$lang['SEARCH_FOR_USERFIELD_OKRU'] = 'Searching for users with an OK.ru matching %s';
+$lang['SEARCH_FOR_USERFIELD_OKRU'] = 'Searching for users with OK.ru matching %s';
 $lang['STEAM'] = 'Steam';
 $lang['STEAM_ERROR'] = 'You entered an invalid Steam profile';
-$lang['SEARCH_FOR_USERFIELD_STEAM'] = 'Searching for users with an Steam matching %s';
+$lang['SEARCH_FOR_USERFIELD_STEAM'] = 'Searching for users with Steam matching %s';
 ===============================================================================================================
 
 ======================= [ Открыть library/language/ru/main.php и в самый конец вставить ] =======================
