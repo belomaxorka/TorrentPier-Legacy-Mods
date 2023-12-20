@@ -1,0 +1,16 @@
+Автор: belomaxorka
+Версия: v1.0.0
+
+=========== открыть tracker.php и найти ===========
+//
+// Search options
+//
+===========================================================
+
+=========== выше вставить ===========
+// Случайная раздача
+$random_release = isset($_GET['random_release']) ? (bool) $_GET['random_release'] : false;
+if ($random_release)
+{
+	redirect(TOPIC_URL . $random_topic);
+}
