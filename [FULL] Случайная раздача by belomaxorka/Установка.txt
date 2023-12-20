@@ -15,8 +15,8 @@ if ($random_release)
 	$count_all_releases = DB()->fetch_row("SELECT COUNT(topic_id) as count FROM ". BB_BT_TORRENTS ." WHERE tor_status NOT IN(". implode(', ', $bb_cfg['tor_frozen']) .") LIMIT 1");
 	if ($count_all_releases['count'] >= 2)
 	{
-		$rel = DB()->fetch_row("SELECT topic_id FROM ". BB_BT_TORRENTS ." WHERE topic_id = ". mt_rand(1, $count_all_releases['count']) ." LIMIT 1");
-		redirect(TOPIC_URL . $rel['topic_id']);
+		$random_topic_id = DB()->fetch_row("SELECT topic_id FROM ". BB_BT_TORRENTS ." WHERE topic_id = ". mt_rand(1, $count_all_releases['count']) ." LIMIT 1");
+		redirect(TOPIC_URL . $random_topic_id['topic_id']);
 	}
 }
 unset($random_release, $count_all_releases, $random_topic_id);
