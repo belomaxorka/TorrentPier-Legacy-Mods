@@ -16,6 +16,10 @@ if ($random_release)
 	{
 		redirect(TOPIC_URL . $random_release['topic_id']);
 	}
+	else
+	{
+		bb_die($lang['NO_MATCH']);
+	}
 }
 unset($random_release, $random_release);
 =====================================
