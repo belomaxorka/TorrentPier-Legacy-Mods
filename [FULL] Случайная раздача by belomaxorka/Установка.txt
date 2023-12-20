@@ -18,3 +18,12 @@ if ($random_release)
 	}
 }
 unset($random_release, $random_release);
+=====================================
+
+=========== открыть tracker.tpl (в вашем шаблоне) и найти ===========
+<h1 class="pagetitle">{PAGE_TITLE}</h1>
+=====================================================================
+
+=========== заменить на ===========
+<h1 class="pagetitle">{PAGE_TITLE}&nbsp;&middot;&nbsp;<a href="{U_TRACKER}?random_release=1">Случайная раздача</a></h1>
+===================================
