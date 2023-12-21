@@ -33,7 +33,6 @@ $bb_cfg['humanizer'] = array(
 $lang['HUMANIZER'] = 'Security Question';
 $lang['HUMANIZER_EXPLAIN'] = 'The answer can be written using any letter case. If you find it difficult to answer, contact the resource administrator.';
 $lang['HUMANIZER_INVALID_ANSWER'] = 'You have entered the wrong answer';
-$lang['HUMANIZER_CORRECT_ANSWER'] = 'You answered the question correctly!';
 ===============================================================================================
 
 ================== [ Добавить в library/language/ru/main.php в самом конце ] ==================
@@ -41,7 +40,6 @@ $lang['HUMANIZER_CORRECT_ANSWER'] = 'You answered the question correctly!';
 $lang['HUMANIZER'] = 'Контрольный вопрос';
 $lang['HUMANIZER_EXPLAIN'] = 'Ответ может быть написан с использованием любого регистра букв. Если затрудняетесь с ответом, то обратитесь к администратору ресурса.';
 $lang['HUMANIZER_INVALID_ANSWER'] = 'Вы указали неправильный ответ';
-$lang['HUMANIZER_CORRECT_ANSWER'] = 'Вы правильно ответили на вопрос!';
 ===============================================================================================
 
 ================== [ Найти в library/includes/ucp/register.php ] ==================
@@ -53,7 +51,7 @@ $tp_data = array();   // данные для tpl
 if ($bb_cfg['humanizer']['enabled'])
 {
 	$humanizer_secret = md5(make_rand_str(15));
-	$humanizer = isset($_POST[$humanizer_secret]) ? mb_strtolower(trim(htmlCHR($_POST[$humanizer_secret])), 'UTF-8') : false;
+	$humanizer_answer = isset($_POST[$humanizer_secret]) ? mb_strtolower(htmlCHR($_POST[$humanizer_secret]), 'UTF-8') : false;
 }
 =======================================================
 
@@ -65,11 +63,22 @@ if ($need_captcha && !bb_captcha('check'))
 // Контрольный вопрос при регистрации
 if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations']))
 {
+	// Get random combination
 	$combinations_array = $bb_cfg['humanizer']['combinations'];
 	$get_rand_combination = $combinations_array[array_rand($combinations_array, 1)];
+	$selected_question = $get_rand_combination['question'];
+
+	// Check the answer
+	if (!empty($humanizer_answer))
+	{
+		if (!in_array($humanizer_answer, $selected_question))
+        {
+        	$errors[] = $lang['HUMANIZER_INVALID_ANSWER'];
+        }
+	}
 
 	$template->assign_vars('humanizer', array(
-		'QUESTION' => $get_rand_combination['question'],
+		'QUESTION' => $selected_question,
         'S_HUMANIZER_SECRET' => $humanizer_secret,
 	));
 }
