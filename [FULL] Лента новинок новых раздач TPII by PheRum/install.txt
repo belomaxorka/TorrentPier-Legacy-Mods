@@ -15,6 +15,8 @@
 #--[SQL]--------------------------------
 #
 
+SET GLOBAL sql_mode = '';
+SET SESSION sql_mode = '';
 INSERT INTO `bb_config` VALUES ('last_added', '1');
 INSERT INTO `bb_config` VALUES ('new_poster', '0');
 INSERT INTO `bb_config` VALUES ('limit_poster', '30');
