@@ -58,19 +58,18 @@ if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations
 	$combinations_array = $bb_cfg['humanizer']['combinations'];
 	$get_rand_combination = $combinations_array[array_rand($combinations_array, 1)];
 
-	$template->assign_vars('humanizer', array(
-		'QUESTION' => $get_rand_combination['question'],
-		'S_HUMANIZER_SECRET' => $humanizer_secret
-	));
-	unset($humanizer_secret);
-
+	// Check the answer
 	if (!empty($humanizer_answer))
 	{
-		// Check the answer
 		if (!in_array($humanizer_answer, $get_rand_combination['answers']))
 		{
 			$errors[] = $lang['HUMANIZER_INVALID_ANSWER'];
 		}
 	}
+
+	$template->assign_vars('humanizer', array(
+		'QUESTION' => $get_rand_combination['question'],
+		'S_HUMANIZER_SECRET' => $humanizer_secret
+	));
 }
 =======================================================
