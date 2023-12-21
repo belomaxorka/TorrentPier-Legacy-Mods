@@ -53,6 +53,24 @@ $tp_data = array();   // данные для tpl
 if ($bb_cfg['humanizer']['enabled'])
 {
 	$humanizer_secret = md5(make_rand_str(15));
-	$humanizer = isset($_POST[$humanizer_secret]) ? trim(htmlCHR($_POST[$humanizer_secret])) : false;
+	$humanizer = isset($_POST[$humanizer_secret]) ? mb_strtolower(trim(htmlCHR($_POST[$humanizer_secret])), 'UTF-8') : false;
+}
+=======================================================
+
+================== [ Далее найти ] ==================
+if ($need_captcha && !bb_captcha('check'))
+=====================================================
+
+================== [ Выше вставить ] ==================
+// Контрольный вопрос при регистрации
+if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations']))
+{
+	$combinations_array = $bb_cfg['humanizer']['combinations'];
+	$get_rand_combination = $combinations_array[array_rand($combinations_array, 1)];
+
+	$template->assign_vars('humanizer', array(
+		'QUESTION' => $get_rand_combination['question'],
+        'S_HUMANIZER_SECRET' => $humanizer_secret,
+	));
 }
 =======================================================
