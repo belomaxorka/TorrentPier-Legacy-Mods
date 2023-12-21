@@ -54,7 +54,12 @@ if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations
 	$humanizer_secret = md5(make_rand_str(15));
 	$humanizer_answer = isset($_POST[$humanizer_secret]) ? mb_strtolower(htmlCHR($_POST[$humanizer_secret]), 'UTF-8') : false;
 
+	// Get random combination
+	$combinations_array = $bb_cfg['humanizer']['combinations'];
+	$get_rand_combination = $combinations_array[array_rand($combinations_array, 1)];
+
 	$template->assign_vars('humanizer', array(
+		'QUESTION' => $get_rand_combination['question'],
 		'S_HUMANIZER_SECRET' => $humanizer_secret
 	));
 	unset($humanizer_secret);
@@ -66,16 +71,6 @@ if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations
 		{
 			$errors[] = $lang['HUMANIZER_INVALID_ANSWER'];
 		}
-	}
-	else
-	{
-		// Get random combination
-		$combinations_array = $bb_cfg['humanizer']['combinations'];
-		$get_rand_combination = $combinations_array[array_rand($combinations_array, 1)];
-
-		$template->assign_vars('humanizer', array(
-			'QUESTION' => $get_rand_combination['question']
-        ));
 	}
 }
 =======================================================
