@@ -128,6 +128,16 @@ function thumb($path)
 	$out_img = get_imgfile_path($userdata['user_id'], $this->file_ext_id, $userdata['user_id'] . $this->file['name'] . $this->file['size'], true);
 	$img_create = imagecreatetruecolor($new_width, $this->cfg['thumb_height']);
 
+	if ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'gif' || $bb_cfg['file_id_ext'][$this->file_ext_id] == 'png')
+	{
+		imagecolortransparent($img_create, imagecolorallocate($img_create, 0, 0, 0));
+		if ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'png')
+		{
+			imagealphablending($img_create, false);
+			imagesavealpha($img_create, true);
+		}
+	}
+
 	imagecopyresampled($img_create, $img, 0, 0, 0, 0, $new_width, $this->cfg['thumb_height'], imagesx($img), imagesy($img));
 
 	if (($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpg') or ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpeg')) {
