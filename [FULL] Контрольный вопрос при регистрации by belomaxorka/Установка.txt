@@ -46,38 +46,46 @@ $lang['HUMANIZER_INVALID_ANSWER'] = 'Вы указали неправильны�
 ===============================================================================================
 
 ================== [ Найти в library/includes/ucp/register.php ] ==================
-// Данные профиля
-switch ($mode)
+// Captcha
+$need_captcha = ($mode == 'register' && !IS_ADMIN && !$bb_cfg['captcha']['disabled']);
 ===================================================================================
 
-================== [ Выше вставить ] ==================
+================== [ Ниже вставить ] ==================
 // Контрольный вопрос при регистрации
 if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations']) && ($mode == 'register') && !IS_ADMIN)
 {
+	// Генерируем случайны ключ для $_POST
 	$humanizer_secret = md5(make_rand_str(15));
-	$humanizer_answer = isset($_POST[$humanizer_secret]) ? mb_strtolower(htmlCHR($_POST[$humanizer_secret]), 'UTF-8') : false;
+
+	// Получаем ответ от пользователя
+	$humanizer_answer = isset($_POST[$humanizer_secret]) ? mb_strtolower(htmlCHR($_POST[$humanizer_secret]), 'UTF-8') : '';
 
 	// Выбираем случайный вопрос + подготавливаем правильный ответ
 	$combinations_array = $bb_cfg['humanizer']['combinations'];
 	$get_rand_combination = $combinations_array[array_rand($combinations_array, 1)];
+
+	// Очищаем $humanizer_secret если комбинация пуста :(
+	if (!isset($get_rand_combination['answers']) || !isset($get_rand_combination['answers']))
+	{
+		unset($humanizer_secret);
+	}
 }
 =======================================================
 
 ================== [ Далее найти ] ==================
 if ($need_captcha && !bb_captcha('check'))
+{
+	$errors[] = $lang['CAPTCHA_WRONG'];
+}
 =====================================================
 
 ================== [ Выше вставить ] ==================
 // Контрольный вопрос при регистрации
-if (!empty($humanizer_secret) && ($mode == 'register' && !IS_ADMIN))
+if (isset($humanizer_secret) && !empty($humanizer_answer))
 {
-	// Check the answer
-	if (!empty($humanizer_answer))
+	if (!in_array($humanizer_answer, $get_rand_combination['answers']))
 	{
-		if (!in_array($humanizer_answer, $get_rand_combination['answers']))
-		{
-			$errors[] = $lang['HUMANIZER_INVALID_ANSWER'];
-		}
+		$errors[] = $lang['HUMANIZER_INVALID_ANSWER'];
 	}
 }
 =======================================================
@@ -88,7 +96,7 @@ $template->assign_vars($tp_data);
 
 ================== [ Ниже вставить ] ==================
 // Контрольный вопрос при регистрации
-if (!empty($humanizer_secret))
+if (isset($humanizer_secret))
 {
 	$template->assign_vars(array(
 		'QUESTION' => $get_rand_combination['question'],
