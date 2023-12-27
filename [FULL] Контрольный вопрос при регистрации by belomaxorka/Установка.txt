@@ -46,17 +46,27 @@ $lang['HUMANIZER_INVALID_ANSWER'] = 'Вы указали неправильны�
 ===============================================================================================
 
 ================== [ Найти в library/includes/ucp/register.php ] ==================
-if ($need_captcha && !bb_captcha('check'))
+// Данные профиля
+switch ($mode)
 ===================================================================================
 
-================== [ Выше вставить ] ==================
+================== [ Ниже вставить ] ==================
 // Контрольный вопрос при регистрации
 if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations']))
 {
-	// Get the answer
 	$humanizer_secret = md5(make_rand_str(15));
 	$humanizer_answer = isset($_POST[$humanizer_secret]) ? mb_strtolower(htmlCHR($_POST[$humanizer_secret]), 'UTF-8') : false;
+}
+=======================================================
 
+================== [ Далее найти ] ==================
+if ($need_captcha && !bb_captcha('check'))
+=====================================================
+
+================== [ Выше вставить ] ==================
+// Контрольный вопрос при регистрации
+if (!empty($humanizer_secret))
+{
 	// Get random combination
 	$combinations_array = $bb_cfg['humanizer']['combinations'];
 	$get_rand_combination = $combinations_array[array_rand($combinations_array, 1)];
@@ -70,9 +80,37 @@ if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations
 		}
 	}
 
-	$template->assign_vars('humanizer', array(
+	$template->assign_vars(array(
 		'QUESTION' => $get_rand_combination['question'],
 		'S_HUMANIZER_SECRET' => $humanizer_secret
 	));
 }
+=======================================================
+
+================== [ Далее найти ] ==================
+$template->assign_vars($tp_data);
+=====================================================
+
+================== [ Ниже вставить ] ==================
+// Контрольный вопрос при регистрации
+if (!empty($humanizer_secret))
+{
+	$template->assign_vars(array(
+		'QUESTION' => $get_rand_combination['question'],
+		'S_HUMANIZER_SECRET' => $humanizer_secret
+	));
+}
+=======================================================
+
+================== [ Найти в usercp_register.tpl (В вашем шаблоне) ] ==================
+<!-- IF CAPTCHA_HTML -->
+===============================================================================================
+
+================== [ Выше вставить ] ==================
+<!-- IF S_HUMANIZER_SECRET -->
+<tr>
+	<td class="prof-title">{L_HUMANIZER}: *</td>
+	<td><input type="text" name="{S_HUMANIZER_SECRET}" size="35" maxlength="255" value="{QUESTION}" /></td>
+</tr>
+<!-- ENDIF -->
 =======================================================
