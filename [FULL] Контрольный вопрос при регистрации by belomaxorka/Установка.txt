@@ -35,14 +35,14 @@ $bb_cfg['humanizer'] = array(
 // Контрольный вопрос при регистрации
 $lang['HUMANIZER'] = 'Security Question';
 $lang['HUMANIZER_EXPLAIN'] = 'The answer can be written using any letter case. If you find it difficult to answer, contact the resource administrator.';
-$lang['HUMANIZER_INVALID_ANSWER'] = 'You have entered the wrong answer!';
+$lang['HUMANIZER_INVALID_ANSWER'] = 'You entered the wrong answer to the security question!';
 ===============================================================================================
 
 ================== [ Добавить в library/language/ru/main.php в самом конце ] ==================
 // Контрольный вопрос при регистрации
 $lang['HUMANIZER'] = 'Контрольный вопрос';
 $lang['HUMANIZER_EXPLAIN'] = 'Ответ может быть написан с использованием любого регистра букв. Если затрудняетесь с ответом, то обратитесь к администратору ресурса.';
-$lang['HUMANIZER_INVALID_ANSWER'] = 'Вы указали неправильный ответ!';
+$lang['HUMANIZER_INVALID_ANSWER'] = 'Вы указали неправильный ответ на контрольный вопрос!';
 ===============================================================================================
 
 ================== [ Найти в library/includes/ucp/register.php ] ==================
@@ -65,7 +65,7 @@ if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations
 	$get_rand_combination = $combinations_array[array_rand($combinations_array, 1)];
 
 	// Очищаем $humanizer_secret если комбинация пуста :(
-	if (!isset($get_rand_combination['answers']) || !isset($get_rand_combination['question']))
+	if (empty($humanizer_secret) || !isset($get_rand_combination['answers']) || !isset($get_rand_combination['question']))
 	{
 		unset($humanizer_secret);
 	}
@@ -107,13 +107,13 @@ if (isset($humanizer_secret))
 
 ================== [ Найти в usercp_register.tpl (В вашем шаблоне) ] ==================
 <!-- IF CAPTCHA_HTML -->
-===============================================================================================
+=======================================================================================
 
 ================== [ Выше вставить ] ==================
 <!-- IF S_HUMANIZER_SECRET -->
 <tr>
-	<td class="prof-title">{L_HUMANIZER}: *</td>
-	<td><input type="text" name="{S_HUMANIZER_SECRET}" size="35" maxlength="255" placeholder="{QUESTION}" /></td>
+	<td class="prof-title">{L_HUMANIZER}: * <br /><h6>{L_HUMANIZER_EXPLAIN}</h6></td>
+	<td><input type="text" name="{S_HUMANIZER_SECRET}" size="35" maxlength="255" placeholder="{QUESTION}" value="" /></td>
 </tr>
 <!-- ENDIF -->
 =======================================================
