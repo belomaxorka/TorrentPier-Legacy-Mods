@@ -50,9 +50,9 @@ $lang['HUMANIZER_INVALID_ANSWER'] = 'Вы указали неправильны�
 switch ($mode)
 ===================================================================================
 
-================== [ Ниже вставить ] ==================
+================== [ Выше вставить ] ==================
 // Контрольный вопрос при регистрации
-if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations']))
+if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations']) && ($mode == 'register') && !IS_ADMIN)
 {
 	$humanizer_secret = md5(make_rand_str(15));
 	$humanizer_answer = isset($_POST[$humanizer_secret]) ? mb_strtolower(htmlCHR($_POST[$humanizer_secret]), 'UTF-8') : false;
@@ -65,7 +65,7 @@ if ($need_captcha && !bb_captcha('check'))
 
 ================== [ Выше вставить ] ==================
 // Контрольный вопрос при регистрации
-if (!empty($humanizer_secret))
+if (!empty($humanizer_secret) && ($mode == 'register' && !IS_ADMIN))
 {
 	// Get random combination
 	$combinations_array = $bb_cfg['humanizer']['combinations'];
@@ -79,11 +79,6 @@ if (!empty($humanizer_secret))
 			$errors[] = $lang['HUMANIZER_INVALID_ANSWER'];
 		}
 	}
-
-	$template->assign_vars(array(
-		'QUESTION' => $get_rand_combination['question'],
-		'S_HUMANIZER_SECRET' => $humanizer_secret
-	));
 }
 =======================================================
 
