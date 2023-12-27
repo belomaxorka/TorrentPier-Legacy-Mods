@@ -13,15 +13,16 @@ $bb_cfg['humanizer'] = array(
 	// Формат:
 	// - ключ 'question' содержит сам вопрос
 	// - ключ 'answers' содержит массив с правильными ответами
+	// Примечание: Указывайте правильные ответы в нижнем регистре!
 	'enabled' => true,
 	'combinations' => array(
 		0 => array(
 			'question' => 'Столица Греции',
-			'answers' => array('Афины')
+			'answers' => array('афины')
 		),
 		1 => array(
 			'question' => 'Спутник земли',
-			'answers' => array('Луна', 'Moon')
+			'answers' => array('луна', 'moon')
 		),
 		2 => array(
 			'question' => 'Дата рождения Юрия Гагарина',
