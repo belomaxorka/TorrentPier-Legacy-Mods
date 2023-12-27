@@ -58,7 +58,7 @@ $need_captcha = ($mode == 'register' && !IS_ADMIN && !$bb_cfg['captcha']['disabl
 
 ================== [ Ниже вставить ] ==================
 // Контрольный вопрос при регистрации
-if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations']) && ($mode == 'register') && !IS_ADMIN)
+if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations']) && $mode == 'register' && !IS_ADMIN)
 {
 	// Генерируем случайны ключ для $_POST
 	$humanizer_secret = md5(make_rand_str(15));
