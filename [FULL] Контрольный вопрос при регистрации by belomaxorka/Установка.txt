@@ -81,7 +81,7 @@ if ($need_captcha && !bb_captcha('check'))
 
 ================== [ Выше вставить ] ==================
 // Контрольный вопрос при регистрации
-if (isset($humanizer_secret) && !empty($humanizer_answer))
+if (isset($humanizer_secret))
 {
 	if (!in_array($humanizer_answer, $get_rand_combination['answers']))
 	{
