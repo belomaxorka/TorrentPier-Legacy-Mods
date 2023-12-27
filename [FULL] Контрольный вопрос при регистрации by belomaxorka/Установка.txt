@@ -65,7 +65,7 @@ if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations
 	$get_rand_combination = $combinations_array[array_rand($combinations_array, 1)];
 
 	// Очищаем $humanizer_secret если комбинация пуста :(
-	if (!isset($get_rand_combination['answers']) || !isset($get_rand_combination['answers']))
+	if (!isset($get_rand_combination['answers']) || !isset($get_rand_combination['question']))
 	{
 		unset($humanizer_secret);
 	}
