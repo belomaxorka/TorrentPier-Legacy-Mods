@@ -126,7 +126,7 @@ $lang['ZODIAC_SIGN'] = [
 ======================================================================
 
 ========== [ Ниже вставить ] ==========
-'SHOW_ZODIAC'          => bf($profiledata['user_opt'], 'user_opt', 'user_show_zodiac') ? get_zodiac($profiledata['user_birthday']) : '',
+'SHOW_ZODIAC'          => ($profile_user_id || bf($profiledata['user_opt'], 'user_opt', 'user_show_zodiac')) ? get_zodiac($profiledata['user_birthday']) : '',
 =======================================
 
 ========== [ Найти в usercp_register.tpl (В вашем шаблоне) ] ==========
@@ -150,3 +150,11 @@ $lang['ZODIAC_SIGN'] = [
 	</td>
 </tr>
 =======================================
+
+========== [ Найти в usercp_viewprofile.tpl (В вашем шаблоне) ] ==========
+<td id="user_birthday"><b class="editable">{BIRTHDAY}</b></td>
+==========================================================================
+
+========== [ Заменить на ] ==========
+<td id="user_birthday"><b class="editable">{BIRTHDAY}</b>&nbsp;<!-- IF SHOW_ZODIAC -->{SHOW_ZODIAC}<!-- ENDIF --></td>
+=====================================
