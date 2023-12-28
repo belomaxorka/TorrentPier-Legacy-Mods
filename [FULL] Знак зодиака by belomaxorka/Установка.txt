@@ -50,11 +50,11 @@ function get_zodiac($birthday, $mode = 'full')
 						$data_show = $title;
 						break;
 					case 'image':
-						$data_show = "<img src='$image' alt='$title' title='$title' style='vertical-align: middle;' />";
+						$data_show = "<img src='$image' alt='$title' title='$title ($birthday)' style='vertical-align: middle;' />";
 						break;
 					default:
 					case 'full':
-						$data_show = "($title <img src='$image' alt='$title' title='$title' style='vertical-align: middle;' />)";
+						$data_show = "($title <img src='$image' alt='$title' title='$title ($birthday)' style='vertical-align: middle;' />)";
 						break;
 				}
 
