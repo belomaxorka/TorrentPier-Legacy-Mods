@@ -63,3 +63,41 @@ function get_zodiac($birthday, $mode = 'full')
 	return false;
 }
 =================================================================================
+
+========== [ Добавить в library/includes/language/en/main.php в самом конце ] ==========
+// Знак зодиака
+$lang['SHOW_ZODIAC'] = 'Show zodiac';
+$lang['ZODIAC_SIGN'] = [
+	'AQUARIUS' => 'Aquarius',
+	'ARIES' => 'Aries',
+	'CANCER' => 'Cancer',
+	'CAPRICORN' => 'Capricorn',
+	'GEMINI' => 'Gemini',
+	'LEO' => 'Leo',
+	'LIBRA' => 'Libra',
+	'PISCES' => 'Pisces',
+	'SAGITTARIUS' => 'Sagittarius',
+	'SCORPIO' => 'Scorpio',
+	'TAURUS' => 'Taurus',
+	'VIRGO' => 'Virgo',
+];
+========================================================================================
+
+========== [ Добавить в library/includes/language/ru/main.php в самом конце ] ==========
+// Знак зодиака
+$lang['SHOW_ZODIAC'] = 'Показывать знак зодиака';
+$lang['ZODIAC_SIGN'] = [
+	'AQUARIUS' => 'Водолей',
+	'ARIES' => 'Овен',
+	'CANCER' => 'Рак',
+	'CAPRICORN' => 'Козерог',
+	'GEMINI' => 'Близнецы',
+	'LEO' => 'Лев',
+	'LIBRA' => 'Весы',
+	'PISCES' => 'Рыбы',
+	'SAGITTARIUS' => 'Стрелец',
+	'SCORPIO' => 'Скорпион',
+	'TAURUS' => 'Телец',
+	'VIRGO' => 'Дева',
+];
+========================================================================================
