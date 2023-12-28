@@ -67,6 +67,14 @@ function get_zodiac($birthday, $mode = 'full')
 }
 =================================================================================
 
+========== [ Далее найти ] ==========
+'user_retracker'     => 15, // Добавлять ретрекер к скачиваемым торрентам
+=====================================
+
+========== [ Ниже вставить ] ==========
+'user_show_zodiac'   => 16, // Знак зодиака (Если номер "16" занят, то замените на любой другой свободный номер)
+=======================================
+
 ========== [ Добавить в library/includes/language/en/main.php в самом конце ] ==========
 // Знак зодиака
 $lang['SHOW_ZODIAC'] = 'Show zodiac';
@@ -104,3 +112,41 @@ $lang['ZODIAC_SIGN'] = [
 	'VIRGO' => 'Дева',
 ];
 ========================================================================================
+
+========== [ Найти в library/includes/ucp/register.php ] ==========
+'user_retracker'      => ($reg_mode) ? true  : true,
+===================================================================
+
+========== [ Ниже вставить ] ==========
+'user_show_zodiac'    => ($reg_mode) ? true  : true,
+=======================================
+
+========== [ Найти в library/includes/ucp/viewprofile.php ] ==========
+'AGE'
+======================================================================
+
+========== [ Ниже вставить ] ==========
+'SHOW_ZODIAC'          => bf($profiledata['user_opt'], 'user_opt', 'user_show_zodiac') ? get_zodiac($profiledata['user_birthday']) : '',
+=======================================
+
+========== [ Найти в usercp_register.tpl (В вашем шаблоне) ] ==========
+<!-- IF $bb_cfg['pm_notify_enabled'] -->
+<tr>
+	<td class="prof-title">{L_NOTIFY_ON_PRIVMSG}:</td>
+	<td>
+		<label><input type="radio" name="user_notify_pm" value="1" <!-- IF USER_NOTIFY_PM -->checked="checked"<!-- ENDIF --> />{L_YES}</label>&nbsp;&nbsp;
+		<label><input type="radio" name="user_notify_pm" value="0" <!-- IF not USER_NOTIFY_PM -->checked="checked"<!-- ENDIF --> />{L_NO}</label>
+	</td>
+</tr>
+<!-- ENDIF -->
+=======================================================================
+
+========== [ Ниже вставить ] ==========
+<tr>
+	<td class="prof-title">{L_SHOW_ZODIAC}:</td>
+	<td>
+		<label><input type="radio" name="user_show_zodiac" value="1" <!-- IF USER_SHOW_ZODIAC -->checked="checked"<!-- ENDIF --> />{L_YES}</label>&nbsp;&nbsp;
+		<label><input type="radio" name="user_show_zodiac" value="0" <!-- IF not USER_SHOW_ZODIAC -->checked="checked"<!-- ENDIF --> />{L_NO}</label>
+	</td>
+</tr>
+=======================================
