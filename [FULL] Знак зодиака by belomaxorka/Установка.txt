@@ -35,7 +35,7 @@ function get_zodiac($birthday, $mode = 'full')
 
 	if (ctype_digit("$year$month$day") && checkdate($month, $day, $year)) {
 		foreach ($bb_cfg['zodiac_sign'] as $sign => $date) {
-			if (($month == $date[0] && $day > $date[1]) || ($month == $date[2] && $day < $date[3])) {
+			if (($month == $date[0] && $day >= $date[1]) || ($month == $date[2] && $day <= $date[3])) {
 				$image = BB_ROOT . 'styles/images/zodiac/' . $sign . '.gif';
 				$title = $lang['ZODIAC_SIGN'][strtoupper($sign)];
 				$data_show = '';
