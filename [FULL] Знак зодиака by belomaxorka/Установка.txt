@@ -7,7 +7,7 @@
 |======================================================|
 
 ========== [ Добавить в library/includes/functions.php в самом конце ] ==========
-function get_zodiac($birthday, string $mode = 'full')
+function get_zodiac($birthday, $mode = 'full')
 {
 	global $lang, $bb_cfg;
 
