@@ -1,8 +1,10 @@
 Автор: kovalensky
+Версия: v1.0.0
 
 ======= Открыть library/includes/functions_atom.php и найти =======
 $topic_title = $topic['topic_title'];
 ======= Вставить выше =======
+// Статус раздачи в atom ленте
 $tor_status = '';
 if (isset($topic['tor_status']))
 {
