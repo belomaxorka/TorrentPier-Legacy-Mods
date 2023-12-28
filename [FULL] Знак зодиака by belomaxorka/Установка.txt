@@ -31,13 +31,11 @@ function get_zodiac($birthday, $mode = 'full')
 {
 	global $lang, $bb_cfg;
 
-	if (!empty($birthday)) {
-		$birthday = explode('-', $birthday);
-		$bmonth = $birthday[1];
-		$bday = $birthday[2];
+	list($year, $month, $day) = array_pad(explode('-', $birthday, 3), 3, 0);
 
+	if (ctype_digit("$year$month$day") && checkdate($month, $day, $year)) {
 		foreach ($bb_cfg['zodiac_sign'] as $sign => $date) {
-			if (($bmonth == $date[0] && $bday > $date[1]) || ($bmonth == $date[2] && $bday < $date[3])) {
+			if (($month == $date[0] && $day > $date[1]) || ($month == $date[2] && $day < $date[3])) {
 				$image = BB_ROOT . 'styles/images/zodiac/' . $sign . '.gif';
 				$title = $lang['ZODIAC_SIGN'][strtoupper($sign)];
 				$data_show = '';
@@ -47,11 +45,11 @@ function get_zodiac($birthday, $mode = 'full')
 						$data_show = $title;
 						break;
 					case 'image':
-						$data_show = "<img src='$image' alt='$title' title='$title' style='vertical-align:middle;' />";
+						$data_show = "<img src='$image' alt='$title' title='$title' style='vertical-align: middle;' />";
 						break;
 					default:
 					case 'full':
-						$data_show = "($title <img src='$image' alt='$title' title='$title' style='vertical-align:middle;' />)";
+						$data_show = "($title <img src='$image' alt='$title' title='$title' style='vertical-align: middle;' />)";
 						break;
 				}
 
