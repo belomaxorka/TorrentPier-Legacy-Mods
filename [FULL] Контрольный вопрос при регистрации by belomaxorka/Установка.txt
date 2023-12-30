@@ -67,16 +67,18 @@ if ($mode == 'register' && !IS_ADMIN && $bb_cfg['humanizer']['enabled'] && !empt
 	$combinations_array = $bb_cfg['humanizer']['combinations'];
 	$get_rand_combination = $combinations_array[array_rand($combinations_array, 1)];
 
-	// Очищаем $humanizer_secret если комбинация пуста :(
+	// Очищаем $humanizer_secret если комбинация пуста (прекращаем дальнейшее выполнение кода)
 	if (empty($humanizer_secret) || !isset($get_rand_combination['answers']) || !isset($get_rand_combination['question']))
 	{
-		unset($humanizer_secret);
+		$humanizer_secret == '';
 	}
-
-	// Приводим варианты ответа в нижний регистр, для корректного сравнения
-	array_walk_recursive($get_rand_combination['answers'], function (&$answer) {
-		$answer = mb_strtolower(trim($answer), 'UTF-8');
-	});
+	else
+	{
+		// Приводим варианты ответа в нижний регистр, для корректного сравнения
+		array_walk_recursive($get_rand_combination['answers'], function (&$answer) {
+			$answer = mb_strtolower(trim($answer), 'UTF-8');
+		});
+	}
 }
 =======================================================
 
@@ -89,7 +91,7 @@ if ($need_captcha && !bb_captcha('check'))
 
 ================== [ Выше вставить ] ==================
 // Контрольный вопрос при регистрации
-if (isset($humanizer_secret))
+if (!empty($humanizer_secret))
 {
 	if (!in_array($humanizer_answer, $get_rand_combination['answers']))
 	{
@@ -104,7 +106,7 @@ $template->assign_vars($tp_data);
 
 ================== [ Выше вставить ] ==================
 // Контрольный вопрос при регистрации
-if (isset($humanizer_secret))
+if (!empty($humanizer_secret))
 {
 	$template->assign_vars(array(
 		'QUESTION' => $get_rand_combination['question'],
