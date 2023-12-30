@@ -70,8 +70,8 @@ if ($mode == 'register' && !IS_ADMIN && $bb_cfg['humanizer']['enabled'] && !empt
 	if (empty($humanizer_secret) || !isset($get_rand_combination['answers']) || !isset($get_rand_combination['question'])) {
 		$humanizer_secret == '';
 	}
+	// Приводим варианты ответа в нижний регистр, для корректного сравнения
 	else {
-		// Приводим варианты ответа в нижний регистр, для корректного сравнения
 		array_walk_recursive($get_rand_combination['answers'], function (&$answer) {
 			$answer = mb_strtolower(trim($answer), 'UTF-8');
 		});
