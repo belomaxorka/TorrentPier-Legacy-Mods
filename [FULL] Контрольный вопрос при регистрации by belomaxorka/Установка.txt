@@ -58,7 +58,7 @@ $need_captcha = ($mode == 'register' && !IS_ADMIN && !$bb_cfg['captcha']['disabl
 if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations']) && $mode == 'register' && !IS_ADMIN)
 {
 	// Генерируем случайный ключ для $_POST
-	$humanizer_secret = md5(make_rand_str(15));
+	$humanizer_secret = md5(make_rand_str(rand(10, 32)));
 
 	// Получаем ответ от пользователя
 	$humanizer_answer = isset($_POST[$humanizer_secret]) ? mb_strtolower(htmlCHR($_POST[$humanizer_secret]), 'UTF-8') : '';
