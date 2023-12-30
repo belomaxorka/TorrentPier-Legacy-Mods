@@ -75,7 +75,8 @@ if ($mode == 'register' && !IS_ADMIN && $bb_cfg['humanizer']['enabled'] && !empt
 	else
 	{
 		// Приводим варианты ответа в нижний регистр, для корректного сравнения
-		array_walk_recursive($get_rand_combination['answers'], function (&$answer) {
+		array_walk_recursive($get_rand_combination['answers'], function (&$answer)
+		{
 			$answer = mb_strtolower(trim($answer), 'UTF-8');
 		});
 	}
