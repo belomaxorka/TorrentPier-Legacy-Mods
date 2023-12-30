@@ -55,13 +55,13 @@ $need_captcha = ($mode == 'register' && !IS_ADMIN && !$bb_cfg['captcha']['disabl
 
 ================== [ Ниже вставить ] ==================
 // Контрольный вопрос при регистрации
-if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations']) && $mode == 'register' && !IS_ADMIN)
+if ($mode == 'register' && !IS_ADMIN && $bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations']))
 {
-	// Генерируем случайный ключ для $_POST
+	// Генерируем случайный ключ для $_POST в котором будет храниться ответ пользователя
 	$humanizer_secret = md5(make_rand_str(rand(10, 32)));
 
-	// Получаем ответ от пользователя
-	$humanizer_answer = isset($_POST[$humanizer_secret]) ? mb_strtolower(htmlCHR($_POST[$humanizer_secret]), 'UTF-8') : '';
+	// Получаем ответ от пользователя (форматируем его и приводим в нижний регистр)
+	$humanizer_answer = isset($_POST[$humanizer_secret]) ? mb_strtolower(trim($_POST[$humanizer_secret]), 'UTF-8') : '';
 
 	// Выбираем случайный вопрос + подготавливаем правильный ответ
 	$combinations_array = $bb_cfg['humanizer']['combinations'];
@@ -72,6 +72,11 @@ if ($bb_cfg['humanizer']['enabled'] && !empty($bb_cfg['humanizer']['combinations
 	{
 		unset($humanizer_secret);
 	}
+
+	// Приводим варианты ответа в нижний регистр, для корректного сравнения
+	array_walk_recursive($get_rand_combination['answers'], function (&$answer) {
+		$answer = mb_strtolower(trim($answer), 'UTF-8');
+	});
 }
 =======================================================
 
