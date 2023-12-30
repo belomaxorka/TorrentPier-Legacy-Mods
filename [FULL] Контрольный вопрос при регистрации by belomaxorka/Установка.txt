@@ -20,14 +20,13 @@ $bb_cfg['humanizer'] = array(
 	// ====================================================
 	'enabled' => true,
 	'combinations' => array(
-		// Порядковый номер => array('question' => 'Вопрос', 'answers' =
 		0 => array(
 			'question' => 'Столица Греции',
-			'answers' => array('афины', 'afines')
+			'answers' => array('Αθήνα', 'Афины')
 		),
 		1 => array(
 			'question' => 'Спутник земли',
-			'answers' => array('луна', 'moon')
+			'answers' => array('Луна', 'Moon')
 		),
 		2 => array(
 			'question' => 'Дата рождения Юрия Гагарина',
