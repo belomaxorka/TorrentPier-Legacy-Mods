@@ -96,6 +96,7 @@ if (!empty($humanizer_secret)) {
 	if (!in_array($humanizer_answer, $get_rand_combination['answers'])) {
 		$errors[] = $lang['HUMANIZER_INVALID_ANSWER'];
 	} else {
+		CACHE('bb_cache')->rm('humanizer_combination_' . $humanizer_secret);
 		bb_setcookie('humanizer_secret', '', COOKIE_EXPIRED);
 	}
 }
