@@ -68,8 +68,11 @@ if ($mode == 'register' && !IS_ADMIN && $bb_cfg['humanizer']['enabled'] && !empt
 	$humanizer_answer = isset($_POST[$humanizer_secret]) ? mb_strtolower(trim($_POST[$humanizer_secret]), 'UTF-8') : '';
 
 	// Выбираем случайный вопрос + подготавливаем правильный ответ
-	$combinations_array = $bb_cfg['humanizer']['combinations'];
-	$get_rand_combination = $combinations_array[array_rand($combinations_array, 1)];
+	if (!$get_rand_combination = CACHE('bb_cache')->get('humanizer_combination_' . $humanizer_secret)) {
+		$combinations_array = $bb_cfg['humanizer']['combinations'];
+		CACHE('bb_cache')->set('humanizer_combination_' . $humanizer_secret, $combinations_array[array_rand($combinations_array, 1)], 3600);
+	}
+	$get_rand_combination = CACHE('bb_cache')->get('humanizer_combination_' . $humanizer_secret);
 
 	// Очищаем $humanizer_secret если комбинация пуста (прекращаем дальнейшее выполнение кода)
 	if (empty($humanizer_secret) || empty($get_rand_combination['answers']) || empty($get_rand_combination['question'])) {
