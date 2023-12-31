@@ -8,6 +8,7 @@ ALTER TABLE `bb_attachments_desc` ADD `hash` VARCHAR(255) NOT NULL DEFAULT '';
 ----------------------------------------
 
 ------------ [ Открыть library/config.php и добавить в конце ] ------------
+// Контрольные суммы файлов
 $bb_cfg['attach_file_hash'] = array(
 	'enabled' => true,
 	'hash_type' => 'md5' // Доступные: sha1, md5, crc32.
@@ -15,6 +16,7 @@ $bb_cfg['attach_file_hash'] = array(
 ---------------------------------------------------------------------------
 
 ------------ [ ] ------------
+// Контрольные суммы файлов
 if ($bb_cfg['attach_file_hash']['enabled'] && !empty($bb_cfg['attach_file_hash']['hash_type']))
 {
 	if (in_array($bb_cfg['attach_file_hash']['hash_type'], hash_algos()))
