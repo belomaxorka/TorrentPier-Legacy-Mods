@@ -16,11 +16,11 @@ $bb_cfg['attach_file_hash'] = array(
 ---------------------------------------------------------------------------
 
 ------------ [ Открыть library/includes/functions.php и добавить в конце ] ------------
+// Контрольные суммы файлов
 function get_file_hash($filepath)
 {
 	global $bb_cfg;
 
-	// Контрольные суммы файлов
 	if ($bb_cfg['attach_file_hash']['enabled'] && !empty($bb_cfg['attach_file_hash']['hash_type'])) {
 		if (in_array($bb_cfg['attach_file_hash']['hash_type'], hash_algos())) {
 			return hash_file($bb_cfg['attach_file_hash']['hash_type'], $filepath);
@@ -30,3 +30,39 @@ function get_file_hash($filepath)
 	return false;
 }
 ---------------------------------------------------------------------------------------
+
+------------ [ Открыть library/attach_mod/posting_attachments.php и найти ] ------------
+'thumbnail'				=> (int) $this->thumbnail,
+----------------------------------------------------------------------------------------
+
+------------ [ Ниже вставить ] ------------
+// Контрольные суммы файлов
+'hash'                  => get_file_hash($upload_dir . '/' . $this->attach_filename),
+-------------------------------------------
+
+------------ [ Далее найти ] ------------
+'thumbnail'				=> (int) $this->attachment_thumbnail_list[$i],
+-----------------------------------------
+
+------------ [ Ниже вставить ] ------------
+// Контрольные суммы файлов
+'hash'                  => get_file_hash($upload_dir . '/' . $this->attachment_list[$i]),
+-------------------------------------------
+
+------------ [ Далее найти (Второй раз) ] ------------
+'thumbnail'				=> (int) $this->thumbnail,
+------------------------------------------------------
+
+------------ [ Ниже вставить ] ------------
+// Контрольные суммы файлов
+'hash'                  => get_file_hash($upload_dir . '/' . $this->attach_filename),
+-------------------------------------------
+
+------------ [ Открыть library/attach_mod/displaying.php и найти ] ------------
+'COMMENT'         => $comment,
+-------------------------------------------------------------------------------
+
+------------ [ Ниже вставить ] ------------
+// Контрольные суммы файлов
+'HASH'            => !empty($attachments['_' . $post_id][$i]['hash']) ? strtoupper(htmlCHR($attachments['_' . $post_id][$i]['hash'])) : false,
+-------------------------------------------
