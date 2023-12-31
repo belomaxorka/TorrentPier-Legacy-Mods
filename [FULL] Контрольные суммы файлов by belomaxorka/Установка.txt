@@ -15,19 +15,18 @@ $bb_cfg['attach_file_hash'] = array(
 );
 ---------------------------------------------------------------------------
 
------------- [ ] ------------
-function get_file_hash ($filepath)
+------------ [ Открыть library/includes/functions.php ] ------------
+function get_file_hash($filepath)
 {
-	// Контрольные суммы файлов
-	if ($bb_cfg['attach_file_hash']['enabled'] && !empty($bb_cfg['attach_file_hash']['hash_type']))
-	{
-		if (in_array($bb_cfg['attach_file_hash']['hash_type'], hash_algos()))
-		{
+	global $bb_cfg;
 
-		}
-		else
-		{
-			// Unsupported hash algo selected
+	// Контрольные суммы файлов
+	if ($bb_cfg['attach_file_hash']['enabled'] && !empty($bb_cfg['attach_file_hash']['hash_type'])) {
+		if (in_array($bb_cfg['attach_file_hash']['hash_type'], hash_algos())) {
+			return hash_file($bb_cfg['attach_file_hash']['hash_type'], $filepath);
 		}
 	}
+
+	return false;
 }
+--------------------------------------------------------------------
