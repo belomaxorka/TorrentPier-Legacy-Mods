@@ -20,7 +20,7 @@ SET SESSION sql_mode = '';
 INSERT INTO `bb_config` VALUES ('last_added', '1');
 INSERT INTO `bb_config` VALUES ('new_poster', '0');
 INSERT INTO `bb_config` VALUES ('limit_poster', '30');
-ALTER TABLE `bb_topics` ADD  `topic_image` VARCHAR( 255 ) NOT NULL DEFAULT  '';
+ALTER TABLE `bb_topics` ADD `topic_image` VARCHAR(255) NOT NULL DEFAULT '';
 INSERT INTO `bb_cron` VALUES ('', 1, 'Очистка мини постеров', 'clear_poster.php', 'weekly', '1', '06:00:00', 30, '', '', NULL, 0, '', 0, 0, 0);
 
 #
