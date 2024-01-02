@@ -13,3 +13,14 @@ ALTER TABLE `bb_users` ADD `last_visit` INT(11) NOT NULL DEFAULT '';
 // Пользователи за 24 часа на AJAX
 $bb_cfg['last_visit_stats'] = true;
 ===========================================================================
+
+============ [ Открыть library/includes/page_header.php и найти ] ============
+// Online userlist
+==============================================================================
+
+============ [ Выше вставить ] ============
+if ($bb_cfg['last_visit_stats'] && $logged_in && !bf($userdata['user_opt'], 'user_opt', 'user_viewonline')) {
+	if (!DB()->fetch_row("")) {
+	}
+}
+===========================================
