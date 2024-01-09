@@ -11,17 +11,15 @@
 
 ---------- Выше вставить ----------
 // Сортировка по ролям в списке пользователей
-if ($role  = (string) request_var('role', ''))
+$role = (string) request_var('role', '');
+$selected_role = '';
+if ($role == 'admins')
 {
-	$selected_role = '';
-	if ($role == 'admins')
-	{
-		$selected_role = " AND user_level = " . ADMIN;
-	}
-	elseif ($role == 'moderators')
-	{
-		$selected_role = " AND user_level = " . MOD;
-	}
+	$selected_role = " AND user_level = " . ADMIN;
+}
+elseif ($role == 'moderators')
+{
+	$selected_role = " AND user_level = " . MOD;
 }
 -----------------------------------
 
@@ -32,6 +30,14 @@ $sql .= " ORDER BY $order_by";
 ---------- Выше вставить ----------
 $sql .= $selected_role;
 -----------------------------------
+
+---------- Далее найти ----------
+$paginationurl = "memberlist.php?mode=$mode&amp;order=$sort_order&amp;letter=$by_letter";
+---------------------------------
+
+---------- Заменить на ----------
+$paginationurl = "memberlist.php?mode=$mode&amp;order=$sort_order&amp;role=$role&amp;letter=$by_letter";
+---------------------------------
 
 ---------- Открыть memberlist.tpl (В вашем шаблоне) и найти ----------
 <tr>
