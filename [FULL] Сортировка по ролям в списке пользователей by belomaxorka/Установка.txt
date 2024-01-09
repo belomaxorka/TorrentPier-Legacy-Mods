@@ -1,0 +1,46 @@
+﻿- Автор: belomaxorka
+- Версия: v1.0.0
+- Описание: Добавляет сортировку по ролям (Администратор, Модератор,
+  Заблокированные пользователи, пользователи) в список пользователей.
+
+---------- Открыть memberlist.php и найти ----------
+//
+// Memberlist sorting
+//
+----------------------------------------------------
+
+---------- Выше вставить ----------
+// Сортировка по ролям в списке пользователей
+if ($role  = (string) request_var('role', ''))
+{
+	$selected_role = '';
+	if ($role == 'admins')
+	{
+		$selected_role = " AND user_level = " . ADMIN;
+	}
+	elseif ($role == 'moderators')
+	{
+		$selected_role = " AND user_level = " . MOD;
+	}
+}
+-----------------------------------
+
+---------- Далее найти ----------
+$sql .= " ORDER BY $order_by";
+---------------------------------
+
+---------- Выше вставить ----------
+$sql .= $selected_role;
+-----------------------------------
+
+---------- Открыть memberlist.tpl (В вашем шаблоне) и найти ----------
+<tr>
+	<td align="right" class="med">{L_SORT_PER_LETTER}:&nbsp;{S_LETTER_SELECT}{S_LETTER_HIDDEN}</td>
+</tr>
+----------------------------------------------------------------------
+
+---------- Выше вставить ----------
+<tr>
+	<td align="left" class="med">{L_ROLE}&nbsp;<a href="memberlist.php?role=admins">{L_ADMINISTRATORS}</a>,&nbsp;<a href="memberlist.php?role=moderators">{L_MODERATORS}</a></td>
+</tr>
+-----------------------------------
