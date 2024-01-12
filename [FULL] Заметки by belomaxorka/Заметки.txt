@@ -19,9 +19,9 @@ $lang['NOTE_SAVED'] = 'Заметка успешно сохранена!';
 'ADMIN_NOTE' => $bb_cfg['admin_note'],
 ======================= открыть library/ajax/manage_admin.php и добавить внутри switch =======================
 case 'admin_note':
-	$note = (string)$this->request['note'];
-	if (isset($note))
+	if (isset($this->request['note']))
 	{
+		$note = (string)$this->request['note'];
 		bb_update_config(array('admin_note' => htmlCHR($note)));
 		$this->response['note_saved'] = $lang['NOTE_SAVED'];
 	}
