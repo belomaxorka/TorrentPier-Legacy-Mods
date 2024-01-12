@@ -1,7 +1,7 @@
 ===============================================
 - Мод заметки администратора
 -----------------------------------------------
-- Версия: 1.1.0
+- Версия: 1.2.0
 - Автор: druid
 ===============================================
 
@@ -19,13 +19,19 @@ $lang['NOTE_SAVED'] = 'Заметка успешно сохранена!';
 ======================= открыть library/ajax/manage_admin.php и добавить внутри switch =======================
 case 'admin_note':
 	$note = (string)$this->request['note'];
-	bb_update_config(array('admin_note' => $note));
-	$this->response['note_saved'] = $lang['NOTE_SAVED'];
+	if (isset($note))
+	{
+		bb_update_config(array('admin_note' => $note));
+		$this->response['note_saved'] = $lang['NOTE_SAVED'];
+	}
 	break;
 ======================= открыть styles/templates/admin/index.tpl и найти =======================
 $('#cache').html(data.cache_html);
 ======================= ниже вставить =======================
-$('#res_note').html(data.note_saved);
+if (data.note_saved !== null)
+{
+	$('#res_note').html(data.note_saved);
+}
 ======================= далее найти =======================
 ajax.manage_admin = function (mode) {
 	ajax.exec({
@@ -35,7 +41,7 @@ ajax.manage_admin = function (mode) {
 	});
 };
 ======================= заменить на =======================
-ajax.manage_admin = function (mode, note = '') {
+ajax.manage_admin = function (mode, note = null) {
 	ajax.exec({
 		action: 'manage_admin',
 		mode: mode,
