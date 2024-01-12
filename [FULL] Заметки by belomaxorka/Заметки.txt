@@ -21,7 +21,7 @@ case 'admin_note':
 	$note = (string)$this->request['note'];
 	if (isset($note))
 	{
-		bb_update_config(array('admin_note' => $note));
+		bb_update_config(array('admin_note' => htmlCHR($note)));
 		$this->response['note_saved'] = $lang['NOTE_SAVED'];
 	}
 	break;
