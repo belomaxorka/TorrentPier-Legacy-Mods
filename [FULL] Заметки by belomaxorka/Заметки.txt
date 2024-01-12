@@ -27,13 +27,6 @@ case 'admin_note':
 	}
 	break;
 ======================= открыть styles/templates/admin/index.tpl и найти =======================
-$('#cache').html(data.cache_html);
-======================= ниже вставить =======================
-if (data.note_saved !== null)
-{
-	$('#res_note').html(data.note_saved);
-}
-======================= далее найти =======================
 ajax.manage_admin = function (mode) {
 	ajax.exec({
 		action  : 'manage_admin',
@@ -50,6 +43,13 @@ ajax.manage_admin = function (mode, note = null) {
 		note: note
 	});
 };
+======================= далее найти =======================
+$('#cache').html(data.cache_html);
+======================= ниже вставить =======================
+if (data.note_saved !== null)
+{
+	$('#res_note').html(data.note_saved);
+}
 ======================= далее в удобное место вставить (желательно выше <a name="online"></a>) =======================
 <table class="forumline">
 	<tr>
