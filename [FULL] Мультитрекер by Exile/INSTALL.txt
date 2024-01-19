@@ -1,0 +1,267 @@
+-------------------------------------------------------------------------------------
+1.  !!!ВНИМАНИЕ!!!
+	Для работы модификации необходимы расширения: msqli.so, curl.so и серверный cron.
+
+2. Скопировать папку mult и её содержимое в корень трекера.
+
+3. На сервере настроить крон задачу:
+
+	*/05 * * * * wget http://ваш домен.ru/mult/ann.php
+
+	где {*/05 * * * *} - выполнение каждые 5 минут
+
+	По умолчанию:
+	* Обновление пиров и сидов каждые пять минут по 20 раздач. 
+	* Интервал обновления одной раздачи: 12 часов.
+
+Настраиваете под себя в заисимости от кол-ва раздач, и тайм-апа сервера на внешку.
+
+4. Выполнить запросы в базу:
+
+ALTER TABLE `bb_bt_torrents` ADD `last_update` int(11) not null default 0;
+ALTER TABLE `bb_bt_torrents` ADD `ext_seeder` int(11) not null default 0;
+ALTER TABLE `bb_bt_torrents` ADD `ext_leecher` int(11) not null default 0;
+
+5. Заполнить своими данными /mult/config.php
+(переодически проверяйте анонсеры на предмет доступности, во избежание долгого обновления)
+--------------------------------------------------------------------------------------
+
+ОТКРЫТЬ
+\attach_mod\displaying_torrent.php----------------------------------------
+
+НАЙТИ
+$peers_cnt = $seed_count = 0;
+
+ЗАМЕНИТЬ
+$peers_cnt = $seed_count = $leech_count = 0;
+
+НАЙТИ
+
+		// SQL for each mode
+		if ($s_mode == 'count')
+		{
+			$sql = "SELECT seeders, leechers, speed_up, speed_down
+				FROM ". BB_BT_TRACKER_SNAP ."
+				WHERE topic_id = $tor_id
+				LIMIT 1";
+		}
+		else if ($s_mode == 'names')
+		{
+			$sql = "SELECT tr.user_id, tr.ip, tr.port, tr.remain, tr.seeder, u.username, u.user_rank
+				FROM ". BB_BT_TRACKER ." tr, ". BB_USERS ." u
+				WHERE tr.topic_id = $tor_id
+					AND u.user_id = tr.user_id
+				GROUP BY tr.ip, tr.user_id, tr.port, tr.seeder
+				ORDER BY u.username
+				LIMIT $show_peers_limit";
+		}
+		else
+		{
+			$sql = "SELECT
+					tr.user_id, tr.ip, tr.port, tr.uploaded, tr.downloaded, tr.remain,
+					tr.seeder, tr.releaser, tr.speed_up, tr.speed_down, tr.update_time,
+					u.username, u.user_rank
+				FROM ". BB_BT_TRACKER ." tr
+				LEFT JOIN ". BB_USERS ." u ON u.user_id = tr.user_id
+				WHERE tr.topic_id = $tor_id
+				GROUP BY tr.ip, tr.user_id, tr.port, tr.seeder
+				ORDER BY $full_mode_order $full_mode_sort_dir
+				LIMIT $show_peers_limit";
+		}
+
+ЗАМЕНИТЬ:
+
+		// SQL for each mode
+		if ($s_mode == 'count')
+		{
+			$sql = "SELECT sn.seeders, sn.leechers, sn.speed_up, sn.speed_down,
+					tor.ext_seeder, tor.ext_leecher
+				FROM ". BB_BT_TORRENTS ." tor
+					LEFT JOIN ". BB_BT_TRACKER_SNAP ." sn ON(sn.topic_id = tor.topic_id)
+				WHERE tor.topic_id = $tor_id
+				LIMIT 1";
+		}
+		else if ($s_mode == 'names')
+		{
+			$sql = "SELECT tr.user_id, tr.ip, tr.port, tr.remain, tr.seeder, u.username, u.user_rank,
+					tor.ext_seeder, tor.ext_leecher
+				FROM ". BB_BT_TORRENTS ." tor
+					LEFT JOIN ". BB_BT_TRACKER ." tr ON(tr.topic_id = tor.topic_id)
+					LEFT JOIN ". BB_USERS ." u ON(u.user_id = tr.user_id)
+				WHERE tor.topic_id = $tor_id
+				GROUP BY tr.ip, tr.user_id, tr.port, tr.seeder
+				ORDER BY u.username
+				LIMIT $show_peers_limit";
+		}
+		else
+		{
+			$sql = "SELECT
+					tr.user_id, tr.ip, tr.port, tr.uploaded, tr.downloaded, tr.remain,
+					tr.seeder, tr.releaser, tr.speed_up, tr.speed_down, tr.update_time,
+					u.username, u.user_rank,
+				    tor.ext_seeder, tor.ext_leecher
+				FROM ". BB_BT_TORRENTS ." tor
+					LEFT JOIN ". BB_BT_TRACKER ." tr ON(tr.topic_id = tor.topic_id)
+					LEFT JOIN ". BB_USERS ." u ON (u.user_id = tr.user_id)
+				WHERE tor.topic_id = $tor_id
+					AND tr.topic_id = tor.topic_id
+				GROUP BY tr.ip, tr.user_id, tr.port, tr.seeder
+				ORDER BY $full_mode_order $full_mode_sort_dir
+				LIMIT $show_peers_limit";
+		}
+
+НАЙТИ
+		$tmp[0]['username'] = (int) @$peers[0]['leechers'];
+		$tmp[1]['username'] = (int) @$peers[0]['seeders'];
+
+ЗАМЕНИТЬ
+		$tmp[0]['username'] = (int) @$peers[0]['leechers'] + @$peers[0]['ext_leecher'];
+		$tmp[1]['username'] = (int) @$peers[0]['seeders'] + @$peers[0]['ext_seeder'];
+		
+НАЙТИ
+if ($bb_cfg['bt_allow_spmode_change'] && $s_mode != 'full')
+
+ЗАМЕНИТЬ
+if ($bb_cfg['bt_allow_spmode_change'] && $s_mode != 'full' && ($seed_count || $leech_count))
+
+ОТКРЫТЬ
+\includes\datastore\build_stats.php-----------------------------------------------------------
+
+НАЙТИ
+// peers stat
+$row = DB()->fetch_row("SELECT SUM(seeders) AS seeders, SUM(leechers) AS leechers, ((SUM(speed_up) + SUM(speed_down))/2) AS speed FROM ". BB_BT_TRACKER_SNAP);
+$data['seeders']  = number_format($row['seeders']);
+$data['leechers'] = number_format($row['leechers']);
+$data['peers']    = number_format($row['seeders'] + $row['leechers']);
+$data['speed']    = $row['speed'];
+
+ЗАМЕНИТЬ
+// peers stat
+$row = DB()->fetch_row("SELECT SUM(seeders) AS seeders, SUM(leechers) AS leechers, ((SUM(speed_up) + SUM(speed_down))/2) AS speed FROM ". BB_BT_TRACKER_SNAP);
+$row2 = DB()->fetch_row("SELECT SUM(ext_seeder) AS seeders, SUM(ext_leecher) AS leechers FROM ". BB_BT_TORRENTS);
+$data['seeders']  = number_format($row['seeders'] + $row2['seeders']);
+$data['leechers'] = number_format($row['leechers'] + $row2['leechers']);
+$data['peers']    = number_format($row['seeders'] + $row['leechers'] + $row2['seeders'] + $row2['leechers']);
+$data['speed']    = $row['speed'];
+
+ОТКРЫТЬ
+\tracker.php----------------------------------------------------------------------------------
+
+НАЙТИ
+sn.seeders, sn.leechers, tor.info_hash
+
+В ЭТОЙ ЖЕ СТРОКЕ ДОБАВИТЬ
+, tor.ext_seeder, tor.ext_leecher
+
+НАЙТИ
+			$seeds  = $tor['seeders'];
+			$leechs = $tor['leechers'];
+
+ЗАМЕНИТЬ
+			$seeds  = $tor['seeders'] + $tor['ext_seeder'];
+			$leechs = $tor['leechers'] + $tor['ext_leecher'];
+			
+ОТКРЫТЬ
+\viewforum.php--------------------------------------------------------------------------------
+
+НАЙТИ
+sn.seeders, sn.leechers
+
+В ЭТОЙ ЖЕ СТРОКЕ ДОБАВИТЬ
+, tor.ext_seeder, tor.ext_leecher
+
+НАЙТИ
+			'SEEDERS'    => (int) $topic['seeders'],
+			'LEECHERS'   => (int) $topic['leechers'],
+
+ЗАМЕНИТЬ
+			'SEEDERS'    => (int) $topic['seeders'] + $topic['ext_seeder'],
+			'LEECHERS'   => (int) $topic['leechers'] + $topic['ext_leecher'],
+			
+ОТКРЫТЬ
+\ajax.php------------------------------------------------------------------------------------
+
+НАЙТИ
+case 'view_post':
+		require(INC_DIR . 'bbcode.php');
+		break;
+		
+ПОСЛЕ ДОБАВИТЬ
+case 'update_peers':
+		require(BB_ROOT .'mult/config.php');
+		require(BB_ROOT .'mult/func.php');
+		require(BB_ROOT .'mult/class.remote.php');
+		require(BB_ROOT .'mult/class.fbenc.php');
+		require(BB_ROOT .'mult/class.bittorrent.php');
+		require(BB_ROOT .'mult/class.getpeers.php');
+		break;
+
+НАЙТИ
+'index_data'        => array('guest'),
+
+ПОСЛЕ ДОБАВИТЬ
+'update_peers'      => array('mod'),		
+
+НАЙТИ ПОСЛЕДНИЮ СКОБКУ - } - И ПЕРЕД НЕЙ ДОБАВИТЬ
+	function update_peers()
+	{
+		global $db, $cfg_ann, $lang;
+		$seed = $leech = 0;
+		$topic_id = (int) $this->request['topic_id'];
+		$row = DB()->fetch_row("SELECT info_hash FROM ".BB_BT_TORRENTS." WHERE topic_id = ".$topic_id." LIMIT 1");
+		if($row && $info_hash = $row['info_hash'])
+		{	
+			$gp = new getpeers();
+			$data = $gp->get_peers(1, serialize($cfg_ann), bin2hex($info_hash), false);
+			foreach($data['peers'] as $announce)
+				{
+					$seed = (int) $seed + $announce[0];
+					$leech = (int) $leech + $announce[1];
+				}
+			//DB()->query("UPDATE ".BB_BT_TORRENTS." SET last_update = ".$data['last_update'].", ext_seeder = ".$seed.", ext_leecher = ".$leech." WHERE info_hash = '".DB()->escape($info_hash)."'");
+			DB()->query("UPDATE ".BB_BT_TORRENTS." SET last_update = ".$data['last_update'].", ext_seeder = ".$seed.", ext_leecher = ".$leech." WHERE topic_id = $topic_id");
+			$html = '<div class="mrg_4 pad_4">';
+			$html .= '<span class="seed">'. $lang['SEEDERS'] .':&nbsp; <b>'. $seed .'</b> &nbsp;[&nbsp; 0 KB/s &nbsp;]</span> &nbsp;';
+			$html .= '<span class="leech">'. $lang['LEECHERS'] .':&nbsp; <b>'. $leech .'</b> &nbsp;[&nbsp; 0 KB/s &nbsp;]</span> &nbsp;';
+			$html .= '</div>';
+		}
+		$this->response['html']	= $html;
+		$this->response['topic_id'] = $topic_id;
+	}
+	
+ОТКРЫТЬ \templates\default\viewtopic_torrent.tpl-------------------------------------------------------
+
+НАЙТИ
+<tr>
+	<td colspan="2" class="catTitle"><a href="{DL_LIST_HREF}">
+		{L_DL_LIST_AND_TORRENT_ACTIVITY}
+	</a>
+	</td>
+</tr>
+
+ЗАМЕНИТЬ
+<tr>
+	<td colspan="2" class="catTitle"><a href="{DL_LIST_HREF}">
+		{L_DL_LIST_AND_TORRENT_ACTIVITY}
+	</a>
+	<script type="text/javascript">
+		ajax.callback.update_peers = function(data) {
+			$('#peers').html(data.html);
+		};
+	</script>
+	<a class="txtb" href="#peers" onclick="ajax.exec({action : 'update_peers', topic_id: '{TOPIC_ID}'});">[{L_UPDATE} пиров]</a>
+	</td>
+</tr>
+
+НАЙТИ
+		<tr>
+			<td colspan="2" class="<!-- IF SHOW_DL_LIST -->row2<!-- ELSE -->row1<!-- ENDIF --> pad_2">
+				<!-- IF not SEED_COUNT -->
+				
+ЗАМЕНИТЬ
+		<tr>
+			<td id="peers" colspan="2" class="<!-- IF SHOW_DL_LIST -->row2<!-- ELSE -->row1<!-- ENDIF --> pad_2">
+				<a name="peers"></a>
+				<!-- IF not SEED_COUNT -->					
+
+--------------------------------------ВСЕ СОХРАНИТЬ, ОЧИСТИТЬ КЭШ В АДМИНКЕ, ЮЗАТЬ----------------------------------	
