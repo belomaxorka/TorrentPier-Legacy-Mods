@@ -211,14 +211,14 @@ case 'update_peers':
 		$row = DB()->fetch_row("SELECT info_hash FROM ".BB_BT_TORRENTS." WHERE topic_id = ".$topic_id." LIMIT 1");
 		if($row && $info_hash = $row['info_hash'])
 		{	
-			$gp = new getpeers();
+			$gp = \new getpeers();
 			$data = $gp->get_peers(1, serialize($cfg_ann), bin2hex($info_hash), false);
 			foreach($data['peers'] as $announce)
 				{
 					$seed = (int) $seed + $announce[0];
 					$leech = (int) $leech + $announce[1];
 				}
-			//DB()->query("UPDATE ".BB_BT_TORRENTS." SET last_update = ".$data['last_update'].", ext_seeder = ".$seed.", ext_leecher = ".$leech." WHERE info_hash = '".DB()->escape($info_hash)."'");
+			// DB()->query("UPDATE ".BB_BT_TORRENTS." SET last_update = ".$data['last_update'].", ext_seeder = ".$seed.", ext_leecher = ".$leech." WHERE info_hash = '".DB()->escape($info_hash)."'");
 			DB()->query("UPDATE ".BB_BT_TORRENTS." SET last_update = ".$data['last_update'].", ext_seeder = ".$seed.", ext_leecher = ".$leech." WHERE topic_id = $topic_id");
 			$html = '<div class="mrg_4 pad_4">';
 			$html .= '<span class="seed">'. $lang['SEEDERS'] .':&nbsp; <b>'. $seed .'</b> &nbsp;[&nbsp; 0 KB/s &nbsp;]</span> &nbsp;';
@@ -249,7 +249,9 @@ case 'update_peers':
 			$('#peers').html(data.html);
 		};
 	</script>
+	<!-- IF IS_AM -->
 	<a class="txtb" href="#peers" onclick="ajax.exec({action : 'update_peers', topic_id: '{TOPIC_ID}'});">[{L_UPDATE} пиров]</a>
+	<!-- ENDIF / IS_AM -->
 	</td>
 </tr>
 

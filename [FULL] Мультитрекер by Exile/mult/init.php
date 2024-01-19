@@ -7,15 +7,13 @@ include('class.remote.php');
 include('class.fbenc.php');
 include('class.bittorrent.php');
 
-$gp = new getpeers();
+$gp = new \getpeers();
 $mysqli = new mysqli($cfg_db['host'], $cfg_db['user'], $cfg_db['pass'], $cfg_db['db']);
-if($mysqli->connect_errno)
-{
-  printf("Íå óäàëîñü ïîäêëþ÷èòüñÿ: %s\n", $mysqli->connect_error);
-  exit();
+if ($mysqli->connect_errno) {
+	printf("ÐÐµ ÑƒÐ´Ð°Ð»Ð¾ÑÑŒ Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒÑÑ: %s\n", $mysqli->connect_error);
+	exit();
 }
-if (!$mysqli->set_charset($cfg_db['charset']))
-{
-  printf("Îøèáêà ïðè çàãðóçêå íàáîðà ñèìâîëîâ {$cfg_db['charset']}: %s\n", $mysqli->error);
-  exit();
+if (!$mysqli->set_charset($cfg_db['charset'])) {
+	printf("ÐžÑˆÐ¸Ð±ÐºÐ° Ð¿Ñ€Ð¸ Ð·Ð°Ð³Ñ€ÑƒÐ·ÐºÐµ Ð½Ð°Ð±Ð¾Ñ€Ð° ÑÐ¸Ð¼Ð²Ð¾Ð»Ð¾Ð² {$cfg_db['charset']}: %s\n", $mysqli->error);
+	exit();
 }
