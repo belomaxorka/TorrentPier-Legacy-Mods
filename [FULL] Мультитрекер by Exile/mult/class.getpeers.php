@@ -15,7 +15,7 @@ class getpeers {
 
     /**
      * Объект bittorrent
-     * @var bittorrent $bt 
+     * @var bittorrent $bt
      */
     protected $bt = null;
 
@@ -196,7 +196,7 @@ class getpeers {
         if (is_array(@$c['peers']))
             return count(@$c['peers']);
         else
-            return (int) (strlen(@$c['peers']) / 6);
+            return (int) (strlen(isset($c['peers']) ? $c['peers'] : '') / 6);
     }
 
     /**
