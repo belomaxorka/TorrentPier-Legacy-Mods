@@ -13,7 +13,7 @@ $sql = "SELECT info_hash, ext_seeder FROM " . BB_BT_TORRENTS . " WHERE last_upda
 
 // Обрабатываем каждую раздачу
 if ($result = $mysqli->query($sql)) {
-	while ($row = $result->fetch_row()) {
+	while ($row = $result->fetch_assoc()) {
 		$data = $scraper->scrape(bin2hex($row['info_hash']), $cfg_ann, LIMIT_MAX_TRACKERS, ANNOUNCER_TIMEOUT_CONNECT);
 
 		// Проверка на наличие ошибок
