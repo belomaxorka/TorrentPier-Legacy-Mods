@@ -10,15 +10,15 @@ $sql = "SELECT info_hash FROM " . BB_BT_TORRENTS . " WHERE last_update < " . TIM
 // Обрабатываем каждую раздачу
 if ($result = $mysqli->query($sql)) {
 	while ($row = $result->fetch_row()) {
-		$data = $scraper->scrape(bin2hex($row[0]), $cfg_ann);
+		$announcers = $scraper->scrape(bin2hex($row[0]), $cfg_ann);
 		// Проверка на наличие ошибок
-		if ($scraper->has_errors()) {
+		if ($scraper->has_errors() && SHOW_DEAD_ANNOUNCERS) {
 			die(print_r($scraper->get_errors(), true));
 		}
-		if (is_array($data) && ($peer_data = $data[bin2hex($row[0])])) {
+		if (is_array($announcers) && $announcers) {
 			// Получаем данные о раздаче от хостов
-			foreach ($peer_data as $announce) {
-				// Пропускаем мертвые хосты
+			foreach ($announcers as $announce) {
+				// Пропускаем хосты с неправильным выводом
 				if (!isset($announce['seeders']) || !isset($announce['leechers']) || !isset($announce['completed'])) {
 					continue;
 				}
