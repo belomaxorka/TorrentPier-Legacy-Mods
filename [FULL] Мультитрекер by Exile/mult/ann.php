@@ -3,8 +3,6 @@
 define('BB_BT_TORRENTS', 'bb_bt_torrents');
 require(__DIR__ . '/init.php');
 
-print_r($cfg_ann);
-
 if (empty($cfg_ann)) {
 	die('Список хостов пустой...');
 }
