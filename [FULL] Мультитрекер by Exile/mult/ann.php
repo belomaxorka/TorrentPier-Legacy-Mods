@@ -27,17 +27,17 @@ if ($result = $mysqli->query($sql)) {
 		// Получаем статистику
 		if (is_array($data)) {
 			$announcer = $data[bin2hex($row['info_hash'])];
-			$seed = (int)$announcer['seeders'];
-			$leech = (int)$announcer['leechers'];
-			$completed = (int)$announcer['completed'];
+			if (isset($announcer['seeders'], $announcer['leechers'], $announcer['completed'])) {
+				$seed = (int)$announcer['seeders'];
+				$leech = (int)$announcer['leechers'];
+				$completed = (int)$announcer['completed'];
 
-			// Вывод статистики
-			print_r($announcer);
-			echo bin2hex($row['info_hash']);
-			echo '<br/>';
+				// Вывод статистики
+				print_r($announcer);
+				echo bin2hex($row['info_hash']);
+				echo '<br/>';
 
-			// Обновляем данные торрента
-			if (isset($seed, $leech, $completed)) {
+				// Обновляем данные торрента
 				$sql_update = "UPDATE " . BB_BT_TORRENTS . " SET last_update = " . time() . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE info_hash = '" . rtrim($mysqli->real_escape_string($row['info_hash']), ' ') . "'";
 				if ($mysqli->query($sql_update)) {
 					$seed = $leech = $completed = 0;
