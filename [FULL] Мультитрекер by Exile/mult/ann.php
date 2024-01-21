@@ -36,6 +36,8 @@ if ($result = $mysqli->query($sql)) {
 	}
 
 	$result->close();
+} else {
+	die("Вероятно у вас нету ещё раздач, либо ещё не прошло время указанное в константе TIME_UPD");
 }
 
 $mysqli->close();
