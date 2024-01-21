@@ -51,7 +51,6 @@ $peers_cnt = $seed_count = $leech_count = 0;
 				FROM ". BB_BT_TRACKER ." tr, ". BB_USERS ." u
 				WHERE tr.topic_id = $tor_id
 					AND u.user_id = tr.user_id
-				GROUP BY tr.ip, tr.user_id, tr.port, tr.seeder
 				ORDER BY u.username
 				LIMIT $show_peers_limit";
 		}
@@ -64,7 +63,6 @@ $peers_cnt = $seed_count = $leech_count = 0;
 				FROM ". BB_BT_TRACKER ." tr
 				LEFT JOIN ". BB_USERS ." u ON u.user_id = tr.user_id
 				WHERE tr.topic_id = $tor_id
-				GROUP BY tr.ip, tr.user_id, tr.port, tr.seeder
 				ORDER BY $full_mode_order $full_mode_sort_dir
 				LIMIT $show_peers_limit";
 		}
@@ -89,7 +87,6 @@ $peers_cnt = $seed_count = $leech_count = 0;
 					LEFT JOIN ". BB_BT_TRACKER ." tr ON(tr.topic_id = tor.topic_id)
 					LEFT JOIN ". BB_USERS ." u ON(u.user_id = tr.user_id)
 				WHERE tor.topic_id = $tor_id
-				GROUP BY tr.ip, tr.user_id, tr.port, tr.seeder
 				ORDER BY u.username
 				LIMIT $show_peers_limit";
 		}
@@ -99,24 +96,23 @@ $peers_cnt = $seed_count = $leech_count = 0;
 					tr.user_id, tr.ip, tr.port, tr.uploaded, tr.downloaded, tr.remain,
 					tr.seeder, tr.releaser, tr.speed_up, tr.speed_down, tr.update_time,
 					tr.complete_percent, u.username, u.user_rank,
-				    tor.ext_seeder, tor.ext_leecher
+					tor.ext_seeder, tor.ext_leecher
 				FROM ". BB_BT_TORRENTS ." tor
 					LEFT JOIN ". BB_BT_TRACKER ." tr ON(tr.topic_id = tor.topic_id)
 					LEFT JOIN ". BB_USERS ." u ON (u.user_id = tr.user_id)
 				WHERE tor.topic_id = $tor_id
 					AND tr.topic_id = tor.topic_id
-				GROUP BY tr.ip, tr.user_id, tr.port, tr.seeder
 				ORDER BY $full_mode_order $full_mode_sort_dir
 				LIMIT $show_peers_limit";
 		}
 
 НАЙТИ
-		$tmp[0]['username'] = (int) @$peers[0]['leechers'];
-		$tmp[1]['username'] = (int) @$peers[0]['seeders'];
+		$tmp[0]['username'] = (int)@$peers[0]['leechers'];
+		$tmp[1]['username'] = (int)@$peers[0]['seeders'];
 
 ЗАМЕНИТЬ
-		$tmp[0]['username'] = (int) @$peers[0]['leechers'] + (int) @$peers[0]['ext_leecher'];
-		$tmp[1]['username'] = (int) @$peers[0]['seeders'] + (int) @$peers[0]['ext_seeder'];
+		$tmp[0]['username'] = (int)@$peers[0]['leechers'] + (int)@$peers[0]['ext_leecher'];
+		$tmp[1]['username'] = (int)@$peers[0]['seeders'] + (int)@$peers[0]['ext_seeder'];
 
 НАЙТИ
 if ($bb_cfg['bt_allow_spmode_change'] && $s_mode != 'full')
@@ -129,20 +125,20 @@ if ($bb_cfg['bt_allow_spmode_change'] && $s_mode != 'full' && ($seed_count || $l
 
 НАЙТИ
 // peers stat
-$row = DB()->fetch_row("SELECT SUM(seeders) AS seeders, SUM(leechers) AS leechers, ((SUM(speed_up) + SUM(speed_down))/2) AS speed FROM ". BB_BT_TRACKER_SNAP);
-$data['seeders']  = number_format($row['seeders']);
+$row = DB()->fetch_row("SELECT SUM(seeders) AS seeders, SUM(leechers) AS leechers, ((SUM(speed_up) + SUM(speed_down))/2) AS speed FROM " . BB_BT_TRACKER_SNAP);
+$data['seeders'] = number_format($row['seeders']);
 $data['leechers'] = number_format($row['leechers']);
-$data['peers']    = number_format($row['seeders'] + $row['leechers']);
-$data['speed']    = $row['speed'];
+$data['peers'] = number_format($row['seeders'] + $row['leechers']);
+$data['speed'] = $row['speed'];
 
 ЗАМЕНИТЬ
 // peers stat
 $row = DB()->fetch_row("SELECT SUM(seeders) AS seeders, SUM(leechers) AS leechers, ((SUM(speed_up) + SUM(speed_down))/2) AS speed FROM ". BB_BT_TRACKER_SNAP);
 $row2 = DB()->fetch_row("SELECT SUM(ext_seeder) AS seeders, SUM(ext_leecher) AS leechers FROM ". BB_BT_TORRENTS);
-$data['seeders']  = number_format($row['seeders'] + $row2['seeders']);
+$data['seeders'] = number_format($row['seeders'] + $row2['seeders']);
 $data['leechers'] = number_format($row['leechers'] + $row2['leechers']);
-$data['peers']    = number_format($row['seeders'] + $row['leechers'] + $row2['seeders'] + $row2['leechers']);
-$data['speed']    = $row['speed'];
+$data['peers'] = number_format($row['seeders'] + $row['leechers'] + $row2['seeders'] + $row2['leechers']);
+$data['speed'] = $row['speed'];
 
 ОТКРЫТЬ
 \tracker.php----------------------------------------------------------------------------------
@@ -154,11 +150,11 @@ sn.seeders, sn.leechers, tor.info_hash
 , tor.ext_seeder, tor.ext_leecher
 
 НАЙТИ
-			$seeds  = $tor['seeders'];
+			$seeds = $tor['seeders'];
 			$leechs = $tor['leechers'];
 
 ЗАМЕНИТЬ
-			$seeds  = $tor['seeders'] + $tor['ext_seeder'];
+			$seeds = $tor['seeders'] + $tor['ext_seeder'];
 			$leechs = $tor['leechers'] + $tor['ext_leecher'];
 
 ОТКРЫТЬ
@@ -171,37 +167,44 @@ sn.seeders, sn.leechers
 , tor.ext_seeder, tor.ext_leecher
 
 НАЙТИ
-			'SEEDERS'    => (int) $topic['seeders'],
-			'LEECHERS'   => (int) $topic['leechers'],
+			'SEEDERS' => (int)$topic['seeders'],
+			'LEECHERS' => (int)$topic['leechers'],
 
 ЗАМЕНИТЬ
-			'SEEDERS'    => (int) $topic['seeders'] + (int) $topic['ext_seeder'],
-			'LEECHERS'   => (int) $topic['leechers'] + (int) $topic['ext_leecher'],
+			'SEEDERS' => (int)$topic['seeders'] + (int)$topic['ext_seeder'],
+			'LEECHERS' => (int)$topic['leechers'] + (int)$topic['ext_leecher'],
 
 ОТКРЫТЬ
 \ajax.php------------------------------------------------------------------------------------
 
 НАЙТИ
 case 'view_post':
-		require(INC_DIR . 'bbcode.php');
+		require INC_DIR . '/bbcode.php';
 		break;
 
 ПОСЛЕ ДОБАВИТЬ
 case 'update_peers':
 		require(BB_ROOT .'mult/config.php');
-		require(BB_ROOT .'mult/Scraper.php');
+		require(BB_ROOT .'mult/func.php');
+		require(BB_ROOT .'mult/class.remote.php');
+		require(BB_ROOT .'mult/class.fbenc.php');
+		require(BB_ROOT .'mult/class.bittorrent.php');
+		require(BB_ROOT .'mult/class.getpeers.php');
 		break;
 
+ОТКРЫТЬ
+\src\Legacy\Ajax.php-------------------------------------------------------------------------
+
 НАЙТИ
-'index_data'        => array('guest'),
+'post_mod_comment' => ['mod'],
 
 ПОСЛЕ ДОБАВИТЬ
-'update_peers'      => array('mod'),
+'update_peers' => ['mod'],
 
 НАЙТИ ПОСЛЕДНИЮ СКОБКУ - } - И ПЕРЕД НЕЙ ДОБАВИТЬ
-	function update_peers()
+	public function update_peers()
 	{
-		require(AJAX_DIR .'update_peers.php');
+		require AJAX_DIR . '/update_peers.php';
 	}
 
 ОТКРЫТЬ \templates\default\viewtopic_torrent.tpl-------------------------------------------------------
@@ -225,7 +228,7 @@ case 'update_peers':
 		};
 	</script>
 	<!-- IF IS_AM -->
-	<a class="txtb" href="#peers" onclick="ajax.exec({action : 'update_peers', topic_id: '{TOPIC_ID}'});">[Обновить пиров]</a>
+	<a class="txtb" href="#peers" onclick="ajax.exec({action : 'update_peers', topic_id: '{TOPIC_ID}'});">[{L_UPDATE} пиров]</a>
 	<!-- ENDIF / IS_AM -->
 	</td>
 </tr>
