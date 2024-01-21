@@ -32,7 +32,7 @@ if (!empty($row)) {
 	}
 
 	// Получаем статистику
-	if (is_array($data)) {
+	if (isset($data[$info_hash])) {
 		$announcer = $data[$info_hash];
 		if (isset($announcer['seeders'], $announcer['leechers'], $announcer['completed'])) {
 			$seed = (int)$announcer['seeders'];
@@ -42,14 +42,12 @@ if (!empty($row)) {
 			// Обновляем данные торрента
 			DB()->query("UPDATE " . BB_BT_TORRENTS . " SET last_update = " . time() . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE topic_id = $topic_id");
 		}
-
+	} else {
 		// Отображаем статистику
 		$html = '<div class="mrg_4 pad_4">';
 		$html .= '<span class="seed">' . $lang['SEEDERS'] . ':&nbsp; <b>' . $seed . '</b> &nbsp;[&nbsp; 0 KB/s &nbsp;]</span> &nbsp;';
 		$html .= '<span class="leech">' . $lang['LEECHERS'] . ':&nbsp; <b>' . $leech . '</b> &nbsp;[&nbsp; 0 KB/s &nbsp;]</span> &nbsp;';
 		$html .= '</div>';
-	} else {
-		$this->ajax_die('Что-то пошло не так...');
 	}
 }
 

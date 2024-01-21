@@ -25,7 +25,7 @@ if ($result = $mysqli->query($sql)) {
 		}
 
 		// Получаем статистику
-		if (is_array($data)) {
+		if (isset($data[bin2hex($row['info_hash'])])) {
 			$announcer = $data[bin2hex($row['info_hash'])];
 			if (isset($announcer['seeders'], $announcer['leechers'], $announcer['completed'])) {
 				$seed = (int)$announcer['seeders'];
