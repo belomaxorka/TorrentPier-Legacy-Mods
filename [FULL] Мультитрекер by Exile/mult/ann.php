@@ -18,12 +18,12 @@ if ($result = $mysqli->query($sql)) {
 		if (is_array($data) && ($peer_data = $data[bin2hex($row[0])])) {
 			// Получаем данные о раздаче от трекеров
 			foreach ($peer_data as $announce) {
-				$seed = (int)$announce['seeders'];
-				$leech = (int)$announce['leechers'];
-				$completed = (int)$announce['completed'];
+				$seed = $seed + (int)$announce['seeders'];
+				$leech = $leech + (int)$announce['leechers'];
+				$completed = $completed + (int)$announce['completed'];
 			}
 			// Обновляем данные торрента
-			$sql_update = "UPDATE " . BB_BT_TORRENTS . " SET last_update = " . $data['last_update'] . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE info_hash = '" . $mysqli->real_escape_string($row[0]) . "'";
+			$sql_update = "UPDATE " . BB_BT_TORRENTS . " SET last_update = " . $data['last_update'] . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE info_hash = '" . rtrim($mysqli->real_escape_string($row[0]), ' ') . "'";
 			if ($res_upd = $mysqli->query($sql_update)) {
 				$seed = $leech = 0;
 			} else {
