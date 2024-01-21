@@ -9,7 +9,7 @@ if (empty($cfg_ann)) {
 
 // Получаем массив с инфо-хэшами раздач
 $seed = $leech = $completed = 0;
-$sql = "SELECT info_hash, ext_seeder FROM " . BB_BT_TORRENTS . " WHERE last_update < " . TIME_UPD . " ORDER BY reg_time DESC LIMIT " . TORRENT_PER_CYCLE;
+$sql = "SELECT info_hash FROM " . BB_BT_TORRENTS . " WHERE last_update < " . TIME_UPD . " ORDER BY reg_time DESC LIMIT " . TORRENT_PER_CYCLE;
 
 // Обрабатываем каждую раздачу
 if ($result = $mysqli->query($sql)) {
@@ -33,9 +33,6 @@ if ($result = $mysqli->query($sql)) {
 			echo '<br/>';
 
 			// Обновляем данные торрента
-			if (FORCE_SINGLE_ANNOUNCER && (count($cfg_ann) > 1) && (($seed - ($seed * 20 / 100)) < $row['ext_seeder'])) {
-				die();
-			}
 			if (isset($seed, $leech, $completed)) {
 				$sql_update = "UPDATE " . BB_BT_TORRENTS . " SET last_update = " . time() . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE info_hash = '" . rtrim($mysqli->real_escape_string($row['info_hash']), ' ') . "'";
 				if ($mysqli->query($sql_update)) {
