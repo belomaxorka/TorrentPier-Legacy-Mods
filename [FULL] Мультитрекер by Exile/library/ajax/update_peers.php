@@ -34,13 +34,13 @@ if (!empty($row)) {
 	// Получаем статистику
 	if (is_array($data)) {
 		$announcer = $data[$info_hash];
-		$seed = (int)$announcer['seeders'];
-		$leech = (int)$announcer['leechers'];
-		$completed = (int)$announcer['completed'];
-	}
+		if (isset($announcer['seeders'], $announcer['leechers'], $announcer['completed'])) {
+			$seed = (int)$announcer['seeders'];
+			$leech = (int)$announcer['leechers'];
+			$completed = (int)$announcer['completed'];
+		}
 
-	// Обновляем данные торрента
-	if (isset($seed, $leech, $completed)) {
+		// Обновляем данные торрента
 		DB()->query("UPDATE " . BB_BT_TORRENTS . " SET last_update = " . time() . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE topic_id = $topic_id");
 
 		// Отображаем статистику
