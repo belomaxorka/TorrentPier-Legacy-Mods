@@ -118,12 +118,6 @@ $peers_cnt = $seed_count = $leech_count = 0;
 		$tmp[0]['username'] = (int) @$peers[0]['leechers'] + (int) @$peers[0]['ext_leecher'];
 		$tmp[1]['username'] = (int) @$peers[0]['seeders'] + (int) @$peers[0]['ext_seeder'];
 
-НАЙТИ
-if ($bb_cfg['bt_allow_spmode_change'] && $s_mode != 'full')
-
-ЗАМЕНИТЬ
-if ($bb_cfg['bt_allow_spmode_change'] && $s_mode != 'full' && ($seed_count || $leech_count))
-
 ОТКРЫТЬ
 \includes\datastore\build_stats.php-----------------------------------------------------------
 
