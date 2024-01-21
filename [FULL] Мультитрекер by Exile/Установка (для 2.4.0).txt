@@ -150,11 +150,11 @@ sn.seeders, sn.leechers, tor.info_hash
 , tor.ext_seeder, tor.ext_leecher
 
 НАЙТИ
-			$seeds  = $tor['seeders'];
+			$seeds = $tor['seeders'];
 			$leechs = $tor['leechers'];
 
 ЗАМЕНИТЬ
-			$seeds  = $tor['seeders'] + $tor['ext_seeder'];
+			$seeds = $tor['seeders'] + $tor['ext_seeder'];
 			$leechs = $tor['leechers'] + $tor['ext_leecher'];
 
 ОТКРЫТЬ
@@ -167,12 +167,12 @@ sn.seeders, sn.leechers
 , tor.ext_seeder, tor.ext_leecher
 
 НАЙТИ
-			'SEEDERS'    => (int)$topic['seeders'],
-			'LEECHERS'   => (int)$topic['leechers'],
+			'SEEDERS' => (int)$topic['seeders'],
+			'LEECHERS' => (int)$topic['leechers'],
 
 ЗАМЕНИТЬ
-			'SEEDERS'    => (int)$topic['seeders'] + (int)$topic['ext_seeder'],
-			'LEECHERS'   => (int)$topic['leechers'] + (int)$topic['ext_leecher'],
+			'SEEDERS' => (int)$topic['seeders'] + (int)$topic['ext_seeder'],
+			'LEECHERS' => (int)$topic['leechers'] + (int)$topic['ext_leecher'],
 
 ОТКРЫТЬ
 \ajax.php------------------------------------------------------------------------------------
