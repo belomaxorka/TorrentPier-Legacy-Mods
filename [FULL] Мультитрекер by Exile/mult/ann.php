@@ -17,6 +17,7 @@ if ($result = $mysqli->query($sql)) {
 			die(print_r($scraper->get_errors(), true));
 		}
 
+		// Получаем статистику
 		if (is_array($data) && $announcer = $data[bin2hex($row[0])]) {
 			$seed = (int)$announcer['seeders'];
 			$leech = (int)$announcer['leechers'];
@@ -33,6 +34,8 @@ if ($result = $mysqli->query($sql)) {
 			}
 		}
 	}
+
 	$result->close();
 }
+
 $mysqli->close();
