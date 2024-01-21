@@ -1,19 +1,19 @@
 <?php
 
-include('config.php');
-include('func.php');
-include('class.getpeers.php');
-include('class.remote.php');
-include('class.fbenc.php');
-include('class.bittorrent.php');
+// Подключаем необходимые файлы
+require(__DIR__ . '/config.php');
+require(__DIR__ . '/Scraper.php');
 
-$gp = new \getpeers();
+// Инициализируем библиотеку
+$scraper = new \Scraper();
+
+// Открываем соединение с базой данных
 $mysqli = new mysqli($cfg_db['host'], $cfg_db['user'], $cfg_db['pass'], $cfg_db['db']);
 if ($mysqli->connect_errno) {
-	printf("Не удалось подключиться: %s\n", $mysqli->connect_error);
-	exit();
+	die(sprintf("Не удалось подключиться: %s", $mysqli->connect_error));
 }
+
+// Устанавливаем кодировку
 if (!$mysqli->set_charset($cfg_db['charset'])) {
-	printf("Ошибка при загрузке набора символов {$cfg_db['charset']}: %s\n", $mysqli->error);
-	exit();
+	die(sprintf("Ошибка при загрузке набора символов {$cfg_db['charset']}: %s", $mysqli->error));
 }

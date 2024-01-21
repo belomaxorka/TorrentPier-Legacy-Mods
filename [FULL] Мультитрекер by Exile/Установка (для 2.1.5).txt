@@ -190,10 +190,7 @@ case 'view_post':
 case 'update_peers':
 		require(BB_ROOT .'mult/config.php');
 		require(BB_ROOT .'mult/func.php');
-		require(BB_ROOT .'mult/class.remote.php');
-		require(BB_ROOT .'mult/class.fbenc.php');
-		require(BB_ROOT .'mult/class.bittorrent.php');
-		require(BB_ROOT .'mult/class.getpeers.php');
+		require(BB_ROOT .'mult/Scraper.php');
 		break;
 
 НАЙТИ
@@ -213,7 +210,7 @@ case 'update_peers':
 
 		if ($row && $info_hash = $row['info_hash'])
 		{
-			$gp = \new getpeers();
+			$scraper = \new Scraper();
 			$data = $gp->get_peers(1, serialize($cfg_ann), bin2hex($info_hash), false);
 			foreach($data['peers'] as $announce)
 			{
