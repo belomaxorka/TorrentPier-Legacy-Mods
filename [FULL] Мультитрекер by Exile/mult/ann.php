@@ -16,8 +16,13 @@ if ($result = $mysqli->query($sql)) {
 			die(print_r($scraper->get_errors(), true));
 		}
 		if (is_array($data) && ($peer_data = $data[bin2hex($row[0])])) {
-			// Получаем данные о раздаче от трекеров
+			// Получаем данные о раздаче от хостов
 			foreach ($peer_data as $announce) {
+				// Пропускаем мертвые хосты
+				if (!isset($announce['seeders']) || !isset($announce['leechers']) || !isset($announce['completed'])) {
+					continue;
+				}
+
 				$seed = $seed + (int)$announce['seeders'];
 				$leech = $leech + (int)$announce['leechers'];
 				$completed = $completed + (int)$announce['completed'];
@@ -25,7 +30,7 @@ if ($result = $mysqli->query($sql)) {
 			// Обновляем данные торрента
 			$sql_update = "UPDATE " . BB_BT_TORRENTS . " SET last_update = " . $data['last_update'] . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE info_hash = '" . rtrim($mysqli->real_escape_string($row[0]), ' ') . "'";
 			if ($res_upd = $mysqli->query($sql_update)) {
-				$seed = $leech = 0;
+				$seed = $leech = $completed = 0;
 			} else {
 				die(sprintf("Ошибка при обновлении пиров: %s", $mysqli->error));
 			}
