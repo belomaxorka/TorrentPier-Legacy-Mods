@@ -17,24 +17,19 @@ if ($result = $mysqli->query($sql)) {
 			die(print_r($scraper->get_errors(), true));
 		}
 
-		if (is_array($data) && $data) {
-			// Получаем сумму данных с хостов
-			$announcer = $data[bin2hex($row[0])];
-
-			if (!isset($announce['seeders']) || !isset($announce['leechers']) || !isset($announce['completed'])) {
-				continue;
-			}
-
+		if (is_array($data) && $announcer = $data[bin2hex($row[0])]) {
 			$seed = (int)$announcer['seeders'];
 			$leech = (int)$announcer['leechers'];
 			$completed = (int)$announcer['completed'];
 
 			// Обновляем данные торрента
-			$sql_update = "UPDATE " . BB_BT_TORRENTS . " SET last_update = " . time() . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE info_hash = '" . rtrim($mysqli->real_escape_string($row[0]), ' ') . "'";
-			if ($mysqli->query($sql_update)) {
-				$seed = $leech = $completed = 0;
-			} else {
-				die(sprintf("Ошибка при обновлении пиров: %s", $mysqli->error));
+			if (isset($seed, $leech, $completed)) {
+				$sql_update = "UPDATE " . BB_BT_TORRENTS . " SET last_update = " . time() . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE info_hash = '" . rtrim($mysqli->real_escape_string($row[0]), ' ') . "'";
+				if ($mysqli->query($sql_update)) {
+					$seed = $leech = $completed = 0;
+				} else {
+					die(sprintf("Ошибка при обновлении пиров: %s", $mysqli->error));
+				}
 			}
 		}
 	}
