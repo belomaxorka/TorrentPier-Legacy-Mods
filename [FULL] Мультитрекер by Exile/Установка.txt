@@ -189,7 +189,6 @@ case 'view_post':
 ПОСЛЕ ДОБАВИТЬ
 case 'update_peers':
 		require(BB_ROOT .'mult/config.php');
-		require(BB_ROOT .'mult/func.php');
 		require(BB_ROOT .'mult/Scraper.php');
 		break;
 
