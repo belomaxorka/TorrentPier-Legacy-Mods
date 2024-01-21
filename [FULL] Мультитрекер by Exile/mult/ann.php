@@ -3,13 +3,16 @@
 define('BB_BT_TORRENTS', 'bb_bt_torrents');
 require(__DIR__ . '/init.php');
 
+// Проверяем список хостов на пустоту
 if (empty($cfg_ann)) {
 	die('Список хостов пустой...');
 }
 
-// Получаем массив с инфо-хэшами раздач
 $seed = $leech = $completed = 0;
-$sql = "SELECT info_hash FROM " . BB_BT_TORRENTS . " WHERE last_update < " . TIME_UPD . " ORDER BY reg_time DESC LIMIT " . TORRENT_PER_CYCLE;
+
+// Получаем массив с инфо-хэшами раздач
+$last_update = isset($_GET['force_upd']) ? '' : " WHERE last_update < " . TIME_UPD . " ";
+$sql = "SELECT info_hash FROM " . BB_BT_TORRENTS . " $last_update ORDER BY reg_time DESC LIMIT " . TORRENT_PER_CYCLE;
 
 // Обрабатываем каждую раздачу
 if ($result = $mysqli->query($sql)) {
