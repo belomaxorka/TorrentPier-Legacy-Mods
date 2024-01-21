@@ -10,23 +10,25 @@ $sql = "SELECT info_hash FROM " . BB_BT_TORRENTS . " WHERE last_update < " . TIM
 // Обрабатываем каждую раздачу
 if ($result = $mysqli->query($sql)) {
 	while ($row = $result->fetch_row()) {
-		$announcers = $scraper->scrape(bin2hex($row[0]), $cfg_ann);
+		$data = $scraper->scrape(bin2hex($row[0]), $cfg_ann);
+
 		// Проверка на наличие ошибок
 		if ($scraper->has_errors() && SHOW_DEAD_ANNOUNCERS) {
 			die(print_r($scraper->get_errors(), true));
 		}
-		if (is_array($announcers) && $announcers) {
-			// Получаем данные о раздаче от хостов
-			foreach ($announcers as $announce) {
-				// Пропускаем хосты с неправильным выводом
-				if (!isset($announce['seeders']) || !isset($announce['leechers']) || !isset($announce['completed'])) {
-					continue;
-				}
 
-				$seed = (int)$announce['seeders'];
-				$leech = (int)$announce['leechers'];
-				$completed = (int)$announce['completed'];
+		if (is_array($data) && $data) {
+			// Получаем сумму данных с хостов
+			$announcer = $data[bin2hex($row[0])];
+
+			if (!isset($announce['seeders']) || !isset($announce['leechers']) || !isset($announce['completed'])) {
+				continue;
 			}
+
+			$seed = (int)$announcer['seeders'];
+			$leech = (int)$announcer['leechers'];
+			$completed = (int)$announcer['completed'];
+
 			// Обновляем данные торрента
 			$sql_update = "UPDATE " . BB_BT_TORRENTS . " SET last_update = " . time() . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE info_hash = '" . rtrim($mysqli->real_escape_string($row[0]), ' ') . "'";
 			if ($mysqli->query($sql_update)) {
