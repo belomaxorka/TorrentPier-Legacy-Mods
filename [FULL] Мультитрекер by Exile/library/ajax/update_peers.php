@@ -31,7 +31,8 @@ if (!empty($row) && $info_hash = bin2hex($row['info_hash'])) {
 	}
 
 	// Получаем статистику
-	if (is_array($data) && $announcer = $data[$info_hash]) {
+	if (is_array($data)) {
+		$announcer = $data[$info_hash];
 		$seed = (int)$announcer['seeders'];
 		$leech = (int)$announcer['leechers'];
 		$completed = (int)$announcer['completed'];
