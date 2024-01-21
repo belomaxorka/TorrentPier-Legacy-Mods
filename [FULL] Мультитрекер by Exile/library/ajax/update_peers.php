@@ -21,7 +21,8 @@ $seed = $leech = $completed = 0;
 // Получаем массив с инфо-хэшами раздач
 $row = DB()->fetch_row("SELECT info_hash FROM " . BB_BT_TORRENTS . " WHERE topic_id = " . $topic_id . " LIMIT 1");
 
-if (!empty($row) && $info_hash = bin2hex($row['info_hash'])) {
+if (!empty($row)) {
+	$info_hash = bin2hex($row['info_hash']);
 	$scraper = new \Scraper();
 	$data = $scraper->scrape($info_hash, $cfg_ann, LIMIT_MAX_TRACKERS, ANNOUNCER_TIMEOUT_CONNECT);
 

@@ -224,7 +224,7 @@ case 'update_peers':
 		};
 	</script>
 	<!-- IF IS_AM -->
-	<a class="txtb" href="#peers" onclick="ajax.exec({action : 'update_peers', topic_id: '{TOPIC_ID}'});">[{L_UPDATE} пиров]</a>
+	<a class="txtb" href="#peers" onclick="ajax.exec({action : 'update_peers', topic_id: '{TOPIC_ID}'});">[Обновить пиров]</a>
 	<!-- ENDIF / IS_AM -->
 	</td>
 </tr>
