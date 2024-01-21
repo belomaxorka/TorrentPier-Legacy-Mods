@@ -27,6 +27,10 @@ if ($result = $mysqli->query($sql)) {
 			$leech = (int)$announcer['leechers'];
 			$completed = (int)$announcer['completed'];
 
+			// Вывод статистики
+			print_r($announcer);
+			echo '<br/>';
+
 			// Обновляем данные торрента
 			if (FORCE_SINGLE_ANNOUNCER && (count($cfg_ann) > 1) && (($seed - ($seed * 20 / 100)) < $row['ext_seeder'])) {
 				die();
