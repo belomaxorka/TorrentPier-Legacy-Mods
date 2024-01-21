@@ -29,6 +29,7 @@ if ($result = $mysqli->query($sql)) {
 
 			// Вывод статистики
 			print_r($announcer);
+			echo bin2hex($row['info_hash']);
 			echo '<br/>';
 
 			// Обновляем данные торрента
