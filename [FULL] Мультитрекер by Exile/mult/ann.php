@@ -28,7 +28,7 @@ if ($result = $mysqli->query($sql)) {
 				$completed = $completed + (int)$announce['completed'];
 			}
 			// Обновляем данные торрента
-			$sql_update = "UPDATE " . BB_BT_TORRENTS . " SET last_update = " . $data['last_update'] . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE info_hash = '" . rtrim($mysqli->real_escape_string($row[0]), ' ') . "'";
+			$sql_update = "UPDATE " . BB_BT_TORRENTS . " SET last_update = " . time() . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE info_hash = '" . rtrim($mysqli->real_escape_string($row[0]), ' ') . "'";
 			if ($res_upd = $mysqli->query($sql_update)) {
 				$seed = $leech = $completed = 0;
 			} else {
