@@ -13,8 +13,8 @@ $cfg_ann[] = 'udp://tracker.torrent.eu.org:451/announce';
 $cfg_ann[] = 'udp://tracker.moeking.me:6969/announce';
 
 // Данные для подключения к базе
-$cfg_db['host'] = 'localhost'; // хост
-$cfg_db['db'] = ''; // база
-$cfg_db['user'] = ''; // юзер
-$cfg_db['pass'] = ''; // пароль
+$cfg_db['host'] = 'localhost';
+$cfg_db['db'] = 'torrentpier';
+$cfg_db['user'] = 'root';
+$cfg_db['pass'] = 'pass';
 $cfg_db['charset'] = 'utf8';
