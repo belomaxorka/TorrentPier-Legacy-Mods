@@ -24,7 +24,7 @@ if ($result = $mysqli->query($sql)) {
 			$completed = (int)$announcer['completed'];
 
 			// Обновляем данные торрента
-			if (FORCE_SINGLE_ANNOUNCER && (($seed - ($seed * 20 / 100)) < $row['ext_seeder']) && (($leech - ($seed * 20 / 100)) < $row['ext_leecher'])) {
+			if (FORCE_SINGLE_ANNOUNCER && (count($cfg_ann) > 1) && (($seed - ($seed * 20 / 100)) < $row['ext_seeder']) && (($leech - ($seed * 20 / 100)) < $row['ext_leecher'])) {
 				die();
 			}
 			if (isset($seed, $leech, $completed)) {
