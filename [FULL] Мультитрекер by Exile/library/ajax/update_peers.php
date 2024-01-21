@@ -38,10 +38,10 @@ if (!empty($row)) {
 			$seed = (int)$announcer['seeders'];
 			$leech = (int)$announcer['leechers'];
 			$completed = (int)$announcer['completed'];
-		}
 
-		// Обновляем данные торрента
-		DB()->query("UPDATE " . BB_BT_TORRENTS . " SET last_update = " . time() . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE topic_id = $topic_id");
+			// Обновляем данные торрента
+			DB()->query("UPDATE " . BB_BT_TORRENTS . " SET last_update = " . time() . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE topic_id = $topic_id");
+		}
 
 		// Отображаем статистику
 		$html = '<div class="mrg_4 pad_4">';
