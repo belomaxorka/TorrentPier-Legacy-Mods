@@ -5,12 +5,12 @@ require(__DIR__ . '/init.php');
 
 // Получаем массив с инфо-хэшами раздач
 $seed = $leech = $completed = 0;
-$sql = "SELECT info_hash FROM " . BB_BT_TORRENTS . " WHERE last_update < " . TIME_UPD . " ORDER BY reg_time DESC LIMIT " . TORRENT_PER_CYCLE;
+$sql = "SELECT info_hash, ext_seeder, ext_leecher FROM " . BB_BT_TORRENTS . " WHERE last_update < " . TIME_UPD . " ORDER BY reg_time DESC LIMIT " . TORRENT_PER_CYCLE;
 
 // Обрабатываем каждую раздачу
 if ($result = $mysqli->query($sql)) {
 	while ($row = $result->fetch_row()) {
-		$data = $scraper->scrape(bin2hex($row[0]), $cfg_ann);
+		$data = $scraper->scrape(bin2hex($row['info_hash']), $cfg_ann, LIMIT_MAX_TRACKERS, ANNOUNCER_TIMEOUT_CONNECT);
 
 		// Проверка на наличие ошибок
 		if ($scraper->has_errors() && SHOW_DEAD_ANNOUNCERS) {
@@ -18,14 +18,15 @@ if ($result = $mysqli->query($sql)) {
 		}
 
 		// Получаем статистику
-		if (is_array($data) && $announcer = $data[bin2hex($row[0])]) {
+		if (is_array($data) && $announcer = $data[bin2hex($row['info_hash'])]) {
 			$seed = (int)$announcer['seeders'];
 			$leech = (int)$announcer['leechers'];
 			$completed = (int)$announcer['completed'];
 
 			// Обновляем данные торрента
+			//if ()
 			if (isset($seed, $leech, $completed)) {
-				$sql_update = "UPDATE " . BB_BT_TORRENTS . " SET last_update = " . time() . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE info_hash = '" . rtrim($mysqli->real_escape_string($row[0]), ' ') . "'";
+				$sql_update = "UPDATE " . BB_BT_TORRENTS . " SET last_update = " . time() . ", ext_seeder = " . $seed . ", ext_leecher = " . $leech . " WHERE info_hash = '" . rtrim($mysqli->real_escape_string($row['info_hash']), ' ') . "'";
 				if ($mysqli->query($sql_update)) {
 					$seed = $leech = $completed = 0;
 				} else {
