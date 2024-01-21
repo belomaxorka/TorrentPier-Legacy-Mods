@@ -3,9 +3,15 @@
 define('BB_BT_TORRENTS', 'bb_bt_torrents');
 require(__DIR__ . '/init.php');
 
+print_r($cfg_ann);
+
+if (empty($cfg_ann)) {
+	die('Список хостов пустой...');
+}
+
 // Получаем массив с инфо-хэшами раздач
 $seed = $leech = $completed = 0;
-$sql = "SELECT info_hash, ext_seeder, ext_leecher FROM " . BB_BT_TORRENTS . " WHERE last_update < " . TIME_UPD . " ORDER BY reg_time DESC LIMIT " . TORRENT_PER_CYCLE;
+$sql = "SELECT info_hash, ext_seeder FROM " . BB_BT_TORRENTS . " WHERE last_update < " . TIME_UPD . " ORDER BY reg_time DESC LIMIT " . TORRENT_PER_CYCLE;
 
 // Обрабатываем каждую раздачу
 if ($result = $mysqli->query($sql)) {
@@ -24,7 +30,7 @@ if ($result = $mysqli->query($sql)) {
 			$completed = (int)$announcer['completed'];
 
 			// Обновляем данные торрента
-			if (FORCE_SINGLE_ANNOUNCER && (count($cfg_ann) > 1) && (($seed - ($seed * 20 / 100)) < $row['ext_seeder']) && (($leech - ($seed * 20 / 100)) < $row['ext_leecher'])) {
+			if (FORCE_SINGLE_ANNOUNCER && (count($cfg_ann) > 1) && (($seed - ($seed * 20 / 100)) < $row['ext_seeder'])) {
 				die();
 			}
 			if (isset($seed, $leech, $completed)) {
