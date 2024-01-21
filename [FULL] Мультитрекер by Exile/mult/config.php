@@ -5,7 +5,7 @@ define('SHOW_DEAD_ANNOUNCERS', false); // Показывать список ме
 define('TORRENT_PER_CYCLE', 20); // Количество обновляемых раздач за цикл
 define('TIME_UPD', (time() - 43200)); // Период обновления раздачи. По умолчанию: Каждые 12 часов.
 
-// Список анонсеров
+// Список хостов
 $cfg_ann[] = 'udp://tracker.openbittorrent.com:6969';
 $cfg_ann[] = 'udp://tracker.openbittorrent.com:6969/announce';
 $cfg_ann[] = 'udp://tracker.openbittorrent.com:80/announce';
