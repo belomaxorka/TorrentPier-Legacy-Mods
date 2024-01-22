@@ -147,7 +147,7 @@ if (@fopen($thumb_file, "r")) {
 				case "jpeg":
 					header('Content-type: image/jpeg');
 					header('Content-Disposition: filename=' . $filename);
-					ImageJPEG($thumb, $thumb_file, 100);
+					ImageJPEG($thumb, $thumb_file, 85);
 					break;
 				case "png":
 					header("Content-type: image/png");
