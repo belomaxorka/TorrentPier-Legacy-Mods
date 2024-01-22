@@ -99,8 +99,8 @@ library/includes/page_header.php
 #
 
 // Постеры раздач
-'LAST_ADDED' => ($bb_cfg['last_added'] && BB_SCRIPT == 'index'),
-'POSTER' => $user->opt_js['poster'],
+'LAST_ADDED'    => ($bb_cfg['last_added'] && BB_SCRIPT == 'index'),
+'POSTER'        => $user->opt_js['poster'],
 
 #
 #-----[ OPEN ]------------------------------------------
@@ -384,29 +384,6 @@ styles/templates/default/page_header.tpl
 #-----[ FIND ]------------------------------------------
 #
 
-</script>
-<!-- ENDIF / INCLUDE_BBCODE_JS -->
-
-#
-#-----[ BEFORE ADD ]------------------------------------------
-#
-
-// Постеры раздач
-$('var.posterImg').each(function(){
-	var $v = $(this);
-	var src = $v.attr('title');
-	var $img = $('<img src="'+ src +'" class="'+ $v.attr('class') +'" width="260px;" alt="{L_LOADING}" border="0" />');
-	$img = fixPostImage($img);
-	$v.empty().append($img);
-	if ($.browser.msie) {
-		$v.after('<wbr>');
-	}
-});
-
-#
-#-----[ FIND ]------------------------------------------
-#
-
 </div><!--/only-new-options-->
 <!-- ENDIF / SHOW_ONLY_NEW_MENU -->
 
@@ -488,10 +465,10 @@ $('var.posterImg').each(function(){
 	<div class="scrollable">
 		<div id="thumbs">
 			<!-- BEGIN last_added -->
-			<div class="load-local" rel="#loadme_{last_added.TOPIC_ID}" title="{last_added.TITLE}" onclick="top.location.href='{TOPIC_URL}{last_added.TOPIC_ID}';" onmouseover="initPostImages($('#loadme_{last_added.TOPIC_ID}'));">
+			<div class="load-local" rel="#loadme_{last_added.TOPIC_ID}" title="{last_added.TITLE}" onclick="top.location.href='{TOPIC_URL}{last_added.TOPIC_ID}';">
 				<a href="{TOPIC_URL}{last_added.TOPIC_ID}"><img src="thumb.php?t={last_added.TOPIC_ID}" alt="{last_added.TITLE}" <!-- IF $bb_cfg['new_poster'] -->onload="cvi_glossy.add(this, { radius: 30, nogradient: true, angle: -33, shadow: 30 });"<!-- ENDIF -->></a>&nbsp;
 				<div style="display: none;" id="loadme_{last_added.TOPIC_ID}">
-					<center><var class="posterImg" title="{last_added.POSTER_FULL}" alt="" border="0">&#10;</var></center>
+					<center><img title="{last_added.TITLE}" src="{last_added.POSTER_FULL}" width="260px;" alt="{last_added.TITLE}" border="0"></center>
 					<br /> {L_FORUM}: <b>{last_added.FORUM_NAME}</b>
 					<br /> {L_AUTHOR}: <b>{last_added.USER_NAME}</b>
 					<br /> {L_SIZE}: <b>{last_added.SIZE}</b>
