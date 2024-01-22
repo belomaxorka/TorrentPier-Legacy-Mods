@@ -467,7 +467,7 @@ styles/templates/default/page_header.tpl
 		<div id="thumbs">
 			<!-- BEGIN last_added -->
 			<div class="load-local" rel="#loadme_{last_added.TOPIC_ID}" title="{last_added.TITLE}" onclick="top.location.href='{TOPIC_URL}{last_added.TOPIC_ID}';">
-				<div class="tCenter"><a href="{TOPIC_URL}{last_added.TOPIC_ID}"><img src="thumb.php?t={last_added.TOPIC_ID}" alt="{last_added.TITLE}" <!-- IF $bb_cfg['new_poster'] -->onload="cvi_glossy.add(this, { radius: 20, nogradient: true, angle: -33, shadow: 15 });"<!-- ENDIF -->></a></div>&nbsp;
+				<div style="margin-left: auto; margin-right: auto;"><a href="{TOPIC_URL}{last_added.TOPIC_ID}"><img src="thumb.php?t={last_added.TOPIC_ID}" alt="{last_added.TITLE}" <!-- IF $bb_cfg['new_poster'] -->onload="cvi_glossy.add(this, { radius: 20, nogradient: true, angle: -33, shadow: 15 });"<!-- ENDIF -->></a></div>&nbsp;
 				<div style="display: none;" id="loadme_{last_added.TOPIC_ID}">
 					<div class="tCenter"><img title="{last_added.TITLE}" src="{last_added.POSTER_FULL}" width="240px;" height="auto" alt="{last_added.TITLE}" border="0"></div>
 					<br /> {L_FORUM}: <b>{last_added.FORUM_NAME}</b>
