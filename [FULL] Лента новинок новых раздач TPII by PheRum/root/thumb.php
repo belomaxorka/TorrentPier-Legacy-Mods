@@ -128,9 +128,14 @@ if (@fopen($thumb_file, "r")) {
 			if (($poster_width > $max_width)) {
 				$thumb = imagecreatetruecolor($thumb_width, $thumb_height);
 
-				// Прозрачность миниатюры в PNG, если имеется
-				imagealphablending($thumb, false);
-				imagesavealpha($thumb, true);
+				if ($filetype == 'gif' || $filetype == 'png') {
+					imagecolortransparent($thumb, imagecolorallocate($thumb, 0, 0, 0));
+					if ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'png') {
+						imagealphablending($thumb, false);
+						imagesavealpha($thumb, true);
+					}
+				}
+
 				imagecopyresampled($thumb, $poster, 0, 0, 0, 0, $thumb_width, $thumb_height, $poster_width, $poster_height);
 			} else {
 				$thumb = $poster;
