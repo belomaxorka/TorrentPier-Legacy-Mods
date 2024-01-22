@@ -73,6 +73,10 @@ if (@fopen($thumb_file, "r")) {
 			header('Content-type: image/gif');
 			header('Content-Disposition: filename=' . $filename);
 			break;
+		case 'webp':
+			header('Content-type: image/webp');
+			header('Content-Disposition: filename=' . $filename);
+			break;
 		default:
 			bb_die('Unknown filetype: ' . $filetype);
 			break;
@@ -116,6 +120,9 @@ if (@fopen($thumb_file, "r")) {
 				case 'gif':
 					$poster = ImageCreateFromGIF($url);
 					break;
+				case 'webp':
+					$poster = ImageCreateFromWEBP($url);
+					break;
 				default:
 					bb_die('Unknown filetype: ' . $filetype);
 					break;
@@ -158,6 +165,11 @@ if (@fopen($thumb_file, "r")) {
 					header("Content-type: image/gif");
 					header('Content-Disposition: filename=' . $filename);
 					ImageGIF($thumb, $thumb_file);
+					break;
+				case "webp":
+					header("Content-type: image/webp");
+					header('Content-Disposition: filename=' . $filename);
+					ImageWEBP($thumb, $thumb_file);
 					break;
 				default:
 					bb_die('Unknown filetype: ' . $filetype);
