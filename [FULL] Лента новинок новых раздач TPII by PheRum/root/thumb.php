@@ -130,7 +130,7 @@ if (@fopen($thumb_file, "r")) {
 
 				if ($filetype == 'gif' || $filetype == 'png') {
 					imagecolortransparent($thumb, imagecolorallocate($thumb, 0, 0, 0));
-					if ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'png') {
+					if ($filetype == 'png') {
 						imagealphablending($thumb, false);
 						imagesavealpha($thumb, true);
 					}
