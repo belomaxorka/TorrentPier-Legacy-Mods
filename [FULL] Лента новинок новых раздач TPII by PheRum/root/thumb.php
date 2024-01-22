@@ -89,7 +89,7 @@ if (@fopen($thumb_file, "r")) {
 	if (@fopen($url, "r")) {
 		// Узнаём размеры
 		if ($filetype == 'webp') {
-			$img_webp = imagecreatefromwebp($url);
+			$img_webp = ImageCreateFromWEBP($url);
 			$poster_width = imagesx($img_webp);
 			$poster_height = imagesy($img_webp);
 			unset($img_webp);
@@ -105,7 +105,7 @@ if (@fopen($thumb_file, "r")) {
 		} else {
 			// Узнаём размеры
 			if ($filetype == 'webp') {
-				$img_webp = imagecreatefromwebp($url);
+				$img_webp = ImageCreateFromWEBP($url);
 				$poster_width = imagesx($img_webp);
 				$poster_height = imagesy($img_webp);
 				unset($img_webp);
