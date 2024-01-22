@@ -458,6 +458,7 @@ styles/templates/default/page_header.tpl
 	});
 </script>
 
+<!-- IF LENTA -->
 <table cellpadding="0" cellspacing="0" class="poster">
 <tr>
 	<td>
@@ -480,6 +481,7 @@ styles/templates/default/page_header.tpl
 	</td>
 </tr>
 </table>
+<!-- ENDIF -->
 <!-- ENDIF -->
 
 #
