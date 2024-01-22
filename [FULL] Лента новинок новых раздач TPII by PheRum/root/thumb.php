@@ -88,7 +88,14 @@ if (@fopen($thumb_file, "r")) {
 	// Пробуем открыть файл для чтения
 	if (@fopen($url, "r")) {
 		// Узнаём размеры
-		list($poster_width, $poster_height) = getimagesize($url);
+		if ($filetype == 'webp') {
+			$img_webp = imagecreatefromwebp($url);
+			$poster_width = imagesx($img_webp);
+			$poster_height = imagesy($img_webp);
+			unset($img_webp);
+		} else {
+			list($poster_width, $poster_height) = getimagesize($url);
+		}
 
 		if (!$poster_width || !$poster_height) // Проверяем на изображение
 		{
