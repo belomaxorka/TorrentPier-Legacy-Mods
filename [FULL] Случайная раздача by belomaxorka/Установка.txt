@@ -1,5 +1,5 @@
 Автор: belomaxorka
-Версия: v1.0.1
+Версия: v1.0.2
 
 =========== открыть tracker.php и найти ===========
 //
@@ -9,8 +9,7 @@
 
 =========== выше вставить ===========
 // Случайная раздача
-$random_release = isset($_GET['random_release']) ? (bool) $_GET['random_release'] : false;
-if ($random_release)
+if (isset($_GET['random_release']))
 {
 	if ($random_release = DB()->fetch_row("SELECT topic_id FROM ". BB_BT_TORRENTS ." WHERE tor_status NOT IN(". implode(', ', array_keys($bb_cfg['tor_frozen'])) .") ORDER BY RAND() LIMIT 1"))
 	{
@@ -21,7 +20,6 @@ if ($random_release)
 		bb_die($lang['NO_MATCH']);
 	}
 }
-unset($random_release, $random_release);
 =====================================
 
 =========== открыть tracker.tpl (в вашем шаблоне) и найти ===========
