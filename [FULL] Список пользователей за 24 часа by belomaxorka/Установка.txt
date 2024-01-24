@@ -13,10 +13,9 @@ case 'users_today':
 	$get_users = DB()->fetch_rowset("SELECT username, user_id, user_rank, user_opt FROM " . BB_USERS . " WHERE user_session_time > $day AND user_active = 1 ORDER BY username");
 
 	$users = array();
-
-	foreach ($get_users as $rows) {
-		if (IS_ADMIN || $rows['user_id'] == $userdata['user_id'] || !bf($rows['user_opt'], 'user_opt', 'user_viewonline')) {
-			$users[] = profile_url($rows);
+	foreach ($get_users as $user) {
+		if (IS_ADMIN || $user['user_id'] == $userdata['user_id'] || !bf($user['user_opt'], 'user_opt', 'user_viewonline')) {
+			$users[] = profile_url($user);
 		}
 	}
 
