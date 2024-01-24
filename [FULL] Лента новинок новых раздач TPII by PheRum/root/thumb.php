@@ -102,6 +102,7 @@ if (@fopen($thumb_file, "r")) {
 			header('Content-type: image/png');
 			header('Content-Disposition: filename=' . $no_poster_img_name);
 			readfile($no_poster);
+			exit;
 		} else {
 			// Узнаём размеры
 			if ($filetype == 'webp') {
@@ -118,6 +119,7 @@ if (@fopen($thumb_file, "r")) {
 				header('Content-type: image/png');
 				header('Content-Disposition: filename=' . $no_poster_img_name);
 				readfile($no_poster);
+				exit;
 			}
 
 			// Открываем
@@ -202,5 +204,6 @@ if (@fopen($thumb_file, "r")) {
 		header('Content-type: image/png');
 		header('Content-Disposition: filename=' . $no_poster_img_name);
 		readfile($no_poster);
+		exit;
 	}
 }
