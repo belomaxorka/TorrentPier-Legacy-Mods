@@ -11,7 +11,7 @@ $user->session_start(array('req_login' => true));
 // Получаем id раздачи (темы)
 $topic_id = (int)request_var('t', '0');
 if (!$topic_id) {
-	bb_die('NO_TOPIC_ID');
+	bb_die('INVALID_TOPIC_ID');
 }
 
 // Получаем данные о раздаче из базы
@@ -21,7 +21,7 @@ $row = DB()->fetch_row("SELECT pt.post_text
 			LEFT JOIN " . BB_POSTS_TEXT . " pt ON(pt.post_id = tr.post_id)
 		WHERE t.topic_id  = $topic_id");
 if (!$row) {
-	bb_die('NO_TOPIC');
+	bb_die('INVALID_TOPIC_ID_DB');
 }
 
 // Поддерживаемые теги изображений
@@ -55,7 +55,7 @@ $filename = substr($url, strrpos($url, '/'));
 
 // Генерируем путь до файла
 $thumb_file = $folder . $filename;
-if (!file_exists($folder)) mkdir($folder);
+if (!is_dir($folder)) bb_mkdir($folder);
 
 // Проверяем на наличие и выводим
 if (@fopen($thumb_file, "r")) {
