@@ -146,7 +146,7 @@ if (@fopen($thumb_file, "r")) {
 
 			$max_width = 100; // Уменьшение по ширине
 			$thumb_width = $max_width;
-			$thumb_height = ($poster_height * $max_width) / $poster_width;
+			$thumb_height = round(($poster_height * $max_width) / $poster_width);
 
 			if (($poster_width > $max_width)) {
 				$thumb = imagecreatetruecolor($thumb_width, $thumb_height);
