@@ -1,6 +1,6 @@
 |================== [ Знак зодиака ] ==================|
 | Автор: belomaxorka                                   |
-| Версия: v1.0.0                                       |
+| Версия: v1.0.1                                       |
 |                                                      |
 | Описание: Данный мод добавляет отображение знака     |
 | зодиака в профиле пользователя.                      |
@@ -129,7 +129,7 @@ $lang['ZODIAC_SIGN'] = [
 ======================================================================
 
 ========== [ Ниже вставить ] ==========
-'SHOW_ZODIAC'          => ($profile_user_id || bf($profiledata['user_opt'], 'user_opt', 'user_show_zodiac')) ? get_zodiac($profiledata['user_birthday']) : '',
+'SHOW_ZODIAC'          => (IS_ADMIN || $profile_user_id || bf($profiledata['user_opt'], 'user_opt', 'user_show_zodiac')) ? get_zodiac($profiledata['user_birthday']) : '',
 =======================================
 
 ========== [ Найти в usercp_register.tpl (В вашем шаблоне) ] ==========
