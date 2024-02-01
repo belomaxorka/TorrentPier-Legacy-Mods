@@ -13,5 +13,5 @@ if (!IS_AM && !$bb_cfg['parser_for_all']) {
 }
 
 // Подключаем вспомогательные файлы
-require_once(INC_DIR . '/parser/random_int.php'); // Polyfill для random_int()
-require_once(INC_DIR . '/parser/userAgent.php'); // Генератор User-agent
+require_once(INC_DIR . '/parser/random_int.php');
+require_once(INC_DIR . '/parser/userAgent.php');
