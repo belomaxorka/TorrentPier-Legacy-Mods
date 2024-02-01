@@ -31,5 +31,11 @@ $bb_cfg['parser__user_agent'] = 'random';
 // Путь до файлы в который будут записываться / читаться куки
 $bb_cfg['parser__cookie_path'] = INT_DATA_DIR . '/parser_cookies.txt';
 // ----------------------------------------------------------------
-// Настройки прокси
+// Настройки для прокси
+$bb_cfg['parser__proxy_settings'] = array(
+	'enabled' => false,
+	'auth' => 'YOUR_AUTH_KEY',
+	'address' => 'PROXY_ADDRESS',
+	'use_socks5' => true
+);
 -----------------------------------------------------------------------------------------
