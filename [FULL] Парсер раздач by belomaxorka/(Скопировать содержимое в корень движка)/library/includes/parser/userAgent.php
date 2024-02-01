@@ -1,9 +1,9 @@
 <?php
-/** **********************************************************************************
+/*************************************************************************************
  * Generate hundreds of thousands of unique mobile & desktop User Agents that are 100% authentic.
  * Supports Hundreds of Android devices, 32 & 64 bit versions of Windows XP-10.5, Linux 540-686, and Mac 7-10.12
  * as well as browsers Firefox, Chrome, and Internet Explorer.
- */
+ *************************************************************************************/
 
 class userAgent
 {
@@ -11,7 +11,6 @@ class userAgent
 	 * Windows Operating System list with dynamic versioning
 	 * @var array $windows_os
 	 */
-
 	public $windows_os = ['[Windows; |Windows; U; |]Windows NT 6.:number0-3:;[ Win64; x64| WOW64| x64|]',
 		'[Windows; |Windows; U; |]Windows NT 10.:number0-5:;[ Win64; x64| WOW64| x64|]'];
 
@@ -52,13 +51,12 @@ class userAgent
 	 * Holds the version of android for the User Agent being generated
 	 * @property string $androidVersion
 	 */
-
 	public $androidVersion;
+
 	/**
 	 * Android devices and for specific android versions
 	 * @var array $androidDevices
 	 */
-
 	public $androidDevices = ['4.3' => ['GT-I9:number2-5:00 Build/JDQ39',
 		'Nokia 3:number1-3:[10|15] Build/IMM76D',
 		'[SAMSUNG |]SM-G3:number1-5:0[R5|I|V|A|T|S] Build/JLS36C',
@@ -354,4 +352,3 @@ class userAgent
 		}
 	}
 }
-
