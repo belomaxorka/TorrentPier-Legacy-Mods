@@ -38,4 +38,16 @@ $bb_cfg['parser__proxy_settings'] = array(
 	'address' => 'PROXY_ADDRESS',
 	'use_socks5' => true
 );
+// ----------------------------------------------------------------
+// Настройки аккаунтов
+$bb_cfg['parser__accounts'] = array(
+	'rutracker' => array(
+		'username' => 'YOUR_USERNAME',
+		'password' => 'YOU_PASSWORD'
+	),
+	'nnmclub' => array(
+		'username' => 'YOUR_USERNAME',
+		'password' => 'YOU_PASSWORD'
+	)
+);
 -----------------------------------------------------------------------------------------
