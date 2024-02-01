@@ -8,7 +8,7 @@ require(BB_ROOT . 'common.php');
 $user->session_start(array('req_login' => true));
 
 // Проверка наличия прав доступа
-if (!IS_AM && !$bb_cfg['parser_for_all']) {
+if (!IS_AM && !$bb_cfg['parser__for_all']) {
 	bb_die($lang['NOT_AUTHORISED']);
 }
 
