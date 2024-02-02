@@ -110,6 +110,8 @@ bbcode.addTag("codeOneLine", "oneline", null, "", ctrl);
 '[/indent]' => '</div>',
 '[pre]' => '<pre class="post-pre">',
 '[/pre]' => '</pre>',
+'[oneline]' => '<div class="post-oneline">',
+'[/oneline]' => '</div>',
 -------------------------------------------------
 
 ----------------- Открыть library/language/en/main.php и в конце вставить -----------------
