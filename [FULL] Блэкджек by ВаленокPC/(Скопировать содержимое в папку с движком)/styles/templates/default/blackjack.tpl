@@ -70,27 +70,27 @@
 	});
 </script>
 <table width="100%" cellpadding="10">
-    <tr>
-        <td>
-            <table class="forumline">
-                <tr>
-                    <th>{TITLE}</th>
-                </tr>
-                <tr>
-                    <td class="row1">
-                        <table class="borderless w100" cellpadding="5">
-                            <tr align="center">
-                                <td>{MASSAGES}</td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="row2" align="center"><br /><span class="med"><a href="#" class="med" id="bjbutt">{L_CLOSE_WINDOW}</a></span></td>
-                </tr>
-            </table>
-        </td>
-    </tr>
+	<tr>
+		<td>
+			<table class="forumline">
+				<tr>
+					<th>{TITLE}</th>
+				</tr>
+				<tr>
+					<td class="row1">
+						<table class="borderless w100" cellpadding="5">
+							<tr align="center">
+								<td>{MASSAGES}</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td class="row2" align="center"><br/><span class="med"><a href="#" class="med" id="bjbutt">{L_CLOSE_WINDOW}</a></span></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
 </table>
 <!-- ENDIF -->
 
@@ -128,7 +128,7 @@
     <tr><td class="row2 gen tCenter" colspan=2 style='border-bottom:none;'><p>
                     Приобрести жетоны можно в кредитном пункте.<br>
                         Жетоны снимаются с вас сразу после того как вы нажали на ставку.<br>
-                        Если вы бросили игру или она увас зависла Администрация не будет вам возращать утерянные жетоны!<br>
+                        Если вы бросили игру или она у вас зависла Администрация не будет вам возвращать утерянные жетоны!<br>
                         Зависшие игры будут автоматически удалятся в течение 15/30 минут.</p>
 
         </td></tr>
