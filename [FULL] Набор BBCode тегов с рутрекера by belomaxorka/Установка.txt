@@ -72,6 +72,18 @@ bbcode.addTag("codeOneLine", "oneline", null, "", ctrl);
 .post-indent {
   margin-left: 2em;
 }
+
+.post_body pre {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+.post-pre {
+  white-space: pre-wrap;
+  font-family: "Lucida Console", Consolas, monospace;
+}
 -------------------------------------------------
 
 ----------------- [v2.1.5] Открыть library/includes/bbcode.php и найти -----------------
