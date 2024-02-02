@@ -39,6 +39,9 @@ bbcode.addTag("codeSpoiler", "spoiler", null, "", ctrl);
 ----------------- Ниже вставить -----------------
 bbcode.addTag("codeBox", "box", null, "", ctrl);
 bbcode.addTag("codeIndent", "indent", null, "", ctrl);
+bbcode.addTag("codePre", "pre", null, "", ctrl);
+bbcode.addTag("codeNfo", "nfo", null, "", ctrl);
+bbcode.addTag("codeOneLine", "oneline", null, "", ctrl);
 -------------------------------------------------
 
 ----------------- [v2.1.5] Открыть css/main.css (В вашем шаблоне) и найти -----------------
