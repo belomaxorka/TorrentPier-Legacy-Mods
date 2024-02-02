@@ -7,7 +7,6 @@
 Список тегов:
 - box | Рамка вокруг текста
 - ⇛   | Отступ (TAB)
-- 1-L | Текст в одну строку
 - nfo | NFO
 - pre | Форматированный текст
 ------------------------------------------------------------------
@@ -29,7 +28,6 @@
 <input type="button" value="pre" name="codePre" title="{L_PRE_TAG}" />
 <input type="button" value="box" name="codeBox" title="{L_BOX_TAG}" />
 <input type="button" value="nfo" name="codeNfo" title="{L_NFO_TAG}" />
-<input type="button" value="1-L" name="codeOneLine" title="{L_ONE_LINE_TAG}" />
 -------------------------------------------------
 
 ----------------- Далее найти -----------------
@@ -41,7 +39,6 @@ bbcode.addTag("codeBox", "box", null, "", ctrl);
 bbcode.addTag("codeIndent", "indent", null, "", ctrl);
 bbcode.addTag("codePre", "pre", null, "", ctrl);
 bbcode.addTag("codeNfo", "nfo", null, "", ctrl);
-bbcode.addTag("codeOneLine", "oneline", null, "", ctrl);
 -------------------------------------------------
 
 ----------------- [v2.1.5] Открыть css/main.css (В вашем шаблоне) и найти -----------------
@@ -92,10 +89,6 @@ bbcode.addTag("codeOneLine", "oneline", null, "", ctrl);
   font-family: Consolas, monospace;
   overflow-y: hidden;
 }
-
-.post-oneline {
-  white-space: nowrap:
-}
 -------------------------------------------------
 
 ----------------- [v2.1.5] Открыть library/includes/bbcode.php и найти -----------------
@@ -114,8 +107,8 @@ bbcode.addTag("codeOneLine", "oneline", null, "", ctrl);
 '[/indent]' => '</div>',
 '[pre]' => '<pre class="post-pre">',
 '[/pre]' => '</pre>',
-'[oneline]' => '<div class="post-oneline">',
-'[/oneline]' => '</div>',
+'[nfo]' => '<pre class="post-nfo">',
+'[/nfo]' => '</pre>',
 -------------------------------------------------
 
 ----------------- Открыть library/language/en/main.php и в конце вставить -----------------
@@ -124,7 +117,6 @@ $lang['BOX_TAG'] = 'Frame around text: [box]text[/box]';
 $lang['INDENT_TAG'] = 'Insert indent: [indent]text[/indent]';
 $lang['PRE_TAG'] = 'Preformatted text: [pre]text[/pre]';
 $lang['NFO_TAG'] = 'NFO: [nfo]text[/nfo]';
-$lang['ONE_LINE_TAG'] = 'One line text: [oneline]text[/oneline]';
 -------------------------------------------------------------------------------------------
 
 ----------------- Открыть library/language/ru/main.php и в конце вставить -----------------
@@ -133,5 +125,4 @@ $lang['BOX_TAG'] = 'Рамка вокруг текста: [box]текст[/box]'
 $lang['INDENT_TAG'] = 'Добавить отступ: [indent]текст[/indent]';
 $lang['PRE_TAG'] = 'Форматированный текст: [pre]текст[/pre]';
 $lang['NFO_TAG'] = 'NFO: [nfo]текст[/nfo]';
-$lang['ONE_LINE_TAG'] = 'Текст в одну строчку: [oneline]текст[/oneline]';
 -------------------------------------------------------------------------------------------
