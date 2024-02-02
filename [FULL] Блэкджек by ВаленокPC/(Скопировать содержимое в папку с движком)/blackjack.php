@@ -10,7 +10,7 @@ function bj_die($bet, $text)
 {
 	global $template, $lang;
 
-	$title = ($bet === '') ? $lang['BJ']['BLACKJACK'] : sprintf($lang['BJ']['THE_TITLE'], $bet);
+	$title = ($bet == '') ? $lang['BJ']['BLACKJACK'] : sprintf($lang['BJ']['THE_TITLE'], $bet);
 
 	$template->assign_vars(array(
 		'MASSAGES_INFO' => true,
@@ -47,13 +47,12 @@ if (!$cards = CACHE('bb_cache')->get('bj_cards')) {
 if ($stake || $games || is_numeric($takegame)) {
 	cache_rm_user_sessions($userdata['user_id']);
 
-	if ($games === 'start' || $takegame) {
+	if ($games == 'start' || $takegame) {
 		$cardid = rand(1, $cards['count']);
-		if ($games === 'start') {
+		if ($games == 'start') {
 			$numbets = DB()->num_rows(DB()->sql_query("SELECT bj_id FROM " . BB_BLACKJACK . " WHERE bj_placeholder = '" . $userdata['username'] . "' AND bj_plstat = 'waiting'"));
 
 			if ($userdata["user_tokens"] <= $stake) {
-
 				bj_die($stake, $lang['BJ']['NOT_TOKENS']);
 			}
 			if ($numbets >= $bb_cfg['max_open_games']) bj_die($stake, sprintf($lang['BJ']['MAX_OPEN_GAMES'], $bb_cfg['max_open_games']));
@@ -67,14 +66,17 @@ if ($stake || $games || is_numeric($takegame)) {
 			$gid = $takegame;
 			$sql = "SELECT bj_bet, bj_gamer, bj_placeholder FROM " . BB_BLACKJACK . " WHERE bj_id =" . $gid;
 			if ($row = DB()->fetch_row($sql)) {
-				if ($userdata["user_tokens"] <= $row['bj_bet'])
+				if ($userdata["user_tokens"] <= $row['bj_bet']) {
 					bj_die($row['bj_bet'], $lang['BJ']['NOT_TOKENS']);
+				}
 
-				if ($row['bj_gamer'])
-					$template->assign_vars(array('JS_ON' => true,));
+				if ($row['bj_gamer']) {
+					$template->assign_vars(array('JS_ON' => true));
+				}
 
-				if ($row['bj_placeholder'] === $userdata['username'])
+				if ($row['bj_placeholder'] == $userdata['username']) {
 					bj_die($row['bj_bet'], $lang['BJ']['THE_A_GAMES']);
+				}
 
 				DB()->query("UPDATE " . BB_USERS . " SET user_tokens = user_tokens - " . $row['bj_bet'] . " WHERE user_id = " . $userdata['user_id']);
 				DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_gamer = '" . $userdata['username'] . "' WHERE bj_id =" . $gid);
@@ -94,11 +96,11 @@ if ($stake || $games || is_numeric($takegame)) {
 			'CARD_POINTS' => $cards[$cardid]['card_points'],
 			'ID_GAMES' => $id,
 		));
-	} elseif ($games === 'cont') {
+	} elseif ($games == 'cont') {
 		$id = request_var('id', 0);
 		$playerarr = DB()->sql_fetchrow(DB()->sql_query("SELECT * from " . BB_BLACKJACK . " where bj_id= " . $id));
 
-		if ($playerarr["bj_plstat"] === 'waiting') {
+		if ($playerarr["bj_plstat"] == 'waiting') {
 			bj_die($playerarr['bj_bet'], $lang['BJ']['GAME_IS_PLAYED']);
 		}
 
@@ -124,7 +126,7 @@ if ($stake || $games || is_numeric($takegame)) {
 		$points = $playerarr['bj_points'] + $cards[$cardid]['card_points'];
 		// $mysqlcards = $playerarr['bj_cards'] .":". $cardid;
 		DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_points = bj_points + " . $cards[$cardid]['card_points'] . ", bj_cards='" . $playerarr['bj_cards'] . ":" . $cardid . "' WHERE bj_id = " . $id);
-		if ($points === 21) {
+		if ($points == 21) {
 			DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_plstat = 'waiting', bj_date = " . TIMENOW . " WHERE  bj_id = " . $id);
 
 			$check = DB()->sql_fetchrow(DB()->sql_query("SELECT bj_gamewithid FROM " . BB_BLACKJACK . " WHERE bj_id=" . $id));
@@ -181,18 +183,18 @@ if ($stake || $games || is_numeric($takegame)) {
 				'ID_GAMES' => $id,
 			));
 		}
-	} elseif ($games === 'stop') {
+	} elseif ($games == 'stop') {
 		$id = request_var('id', 0);
 		$playerarr = DB()->sql_fetchrow(DB()->sql_query("SELECT * FROM " . BB_BLACKJACK . " WHERE bj_id =" . $id));
 
-		if ($playerarr['bj_plstat'] === 'waiting' || !$playerarr) {
+		if ($playerarr['bj_plstat'] == 'waiting' || !$playerarr) {
 			bj_die($playerarr['bj_bet'], $lang['BJ']['GAME_IS_PLAYED']);
 		}
 
 		DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_plstat = 'waiting', bj_date = " . TIMENOW . "  WHERE  bj_id = " . $id);
 		if ($playerarr['bj_gamewithid']) {
 			$a = DB()->sql_fetchrow(DB()->sql_query("SELECT * FROM " . BB_BLACKJACK . " WHERE bj_id =" . $playerarr['bj_gamewithid']));
-			if ($a['bj_points'] === $playerarr['bj_points'] && $a['bj_points'] < 22 && $playerarr['bj_points'] < 22) {
+			if ($a['bj_points'] == $playerarr['bj_points'] && $a['bj_points'] < 22 && $playerarr['bj_points'] < 22) {
 				$winorlose = $lang['BJ']['NOT_WIN'];
 
 				DB()->query("UPDATE " . BB_USERS . " SET user_tokens = user_tokens + " . $a['bj_bet'] . " WHERE user_id = " . $userdata['user_id']);
@@ -231,7 +233,7 @@ if ($stake || $games || is_numeric($takegame)) {
 
 	print_page('blackjack.tpl', 'simple');
 } else {
-	$color = array(
+	$colors = array(
 		5 => "74AE04",
 		10 => "9E9E9E",
 		15 => "0574C9",
@@ -249,40 +251,41 @@ if ($stake || $games || is_numeric($takegame)) {
 	$finish_count = 1;
 
 	foreach ($sql as $arr) {
-		if ($arr['bj_plstat'] === 'waiting') {
-			$self = ($arr['bj_placeholder'] === $userdata['username'] || $arr['bj_gamer'] ? "disabled" : "");
+		if ($arr['bj_plstat'] == 'waiting') {
+			$self = ($arr['bj_placeholder'] == $userdata['username'] || $arr['bj_gamer'] ? "disabled" : "");
 
 			$template->assign_block_vars('waiting', array(
 				'W_PLAY' => ($arr['bj_gamer'] && !$arr['bj_winner']) ? $lang['BJ']['PLAY'] : '',
 				'PLACEHOLDER' => $arr['bj_placeholder'],
-				'GAMER' => ($arr['bj_gamer']) ? $arr['bj_gamer'] : '--',
+				'GAMER' => ($arr['bj_gamer']) ?: '--',
 				'DATA_GAME' => bb_date($arr['bj_date']),
-				'COLOR_BET' => $color[$arr['bj_bet']],
+				'COLOR_BET' => $colors[$arr['bj_bet']],
 				'BETS' => $arr['bj_bet'],
 				'GAME_ID' => $arr['bj_id'],
 				'SELF' => $self,
 			));
 		}
 
-		if ($arr['bj_plstat'] === 'finished') {
+		if ($arr['bj_plstat'] == 'finished') {
 			if ($finish_count > 10) break;
 
-			$bgcolor = ($userdata['username'] === $arr['bj_gamer'] || $userdata['username'] === $arr['bj_placeholder'] ? 'style="background: #E8DDDD;"' : '');
-			$self = ($arr['bj_placeholder'] === $userdata['username'] || $arr['bj_gamer'] ? "disabled" : "");
+			$bgcolor = ($userdata['username'] == $arr['bj_gamer'] || $userdata['username'] == $arr['bj_placeholder'] ? 'style="background: #E8DDDD;"' : '');
+			$self = ($arr['bj_placeholder'] == $userdata['username'] || $arr['bj_gamer'] ? "disabled" : "");
 
-			if ($arr['bj_gamer'] && !$arr['bj_winner'])
-				$winner = " -> <b>???????</b>";
+			$winner = $pts = '';
+			if ($arr['bj_gamer'] && !isset($arr['bj_winner']))
+				$winner = "&nbsp;->&nbsp;<b>???????</b>";
 			if ($arr['bj_winner']) {
-				$winner = " -> <b>" . $arr['bj_winner'] . "</b>";
+				$winner = "&nbsp;->&nbsp;<b>" . $arr['bj_winner'] . "</b>";
 				$pts = $arr['bj_points'] . " | " . $arr['bj_gamewithid'];
 			}
 
 			$template->assign_block_vars('finished', array(
 				'WINNER' => $winner,
 				'PLACEHOLDER' => $arr['bj_placeholder'],
-				'GAMER' => ($arr['bj_gamer']) ? $arr['bj_gamer'] : '--',
+				'GAMER' => ($arr['bj_gamer']) ?: '--',
 				'DATA_GAME' => bb_date($arr['bj_date']),
-				'COLOR_BET' => $color[$arr['bj_bet']],
+				'COLOR_BET' => $colors[$arr['bj_bet']],
 				'BETS' => $arr['bj_bet'],
 				'GAME_ID' => $arr['bj_id'],
 				'SELF' => $self,
@@ -294,7 +297,7 @@ if ($stake || $games || is_numeric($takegame)) {
 		}
 	}
 
-	foreach ($color as $val => $color) {
+	foreach ($colors as $val => $color) {
 		$template->assign_block_vars('bet', array(
 			'BET_COLOR' => $color,
 			'BET_GAMES' => $val,
@@ -305,7 +308,7 @@ if ($stake || $games || is_numeric($takegame)) {
 		'GAMES_VIEW' => true,
 		'PAGE_TITLE' => $lang['BJ']['BLACKJACK'],
 		'BJ_GAME' => $lang['BJ']['BLACKJACK'],
-		'NO_GAMES' => ((!$sql) ? false : true),
+		'NO_GAMES' => !$sql,
 	));
 
 	print_page('blackjack.tpl');
