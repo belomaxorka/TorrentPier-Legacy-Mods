@@ -12,26 +12,26 @@
 ------------------------------------------------------------------
 
 ----------------- Открыть файл posting_editor.tpl (В вашем шаблоне) и найти -----------------
-<input type="button" value="&para;" name="codeBR" title="{L_NEW_LINE}" />&nbsp;
+<input type="button" value="&para;" name="codeBR" title="{L_NEW_LINE}" style="width: 26px;" />&nbsp;
 ---------------------------------------------------------------------------------------------
 
 ----------------- Заменить на -----------------
-<input type="button" value="&para;" name="codeBR" title="{L_NEW_LINE}" />
-<input type="button" value="&#8667;" name="codeIndent" title="{L_INDENT_TAG}" />&nbsp;
+<input type="button" value="&para;" name="codeBR" title="{L_NEW_LINE}" style="width: 26px;" />
+<input type="button" value="&#8667;" name="codeIndent" title="{L_INDENT_TAG}" style="width: 26px;" />&nbsp;
 -----------------------------------------------
 
 ----------------- Далее найти -----------------
-<input type="button" value="{L_SPOILER}" name="codeSpoiler" title="{L_SPOILER}" />
+<input type="button" value="{L_SPOILER}" name="codeSpoiler" title="{L_SPOILER}" style="width: 65px;" />
 -----------------------------------------------
 
 ----------------- Ниже вставить -----------------
-<input type="button" value="pre" name="codePre" title="{L_PRE_TAG}" />
-<input type="button" value="box" name="codeBox" title="{L_BOX_TAG}" />
-<input type="button" value="nfo" name="codeNfo" title="{L_NFO_TAG}" />
+<input type="button" value="pre" name="codePre" title="{L_PRE_TAG}" style="width: 40px;" />
+<input type="button" value="box" name="codeBox" title="{L_BOX_TAG}" style="width: 40px;" />
+<input type="button" value="nfo" name="codeNfo" title="{L_NFO_TAG}" style="width: 40px;" />
 -------------------------------------------------
 
 ----------------- Далее найти -----------------
-bbcode.addTag("codeSpoiler", "spoiler", null, "", ctrl);
+bbcode.addTag("codeSpoiler", "spoiler", null, "",  ctrl);
 -----------------------------------------------
 
 ----------------- Ниже вставить -----------------
