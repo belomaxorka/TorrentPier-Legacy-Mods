@@ -26,7 +26,10 @@
 -----------------------------------------------
 
 ----------------- Ниже вставить -----------------
+<input type="button" value="pre" name="codePre" title="{L_PRE_TAG}" />
 <input type="button" value="box" name="codeBox" title="{L_BOX_TAG}" />
+<input type="button" value="nfo" name="codeNfo" title="{L_NFO_TAG}" />
+<input type="button" value="1-L" name="codeOneLine" title="{L_ONE_LINE_TAG}" />
 -------------------------------------------------
 
 ----------------- Далее найти -----------------
