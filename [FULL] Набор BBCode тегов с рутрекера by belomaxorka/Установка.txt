@@ -83,18 +83,29 @@ bbcode.addTag("codeOneLine", "oneline", null, "", ctrl);
 ----------------------------------------------------------------------------------
 
 ----------------- Ниже вставить -----------------
+// Набор BBCode тегов с рутрекера by belomaxorka
 '[box]' => '<div class="post-box-default"><div class="post-box">',
 '[/box]' => '</div></div>',
 '[indent]' => '<div class="post-indent">',
 '[/indent]' => '</div>',
+'[pre]' => '<pre class="post-pre">',
+'[/pre]' => '</pre>',
 -------------------------------------------------
 
 ----------------- Открыть library/language/en/main.php и в конце вставить -----------------
+// Набор BBCode тегов с рутрекера by belomaxorka
 $lang['BOX_TAG'] = 'Frame around text: [box]text[/box]';
 $lang['INDENT_TAG'] = 'Insert indent: [indent]text[/indent]';
+$lang['PRE_TAG'] = 'Preformatted text: [pre]text[/pre]';
+$lang['NFO_TAG'] = 'NFO: [nfo]text[/nfo]';
+$lang['ONE_LINE_TAG'] = 'One line text: [oneline]text[/oneline]';
 -------------------------------------------------------------------------------------------
 
 ----------------- Открыть library/language/ru/main.php и в конце вставить -----------------
+// Набор BBCode тегов с рутрекера by belomaxorka
 $lang['BOX_TAG'] = 'Рамка вокруг текста: [box]текст[/box]';
 $lang['INDENT_TAG'] = 'Добавить отступ: [indent]текст[/indent]';
+$lang['PRE_TAG'] = 'Форматированный текст: [pre]текст[/pre]';
+$lang['NFO_TAG'] = 'NFO: [nfo]текст[/nfo]';
+$lang['ONE_LINE_TAG'] = 'Текст в одну строчку: [oneline]текст[/oneline]';
 -------------------------------------------------------------------------------------------
