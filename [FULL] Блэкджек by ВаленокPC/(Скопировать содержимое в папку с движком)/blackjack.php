@@ -45,6 +45,7 @@ if (!$cards = CACHE('bb_cache')->get('bj_cards')) {
 }
 
 if ($stake || $games || is_numeric($takegame)) {
+	$winorlose = '';
 	cache_rm_user_sessions($userdata['user_id']);
 
 	if ($games == 'start' || $takegame) {
@@ -148,8 +149,9 @@ if ($stake || $games || is_numeric($takegame)) {
 
 				DB()->query("DELETE FROM " . BB_BLACKJACK . " WHERE bj_id = " . $id);
 				bj_die($a['bj_bet'], $winorlose);
-			} else
+			} else {
 				bj_die($playerarr['bj_bet'], $lang['BJ'][21]);
+			}
 		} elseif ($points > 21) {
 			DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_plstat = 'waiting', bj_date = " . TIMENOW . " WHERE  bj_id = " . $id);
 
@@ -171,8 +173,9 @@ if ($stake || $games || is_numeric($takegame)) {
 
 				DB()->query("DELETE FROM " . BB_BLACKJACK . " WHERE bj_id = " . $id);
 				bj_die($a['bj_bet'], $winorlose);
-			} else
+			} else {
 				bj_die($playerarr['bj_bet'], sprintf($lang['BJ']['BUST'], $points));
+			}
 		} else {
 			$template->assign_vars(array(
 				'MASSAGES_START' => true,
