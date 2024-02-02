@@ -272,7 +272,7 @@ if ($stake || $games || is_numeric($takegame)) {
 		if ($arr['bj_plstat'] == 'finished') {
 			if ($finish_count > 10) break;
 
-			$bgcolor = ($userdata['username'] == $arr['bj_gamer'] || $userdata['username'] == $arr['bj_placeholder'] ? 'style="background: #E8DDDD;"' : '');
+			$bgcolor = ($userdata['username'] == $arr['bj_gamer'] || $userdata['username'] == $arr['bj_placeholder'] ? 'style="background-color: #E8DDDD;"' : '');
 			$self = ($arr['bj_placeholder'] == $userdata['username'] || $arr['bj_gamer'] ? "disabled" : "");
 
 			$winner = $pts = '';
