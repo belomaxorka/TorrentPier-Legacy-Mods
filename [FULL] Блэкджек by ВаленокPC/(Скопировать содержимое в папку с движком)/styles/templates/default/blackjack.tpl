@@ -1,77 +1,73 @@
 <!-- IF JS_ON -->
 <script type="text/javascript">
-        ajax.exec({action  : 'bj'});
-        ajax.callback.bj = function (data) {
-            window.opener.document.getElementById('bjtable').innerHTML = data.html;
-            window.opener.focus();
-            window.close();
-        };
+	ajax.exec({action: 'bj'});
+	ajax.callback.bj = function (data) {
+		window.opener.document.getElementById('bjtable').innerHTML = data.html;
+		window.opener.focus();
+		window.close();
+	};
 </script>
 <!-- ENDIF -->
 <!-- IF MASSAGES_START -->
 <script type="text/javascript">
-    $('#bjbutt').live('click', function() {
-        ajax.exec({action  : 'bj'});
-        ajax.callback.bj = function (data) {
-            window.opener.document.getElementById('bjtable').innerHTML = data.html;
-            window.opener.focus();
-            window.close();
-        };
-
-    });
-
+	$('#bjbutt').live('click', function () {
+		ajax.exec({action: 'bj'});
+		ajax.callback.bj = function (data) {
+			window.opener.document.getElementById('bjtable').innerHTML = data.html;
+			window.opener.focus();
+			window.close();
+		};
+	});
 </script>
 <table width="100%" cellpadding="10">
-    <tr>
-        <td>
-            <table class="forumline">
-                <tr>
-                    <th>{PAGE_TITLE}</th>
-                </tr>
-                <tr>
-                    <td class="row2 gen tCenter" colspan="2" style="border-bottom:none;">
-                        <p>
-                            Правило игры: набрать как можно больше очков, но не более 21.
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="row1">
-                        <table class="borderless w100" cellpadding="5">
-                            <tr align="center">
-                                <td>{IMG_CARDS}</td>
-                            </tr>
-                            <tr>
-                                <td align=center><b>Очки = {CARD_POINTS}</b></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="row2" align="center"><br />
-                        <span class="med">
-                            <form name=bj method=post action=blackjack.php><input type=hidden name=id value='{ID_GAMES}'><input type=hidden name=game value=cont><input type=submit value='Ещё' class='btn'></form>
-                            <!-- IF STOP --><form name=bj method=post action=blackjack.php onSubmit=this.submit.disabled=true><input type=hidden name=id value='{ID_GAMES}'><input type=hidden name=game value=stop><input type=submit name=submit value='Хватит' class='btn' onkeypress="return false"></form><!-- ENDIF -->
+	<tr>
+		<td>
+			<table class="forumline">
+				<tr>
+					<th>{PAGE_TITLE}</th>
+				</tr>
+				<tr>
+					<td class="row2 gen tCenter" colspan="2" style="border-bottom:none;">
+						<p>
+							Правило игры: набрать как можно больше очков, но не более 21.
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td class="row1">
+						<table class="borderless w100" cellpadding="5">
+							<tr align="center">
+								<td>{IMG_CARDS}</td>
+							</tr>
+							<tr>
+								<td align=center><b>Очки = {CARD_POINTS}</b></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td class="row2" align="center"><br/>
+						<span class="med">
+                            <form name="bj" method="post" action="blackjack.php"><input type="hidden" name="id" value='{ID_GAMES}'><input type="hidden" name="game" value="cont"><input type="submit" value="Ещё" class="btn"></form>
+							<!-- IF STOP --><form name="bj" method="post" action="blackjack.php" onsubmit="this.submit.disabled = true;"><input type="hidden" name="id" value="{ID_GAMES}"><input type="hidden" name="game" value="stop"><input type="submit" name="submit" value="Хватит" class="btn" onkeypress="return false;"></form><!-- ENDIF -->
                         </span>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
 </table>
 <!-- ENDIF -->
 <!-- IF MASSAGES_INFO -->
 <script type="text/javascript">
-    $('#bjbutt').live('click', function() {
-        ajax.exec({action  : 'bj'});
-        ajax.callback.bj = function (data) {
-            window.opener.document.getElementById('bjtable').innerHTML = data.html;
-            window.opener.focus();
-            window.close();
-        };
-
-    });
-
+	$('#bjbutt').live('click', function () {
+		ajax.exec({action: 'bj'});
+		ajax.callback.bj = function (data) {
+			window.opener.document.getElementById('bjtable').innerHTML = data.html;
+			window.opener.focus();
+			window.close();
+		};
+	});
 </script>
 <table width="100%" cellpadding="10">
     <tr>
@@ -100,28 +96,26 @@
 
 <!-- IF GAMES_VIEW -->
 <script type="text/javascript">
+	$("#bjtable").click(function () {
+		$(this).effect("pulsate", {times: 2}, 1000);
+	});
 
-    $("#bjtable").click(function () {
-        $(this).effect("pulsate", { times: 2 }, 1000);
-    });
+	function UpdateBjTable() {
+		ajax.exec({action: 'bj'});
+		ajax.callback.bj = function (data) {
+			$('#bjtable').html(data.html);
+		};
+	}
 
-    function UpdateBjTable() {
-        ajax.exec({action  : 'bj'});
-        ajax.callback.bj = function (data) {
-            $('#bjtable').html(data.html);
-        };
-
-    }
-
-    function popupform(myform, windowname) {
-        if ( !window.focus)return true;
-        var d = document.documentElement,
-                h = 500,
-                w = 500;
-        window.open('', windowname, 'left='+Math.max(0, ((d.clientWidth - w)/2 + window.screenX))+', top='+Math.max(0, ((d.clientHeight - h)/2 + window.screenY))+', height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no');
-        myform.target=windowname;
-        return true;
-    }
+	function popupform(myform, windowname) {
+		if (!window.focus) return true;
+		var d = document.documentElement,
+			h = 500,
+			w = 500;
+		window.open('', windowname, 'left=' + Math.max(0, ((d.clientWidth - w) / 2 + window.screenX)) + ', top=' + Math.max(0, ((d.clientHeight - h) / 2 + window.screenY)) + ', height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no');
+		myform.target = windowname;
+		return true;
+	}
 </script>
 
 <br />
