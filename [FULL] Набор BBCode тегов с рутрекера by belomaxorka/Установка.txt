@@ -92,6 +92,10 @@ bbcode.addTag("codeOneLine", "oneline", null, "", ctrl);
   font-family: Consolas, monospace;
   overflow-y: hidden;
 }
+
+.post-oneline {
+  white-space: nowrap:
+}
 -------------------------------------------------
 
 ----------------- [v2.1.5] Открыть library/includes/bbcode.php и найти -----------------
