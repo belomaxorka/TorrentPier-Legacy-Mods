@@ -97,10 +97,6 @@
 
 <!-- IF GAMES_VIEW -->
 <script type="text/javascript">
-	$("#bjtable").click(function () {
-		$(this).effect("pulsate", {times: 2}, 1000);
-	});
-
 	function UpdateBjTable() {
 		ajax.exec({action: 'bj'});
 		ajax.callback.bj = function (data) {
