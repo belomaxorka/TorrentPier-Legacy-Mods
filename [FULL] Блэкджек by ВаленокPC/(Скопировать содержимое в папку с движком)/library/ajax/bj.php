@@ -25,7 +25,7 @@ if ($sql) {
 			$html_w .= "<tr><td class=\"row1\" width=\"15%\" align=\"center\">" . profile_url(get_userdata($row['bj_placeholder'], true)) . "</td>\n
 							<td class=\"row1\" width=\"20%\" align=\"center\">" . bb_date($row["bj_date"]) . "</td>\n
 							<td class=\"row1\" width=\"15%\" align=\"center\">" . $gamer . "</td>\n
-							<td class=\"row1\" width=\"40%\" align=\"center\">Ставка:&nbsp;<input type=\"button\" style=\"cursor: pointer !important; width: 70px; height: 18px; background-color: #" . $bb_cfg['bj_colors'][$row['bj_bet']] . "; color: #FFFFFF; font-weight: normal; border: 1px solid white\" $self value='" . $row["bj_bet"] . "' onclick=\"window.open('blackjack.php?takegame=$row[bj_id]', '', 'height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no'); return false;\"></td>\n";
+							<td class=\"row1\" width=\"40%\" align=\"center\">Ставка:&nbsp;<input type=\"button\" style=\"cursor: pointer !important; width: 70px; height: 18px; background-color: #" . $bb_cfg['bj_colors'][$row['bj_bet']] . "; color: #FFFFFF; font-weight: normal; border: 1px solid white\" $self value='" . $row["bj_bet"] . "' onclick=\"window.open('blackjack.php?takegame=$row[bj_id]', '', 'height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no'); return false;\">&nbsp;$playing</td>\n";
 			$html_w .= "</tr>\n";
 			unset($self, $gamer);
 		}
