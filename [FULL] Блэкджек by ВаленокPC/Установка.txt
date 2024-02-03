@@ -53,6 +53,8 @@ function bj()
 
 ------------------ Открыть page_header.tpl (В вашем шаблоне) и найти ------------------
 <!-- IF $bb_cfg['seed_bonus_enabled'] --><tr><td>{L_SEED_BONUS}</td><td><a href="profile.php?mode=bonus"><span class="points bold">{POINTS}</span></a></td></tr><!-- ENDIF -->
+------------------ Если не найдено, то найти эту строчку ------------------
+<!-- IF $bb_cfg['seed_bonus_enabled'] --><tr><td>{L_SEED_BONUS}</td><td><a href="{#BONUS_URL}"><span class="points bold">{POINTS}</span></a></td></tr><!-- ENDIF -->
 ---------------------------------------------------------------------------------------
 
 ------------------ Ниже вставить ------------------
