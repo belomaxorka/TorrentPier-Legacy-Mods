@@ -49,6 +49,6 @@ if ($sql) {
 	}
 
 	$this->response['html'] = $html_w . $html_f;
+} else {
+	$this->response['html'] = "<tr><td colspan=5 class=\"row1\" width=\"15%\" align=\"center\">" . $lang['BJ']['NO_GAMES'] . "</td></tr>";
 }
-
-$this->response['html'] = "<tr><td colspan=5 class=\"row1\" width=\"15%\" align=\"center\">" . $lang['BJ']['NO_GAMES'] . "</td></tr>";
