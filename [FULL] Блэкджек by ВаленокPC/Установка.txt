@@ -101,7 +101,7 @@ else
 // Блэкджек
 elseif (isset($_POST['tokens']) && $_POST['tokens'] >= 1) {
 	$tokens = (int)$_POST['tokens'];
-	$tokens_formula = floor($tokens * 0.1);
+	$tokens_formula = $tokens * 0.1;
 
 	if ($userdata['user_points'] < $tokens_formula) {
 		meta_refresh('index.php', 5);
