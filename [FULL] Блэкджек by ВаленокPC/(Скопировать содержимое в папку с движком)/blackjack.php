@@ -150,7 +150,7 @@ if ($stake || $games || is_numeric($takegame)) {
 				DB()->query("DELETE FROM " . BB_BLACKJACK . " WHERE bj_id = " . $id);
 				bj_die($a['bj_bet'], $winorlose);
 			} else {
-				bj_die($playerarr['bj_bet'], $lang['BJ_21_POINTS']);
+				bj_die($playerarr['bj_bet'], $lang['BJ'][21]);
 			}
 		} elseif ($points > 21) {
 			DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_plstat = 'waiting', bj_date = " . TIMENOW . " WHERE  bj_id = " . $id);
