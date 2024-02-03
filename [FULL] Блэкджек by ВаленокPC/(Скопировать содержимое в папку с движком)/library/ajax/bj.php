@@ -40,7 +40,7 @@ if ($sql) {
 			$bgcolor = ($userdata['username'] == $row['bj_TookGame'] || $userdata['username'] == $row['bj_StartGame'] ? "style=\"background-color: #E8DDDD;\"" : "");
 			$self = ($row['bj_StartGame'] == $userdata['username'] || $row['bj_TookGame'] ? "disabled" : "");
 
-			$html_f .= "<tr><td class=\"row1 gen\" $bgcolor width=15% align=\"center\">" . $row['bj_StartGame'] . "</td>\n
+			$html_f .= "<tr><td class=\"row1 gen\" $bgcolor width=\"15%\" align=\"center\">" . $row['bj_StartGame'] . "</td>\n
             <td class=\"row1 gen\" $bgcolor width=\"20%\" align=\"center\">" . bb_date($row["bj_date"]) . "</td>\n
             <td class=\"row1 gen\" $bgcolor width=\"15%\" align=\"center\">" . (($row['bj_TookGame']) ?: '--') . "</td>\n
             <td class=\"row1 gen\" $bgcolor width=\"40%\" align=\"center\"><input type=\"button\" style=\"width: 70px; height: 18px; background-color: #" . $colors[$row['bj_bet']] . "; color: #FFFFFF; font-weight: normal; border: 1px solid white\" $self value='$row[bj_bet]' onclick=\"window.open('blackjack.php?takegame=$row[bj_id]', '', 'height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no'); return false;\">" . sprintf($lang['GAME_WIN'], $row['bj_winner'], $row['bj_points'], $row['bj_gamewithid']) . "</td>\n";
