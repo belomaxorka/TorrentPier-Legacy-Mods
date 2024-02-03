@@ -10,7 +10,7 @@ function bj_die($bet, $text)
 {
 	global $template, $lang;
 
-	$title = ($bet == '') ? $lang['BLACKJACK'] : sprintf($lang['THE_TITLE'], $bet);
+	$title = ($bet == '') ? $lang['BJ']['BLACKJACK'] : sprintf($lang['BJ']['THE_TITLE'], $bet);
 
 	$template->assign_vars(array(
 		'MASSAGES_INFO' => true,
@@ -54,9 +54,9 @@ if ($stake || $games || is_numeric($takegame)) {
 			$numbets = DB()->num_rows(DB()->sql_query("SELECT bj_id FROM " . BB_BLACKJACK . " WHERE bj_placeholder = '" . $userdata['username'] . "' AND bj_plstat = 'waiting'"));
 
 			if ($userdata["user_tokens"] <= $stake) {
-				bj_die($stake, $lang['NOT_TOKENS']);
+				bj_die($stake, $lang['BJ']['NOT_TOKENS']);
 			}
-			if ($numbets >= $bb_cfg['max_open_games']) bj_die($stake, sprintf($lang['MAX_OPEN_GAMES'], $bb_cfg['max_open_games']));
+			if ($numbets >= $bb_cfg['max_open_games']) bj_die($stake, sprintf($lang['BJ']['MAX_OPEN_GAMES'], $bb_cfg['max_open_games']));
 
 			DB()->query("UPDATE " . BB_USERS . " SET user_tokens = user_tokens - $stake WHERE user_id =" . $userdata['user_id']);
 			DB()->sql_query("INSERT INTO " . BB_BLACKJACK . " (bj_placeholder, bj_points, bj_plstat, bj_bet, bj_cards, bj_date) values('" . $userdata['username'] . "', " . $cards[$cardid]['card_points'] . ", 'playing', " . $stake . ", " . $cardid . ", " . TIMENOW . ")");
@@ -68,7 +68,7 @@ if ($stake || $games || is_numeric($takegame)) {
 			$sql = "SELECT bj_bet, bj_gamer, bj_placeholder FROM " . BB_BLACKJACK . " WHERE bj_id =" . $gid;
 			if ($row = DB()->fetch_row($sql)) {
 				if ($userdata["user_tokens"] <= $row['bj_bet']) {
-					bj_die($row['bj_bet'], $lang['NOT_TOKENS']);
+					bj_die($row['bj_bet'], $lang['BJ']['NOT_TOKENS']);
 				}
 
 				if ($row['bj_gamer']) {
@@ -76,7 +76,7 @@ if ($stake || $games || is_numeric($takegame)) {
 				}
 
 				if ($row['bj_placeholder'] == $userdata['username']) {
-					bj_die($row['bj_bet'], $lang['THE_A_GAMES']);
+					bj_die($row['bj_bet'], $lang['BJ']['THE_A_GAMES']);
 				}
 
 				DB()->query("UPDATE " . BB_USERS . " SET user_tokens = user_tokens - " . $row['bj_bet'] . " WHERE user_id = " . $userdata['user_id']);
@@ -86,13 +86,13 @@ if ($stake || $games || is_numeric($takegame)) {
 				$id = DB()->sql_nextid();
 
 			} else {
-				bb_die($lang['GAME_NOT_FOUND']);
+				bb_die($lang['BJ']['GAME_NOT_FOUND']);
 			}
 		}
 
 		$template->assign_vars(array(
 			'MASSAGES_START' => true,
-			'PAGE_TITLE' => sprintf($lang['THE_TITLE'], $stake),
+			'PAGE_TITLE' => sprintf($lang['BJ']['THE_TITLE'], $stake),
 			'IMG_CARDS' => "<img src=styles/images/cards/" . $cards[$cardid]['card_img'] . " border=0>",
 			'CARD_POINTS' => $cards[$cardid]['card_points'],
 			'ID_GAMES' => $id,
@@ -102,7 +102,7 @@ if ($stake || $games || is_numeric($takegame)) {
 		$playerarr = DB()->sql_fetchrow(DB()->sql_query("SELECT * from " . BB_BLACKJACK . " where bj_id= " . $id));
 
 		if ($playerarr["bj_plstat"] == 'waiting') {
-			bj_die($playerarr['bj_bet'], $lang['GAME_IS_PLAYED']);
+			bj_die($playerarr['bj_bet'], $lang['BJ']['GAME_IS_PLAYED']);
 		}
 
 		$showcards = '';
@@ -135,14 +135,14 @@ if ($stake || $games || is_numeric($takegame)) {
 				$a = DB()->sql_fetchrow(DB()->sql_query("SELECT * FROM " . BB_BLACKJACK . " WHERE bj_id = " . $check['bj_gamewithid']));
 
 				if ($a['bj_points'] != 21) {
-					$winorlose = sprintf($lang['YOU_WON'], $playerarr['bj_points'], $a['bj_points']);
+					$winorlose = sprintf($lang['BJ']['YOU_WON'], $playerarr['bj_points'], $a['bj_points']);
 
 					DB()->query("UPDATE " . BB_USERS . " SET user_tokens = user_tokens + " . ($a['bj_bet'] * 2) . " WHERE user_id = " . $userdata['user_id']);
 					DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_winner = '" . $userdata['username'] . "', bj_gamewithid = " . $points . ", bj_date = " . TIMENOW . ", bj_plstat = 'finished' WHERE  bj_id = " . $check['bj_gamewithid']);
 				} else {
-					$winorlose = sprintf($lang['NOBODY_WON'], $points, $a['bj_points']);
+					$winorlose = sprintf($lang['BJ']['NOBODY_WON'], $points, $a['bj_points']);
 
-					DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_winner = '" . $lang['DRAW'] . "', bj_gamewithid = " . $points . ", bj_date = " . TIMENOW . ", bj_plstat = 'finished' WHERE  bj_id = " . $check['bj_gamewithid']);
+					DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_winner = '" . $lang['BJ']['DRAW'] . "', bj_gamewithid = " . $points . ", bj_date = " . TIMENOW . ", bj_plstat = 'finished' WHERE  bj_id = " . $check['bj_gamewithid']);
 					DB()->query("UPDATE " . BB_USERS . " SET user_tokens = user_tokens + " . $a['bj_bet'] . " WHERE user_id = " . $userdata['user_id']);
 					DB()->query("UPDATE " . BB_USERS . " SET user_tokens = user_tokens + " . $a['bj_bet'] . " WHERE username = '" . $a['bj_placeholder'] . "'");
 				}
@@ -160,10 +160,10 @@ if ($stake || $games || is_numeric($takegame)) {
 				$a = DB()->sql_fetchrow(DB()->sql_query("SELECT * FROM " . BB_BLACKJACK . " WHERE bj_id =" . $check['bj_gamewithid']));
 
 				if (($a['bj_points'] >= $points || $points >= $a['bj_points']) && $a['bj_points'] > 21) {
-					$winorlose = sprintf($lang['NOBODY_WON'], $points, $a['bj_points']);
-					DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_winner = '" . $lang['ROBIN'] . "', bj_gamewithid = $points, bj_date = " . TIMENOW . ", bj_plstat = 'finished' WHERE  bj_id = " . $check['bj_gamewithid']);
+					$winorlose = sprintf($lang['BJ']['NOBODY_WON'], $points, $a['bj_points']);
+					DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_winner = '" . $lang['BJ']['ROBIN'] . "', bj_gamewithid = $points, bj_date = " . TIMENOW . ", bj_plstat = 'finished' WHERE  bj_id = " . $check['bj_gamewithid']);
 				} elseif ($a['bj_points'] < $points && $a['bj_points'] <= 21) {
-					$winorlose = sprintf($lang['YOU_LOST'], $points, $a['bj_points']);
+					$winorlose = sprintf($lang['BJ']['YOU_LOST'], $points, $a['bj_points']);
 
 					DB()->query("UPDATE " . BB_USERS . " SET user_tokens = user_tokens + " . ($a['bj_bet'] * 2) . " WHERE username = '" . $a['bj_placeholder'] . "'");
 					if ($a['bj_placeholder']) {
@@ -174,13 +174,13 @@ if ($stake || $games || is_numeric($takegame)) {
 				DB()->query("DELETE FROM " . BB_BLACKJACK . " WHERE bj_id = " . $id);
 				bj_die($a['bj_bet'], $winorlose);
 			} else {
-				bj_die($playerarr['bj_bet'], sprintf($lang['BUST'], $points));
+				bj_die($playerarr['bj_bet'], sprintf($lang['BJ']['BUST'], $points));
 			}
 		} else {
 			$template->assign_vars(array(
 				'MASSAGES_START' => true,
 				'STOP' => true,
-				'PAGE_TITLE' => sprintf($lang['THE_TITLE'], $playerarr['bj_bet']),
+				'PAGE_TITLE' => sprintf($lang['BJ']['THE_TITLE'], $playerarr['bj_bet']),
 				'IMG_CARDS' => $showcards,
 				'CARD_POINTS' => $points,
 				'ID_GAMES' => $id,
@@ -191,21 +191,21 @@ if ($stake || $games || is_numeric($takegame)) {
 		$playerarr = DB()->sql_fetchrow(DB()->sql_query("SELECT * FROM " . BB_BLACKJACK . " WHERE bj_id =" . $id));
 
 		if ($playerarr['bj_plstat'] == 'waiting' || !$playerarr) {
-			bj_die($playerarr['bj_bet'], $lang['GAME_IS_PLAYED']);
+			bj_die($playerarr['bj_bet'], $lang['BJ']['GAME_IS_PLAYED']);
 		}
 
 		DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_plstat = 'waiting', bj_date = " . TIMENOW . "  WHERE  bj_id = " . $id);
 		if ($playerarr['bj_gamewithid']) {
 			$a = DB()->sql_fetchrow(DB()->sql_query("SELECT * FROM " . BB_BLACKJACK . " WHERE bj_id =" . $playerarr['bj_gamewithid']));
 			if ($a['bj_points'] == $playerarr['bj_points'] && $a['bj_points'] < 22 && $playerarr['bj_points'] < 22) {
-				$winorlose = $lang['NOT_WIN'];
+				$winorlose = $lang['BJ']['NOT_WIN'];
 
 				DB()->query("UPDATE " . BB_USERS . " SET user_tokens = user_tokens + " . $a['bj_bet'] . " WHERE user_id = " . $userdata['user_id']);
 				DB()->query("UPDATE " . BB_USERS . " SET user_tokens = user_tokens + " . $a['bj_bet'] . " WHERE username = '" . $a['placeholder'] . "'");
-				DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_winner = '" . $lang['DRAW'] . "', bj_gamewithid = " . $playerarr['bj_points'] . ", bj_date = " . TIMENOW . ", bj_plstat = 'finished' WHERE  bj_id = " . $playerarr['bj_gamewithid']);
+				DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_winner = '" . $lang['BJ']['DRAW'] . "', bj_gamewithid = " . $playerarr['bj_points'] . ", bj_date = " . TIMENOW . ", bj_plstat = 'finished' WHERE  bj_id = " . $playerarr['bj_gamewithid']);
 				DB()->query("DELETE FROM " . BB_BLACKJACK . " WHERE bj_id = " . $id);
 			} elseif ($playerarr['bj_points'] < $a['bj_points'] && $a['bj_points'] > 21 || $playerarr['bj_points'] > $a['bj_points'] && $playerarr['bj_points'] < 22) {
-				$winorlose = sprintf($lang['YOU_WON'], $playerarr['bj_points'], $a['bj_points']);
+				$winorlose = sprintf($lang['BJ']['YOU_WON'], $playerarr['bj_points'], $a['bj_points']);
 
 				DB()->query("UPDATE " . BB_USERS . " SET user_tokens = user_tokens + " . ($a['bj_bet'] * 2) . " WHERE user_id = " . $userdata['user_id']);
 
@@ -215,15 +215,15 @@ if ($stake || $games || is_numeric($takegame)) {
 
 				DB()->query("DELETE FROM " . BB_BLACKJACK . " WHERE bj_id = " . $id);
 			} elseif ($playerarr['bj_points'] < $a['bj_points'] && $a['bj_points'] <= 21) {
-				$winorlose = sprintf($lang['YOU_LOST'], $playerarr['bj_points'], $a['bj_points']);
+				$winorlose = sprintf($lang['BJ']['YOU_LOST'], $playerarr['bj_points'], $a['bj_points']);
 
 				DB()->query("UPDATE " . BB_USERS . " SET user_tokens = user_tokens + " . ($a['bj_bet'] * 2) . " WHERE username = '" . $a['bj_placeholder'] . "'");
 				DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_winner = '" . $a['bj_placeholder'] . "', bj_gamewithid = " . $playerarr['bj_points'] . ", bj_date = " . TIMENOW . ", bj_plstat = 'finished' WHERE  bj_id = " . $playerarr['bj_gamewithid']);
 				DB()->query("DELETE FROM " . BB_BLACKJACK . " WHERE bj_id = " . $id);
 			} elseif ($a["bj_points"] > 21 && $playerarr["bj_points"] > 21) {
-				$winorlose = sprintf($lang['NOBODY_WON'], $a["bj_points"], $playerarr['bj_points']);
+				$winorlose = sprintf($lang['BJ']['NOBODY_WON'], $a["bj_points"], $playerarr['bj_points']);
 
-				DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_winner = '" . $lang['ROBIN'] . "', bj_gamewithid = $points, bj_date = " . TIMENOW . ", bj_plstat = 'finished' WHERE  bj_id = " . $check['bj_gamewithid']);
+				DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_winner = '" . $lang['BJ']['ROBIN'] . "', bj_gamewithid = $points, bj_date = " . TIMENOW . ", bj_plstat = 'finished' WHERE  bj_id = " . $check['bj_gamewithid']);
 			}
 
 			bj_die($playerarr['bj_bet'], $winorlose);
@@ -258,7 +258,7 @@ if ($stake || $games || is_numeric($takegame)) {
 			$self = ($arr['bj_placeholder'] == $userdata['username'] || $arr['bj_gamer'] ? "disabled" : "");
 
 			$template->assign_block_vars('waiting', array(
-				'W_PLAY' => ($arr['bj_gamer'] && !$arr['bj_winner']) ? $lang['PLAY'] : '',
+				'W_PLAY' => ($arr['bj_gamer'] && !$arr['bj_winner']) ? $lang['BJ']['PLAY'] : '',
 				'PLACEHOLDER' => $arr['bj_placeholder'],
 				'GAMER' => ($arr['bj_gamer']) ?: '--',
 				'DATA_GAME' => bb_date($arr['bj_date']),
@@ -309,8 +309,8 @@ if ($stake || $games || is_numeric($takegame)) {
 
 	$template->assign_vars(array(
 		'GAMES_VIEW' => true,
-		'PAGE_TITLE' => $lang['BLACKJACK'],
-		'BJ_GAME' => $lang['BLACKJACK'],
+		'PAGE_TITLE' => $lang['BJ']['BLACKJACK'],
+		'BJ_GAME' => $lang['BJ']['BLACKJACK'],
 		'NO_GAMES' => !$sql,
 	));
 
