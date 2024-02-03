@@ -147,10 +147,10 @@
 			<table class="forums" width="90%" cellpadding="2" cellspacing="0">
 				<thead>
 				<tr class="row3">
-					<td align="center" width=15%><b>Начал</b></td>
-					<td align="center" width=20%><b>Время</b></td>
-					<td align="center" width=15%><b>Принял</b></td>
-					<td align="center" width=40%><b>Игра</b></td>
+					<td align="center" width="15%"><b>Начал</b></td>
+					<td align="center" width="20%"><b>Время</b></td>
+					<td align="center" width="15%"><b>Принял</b></td>
+					<td align="center" width="40%"><b>Игра</b></td>
 				</tr>
 				</thead>
 				<tbody id="bjtable">
