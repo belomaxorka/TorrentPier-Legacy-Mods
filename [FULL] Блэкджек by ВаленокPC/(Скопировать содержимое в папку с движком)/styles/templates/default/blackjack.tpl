@@ -19,6 +19,9 @@
 		};
 	});
 </script>
+
+<h1 class="pagetitle">{BJ_GAME}</h1>
+
 <table width="100%" cellpadding="10">
 	<tr>
 		<td>
@@ -123,7 +126,7 @@
 <table class="forumline" width="650" cellspacing="0" cellpadding="3">
 	<tr>
 		<th class="cat_title" align="left" style="border-right: none;">{BJ_GAME}</th>
-		<th class="cat_title" align="right" style="border-left: none;"><a href="#" onclick="UpdateBjTable(); return false;" style="text-decoration: none;" id="loader"><img src="styles/images/arr.gif" alt="{L_UPDATE}"/>&nbsp;{L_UPDATE}</a></th>
+		<th class="cat_title" align="right" style="border-left: none; color: #D5E4EC !important;"><a href="#" onclick="UpdateBjTable(); return false;" style="text-decoration: none;" id="loader"><img src="styles/images/arr.gif" alt="{L_UPDATE}"/>&nbsp;{L_UPDATE}</a></th>
 	</tr>
 	<tr>
 		<td class="row2 gen tCenter" colspan="2" style="border-bottom: none;"><p>
