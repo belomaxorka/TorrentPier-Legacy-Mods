@@ -311,6 +311,7 @@ if ($stake || $games || is_numeric($takegame)) {
 		'PAGE_TITLE' => $lang['BJ']['BLACKJACK'],
 		'BJ_GAME' => $lang['BJ']['BLACKJACK'],
 		'NO_GAMES' => !$sql,
+		'TOKENS' => $userdata['user_tokens']
 	));
 
 	print_page('blackjack.tpl');

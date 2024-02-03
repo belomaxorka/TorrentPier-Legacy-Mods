@@ -133,7 +133,10 @@
 			Зависшие игры будут автоматически удалятся в течение 15/30 минут.</p></td>
 	</tr>
 	<tr>
-		<td class="row1 tCenter" colspan="2"><br>
+		<td class="row1 tCenter" colspan="2">
+			<br>
+			<span class="seedmed">У вас жетонов: {TOKENS}</span>
+			<br>
 			<form name="blackjack" method="post" action="blackjack.php" onsubmit="popupform(this, 'join');">
 				<input type="hidden" name="game" value="start">
 				<!-- BEGIN bet -->
