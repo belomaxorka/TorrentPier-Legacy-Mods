@@ -1,3 +1,5 @@
+<h1 class="pagetitle">{BJ_GAME}</h1>
+
 <!-- IF JS_ON -->
 <script type="text/javascript">
 	ajax.exec({action: 'bj'});
@@ -19,8 +21,6 @@
 		};
 	});
 </script>
-
-<h1 class="pagetitle">{BJ_GAME}</h1>
 
 <table width="100%" cellpadding="10">
 	<tr>
