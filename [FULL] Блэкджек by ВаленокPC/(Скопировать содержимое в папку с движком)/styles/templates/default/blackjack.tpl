@@ -137,6 +137,7 @@
 	</tr>
 	<tr>
 		<td class="row1 tCenter" colspan="2"><br>
+			Выберите ставку:<br>
 			<form name="blackjack" method="post" action="blackjack.php" onsubmit="popupform(this, 'join');">
 				<input type="hidden" name="game" value="start">
 				<!-- BEGIN bet -->
