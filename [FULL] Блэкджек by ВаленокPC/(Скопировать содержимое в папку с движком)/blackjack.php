@@ -278,7 +278,11 @@ if ($stake || $games || is_numeric($takegame)) {
 			if ($arr['bj_gamer'] && !isset($arr['bj_winner']))
 				$winner = "&nbsp;->&nbsp;<b>???????</b>";
 			if ($arr['bj_winner']) {
-				$winner = "&nbsp;->&nbsp;<b>" . profile_url(get_userdata($arr['bj_winner'], true)) . "</b>";
+				if (get_user_id($arr['bj_winner'])) {
+					$winner = "&nbsp;->&nbsp;<b>" . profile_url(get_userdata($arr['bj_winner'], true)) . "</b>";
+				} else {
+					$winner = "&nbsp;->&nbsp;<b>???????</b>";
+				}
 				$pts = $arr['bj_points'] . " | " . $arr['bj_gamewithid'];
 			}
 
