@@ -251,7 +251,7 @@ if ($stake || $games || is_numeric($takegame)) {
 		}
 
 		if ($arr['bj_plstat'] == 'finished') {
-			if ($bb_cfg['max_finish_show'] && ($finish_count > $bb_cfg['max_finish_show'])) {
+			if ($bb_cfg['max_finish_show'] && ($finish_count >= $bb_cfg['max_finish_show'])) {
 				break;
 			}
 
