@@ -259,8 +259,9 @@ if ($stake || $games || is_numeric($takegame)) {
 			$self = ($arr['bj_placeholder'] == $userdata['username'] || $arr['bj_gamer'] ? "disabled" : "");
 
 			$winner = $pts = '';
-			if ($arr['bj_gamer'] && !isset($arr['bj_winner']))
+			if ($arr['bj_gamer'] && !isset($arr['bj_winner'])) {
 				$winner = "&nbsp;->&nbsp;<b>???????</b>";
+			}
 			if ($arr['bj_winner']) {
 				if (get_user_id($arr['bj_winner'])) {
 					$winner = "&nbsp;->&nbsp;<b>" . profile_url(get_userdata($arr['bj_winner'], true)) . "</b>";

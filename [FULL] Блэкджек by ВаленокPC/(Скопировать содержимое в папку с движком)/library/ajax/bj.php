@@ -11,16 +11,16 @@ if ($sql) {
 	$finish_count = 0;
 
 	foreach ($sql as $row) {
-		if ($row['bj_plstat'] == 'waiting' && !($row['bj_TookGame'] && !$row['bj_winner'])) {
+		if ($row['bj_plstat'] == 'waiting') {
 			$self = ($row['bj_placeholder'] == $userdata['username'] || $row['bj_gamer'] ? "disabled" : "");
-			$html_w .= "<tr><td class=\"row1\" width=\"15%\" align=\"center\">" . $row["bj_StartGame"] . "</td>\n
+			$html_w .= "<tr><td class=\"row1\" width=\"15%\" align=\"center\">" . profile_url(get_userdata($row['bj_placeholder'], true)) . "</td>\n
 							<td class=\"row1\" width=\"20%\" align=\"center\">" . bb_date($row["bj_date"]) . "</td>\n
-							<td class=\"row1\" width=\"15%\" align=\"center\">" . (($row['bj_TookGame']) ?: '--') . "</td>\n
+							<td class=\"row1\" width=\"15%\" align=\"center\">" . !empty($row['bj_gamer']) ? profile_url(get_userdata($row['bj_gamer'], true)) : '--' . "</td>\n
 							<td class=\"row1\" width=\"40%\" align=\"center\">Ставка:&nbsp;<input type=\"button\" style=\"cursor: pointer !important; width: 70px; height: 18px; background-color: #" . $bb_cfg['bj_colors'][$row['bj_bet']] . "; color: #FFFFFF; font-weight: normal; border: 1px solid white\" $self value='" . $row["bj_bet"] . "' onclick=\"window.open('blackjack.php?takegame=$row[bj_id]', '', 'height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no'); return false;\"></td>\n";
 			$html_w .= "</tr>\n";
 			unset($self);
 		}
-		if ($row['bj_plstat'] == 'finished' && !($row['bj_TookGame'] && !$row['bj_winner'])) {
+		if ($row['bj_plstat'] == 'finished') {
 			if ($bb_cfg['max_finish_show'] && ($finish_count > $bb_cfg['max_finish_show'])) {
 				break;
 			}
@@ -28,14 +28,25 @@ if ($sql) {
 			$bgcolor = ($userdata['username'] == $row['bj_gamer'] || $userdata['username'] == $row['bj_placeholder'] ? 'style="background-color: #E8DDDD;"' : '');
 			$self = ($row['bj_placeholder'] == $userdata['username'] || $row['bj_gamer'] ? "disabled" : "");
 
-			$html_f .= "<tr><td class=\"row1 gen\" $bgcolor width=\"15%\" align=\"center\">" . $row['bj_StartGame'] . "</td>\n
+			$winner = '';
+			if ($row['bj_gamer'] && !isset($row['bj_winner'])) {
+				$winner = "<b>???????</b>";
+			}
+			if ($row['bj_winner']) {
+				if (get_user_id($row['bj_winner'])) {
+					$winner = profile_url(get_userdata($row['bj_winner'], true));
+				} else {
+					$winner = $row['bj_winner'];
+				}
+			}
+
+			$html_f .= "<tr><td class=\"row1 gen\" $bgcolor width=\"15%\" align=\"center\">" . profile_url(get_userdata($row['bj_placeholder'], true)) . "</td>\n
 							<td class=\"row1 gen\" $bgcolor width=\"20%\" align=\"center\">" . bb_date($row["bj_date"]) . "</td>\n
-							<td class=\"row1 gen\" $bgcolor width=\"15%\" align=\"center\">" . (($row['bj_TookGame']) ?: '--') . "</td>\n
-							<td class=\"row1 gen\" $bgcolor width=\"40%\" align=\"center\">Ставка:&nbsp;<input type=\"button\" style=\"cursor: pointer !important; width: 70px; height: 18px; background-color: #" . $bb_cfg['bj_colors'][$row['bj_bet']] . "; color: #FFFFFF; font-weight: normal; border: 1px solid white\" $self value='$row[bj_bet]' onclick=\"window.open('blackjack.php?takegame=$row[bj_id]', '', 'height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no'); return false;\">" . sprintf($lang['BJ']['GAME_WIN'], $row['bj_winner'], $row['bj_points'], $row['bj_gamewithid']) . "</td>\n";
+							<td class=\"row1 gen\" $bgcolor width=\"15%\" align=\"center\">" . !empty($row['bj_gamer']) ? profile_url(get_userdata($row['bj_gamer'], true)) : '--' . "</td>\n
+							<td class=\"row1 gen\" $bgcolor width=\"40%\" align=\"center\">Ставка:&nbsp;<input type=\"button\" style=\"cursor: pointer !important; width: 70px; height: 18px; background-color: #" . $bb_cfg['bj_colors'][$row['bj_bet']] . "; color: #FFFFFF; font-weight: normal; border: 1px solid white\" $self value='$row[bj_bet]' onclick=\"window.open('blackjack.php?takegame=$row[bj_id]', '', 'height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no'); return false;\">" . sprintf($lang['BJ']['GAME_WIN'], $winner, $row['bj_points'], $row['bj_gamewithid']) . "</td>\n";
 			$html_f .= "</tr>\n";
+			unset($self, $bgcolor, $winner);
 			$finish_count++;
-			unset($self);
-			unset($bgcolor);
 		}
 	}
 
