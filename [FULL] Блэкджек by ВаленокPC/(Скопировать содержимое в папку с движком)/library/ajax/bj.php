@@ -24,10 +24,10 @@ $sql = DB()->fetch_rowset("SELECT *  FROM " . BB_BLACKJACK . " ORDER BY `bj_date
 if ($sql) {
 	foreach ($sql as $row) {
 		if ($row['bj_plstat'] == 'waiting' && !($row['bj_TookGame'] && !$row['bj_winner'])) {
-			$self = ($row['bj_StartGame'] == $userdata['username'] || $row['bj_TookGame'] ? "disabled" : "");
-			$html_w .= "<tr><td class=\"row1\" width=\"15%\" align=\"center\">" . $row["bj_StartGame"] . "</td>\n
+			$self = ($row['bj_StartGame'] == $userdata['username'] || $row['bj_TookGame']) ? "disabled" : "";
+			$html_w .= "<tr><td class=\"row1\" width=\"15%\" align=\"center\">" . profile_url(get_userdata($row["bj_StartGame"], true)) . "</td>\n
 							<td class=\"row1\" width=\"20%\" align=\"center\">" . bb_date($row["bj_date"]) . "</td>\n
-							<td class=\"row1\" width=\"15%\" align=\"center\">" . (($row['bj_TookGame']) ?: '--') . "</td>\n
+							<td class=\"row1\" width=\"15%\" align=\"center\">" . ((profile_url(get_userdata($row['bj_TookGame'], true))) ?: '--') . "</td>\n
 							<td class=\"row1\" width=\"40%\" align=\"center\"><input type=\"button\" style=\"cursor: pointer !important; width: 70px; height: 18px; background-color: #" . $colors[$row['bj_bet']] . "; color: #FFFFFF; font-weight: normal; border: 1px solid white\" $self value='" . $row["bj_bet"] . "' onclick=\"window.open('blackjack.php?takegame=$row[bj_id]', '', 'height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no'); return false;\"></td>\n";
 			$html_w .= "</tr>\n";
 			unset($self);
@@ -37,12 +37,12 @@ if ($sql) {
 			unset($bgcolor);
 			unset($pts);
 
-			$bgcolor = ($userdata['username'] == $row['bj_TookGame'] || $userdata['username'] == $row['bj_StartGame'] ? "style=\"background-color: #E8DDDD;\"" : "");
+			$bgcolor = ($userdata['username'] == $row['bj_TookGame'] || $userdata['username'] == $row['bj_StartGame']) ? "style=\"background-color: #E8DDDD;\"" : "";
 			$self = ($row['bj_StartGame'] == $userdata['username'] || $row['bj_TookGame'] ? "disabled" : "");
 
-			$html_f .= "<tr><td class=\"row1 gen\" $bgcolor width=\"15%\" align=\"center\">" . $row['bj_StartGame'] . "</td>\n
+			$html_f .= "<tr><td class=\"row1 gen\" $bgcolor width=\"15%\" align=\"center\">" . profile_url(get_userdata($row['bj_StartGame'], true)) . "</td>\n
 							<td class=\"row1 gen\" $bgcolor width=\"20%\" align=\"center\">" . bb_date($row["bj_date"]) . "</td>\n
-							<td class=\"row1 gen\" $bgcolor width=\"15%\" align=\"center\">" . (($row['bj_TookGame']) ?: '--') . "</td>\n
+							<td class=\"row1 gen\" $bgcolor width=\"15%\" align=\"center\">" . ((profile_url(get_userdata($row['bj_TookGame'], true))) ?: '--') . "</td>\n
 							<td class=\"row1 gen\" $bgcolor width=\"40%\" align=\"center\"><input type=\"button\" style=\"cursor: pointer !important; width: 70px; height: 18px; background-color: #" . $colors[$row['bj_bet']] . "; color: #FFFFFF; font-weight: normal; border: 1px solid white\" $self value='$row[bj_bet]' onclick=\"window.open('blackjack.php?takegame=$row[bj_id]', '', 'height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no'); return false;\">" . sprintf($lang['BJ']['GAME_WIN'], $row['bj_winner'], $row['bj_points'], $row['bj_gamewithid']) . "</td>\n";
 			$html_f .= "</tr>\n";
 		}
