@@ -27,7 +27,7 @@ if ($sql) {
 							<td class=\"row1\" width=\"15%\" align=\"center\">" . $gamer . "</td>\n
 							<td class=\"row1\" width=\"40%\" align=\"center\">Ставка:&nbsp;<input type=\"button\" style=\"cursor: pointer !important; width: 70px; height: 18px; background-color: #" . $bb_cfg['bj_colors'][$row['bj_bet']] . "; color: #FFFFFF; font-weight: normal; border: 1px solid white\" $self value='" . $row["bj_bet"] . "' onclick=\"window.open('blackjack.php?takegame=$row[bj_id]', '', 'height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no'); return false;\">&nbsp;$playing</td>\n";
 			$html_w .= "</tr>\n";
-			unset($self, $gamer);
+			unset($self, $gamer, $playing);
 		}
 		if ($row['bj_plstat'] == 'finished') {
 			if ($bb_cfg['max_finish_show'] && ($finish_count >= $bb_cfg['max_finish_show'])) {
