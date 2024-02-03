@@ -6,14 +6,6 @@ require(BB_ROOT . 'common.php');
 
 $user->session_start(array('req_login' => true));
 
-function mb_strcasecmp($str1, $str2, $encoding = null)
-{
-	if (null === $encoding) {
-		$encoding = mb_internal_encoding();
-	}
-	return strcmp(mb_strtoupper($str1, $encoding), mb_strtoupper($str2, $encoding));
-}
-
 function bj_die($bet, $text)
 {
 	global $template, $lang;
@@ -286,7 +278,7 @@ if ($stake || $games || is_numeric($takegame)) {
 			if ($arr['bj_gamer'] && !isset($arr['bj_winner']))
 				$winner = "&nbsp;->&nbsp;<b>???????</b>";
 			if ($arr['bj_winner']) {
-				$winner = "&nbsp;->&nbsp;<b>" . ((mb_strcasecmp($arr['bj_winner'], $lang['BJ']['ROBIN'], 'UTF-8') !== 0) && get_user_id($arr['bj_winner'])) ? profile_url(get_userdata($arr['bj_winner'], true)) : "???????" . "</b>";
+				$winner = "&nbsp;->&nbsp;<b>" . (($arr['bj_winner'] != $lang['BJ']['ROBIN']) && get_user_id($arr['bj_winner'])) ? profile_url(get_userdata($arr['bj_winner'], true)) : "???????" . "</b>";
 				$pts = $arr['bj_points'] . " | " . $arr['bj_gamewithid'];
 			}
 
