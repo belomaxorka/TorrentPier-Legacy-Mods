@@ -98,7 +98,7 @@ elseif (isset($_POST['tokens']) && $_POST['tokens'] >= 1) {
 		cache_rm_user_sessions($user_id);
 		meta_refresh(BONUS_URL, 5);
 
-		$message = sprintf($lang['BONUS_SUCCES'], $tokens);
+		$message = sprintf($lang['BONUS_SUCCES'], $tokens . '&nbsp;' . $lang['BJ']['TOKENS']);
 		$message .= '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
 		bb_die($message);
 	}
