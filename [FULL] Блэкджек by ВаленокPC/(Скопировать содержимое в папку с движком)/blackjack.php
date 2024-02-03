@@ -123,9 +123,8 @@ if ($stake || $games || is_numeric($takegame)) {
 		}
 
 		$showcards .= "<img src=styles/images/cards/" . $cards[$cardid]['card_img'] . " border=0>";
-
 		$points = $playerarr['bj_points'] + $cards[$cardid]['card_points'];
-		// $mysqlcards = $playerarr['bj_cards'] .":". $cardid;
+
 		DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_points = bj_points + " . $cards[$cardid]['card_points'] . ", bj_cards='" . $playerarr['bj_cards'] . ":" . $cardid . "' WHERE bj_id = " . $id);
 		if ($points == 21) {
 			DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_plstat = 'waiting', bj_date = " . TIMENOW . " WHERE  bj_id = " . $id);
