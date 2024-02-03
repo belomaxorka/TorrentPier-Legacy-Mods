@@ -13,6 +13,7 @@ if ($sql) {
 	foreach ($sql as $row) {
 		if ($row['bj_plstat'] == 'waiting') {
 			$self = ($row['bj_placeholder'] == $userdata['username'] || $row['bj_gamer'] ? "disabled" : "");
+			$playing = ($row['bj_gamer'] && !$row['bj_winner']) ? $lang['BJ']['PLAY'] : '';
 
 			$gamer = '';
 			if (!empty($row['bj_gamer'])) {
