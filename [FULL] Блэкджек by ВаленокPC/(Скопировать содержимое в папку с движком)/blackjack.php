@@ -49,7 +49,7 @@ if ($stake || $games || is_numeric($takegame)) {
 		if ($games == 'start') {
 			$numbets = DB()->num_rows(DB()->sql_query("SELECT bj_id FROM " . BB_BLACKJACK . " WHERE bj_placeholder = '" . $userdata['username'] . "' AND bj_plstat = 'waiting'"));
 
-			if ($userdata["user_tokens"] <= $stake) {
+			if ($userdata["user_tokens"] < $stake) {
 				bj_die($stake, $lang['BJ']['NOT_TOKENS']);
 			}
 			if ($numbets >= $bb_cfg['max_open_games']) bj_die($stake, sprintf($lang['BJ']['MAX_OPEN_GAMES'], $bb_cfg['max_open_games']));
@@ -63,7 +63,7 @@ if ($stake || $games || is_numeric($takegame)) {
 			$gid = $takegame;
 			$sql = "SELECT bj_bet, bj_gamer, bj_placeholder FROM " . BB_BLACKJACK . " WHERE bj_id =" . $gid;
 			if ($row = DB()->fetch_row($sql)) {
-				if ($userdata["user_tokens"] <= $row['bj_bet']) {
+				if ($userdata["user_tokens"] < $row['bj_bet']) {
 					bj_die($row['bj_bet'], $lang['BJ']['NOT_TOKENS']);
 				}
 
