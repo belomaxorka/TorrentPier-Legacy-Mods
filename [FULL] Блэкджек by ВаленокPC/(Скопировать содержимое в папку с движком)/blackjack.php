@@ -281,7 +281,7 @@ if ($stake || $games || is_numeric($takegame)) {
 				if (get_user_id($arr['bj_winner'])) {
 					$winner = "&nbsp;->&nbsp;<b>" . profile_url(get_userdata($arr['bj_winner'], true)) . "</b>";
 				} else {
-					$winner = "&nbsp;->&nbsp;<b>???????</b>";
+					$winner = "&nbsp;->&nbsp;<b>" . $arr['bj_winner'] . "</b>";
 				}
 				$pts = $arr['bj_points'] . " | " . $arr['bj_gamewithid'];
 			}
