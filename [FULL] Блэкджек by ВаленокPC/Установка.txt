@@ -1,0 +1,67 @@
+------------------ Блэкджек ------------------
+Автор: ВаленокPC
+Обновления: belomaxorka
+Версия: v1.4.0
+----------------------------------------------
+
+------------------ SQL ------------------
+CREATE TABLE IF NOT EXISTS `bb_blackjack`( `bj_id` int(11) NOT NULL AUTO_INCREMENT, `bj_StartGame` varchar(20) NOT NULL DEFAULT '', `bj_TookGame` varchar(20) NOT NULL DEFAULT '', `bj_points` tinyint(4) NOT NULL DEFAULT '0', `bj_plstat` enum('playing','waiting','finished') NOT NULL DEFAULT 'playing', `bj_bet` bigint(11) NOT NULL DEFAULT '0', `bj_cards` tinytext NOT NULL, `bj_date` int(11) NOT NULL DEFAULT '0', `bj_winner` varchar(20) NOT NULL DEFAULT '', `bj_gamewithid` int(11) NOT NULL DEFAULT '0', PRIMARY KEY (`bj_id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; CREATE TABLE IF NOT EXISTS `bb_cards` ( `card_id` int(11) NOT NULL AUTO_INCREMENT, `card_points` int(11) NOT NULL DEFAULT '0', `card_img` text NOT NULL, PRIMARY KEY (`card_id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=53 ; INSERT INTO `bb_cards` (`card_id`, `card_points`, `card_img`) VALUES (1, 2, '2p.png'), (2, 3, '3p.png'), (3, 4, '4p.png'), (4, 5, '5p.png'), (5, 6, '6p.png'), (6, 7, '7p.png'), (7, 8, '8p.png'), (8, 9, '9p.png'), (9, 10, '10p.png'), (10, 10, 'vp.png'), (11, 10, 'dp.png'), (12, 10, 'kp.png'), (13, 1, 'tp.png'), (14, 2, '2b.png'), (15, 3, '3b.png'), (16, 4, '4b.png'), (17, 5, '5b.png'), (18, 6, '6b.png'), (19, 7, '7b.png'), (20, 8, '8b.png'), (21, 9, '9b.png'), (22, 10, '10b.png'), (23, 10, 'vb.png'), (24, 10, 'db.png'), (25, 10, 'kb.png'), (26, 1, 'tb.png'), (27, 2, '2k.png'), (28, 3, '3k.png'), (29, 4, '4k.png'), (30, 5, '5k.png'), (31, 6, '6k.png'), (32, 7, '7k.png'), (33, 8, '8k.png'), (34, 9, '9k.png'), (35, 10, '10k.png'), (36, 10, 'vk.png'), (37, 10, 'dk.png'), (38, 10, 'kk.png'), (39, 1, 'tk.png'), (40, 2, '2c.png'), (41, 3, '3c.png'), (42, 4, '4c.png'), (43, 5, '5c.png'), (44, 6, '6c.png'), (45, 7, '7c.png'), (46, 8, '8c.png'), (47, 9, '9c.png'), (48, 10, '10c.png'), (49, 10, 'vc.png'), (50, 10, 'dc.png'), (51, 10, 'kc.png'), (52, 1, 'tc.png'); ALTER TABLE `bb_users` ADD `user_tokens` int(6) NOT NULL DEFAULT '0'; INSERT INTO `bb_cron` VALUES(22, 1, 'Удаление зависших, старых игр.', 'clean_blackjack.php', 'interval', '', '00:00:00', 255, '0000-00-00', '0000-00-00 00-00-00', '00:15:00', 0, '', 0, 0, 0);
+-----------------------------------------
+
+------------------ Открыть library\includes\init_bb.php и найти ------------------
+define('BB_WORDS',                'bb_words');
+----------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+define('BB_BLACKJACK',            'bb_blackjack');
+define('BB_CARDS',                'bb_cards');
+---------------------------------------------------
+
+------------------ Открыть ajax.php и найти ------------------
+'manage_group'      => array('user'),
+--------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+'bj'                => array('user'),
+---------------------------------------------------
+
+------------------ Далее найти ------------------
+function sitemap()
+{
+	require(AJAX_DIR .'sitemap.php');
+}
+-------------------------------------------------
+
+------------------ Ниже вставить ------------------
+function bj()
+{
+	require(AJAX_DIR .'bj.php');
+}
+---------------------------------------------------
+
+------------------ Открыть library\language\ru\main.php и вставить в конце ------------------
+$lang['BLACKJACK'] = 'Блекджек';
+$lang['BJ_STARTED'] = 'Начал';
+$lang['BJ_TIME'] = 'Время';
+$lang['BJ_TOOK'] = 'Принял';
+$lang['BJ_GAME'] = 'Игра';
+$lang['NOT_TOKENS'] = 'Недостаточно жетонов!';
+$lang['THE_TITLE'] = 'Блекджек, ставка %s жетонов';
+$lang['MAX_OPEN_GAMES'] = 'У вас уже открыто <b>%s</b> игр!';
+$lang['THE_A_GAMES'] = 'Играть самому с собой тупо!';
+$lang['GAME_IS_PLAYED'] = 'Игра уже сыграна!';
+$lang['BUST'] = 'Вы набрали %s очков, Перебор!';
+$lang[21] = 'Вы набрали 21, (Очко)!';
+$lang['YOU_WON'] = '(Вы набрали  <b>%s</b>). Вы выиграли, очки оппонента: <b>%d</b>';
+$lang['YOU_LOST'] = '(Вы набрали  <b>%s</b>). Вы проиграли, очки оппонента: <b>%d</b>';
+$lang['NOT_WIN'] = 'Ничья, вы не чего не выиграли!';
+$lang['NOBODY_WON'] = '(Вы набрали <b>%s</b>). Перебор, никто не выиграл, очки оппонента: <b>%d</b>';
+$lang['GAME_NOT_FOUND'] = 'Игра не найдена.';
+$lang['DRAW'] = 'Ничья';
+$lang['ROBIN'] = 'Перебор';
+$lang['NO_GAMES'] = 'Нет открытых игр!';
+$lang['GAME_WIN'] = ' -> <b>%s</b> %d | %d';
+$lang['BJ_INFO'] = 'Жетоны снимаются с вас сразу после того как вы нажали на ставку.<br>
+Если вы бросили игру или она у Вас зависла, Администрация не будет вам возвращать утерянные жетоны!<br>
+Зависшие игры автоматически удаляются через определённое время.';
+---------------------------------------------------------------------------------------------
