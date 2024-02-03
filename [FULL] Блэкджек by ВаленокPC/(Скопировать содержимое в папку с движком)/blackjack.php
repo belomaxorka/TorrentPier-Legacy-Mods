@@ -259,7 +259,7 @@ if ($stake || $games || is_numeric($takegame)) {
 			$template->assign_block_vars('waiting', array(
 				'W_PLAY' => ($arr['bj_gamer'] && !$arr['bj_winner']) ? $lang['BJ']['PLAY'] : '',
 				'PLACEHOLDER' => $arr['bj_placeholder'],
-				'GAMER' => ($arr['bj_gamer']) ?: '--',
+				'GAMER' => (profile_url(get_userdata($arr['bj_gamer'], true))) ?: '--',
 				'DATA_GAME' => bb_date($arr['bj_date']),
 				'COLOR_BET' => $colors[$arr['bj_bet']],
 				'BETS' => $arr['bj_bet'],
@@ -278,14 +278,14 @@ if ($stake || $games || is_numeric($takegame)) {
 			if ($arr['bj_gamer'] && !isset($arr['bj_winner']))
 				$winner = "&nbsp;->&nbsp;<b>???????</b>";
 			if ($arr['bj_winner']) {
-				$winner = "&nbsp;->&nbsp;<b>" . $arr['bj_winner'] . "</b>";
+				$winner = "&nbsp;->&nbsp;<b>" . profile_url(get_userdata($arr['bj_winner'], true)) . "</b>";
 				$pts = $arr['bj_points'] . " | " . $arr['bj_gamewithid'];
 			}
 
 			$template->assign_block_vars('finished', array(
 				'WINNER' => $winner,
 				'PLACEHOLDER' => $arr['bj_placeholder'],
-				'GAMER' => ($arr['bj_gamer']) ?: '--',
+				'GAMER' => (profile_url(get_userdata($arr['bj_gamer'], true))) ?: '--',
 				'DATA_GAME' => bb_date($arr['bj_date']),
 				'COLOR_BET' => $colors[$arr['bj_bet']],
 				'BETS' => $arr['bj_bet'],
