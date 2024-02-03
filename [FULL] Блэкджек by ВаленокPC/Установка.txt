@@ -52,10 +52,19 @@ function bj()
 ---------------------------------------------------
 
 ------------------ Открыть page_header.tpl (В вашем шаблоне) и найти ------------------
+<a href="{U_MEMBERLIST}"><b>{L_MEMBERLIST}</b></a>
+---------------------------------------------------------------------------------------
+
+------------------ Заменить на ------------------
+<a href="{U_MEMBERLIST}"><b>{L_MEMBERLIST}</b></a><span style="color:#CDCDCD;">|</span>
+<a href="blackjack.php"><b>Блэкджек</b></a>
+-------------------------------------------------
+
+------------------------------- Далее найти -------------------------------
 <!-- IF $bb_cfg['seed_bonus_enabled'] --><tr><td>{L_SEED_BONUS}</td><td><a href="profile.php?mode=bonus"><span class="points bold">{POINTS}</span></a></td></tr><!-- ENDIF -->
 ------------------ Если не найдено, то найти эту строчку ------------------
 <!-- IF $bb_cfg['seed_bonus_enabled'] --><tr><td>{L_SEED_BONUS}</td><td><a href="{#BONUS_URL}"><span class="points bold">{POINTS}</span></a></td></tr><!-- ENDIF -->
----------------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 
 ------------------ Ниже вставить ------------------
 <!-- IF $bb_cfg['seed_bonus_enabled'] --><tr><td>Жетонов</td><td><a href="profile.php?mode=bonus"><span class="seedmed bold">{TOKENS}</span></a></td></tr><!-- ENDIF -->
