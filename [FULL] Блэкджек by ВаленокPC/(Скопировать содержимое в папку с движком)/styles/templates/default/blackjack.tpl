@@ -175,8 +175,7 @@
 					<td class="row1 gen" {finished.BGCOLOR} width="15%" align="center">{finished.GAMER}</td>
 					<td class="row1 gen" {finished.BGCOLOR} width="40%" align="center">
 						Ставка:&nbsp;<input type="button" style="cursor: pointer !important; width: 70px; height: 18px; background-color: #{finished.COLOR_BET}; color: #FFFFFF; font-weight: normal; border: 1px solid white;" {finished.SELF} value="{finished.BETS}" onclick="window.open('blackjack.php?takegame={finished.GAME_ID}', '', 'height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no'); return false;">
-						{finished.WINNER}
-						{finished.GAME_WIN}
+						{finished.WINNER}{finished.GAME_WIN}
 					</td>
 				</tr>
 				<!-- END finished -->
