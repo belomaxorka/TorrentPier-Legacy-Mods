@@ -23,10 +23,6 @@ function bj_die($bet, $text)
 	exit;
 }
 
-//------ Настройки ------//
-$bb_cfg['max_open_games'] = 5;    // Максимальное количество открытых игр
-//------ Настройки ------//
-
 $stake = request_var('bet', 0);
 $games = request_var('game', '');
 $takegame = request_var('takegame', '');
@@ -235,22 +231,8 @@ if ($stake || $games || is_numeric($takegame)) {
 
 	print_page('blackjack.tpl', 'simple');
 } else {
-	$colors = array(
-		5 => "74AE04",
-		10 => "9E9E9E",
-		15 => "0574C9",
-		20 => "DB48A2",
-		25 => "D8DB04",
-		50 => "EFA900",
-		100 => "DC0000",
-		500 => "FFC0CB",
-		1000 => "B0C4DE",
-		5000 => "ff0000",
-		10000 => "000000"
-	);
-
 	$sql = DB()->fetch_rowset("SELECT * FROM " . BB_BLACKJACK . " ORDER BY `bj_date` DESC");
-	$finish_count = 1;
+	$finish_count = 0;
 
 	foreach ($sql as $arr) {
 		if ($arr['bj_plstat'] == 'waiting') {
@@ -261,7 +243,7 @@ if ($stake || $games || is_numeric($takegame)) {
 				'PLACEHOLDER' => profile_url(get_userdata($arr['bj_placeholder'], true)),
 				'GAMER' => !empty($arr['bj_gamer']) ? profile_url(get_userdata($arr['bj_gamer'], true)) : '--',
 				'DATA_GAME' => bb_date($arr['bj_date']),
-				'COLOR_BET' => $colors[$arr['bj_bet']],
+				'COLOR_BET' => $bb_cfg['bj_colors'][$arr['bj_bet']],
 				'BETS' => $arr['bj_bet'],
 				'GAME_ID' => $arr['bj_id'],
 				'SELF' => $self,
@@ -269,7 +251,9 @@ if ($stake || $games || is_numeric($takegame)) {
 		}
 
 		if ($arr['bj_plstat'] == 'finished') {
-			if ($finish_count > 10) break;
+			if ($bb_cfg['max_finish_show'] && ($finish_count > $bb_cfg['max_finish_show'])) {
+				break;
+			}
 
 			$bgcolor = ($userdata['username'] == $arr['bj_gamer'] || $userdata['username'] == $arr['bj_placeholder'] ? 'style="background-color: #E8DDDD;"' : '');
 			$self = ($arr['bj_placeholder'] == $userdata['username'] || $arr['bj_gamer'] ? "disabled" : "");
@@ -291,7 +275,7 @@ if ($stake || $games || is_numeric($takegame)) {
 				'PLACEHOLDER' => profile_url(get_userdata($arr['bj_placeholder'], true)),
 				'GAMER' => !empty($arr['bj_gamer']) ? profile_url(get_userdata($arr['bj_gamer'], true)) : '--',
 				'DATA_GAME' => bb_date($arr['bj_date']),
-				'COLOR_BET' => $colors[$arr['bj_bet']],
+				'COLOR_BET' => $bb_cfg['bj_colors'][$arr['bj_bet']],
 				'BETS' => $arr['bj_bet'],
 				'GAME_ID' => $arr['bj_id'],
 				'SELF' => $self,
@@ -303,7 +287,7 @@ if ($stake || $games || is_numeric($takegame)) {
 		}
 	}
 
-	foreach ($colors as $val => $color) {
+	foreach ($bb_cfg['bj_colors'] as $val => $color) {
 		$template->assign_block_vars('bet', array(
 			'BET_COLOR' => $color,
 			'BET_GAMES' => $val,
