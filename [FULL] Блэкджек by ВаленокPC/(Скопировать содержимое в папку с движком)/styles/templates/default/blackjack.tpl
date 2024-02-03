@@ -180,7 +180,7 @@
 				<!-- END finished -->
 				<!-- ELSE -->
 				<tr>
-					<td colspan="5" class="row1" width="15%" align="center">{L_NO_GAMES}</td>
+					<td colspan="5" class="row1" width="15%" align="center">Нет Игр</td>
 				</tr>
 				<!-- ENDIF -->
 				</tbody>
