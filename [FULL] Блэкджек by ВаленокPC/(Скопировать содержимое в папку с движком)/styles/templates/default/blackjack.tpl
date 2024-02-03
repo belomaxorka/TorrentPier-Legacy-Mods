@@ -157,7 +157,7 @@
 				</tr>
 				</thead>
 				<tbody id="bjtable">
-				<!-- IF NO_GAMES -->
+				<!-- IF not NO_GAMES -->
 				<!-- BEGIN waiting -->
 				<tr>
 					<td class="row1" width="15%" align="center">{waiting.PLACEHOLDER}</td>
