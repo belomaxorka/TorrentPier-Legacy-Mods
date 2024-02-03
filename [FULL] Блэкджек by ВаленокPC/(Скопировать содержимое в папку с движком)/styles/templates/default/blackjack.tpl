@@ -86,7 +86,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="row2" align="center"><br/><span class="med"><a href="#" class="med" id="bjbutt">{L_CLOSE_WINDOW}</a></span></td>
+					<td class="row2" align="center"><span class="med"><a href="#" class="med" id="bjbutt">{L_CLOSE_WINDOW}</a></span></td>
 				</tr>
 			</table>
 		</td>
