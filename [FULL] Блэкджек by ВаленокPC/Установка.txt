@@ -58,7 +58,7 @@ function bj()
 ---------------------------------------------------------------------------------------
 
 ------------------ Ниже вставить ------------------
-<!-- IF $bb_cfg['seed_bonus_enabled'] --><tr><td>{L_SEED_BONUS}</td><td><a href="profile.php?mode=bonus"><span class="points bold">{TOKENS}</span></a></td></tr><!-- ENDIF -->
+<!-- IF $bb_cfg['seed_bonus_enabled'] --><tr><td>Жетонов</td><td><a href="profile.php?mode=bonus"><span class="seedmed bold">{TOKENS}</span></a></td></tr><!-- ENDIF -->
 ---------------------------------------------------
 
 ------------------ Открыть library\language\ru\main.php и вставить в конце ------------------
