@@ -31,9 +31,7 @@
 				</tr>
 				<tr>
 					<td class="row2 gen tCenter" colspan="2" style="border-bottom:none;">
-						<p>
-							Правило игры: набрать как можно больше очков, но не более 21.
-						</p>
+						<p>Правило игры: набрать как можно больше очков, но не более 21.</p>
 					</td>
 				</tr>
 				<tr>
@@ -165,7 +163,7 @@
 					<td class="row1" width="20%" align="center">{waiting.DATA_GAME}</td>
 					<td class="row1" width="15%" align="center">{waiting.GAMER}</td>
 					<td class="row1" width="40%" align="center">
-						<input type="button" style="cursor: pointer !important; width: 70px; height: 18px; background-color: #{waiting.COLOR_BET}; color: #FFFFFF; font-weight: normal; border: 1px solid white;" {waiting.SELF} value="{waiting.BETS}" onclick="window.open('blackjack.php?takegame={waiting.GAME_ID}', '', 'height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no'); return false;">
+						Ставка:&nbsp;<input type="button" style="cursor: pointer !important; width: 70px; height: 18px; background-color: #{waiting.COLOR_BET}; color: #FFFFFF; font-weight: normal; border: 1px solid white;" {waiting.SELF} value="{waiting.BETS}" onclick="window.open('blackjack.php?takegame={waiting.GAME_ID}', '', 'height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no'); return false;">
 						{waiting.W_PLAY}
 					</td>
 				</tr>
@@ -176,7 +174,7 @@
 					<td class="row1 gen" {finished.BGCOLOR} width="20%" align="center">{finished.DATA_GAME}</td>
 					<td class="row1 gen" {finished.BGCOLOR} width="15%" align="center">{finished.GAMER}</td>
 					<td class="row1 gen" {finished.BGCOLOR} width="40%" align="center">
-						<input type="button" style="cursor: pointer !important; width: 70px; height: 18px; background-color: #{finished.COLOR_BET}; color: #FFFFFF; font-weight: normal; border: 1px solid white;" {finished.SELF} value="{finished.BETS}" onclick="window.open('blackjack.php?takegame={finished.GAME_ID}', '', 'height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no'); return false;">
+						Ставка:&nbsp;<input type="button" style="cursor: pointer !important; width: 70px; height: 18px; background-color: #{finished.COLOR_BET}; color: #FFFFFF; font-weight: normal; border: 1px solid white;" {finished.SELF} value="{finished.BETS}" onclick="window.open('blackjack.php?takegame={finished.GAME_ID}', '', 'height=280, width=620, toolbar=no, status=no, scrollbars=no, resize=no, menubar=no'); return false;">
 						{finished.WINNER}
 						{finished.GAME_WIN}
 					</td>
