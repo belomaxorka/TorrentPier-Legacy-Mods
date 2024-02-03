@@ -196,7 +196,7 @@ if ($stake || $games || is_numeric($takegame)) {
 				$winorlose = $lang['BJ']['NOT_WIN'];
 
 				DB()->query("UPDATE " . BB_USERS . " SET user_tokens = user_tokens + " . $a['bj_bet'] . " WHERE user_id = " . $userdata['user_id']);
-				DB()->query("UPDATE " . BB_USERS . " SET user_tokens = user_tokens + " . $a['bj_bet'] . " WHERE username = '" . $a['placeholder'] . "'");
+				DB()->query("UPDATE " . BB_USERS . " SET user_tokens = user_tokens + " . $a['bj_bet'] . " WHERE username = '" . $a['bj_placeholder'] . "'");
 				DB()->query("UPDATE " . BB_BLACKJACK . " SET bj_winner = '" . $lang['BJ']['DRAW'] . "', bj_gamewithid = " . $playerarr['bj_points'] . ", bj_date = " . TIMENOW . ", bj_plstat = 'finished' WHERE  bj_id = " . $playerarr['bj_gamewithid']);
 				DB()->query("DELETE FROM " . BB_BLACKJACK . " WHERE bj_id = " . $id);
 			} elseif ($playerarr['bj_points'] < $a['bj_points'] && $a['bj_points'] > 21 || $playerarr['bj_points'] > $a['bj_points'] && $playerarr['bj_points'] < 22) {
