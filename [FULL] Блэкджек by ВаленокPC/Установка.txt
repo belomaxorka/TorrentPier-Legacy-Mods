@@ -67,15 +67,17 @@ $lang['BJ_INFO'] = 'Жетоны снимаются с вас сразу пос�
 ---------------------------------------------------------------------------------------------
 
 ------------------ Открыть library/includes/ucp/bonus.php и найти ------------------
-$template->assign_vars(array(
-	'U_USER_PROFILE'  => PROFILE_URL . $user_id,
-	'S_MODE_ACTION'  => 'profile.php?mode=bonus',
-	'PAGE_TITLE'  => $lang['EXCHANGE_BONUS'],
-	'MY_BONUS'  => sprintf($lang['MY_BONUS'], $user_points),
-));
+else
+{
+	$template->assign_vars(array(
+		'U_USER_PROFILE'  => PROFILE_URL . $user_id,
+		'S_MODE_ACTION'	  => BONUS_URL,
+		'PAGE_TITLE'	  => $lang['EXCHANGE_BONUS'],
+		'MY_BONUS'        => sprintf($lang['MY_BONUS'], $user_points),
+	));
 ------------------------------------------------------------------------------------
 
------------------- Ниже вставить ------------------
+------------------ Выше вставить ------------------
 elseif (isset($_POST['tokens']) && $_POST['tokens'] >= 1) {
 	$tokens = (int)$_POST['tokens'];
 
