@@ -56,3 +56,28 @@ if (!DB()->fetch_row('SELECT book_id FROM ' . BB_BOOK . " WHERE topic_id = $topi
 	));
 }
 ---------------------------------------------------
+
+------------------ Открыть viewtopic.tpl (В вашем шаблоне) и найти ------------------
+<a class="small" href="{U_SEARCH_SELF}">{L_SEARCH_SELF}</a> &nbsp;<span style="color:#CDCDCD;">|</span>&nbsp;
+-------------------------------------------------------------------------------------
+
+------------------ Выше вставить ------------------
+<script type="text/javascript">
+	ajax.book = function () {
+		ajax.exec({
+			action: 'book',
+			mode: 'add',
+			tid: {TOPIC_ID},
+			fid: {FORUM_ID},
+		});
+	};
+	ajax.callback.book = function (data) {
+		$('#book').html(data.ok);
+		$('#book2').html(data.ok);
+
+		if (data.info) alert(data.info);
+		if (data.url) document.location.href = data.url;
+	};
+</script>
+<span id="book">{U_BOOK}</span> &nbsp;<span style="color:#CDCDCD;">|</span>&nbsp;
+---------------------------------------------------
