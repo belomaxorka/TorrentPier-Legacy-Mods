@@ -16,7 +16,7 @@
 	<tbody>
 	<tr>
 		<td class="nav w100">
-			<a href="#" class="med normal" onclick="setCookie('bb_mark_read', 'all_forums');">Отметить все форумы как прочтённые</a>
+			<a href="#" class="med normal" onclick="setCookie('bb_mark_read', 'all_forums');">{L_MARK_ALL_FORUMS_READ}</a>
 		</td>
 	</tr>
 	</tbody>
@@ -26,10 +26,10 @@
 	<thead>
 	<tr>
 		<th class="header"></th>
-		<th class="{sorter: 'text'}"><b class="tbs-text">Тема</b></th>
-		<th class="{sorter: 'text'}"><b class="tbs-text">Форум</b></th>
-		<th class="{sorter: false}"><b class="tbs-text">Ответов</b></th>
-		<th class="{sorter: false}">&nbsp;Удалить&nbsp;</th>
+		<th class="{sorter: 'text'}"><b class="tbs-text">{L_TOPIC}</b></th>
+		<th class="{sorter: 'text'}"><b class="tbs-text">{L_FORUM}</b></th>
+		<th class="{sorter: false}"><b class="tbs-text">{L_REPLIES}</b></th>
+		<th class="{sorter: false}">&nbsp;{L_DELETE}&nbsp;</th>
 	</tr>
 	</thead>
 	<!-- BEGIN book -->
@@ -37,8 +37,8 @@
 		<td id="{book.ID} tCenter" class="topic_id row1"><img class="topic_icon" src="./styles/templates/default/images/folder.gif" alt=""></td>
 		<td class="row1 med bold w70">{book.TOPIC}</td>
 		<td class="row1 med bold tCenter" style="width:30%;">{book.FORUM}</td>
-		<td class="row1 med tCenter" style="width:30%;"><span title="Количество ответов: {book.REPLIES}">{book.REPLIES}</span> | <span title="Количество просмотров: {book.VIEWS}">{book.VIEWS}</span></td>
-		<td class="row2 tCenter"><input type="submit" onclick="ajax.book('{book.ID}'); $('#tr-{book.ID}').hide();" value="Удалить"></td>
+		<td class="row1 med tCenter" style="width:30%;"><span title="{L_REPLIES}: {book.REPLIES}">{book.REPLIES}</span> | <span title="{L_VIEWED}: {book.VIEWS}">{book.VIEWS}</span></td>
+		<td class="row2 tCenter"><input type="submit" onclick="ajax.book('{book.ID}'); $('#tr-{book.ID}').hide();" value="{L_DELETE}"></td>
 	</tr>
 	<!-- END book -->
 	<!-- BEGIN no_book -->
