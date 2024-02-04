@@ -72,6 +72,10 @@ switch ($field)
 case 'user_tokens':
 	$value = htmlCHR($value);
 	$value = (int) $this->request['value'];
+	if ($value < 0)
+	{
+		$this->ajax_die($lang['WRONG_INPUT']);
+	}
 	$this->response['new_value'] = $value;
 	break;
 ---------------------------------------------------
