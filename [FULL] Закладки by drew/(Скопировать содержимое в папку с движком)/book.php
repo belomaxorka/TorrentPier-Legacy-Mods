@@ -9,15 +9,14 @@ $page_cfg['use_tablesorter'] = true;
 // Init userdata
 $user->session_start(array('req_login' => true));
 
-$sql = DB()->fetch_rowset("SELECT b.*, t.*, f.*
-								FROM " . BB_BOOK . " b
-									LEFT JOIN " . BB_TOPICS . " t ON(t.topic_id = b.topic_id)
-									LEFT JOIN " . BB_FORUMS . " f ON(f.forum_id = b.forum_id)
-								WHERE user_id = {$userdata['user_id']}");
+$sql = DB()->fetch_rowset("SELECT b.*, t.*, f.* FROM " . BB_BOOK . " b
+								LEFT JOIN " . BB_TOPICS . " t ON(t.topic_id = b.topic_id)
+								LEFT JOIN " . BB_FORUMS . " f ON(f.forum_id = b.forum_id)
+							WHERE user_id = {$userdata['user_id']}");
 
 if (!$sql) {
 	$template->assign_block_vars('no_book', array(
-		'NO_BOOK' => $lang['NO_USER_ID_SPECIFIED'],
+		'NO_BOOK' => 'У вас нету закладок',
 	));
 } else {
 	foreach ($sql as $i => $row) {
