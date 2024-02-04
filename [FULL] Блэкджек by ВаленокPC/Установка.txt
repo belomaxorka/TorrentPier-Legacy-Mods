@@ -1,7 +1,7 @@
 ------------------ Блэкджек ------------------
 Автор: ВаленокPC
 Обновления: belomaxorka
-Версия: v1.4.0
+Версия: v1.4.1
 ----------------------------------------------
 
 ------------------ SQL ------------------
@@ -12,7 +12,7 @@ SET SESSION sql_mode = ''; CREATE TABLE `bb_blackjack` ( `bj_id` INT(11) NOT NUL
 // Блэкджек
 $bb_cfg['max_open_games'] = 5;   // Максимальное количество открытых игр
 $bb_cfg['max_finish_show'] = 30; // Максимальное количество законченных игр отображаемых в таблице (Законченные игры сами удаляются со временем)
-$bb_cfg['bj_colors'] = array(
+$bb_cfg['bj_colors'] = array(    // Настройки ставок
 	// Ставка (Количество жетонов) => HEX цвет
 	5 => "74AE04",
 	10 => "9E9E9E",
@@ -163,7 +163,7 @@ elseif (isset($_POST['tokens']) && $_POST['tokens'] >= 1) {
 	<td class="bold tCenter" colspan=2>{L_PRICE}</td>
 </tr>
 <tr class="row1 med">
-	<td class="tLeft"><b>Купить жетоны:</b><br><input type="text" name="tokens" maxlength="6" value="100" style="width: 100px;">&nbsp;жетонов</td>
+	<td class="tLeft"><b>Купить жетоны:</b><br><input type="text" name="tokens" maxlength="10" value="100" style="width: 200px;">&nbsp;жетонов</td>
 	<td align="center" id="tokens" colspan="2">1 жетон = 0,10 бонусов</td>
 </tr>
 ---------------------------------------------------
