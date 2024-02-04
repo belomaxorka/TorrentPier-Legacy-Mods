@@ -49,7 +49,7 @@
 				<tr>
 					<td class="row2" align="center"><br/>
 						<span class="med">
-                            <form name="bj" method="post" action="blackjack.php"><input type="hidden" name="id" value='{ID_GAMES}'><input type="hidden" name="game" value="cont"><input type="submit" value="Ещё" class="btn"></form>
+                            <form name="bj" method="post" action="blackjack.php"><input type="hidden" name="id" value="{ID_GAMES}"><input type="hidden" name="game" value="cont"><input type="submit" value="Ещё" class="btn"></form>
 							<!-- IF STOP --><form name="bj" method="post" action="blackjack.php" onsubmit="this.submit.disabled = true;"><input type="hidden" name="id" value="{ID_GAMES}"><input type="hidden" name="game" value="stop"><input type="submit" name="submit" value="Хватит" class="btn" onkeypress="return false;"></form><!-- ENDIF -->
                         </span>
 					</td>
