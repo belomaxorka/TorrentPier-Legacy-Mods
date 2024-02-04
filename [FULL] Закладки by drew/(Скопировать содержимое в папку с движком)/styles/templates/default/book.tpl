@@ -37,7 +37,7 @@
 		<td id="{book.ID} tCenter" class="topic_id row1"><img class="topic_icon" src="./styles/templates/default/images/folder.gif" alt=""></td>
 		<td class="row1 med bold w70">{book.TOPIC}</td>
 		<td class="row1 med bold tCenter" style="width:30%;">{book.FORUM}</td>
-		<td class="row1 med tCenter" style="width:30%;"><span title="Количество ответов">{book.REPLIES}</span> | <span title="Количество просмотров">{book.VIEWS}</span></td>
+		<td class="row1 med tCenter" style="width:30%;"><span title="Количество ответов: {book.REPLIES}">{book.REPLIES}</span> | <span title="Количество просмотров: {book.VIEWS}">{book.VIEWS}</span></td>
 		<td class="row2 tCenter"><input type="submit" onclick="ajax.book('{book.ID}'); $('#tr-{book.ID}').hide();" value="Удалить"></td>
 	</tr>
 	<!-- END book -->
