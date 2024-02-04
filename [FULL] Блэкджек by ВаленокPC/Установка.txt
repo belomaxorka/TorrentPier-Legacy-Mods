@@ -72,9 +72,9 @@ switch ($field)
 case 'user_tokens':
 	$value = htmlCHR($value);
 	$value = (int) $this->request['value'];
-	if (mb_strlen((string)$value, 'UTF-8') > 10)
+	if (mb_strlen($value, 'UTF-8') > 10)
 	{
-		$this->ajax_die($lang['WRONG_INPUT']);
+		$this->ajax_error($lang['ERROR']);
 	}
 	$this->response['new_value'] = $value;
 	break;
@@ -157,12 +157,6 @@ else
 // Блэкджек
 elseif (isset($_POST['tokens']) && $_POST['tokens'] >= 1) {
 	$tokens = (int)$_POST['tokens'];
-	if (mb_strlen((string)$tokens, 'UTF-8') > 10)
-	{
-		meta_refresh('index.php', 5);
-		$message = $lang['WRONG_INPUT'] . '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
-		bb_die($message);
-	}
 	$tokens_formula = $tokens * 0.1;
 
 	if ($userdata['user_points'] < $tokens_formula) {
