@@ -70,7 +70,7 @@ switch ($field)
 ------------------ Ниже вставить ------------------
 // Блэкджек
 case 'user_tokens':
-	if ($value < 0 || strlen($value) > 16)
+	if ($value < 0 || strlen($value) > 12)
 	{
 		$this->ajax_die($lang['WRONG_INPUT']);
 	}
