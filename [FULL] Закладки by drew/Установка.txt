@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `bb_book` (
 --------------------------------------------------------------
 
 ------------------ Ниже вставить ------------------
+// Закладки
 'book'              => array('user'),
 ---------------------------------------------------
 
@@ -30,8 +31,28 @@ function sitemap()
 -------------------------------------------------
 
 ------------------ Ниже вставить ------------------
+// Закладки
 function book()
 {
 	require(AJAX_DIR .'book.php');
+}
+---------------------------------------------------
+
+------------------ Открыть viewtopic.php и найти ------------------
+//
+// Topic watch information
+//
+-------------------------------------------------------------------
+
+------------------ Выше вставить ------------------
+// Закладки
+if (!DB()->fetch_row('SELECT book_id FROM ' . BB_BOOK . " WHERE topic_id = $topic_id AND user_id = " . $userdata['user_id'])) {
+	$template->assign_vars(array(
+		'U_BOOK' => '<span class="bold a-like" onclick="ajax.book();">Добавить в закладки</span>',
+	));
+} else {
+	$template->assign_vars(array(
+		'U_BOOK' => '<span class="bold a-like" onclick="ajax.exec({ action:\'book\', mode:\'delete\', tid:' . $topic_id . ', ids: \'0\' });">Удалить закладку</span>',
+	));
 }
 ---------------------------------------------------
