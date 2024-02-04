@@ -76,7 +76,7 @@ case 'user_tokens':
 	{
 		$this->ajax_die($lang['WRONG_INPUT']);
 	}
-	$this->response['new_value'] = $value;
+	$this->response['new_value'] = $this->request['value'];
 	break;
 ---------------------------------------------------
 
