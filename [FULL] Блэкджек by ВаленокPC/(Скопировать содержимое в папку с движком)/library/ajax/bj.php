@@ -6,7 +6,7 @@ global $lang, $userdata, $bb_cfg;
 
 $html_w = $html_f = '';
 
-$sql = DB()->fetch_rowset("SELECT *  FROM " . BB_BLACKJACK . " ORDER BY `bj_date` DESC");
+$sql = DB()->fetch_rowset("SELECT * FROM " . BB_BLACKJACK . " ORDER BY `bj_date` DESC");
 if ($sql) {
 	$finish_count = 0;
 

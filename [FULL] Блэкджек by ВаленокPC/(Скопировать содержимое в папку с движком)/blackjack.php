@@ -1,4 +1,5 @@
 <?php
+
 define('IN_FORUM', true);
 define('BB_SCRIPT', 'blackjack');
 define('BB_ROOT', './');
@@ -28,7 +29,6 @@ $games = request_var('game', '');
 $takegame = request_var('takegame', '');
 
 if (!$cards = CACHE('bb_cache')->get('bj_cards')) {
-
 	$sql = "SELECT card_id, card_points, card_img FROM " . BB_CARDS;
 
 	$cards = array();
