@@ -1,11 +1,10 @@
 <script type="text/javascript">
 	ajax.book = function (tid) {
-		ajax.exec(
-			{
-				action: 'book',
-				mode: 'delete',
-				tid: tid
-			});
+		ajax.exec({
+			action: 'book',
+			mode: 'delete',
+			tid: tid
+		});
 	};
 
 	ajax.callback.book = function (data) {
