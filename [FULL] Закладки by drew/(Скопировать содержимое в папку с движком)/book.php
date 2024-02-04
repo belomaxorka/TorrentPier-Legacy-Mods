@@ -28,7 +28,6 @@ if (!$sql) {
 			'ID' => $row['topic_id'],
 			'FORUM' => '<a href="' . FORUM_URL . $row['forum_id'] . '">' . $row['forum_name'] . '</a>',
 			'TOPIC' => '<a href="' . TOPIC_URL . $row['topic_id'] . '">' . $row['topic_title'] . '</a>',
-			'IS_UNREAD' => $is_unread,
 			'TOPIC_ICON' => get_topic_icon($row, $is_unread)
 		));
 	}
