@@ -1,3 +1,5 @@
+<h1 class="pagetitle">Закладки</h1>
+
 <script type="text/javascript">
 	ajax.book = function (tid) {
 		ajax.exec({
