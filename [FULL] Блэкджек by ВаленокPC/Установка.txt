@@ -68,7 +68,8 @@ switch ($field)
 ----------------------------------------------------------------------------------------
 
 ------------------ Ниже вставить ------------------
-case 'user_points':
+// Блэкджек
+case 'user_tokens':
 	$value = htmlCHR($value);
 	$value = (int) $this->request['value'];
 	$this->response['new_value'] = $value;
