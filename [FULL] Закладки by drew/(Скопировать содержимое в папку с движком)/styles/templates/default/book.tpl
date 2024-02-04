@@ -34,7 +34,10 @@
 	</thead>
 	<!-- BEGIN book -->
 	<tr id="tr-{book.ID}" class="row2">
-		<td id="{book.ID} tCenter" class="topic_id row1"><img class="topic_icon" src="./styles/templates/default/images/folder.gif" alt=""></td>
+		<td id="{book.ID}" class="topic_id tCenter row1">
+			<span style="display: none;">{book.TOPIC_ICON}</span>
+			<img class="topic_icon" src="{book.TOPIC_ICON}">
+		</td>
 		<td class="row1 med bold w70">{book.TOPIC}</td>
 		<td class="row1 med bold tCenter" style="width:30%;">{book.FORUM}</td>
 		<td class="row1 med tCenter" style="width:30%;"><span title="{L_REPLIES}: {book.REPLIES}">{book.REPLIES}</span> | <span title="{L_VIEWED}: {book.VIEWS}">{book.VIEWS}</span></td>
