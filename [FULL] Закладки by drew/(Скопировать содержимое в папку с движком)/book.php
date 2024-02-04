@@ -10,10 +10,10 @@ $page_cfg['use_tablesorter'] = true;
 $user->session_start(array('req_login' => true));
 
 $sql = DB()->fetch_rowset("SELECT b.*, t.topic_views, t.topic_replies, t.topic_title, t.topic_id, f.forum_id, f.forum_name
-FROM " . BB_BOOK . " b
-LEFT JOIN " . BB_TOPICS . " t ON(t.topic_id = b.topic_id)
-LEFT JOIN " . BB_FORUMS . " f ON(f.forum_id = b.forum_id)
-WHERE user_id = {$userdata['user_id']}");
+								FROM " . BB_BOOK . " b
+									LEFT JOIN " . BB_TOPICS . " t ON(t.topic_id = b.topic_id)
+									LEFT JOIN " . BB_FORUMS . " f ON(f.forum_id = b.forum_id)
+								WHERE user_id = {$userdata['user_id']}");
 
 if (!$sql) {
 	$template->assign_block_vars('no_book', array(
