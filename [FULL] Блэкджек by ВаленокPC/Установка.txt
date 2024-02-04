@@ -215,7 +215,7 @@ elseif (isset($_POST['tokens']) && $_POST['tokens'] >= 1) {
 	<td class="bold tCenter" colspan=2>{L_PRICE}</td>
 </tr>
 <tr class="row1 med">
-	<td class="tLeft"><b>Купить жетоны:</b><br><input type="text" name="tokens" maxlength="10" value="100" style="width: 170px;">&nbsp;жетонов</td>
+	<td class="tLeft"><b>Купить жетоны:</b><br><input type="text" name="tokens" maxlength="10" value="100" style="width: 200px;">&nbsp;жетонов</td>
 	<td align="center" id="tokens" colspan="2">1 жетон = 0,10 бонусов</td>
 </tr>
 ---------------------------------------------------
