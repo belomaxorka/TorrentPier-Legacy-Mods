@@ -72,6 +72,10 @@ switch ($field)
 case 'user_tokens':
 	$value = htmlCHR($value);
 	$value = (int) $this->request['value'];
+	if (mb_strlen($value, 'UTF-8') > 10)
+	{
+		$this->ajax_error($lang['ERROR']);
+	}
 	$this->response['new_value'] = $value;
 	break;
 ---------------------------------------------------
