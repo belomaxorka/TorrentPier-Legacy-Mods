@@ -1,39 +1,37 @@
 <script type="text/javascript">
-ajax.book = function (tid)
-{
-	ajax.exec(
-	{
-		action : 'book',
-		mode : 'delete',
-		tid : tid
-	});
-};
+	ajax.book = function (tid) {
+		ajax.exec(
+			{
+				action: 'book',
+				mode: 'delete',
+				tid: tid
+			});
+	};
 
-ajax.callback.book = function(data)
-{
-	if(data.info) alert(data.info);
-	if(data.url) document.location.href = data.url;
-};
+	ajax.callback.book = function (data) {
+		if (data.info) alert(data.info);
+		if (data.url) document.location.href = data.url;
+	};
 </script>
 <table>
 	<tbody>
-		<tr>
-			<td class="nav w100">
-				<a href="#" class="med normal" onclick="setCookie('bb_mark_read', 'all_forums');">Отметить все форумы как прочтённые</a>
-			</td>
-		</tr>
+	<tr>
+		<td class="nav w100">
+			<a href="#" class="med normal" onclick="setCookie('bb_mark_read', 'all_forums');">Отметить все форумы как прочтённые</a>
+		</td>
+	</tr>
 	</tbody>
 </table>
 
 <table class="forumline tablesorter">
 	<thead>
-		<tr>
+	<tr>
 		<th class="header"></th>
-			<th class="{sorter: 'text'}"><b class="tbs-text">Тема</b></th>
-			<th class="{sorter: 'text'}"><b class="tbs-text">Форум</b></th>
-			<th class="{sorter: false}"><b class="tbs-text">Ответов</b></th>
-			<th class="{sorter: false}">&nbsp;Удалить&nbsp;</th>
-		</tr>
+		<th class="{sorter: 'text'}"><b class="tbs-text">Тема</b></th>
+		<th class="{sorter: 'text'}"><b class="tbs-text">Форум</b></th>
+		<th class="{sorter: false}"><b class="tbs-text">Ответов</b></th>
+		<th class="{sorter: false}">&nbsp;Удалить&nbsp;</th>
+	</tr>
 	</thead>
 	<!-- BEGIN book -->
 	<tr id="tr-{book.ID}" class="row2">
