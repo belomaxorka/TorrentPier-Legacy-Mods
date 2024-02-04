@@ -16,7 +16,7 @@
 	<tbody>
 	<tr>
 		<td class="nav w100">
-			<a href="#" class="med normal" onclick="setCookie('bb_mark_read', 'all_forums');">{L_MARK_ALL_FORUMS_READ}</a>
+			<a href="#" class="med normal" onclick="setCookie('{COOKIE_MARK}', 'all_forums');">{L_MARK_ALL_FORUMS_READ}</a>
 		</td>
 	</tr>
 	</tbody>
