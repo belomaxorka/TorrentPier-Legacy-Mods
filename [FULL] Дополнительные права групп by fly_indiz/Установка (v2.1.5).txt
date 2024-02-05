@@ -7,7 +7,7 @@
 Время установки: ~ 10 минут
 Адаптирован под версию TPII: v2.1.5 (LTS включительно)
 Файлы к редактированию:
- - gallery.php
+ - gallery.php (https://torrentpier.com/resources/lokalnaja-galereja.147/)
  - groupcp.php
  - modcp.php
  - posting.php
@@ -275,7 +275,7 @@ bt/announce.php
 
 # ---- [ Открыть ] -------------------
 
-gallery.php
+gallery.php (https://torrentpier.com/resources/lokalnaja-galereja.147/)
 
 # ---- [ Найти ] -------------------
 
@@ -415,7 +415,7 @@ library/includes/page_header.php
 
 # ---- [ Вставить после ] -------------------
 
-	'GALLERY_PERMISSION'        => ($logged_in && $bb_cfg['gallery_enabled'] && (bf($userdata['group_opt'], 'group_opt', 'gallery') || IS_AM)) ? true : false,
+	'GALLERY_PERMISSION'        => ($logged_in && (bf($userdata['group_opt'], 'group_opt', 'gallery') || IS_AM)) ? true : false,
 
 # ---- [ Открыть ] -------------------
 
@@ -647,7 +647,7 @@ styles/templates/default/page_header.tpl
 
 # ---- [ Найти ] -------------------
 
-<!-- IF LOGGED_IN && $bb_cfg['gallery_enabled'] --><!-- IF SEO_LINK_GALLERY_PAGE --><a href="{U_GALLERY}"><!-- ENDIF --><b>{L_GALLERY}</b><!-- IF SEO_LINK_GALLERY_PAGE --></a><!-- ENDIF --><span style="color:#CDCDCD;">|</span><!-- ENDIF -->
+<!-- IF LOGGED_IN --><!-- IF SEO_LINK_GALLERY_PAGE --><a href="{U_GALLERY}"><!-- ENDIF --><b>{L_GALLERY}</b><!-- IF SEO_LINK_GALLERY_PAGE --></a><!-- ENDIF --><span style="color:#CDCDCD;">|</span><!-- ENDIF -->
 
 # ---- [ Заменить на ] -------------------
 
