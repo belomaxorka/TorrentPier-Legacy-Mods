@@ -166,6 +166,16 @@ attach_mod/posting_attachments.php
 
 # ---- [ Найти ] -------------------
 
+		//
+		// ok, what shall we do ;)
+		//
+
+# ---- [ Вставить после ] -------------------
+
+		global $userdata;
+
+# ---- [ Найти ] -------------------
+
 					$this->upload_attachment($this->page);
 
 					if (!$error)
