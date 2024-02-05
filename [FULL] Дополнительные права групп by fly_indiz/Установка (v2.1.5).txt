@@ -593,7 +593,7 @@ else if (bf($userdata['group_opt'], 'group_opt', 'autocheck')) tracker_register(
 
 # ---- [ Открыть ] -------------------
 
-templates/admin/admin_groups.tpl
+styles/templates/admin/admin_groups.tpl
 
 # ---- [ Найти ] -------------------
 
@@ -621,7 +621,7 @@ templates/admin/admin_groups.tpl
 
 # ---- [ Открыть ] -------------------
 
-templates/default/groupcp.tpl
+styles/templates/default/groupcp.tpl
 
 # ---- [ Найти ] -------------------
 
@@ -643,7 +643,7 @@ templates/default/groupcp.tpl
 
 # ---- [ Открыть ] -------------------
 
-templates/default/page_header.tpl
+styles/templates/default/page_header.tpl
 
 # ---- [ Найти ] -------------------
 
@@ -655,7 +655,7 @@ templates/default/page_header.tpl
 
 # ---- [ Открыть ] -------------------
 
-templates/default/viewtopic.tpl
+styles/templates/default/viewtopic.tpl
 
 # ---- [ Найти ] -------------------
 
@@ -681,7 +681,7 @@ templates/default/viewtopic.tpl
 
 # ---- [ Открыть ] -------------------
 
-templates/default/viewtopic_attach.tpl
+styles/templates/default/viewtopic_attach.tpl
 
 # ---- [ Найти ] -------------------
 
