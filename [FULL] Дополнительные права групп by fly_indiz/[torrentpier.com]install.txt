@@ -1,0 +1,746 @@
+--------------------------------------------------
+Название: Дополнительные права групп
+Автор: fly_indiz
+Описание: Дополнительные права групп
+Сложность установки: Сердняя
+Время установки: ~ 10 минут
+Адаптирован под версию TPII: R471
+Файлы к редактированию:
+ - gallery.php
+ - groupcp.php
+ - modcp.php
+ - posting.php
+ - viewtopic.php
+ - admin/admin_groups.php
+ - ajax/change_torrent.php
+ - attach_mod/displaying_torrent.php
+ - attach_mod/posting_attachments.php
+ - bt/announce.php
+ - includes/functions.php
+ - includes/functions_torrent.php
+ - includes/page_header.php
+ - includes/sessions.php
+ - includes/cron/jobs/update_unlim_cache.php
+ - language/lang_english/lang_main.php
+ - language/lang_russian/lang_main.php
+ - templates/admin/admin_groups.tpl
+ - templates/default/groupcp.tpl
+ - templates/default/page_header.tpl
+ - templates/default/viewtopic.tpl
+ - templates/default/viewtopic_attach.tpl
+--------------------------------------------------
+
+# ---- [ SQL ] -------------------
+
+ALTER TABLE `bb_groups` ADD `group_opt` int(11) NOT NULL DEFAULT '0';
+INSERT INTO `bb_cron` (cron_active, cron_title, cron_script, schedule, run_day, run_time, run_order, run_interval, log_enabled, disable_board) VALUES(1, 'Update unlimited users',        'update_unlim_cache.php',         'interval', NULL, NULL,       255, '00:05:00', 0, 0);
+
+# ---- [ Открыть ] -------------------
+
+admin/admin_groups.php
+
+# ---- [ Найти ] -------------------
+
+			'group_type'        => $row['group_type'],
+
+# ---- [ Вставить после ] -------------------
+
+			'group_opt'         => $row['group_opt'],
+
+# ---- [ Найти ] -------------------
+
+			'group_type'        => GROUP_OPEN,
+
+# ---- [ Вставить после ] -------------------
+
+			'group_opt'         => 0,
+
+# ---- [ Найти ] -------------------
+
+		'S_GROUP_ACTION'         => "admin_groups.php",
+		'S_HIDDEN_FIELDS'        => $s_hidden_fields,
+	));
+
+# ---- [ Вставить после ] -------------------
+
+	foreach ($bf['group_opt'] as $key => $value)
+	{
+		$template->assign_block_vars('groupoptrow', array(
+			'L_GROUPOPT_KEY'           => $key,
+			'L_GROUPOPT_NAME'          => $lang['GROUP_OPT_'. strtoupper($key)],
+			'S_GROUPOPT_YES_CHECKED'   => (bf($group_info['group_opt'], 'group_opt', $key)) ? HTML_CHECKED : '',
+			'S_GROUPOPT_NO_CHECKED'    => (!bf($group_info['group_opt'], 'group_opt', $key)) ? HTML_CHECKED : '',
+		));
+	}
+
+# ---- [ Найти ] -------------------
+
+		$group_desc = isset($_POST['group_description']) ? trim($_POST['group_description']) : '';
+
+# ---- [ Вставить после ] -------------------
+
+		$bit_index = 1;
+		$group_opt = 0;
+		foreach ($bf['group_opt'] as $key => $value)
+		{
+			$flag = isset($_POST['group_'. $key]) ? intval($_POST['group_'. $key]) : 0;
+			if ($flag > 1) $flag = 1; if ($flag < 0) $flag = 0;
+			$group_opt = $group_opt + ($bit_index * $flag);
+			$bit_index = 2 * $bit_index;
+		}
+
+# ---- [ Найти ] -------------------
+
+			'group_single_user' => 0,
+
+# ---- [ Вставить после ] -------------------
+
+			'group_opt'         => (int) $group_opt,
+
+# ---- [ Открыть ] -------------------
+
+ajax/change_torrent.php
+
+# ---- [ Найти ] -------------------
+
+    if($type == 'del_torrent' || $type == 'reg' || $type == 'unreg')
+    {
+    	true;
+    }
+
+# ---- [ Заменить на ] -------------------
+
+	if(($type == 'del_torrent' || $type == 'reg' || $type == 'unreg') && bf($userdata['group_opt'], 'group_opt', 'closeselftopic'))
+	{
+		true;
+	}
+	elseif(($type == 'set_gold' || $type == 'set_silver' || $type == 'unset_silver_gold') && bf($userdata['group_opt'], 'group_opt', 'silvergold'))
+	{
+		true;
+	}
+
+# ---- [ Открыть ] -------------------
+
+attach_mod/displaying_torrent.php
+
+# ---- [ Найти ] -------------------
+
+if ($tor_auth)
+{
+	$template->assign_vars(array(
+		'TOR_CONTROLS'  => true,
+		'TOR_ATTACH_ID' => $attach_id,
+	));
+
+# ---- [ Заменить на ] -------------------
+
+if ($tor_auth || ($tor_reged && ((bf($userdata['group_opt'], 'group_opt', 'silvergold') || bf($userdata['group_opt'], 'group_opt', 'closeselftopic')) && $bt_user_id != ANONYMOUS && $bt_user_id == $poster_id && !$locked)))
+{
+	$template->assign_vars(array(
+		'TOR_CONTROLS'     => ($tor_reged && ($is_auth['auth_mod'] || ((bf($userdata['group_opt'], 'group_opt', 'silvergold') || bf($userdata['group_opt'], 'group_opt', 'closeselftopic')) && $bt_user_id != ANONYMOUS && $bt_user_id == $poster_id && !$locked))),
+		'TOR_ATTACH_ID'    => $attach_id,
+		'SILVER_GOLD_AUTH' => ($tor_reged && ($is_auth['auth_mod'] || (bf($userdata['group_opt'], 'group_opt', 'silvergold') && $bt_user_id != ANONYMOUS && $bt_user_id == $poster_id && !$locked))),
+		'CLOSE_AUTH'       => ($tor_reged && ($is_auth['auth_mod'] || (bf($userdata['group_opt'], 'group_opt', 'closeselftopic') && $bt_user_id != ANONYMOUS && $bt_user_id == $poster_id && !$locked))),
+	));
+
+# ---- [ Найти ] -------------------
+
+	if (($min_ratio_dl || $min_ratio_warn) && $bt_user_id != $poster_id)
+
+# ---- [ Заменить на ] -------------------
+
+	if (($min_ratio_dl || $min_ratio_warn) && $bt_user_id != $poster_id && !bf($userdata['group_opt'], 'group_opt', 'unlim'))
+
+# ---- [ Найти ] -------------------
+
+	if (($min_ratio_dl || $min_ratio_warn) && $user_status != DL_STATUS_COMPLETE && $bt_user_id != $poster_id && $tor_type != TOR_TYPE_GOLD)
+
+# ---- [ Заменить на ] -------------------
+
+	if (($min_ratio_dl || $min_ratio_warn) && $user_status != DL_STATUS_COMPLETE && $bt_user_id != $poster_id && $tor_type != TOR_TYPE_GOLD && !bf($userdata['group_opt'], 'group_opt', 'unlim'))
+
+# ---- [ Открыть ] -------------------
+
+attach_mod/posting_attachments.php
+
+# ---- [ Найти ] -------------------
+
+					$this->upload_attachment($this->page);
+
+					if (!$error)
+					{
+						$actual_list = get_var('attachment_list', array(''));
+						$actual_id_list = get_var('attach_id_list', array(0));
+
+						$attachment_id = 0;
+						$actual_element = 0;
+
+						for ($i = 0; $i < sizeof($actual_id_list); $i++)
+						{
+							if (isset($_POST['update_attachment'][$actual_id_list[$i]]))
+							{
+								$attachment_id = intval($actual_id_list[$i]);
+								$actual_element = $i;
+							}
+						}
+
+						// Get current informations to delete the Old Attachment
+
+# ---- [ Заменить на ] -------------------
+
+					$actual_list = get_var('attachment_list', array(''));
+					$actual_id_list = get_var('attach_id_list', array(0));
+
+					$attachment_id = 0;
+					$actual_element = 0;
+
+					for ($i = 0; $i < sizeof($actual_id_list); $i++)
+					{
+						if (isset($_POST['update_attachment'][$actual_id_list[$i]]))
+						{
+							$attachment_id = intval($actual_id_list[$i]);
+							$actual_element = $i;
+						}
+					}
+
+					if ($this->attachment_extension_list[$actual_element] === TORRENT_EXT && $attachments[$actual_element]['tracker_status'])
+					{
+						require_once(INC_DIR .'functions_torrent.php');
+						if ($torrent = get_torrent_info($attachment_id))
+						{
+							if ($userdata['user_id'] == $torrent['poster_id'] && bf($userdata['group_opt'], 'group_opt', 'torstatus'))
+							{
+								$sql = "
+									SELECT tor_status
+									FROM ". BB_BT_TORRENTS ."
+									WHERE attach_id = $attachment_id
+									LIMIT 1
+								";
+								if ($old_tor_status = DB()->fetch_row($sql, 'tor_status'))
+								{
+									CACHE('bb_cache')->set("torstatus_". $attachment_id, $old_tor_status);
+								}
+ 							}
+ 						}
+					}
+ 
+					$this->upload_attachment($this->page);
+
+					if (!$error)
+					{
+						// Get current informations to delete the Old Attachment
+
+# ---- [ Найти ] -------------------
+
+							include(INC_DIR .'functions_torrent.php');
+
+# ---- [ Заменить на ] -------------------
+
+							require_once(INC_DIR .'functions_torrent.php');
+
+# ---- [ Открыть ] -------------------
+
+bt/announce.php
+
+# ---- [ Найти ] -------------------
+
+	// Ratio limits
+	if ((TR_RATING_LIMITS || $tr_cfg['limit_concurrent_ips']) && !$stopped)
+
+# ---- [ Заменить на ] -------------------
+
+	$is_unlim = false;
+	if ($cached_unlim_users = CACHE('tr_cache')->get('tr_unlim'))
+	{
+		$cached_unlim_users_ary = explode(',', $cached_unlim_users);
+		foreach ($cached_unlim_users_ary as $unlim_user)
+		{
+			if ($unlim_user == $user_id) $is_unlim = true;
+		}
+	}
+
+ 	// Ratio limits
+	if ((TR_RATING_LIMITS || $tr_cfg['limit_concurrent_ips']) && !$stopped && !$is_unlim)
+
+# ---- [ Открыть ] -------------------
+
+gallery.php
+
+# ---- [ Найти ] -------------------
+
+if(bf($userdata['user_opt'], 'user_opt', 'allow_gallery'))
+
+# ---- [ Заменить на ] -------------------
+
+if (bf($userdata['user_opt'], 'user_opt', 'allow_gallery') || (!bf($userdata['group_opt'], 'group_opt', 'gallery') && !IS_AM))
+
+# ---- [ Открыть ] -------------------
+
+groupcp.php
+
+# ---- [ Найти ] -------------------
+
+	$i = 0;
+	$template->assign_vars(array(
+		'ROW_NUMBER'    => $i + ( $start + 1 ),
+
+# ---- [ Вставить до ] -------------------
+
+	$group_auth_list_ary = array();
+	foreach ($bf['group_opt'] as $key => $value)
+	{
+		if (bf($group_info['group_opt'], 'group_opt', $key)) $group_auth_list_ary[] = $lang['GROUP_OPT_'. strtoupper($key)];
+	}
+	$group_auth_list = join("<br />\n", $group_auth_list_ary);
+
+# ---- [ Найти ] -------------------
+
+		'S_GROUPCP_ACTION' => "groupcp.php?" . POST_GROUPS_URL . "=$group_id",
+
+# ---- [ Вставить после ] -------------------
+
+		'GROUP_AUTH_LIST' => $group_auth_list,
+
+# ---- [ Открыть ] -------------------
+
+includes/functions.php
+
+# ---- [ Найти ] -------------------
+
+function bit2dec ($bit_num)
+
+# ---- [ Вставить до ] -------------------
+
+$bf['group_opt'] = array(
+	'torstatus'        => 0,
+	'gallery'          => 1,
+	'unlim'            => 2,
+	'silvergold'       => 3,
+	'closeselftopic'   => 4,
+	'stickpost'        => 5,
+	'autocheck'        => 6,
+);
+
+# ---- [ Найти ] -------------------
+
+if ($userdata['user_id'] == ANONYMOUS)
+
+# ---- [ Вставить до ] -------------------
+
+	// Get group_opt
+	if (!$userdata || !isset($userdata['user_id'])) return false;
+	$group_opt = 0;
+	if (!empty($userdata['user_id']) && $userdata['user_id'] > 0)
+	{
+		$sql = "
+			SELECT g.group_opt
+			FROM      ". BB_USER_GROUP ." ug
+			LEFT JOIN ". BB_GROUPS ."     g  ON(g.group_id = ug.group_id AND ug.user_pending != 1)
+			WHERE ug.user_id          = ". $userdata['user_id'] ."
+			  AND g.group_single_user = 0
+		";
+		$group_opt_ary = DB()->fetch_rowset($sql, 'group_opt');
+		foreach ($group_opt_ary as $group_opt_tmp)
+		{
+			$group_opt = $group_opt | $group_opt_tmp;
+		}
+	}
+	$userdata['group_opt'] = $group_opt;
+
+# ---- [ Открыть ] -------------------
+
+includes/functions_torrent.php
+
+# ---- [ Найти ] -------------------
+
+	if (IS_ADMIN) return true;
+
+# ---- [ Вставить до ] -------------------
+
+	if (IS_ADMIN || ($poster_id == $userdata['user_id'] && bf($userdata['group_opt'], 'group_opt', 'closeselftopic'))) return true;
+
+# ---- [ Найти ] -------------------
+
+	global $topic_id, $lang, $bb_cfg;
+
+# ---- [ Заменить на ] -------------------
+
+	global $topic_id, $lang, $bb_cfg, $userdata;
+
+# ---- [ Найти ] -------------------
+
+	if (!IS_AM) bb_die($lang['ONLY_FOR_MOD']);
+
+# ---- [ Заменить на ] -------------------
+
+	if (!IS_AM && !bf($userdata['group_opt'], 'group_opt', 'silvergold')) bb_die($lang['ONLY_FOR_MOD']);
+
+# ---- [ Найти ] -------------------
+
+	global $template, $attach_config, $bb_cfg, $lang, $return_message, $reg_mode, $tr_cfg;
+
+# ---- [ Заменить на ] -------------------
+
+	global $template, $attach_config, $bb_cfg, $lang, $return_message, $reg_mode, $tr_cfg, $userdata;
+
+# ---- [ Найти ] -------------------
+
+	$size = sprintf('%.0f', (float) $totallen);
+
+# ---- [ Вставить после ] -------------------
+
+	if ($userdata['user_id'] == $torrent['poster_id'] && bf($userdata['group_opt'], 'group_opt', 'torstatus'))
+	{
+		if ($tmp_tor_status = CACHE('bb_cache')->get("torstatus_". $attach_id)) $tor_status = $tmp_tor_status;
+	}
+
+# ---- [ Открыть ] -------------------
+
+includes/page_header.php
+
+# ---- [ Найти ] -------------------
+
+	'U_SEARCH_SELF_BY_LAST'		=> "search.php?uid={$userdata['user_id']}&amp;o=5",
+
+# ---- [ Вставить после ] -------------------
+
+	'GALLERY_PERMISSION'        => ($logged_in && $bb_cfg['gallery_enabled'] && (bf($userdata['group_opt'], 'group_opt', 'gallery') || IS_AM)) ? true : false,
+
+# ---- [ Открыть ] -------------------
+
+includes/sessions.php
+
+# ---- [ Найти ] -------------------
+
+					$update_sessions_table = true;
+				}
+
+# ---- [ Вставить после ] -------------------
+
+				// Get group_opt
+				if (!empty($this->data['user_id']) && $this->data['user_id'] > 0)
+				{
+					$sql = "
+						SELECT g.group_opt
+						FROM      ". BB_USER_GROUP ." ug
+						LEFT JOIN ". BB_GROUPS ."     g  ON(g.group_id = ug.group_id AND ug.user_pending != 1)
+						WHERE ug.user_id          = ". $this->data['user_id'] ."
+						  AND g.group_single_user = 0
+					";
+					$group_opt_ary = DB()->fetch_rowset($sql, 'group_opt');
+					$group_opt = 0;
+					foreach ($group_opt_ary as $group_opt_tmp)
+					{
+						$group_opt = $group_opt | $group_opt_tmp;
+					}
+					$this->data['group_opt'] = $group_opt;
+				}
+
+# ---- [ Найти ] -------------------
+
+ 		### LOG END ###
+ 
+ 		// Did the session exist in the DB?
+		if ($this->data)
+
+# ---- [ Заменить на ] -------------------
+
+ 		### LOG END ###
+ 
+ 		// Did the session exist in the DB?
+		if ($this->data && !empty($this->data['session_ip']) && !empty($this->data['session_id']))
+
+# ---- [ Найти ] -------------------
+
+				// Start mod/admin session
+
+# ---- [ Вставить до ] -------------------
+
+				// Get group_opt
+				$sql = "
+					SELECT g.group_opt
+					FROM      ". BB_USER_GROUP ." ug
+					LEFT JOIN ". BB_GROUPS ."     g  ON(g.group_id = ug.group_id AND ug.user_pending != 1)
+					WHERE ug.user_id          = ". $userdata['user_id'] ."
+					  AND g.group_single_user = 0
+				";
+				$group_opt_ary = DB()->fetch_rowset($sql, 'group_opt');
+				$group_opt = 0;
+				foreach ($group_opt_ary as $group_opt_tmp)
+				{
+					$group_opt = $group_opt | $group_opt_tmp;
+				}
+				$userdata['group_opt'] = $group_opt;
+
+# ---- [ Найти ] -------------------
+
+		$this->opt =& $this->data['user_opt'];
+
+# ---- [ Вставить до ] -------------------
+
+		$this->group_opt =& $this->data['group_opt'];
+
+# ---- [ Открыть / Создать ] -------------------
+
+includes/cron/jobs/update_unlim_cache.php
+
+# ---- [ Вставить после ] -------------------
+
+<?php
+$sql = "
+	SELECT ug.user_id
+	FROM      ". BB_GROUPS     ." g
+	LEFT JOIN ". BB_USER_GROUP ." ug ON(g.group_id = ug.group_id AND ug.user_pending != 1)
+	WHERE g.group_single_user = 0
+	  AND g.group_opt & ". pow(2, $bf['group_opt']['unlim']) ." = ". pow(2, $bf['group_opt']['unlim']) ."
+";
+$user_ids = array();
+$user_ids = DB()->fetch_rowset($sql, 'user_id');
+$user_ids_csv = join(',', $user_ids);
+CACHE('tr_cache')->set('tr_unlim', $user_ids_csv);
+
+# ---- [ Открыть ] -------------------
+
+language/lang_english/lang_main.php
+
+# ---- [ Найти ] -------------------
+
+$lang['INDEXER'] = "Reindex search";
+
+# ---- [ Вставить после ] -------------------
+
+// Group permissions
+$lang['GROUP_OPT'] = 'Additional permissions';
+$lang['GROUP_OPT_TORSTATUS'] = 'Members can keep the status when upgrade torrent';
+$lang['GROUP_OPT_GALLERY'] = 'Members can use image upload';
+$lang['GROUP_OPT_UNLIM'] = 'Members can download unlimited';
+$lang['GROUP_OPT_SILVERGOLD'] = 'Members can set Gold/Silver status in self releases';
+$lang['GROUP_OPT_CLOSESELFTOPIC'] = 'Members can close self topics and releases';
+$lang['GROUP_OPT_STICKPOST'] = 'Members can stick first post in self topics';
+$lang['GROUP_OPT_AUTOCHECK'] = 'Members can create new releases with Checked status';
+
+# ---- [ Открыть ] -------------------
+
+language/lang_russian/lang_main.php
+
+# ---- [ Найти ] -------------------
+
+$lang['INDEXER'] = "Переиндексировать поиск";
+
+# ---- [ Вставить после ] -------------------
+
+// Права групп
+$lang['GROUP_OPT'] = 'Дополнительные права';
+$lang['GROUP_OPT_TORSTATUS'] = 'Члены группы могут сохранять статус при обновлении торрента';
+$lang['GROUP_OPT_GALLERY'] = 'Члены группы могут загружать изображения на сайте';
+$lang['GROUP_OPT_UNLIM'] = 'Члены группы могут скачивать безлимитно';
+$lang['GROUP_OPT_SILVERGOLD'] = 'Члены группы могут выставлять Золото/Серебро на свои раздачи';
+$lang['GROUP_OPT_CLOSESELFTOPIC'] = 'Члены группы могут закрывать свои топики и раздачи';
+$lang['GROUP_OPT_STICKPOST'] = 'Члены группы могут прикреплять первый пост в своём топике';
+$lang['GROUP_OPT_AUTOCHECK'] = 'Члены группы имеют право создавать раздачи со статусом Проверено';
+
+# ---- [ Открыть ] -------------------
+
+modcp.php
+
+# ---- [ Найти ] -------------------
+
+// Exit if user not authorized
+
+# ---- [ Вставить до ] -------------------
+
+else if (($mode == 'lock' || $mode == 'unlock') && !$is_auth['auth_mod'] && bf($userdata['group_opt'], 'group_opt', 'closeselftopic'))
+{
+	if ($topic_id && $topic_row['topic_poster'] == $userdata['user_id']) $is_auth['auth_mod'] = true;
+}
+else if (($mode == 'post_pin' || $mode == 'post_unpin') && !$is_auth['auth_mod'] && bf($userdata['group_opt'], 'group_opt', 'stickpost'))
+{
+	if ($topic_id && $topic_row['topic_poster'] == $userdata['user_id']) $is_auth['auth_mod'] = true;
+}
+
+# ---- [ Открыть ] -------------------
+
+posting.php
+
+# ---- [ Найти ] -------------------
+
+if($bb_cfg['premod'])
+
+# ---- [ Заменить на ] -------------------
+
+if ($bb_cfg['premod'] && !bf($userdata['group_opt'], 'group_opt', 'autocheck'))
+
+# ---- [ Найти ] -------------------
+
+else tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_NOT_APPROVED);
+
+# ---- [ Вставить перед ] -------------------
+
+else if (bf($userdata['group_opt'], 'group_opt', 'autocheck')) tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_APPROVED);
+
+# ---- [ Открыть ] -------------------
+
+templates/admin/admin_groups.tpl
+
+# ---- [ Найти ] -------------------
+
+		<div><input type="radio" name="group_type" value="{S_GROUP_HIDDEN_TYPE}" {S_GROUP_HIDDEN_CHECKED} />	{L_GROUP_HIDDEN}</div>
+	</td>
+</tr>
+
+# ---- [ Вставить до ] -------------------
+
+<tr>
+	<th colspan="2"><center>{L_GROUP_OPT}</center></th>
+</tr>
+<!-- BEGIN groupoptrow -->
+<tr>
+	<td>{groupoptrow.L_GROUPOPT_NAME}:</td>
+	<td class="row2 med">
+		<div><input type="radio" name="group_{groupoptrow.L_GROUPOPT_KEY}" value="1" {groupoptrow.S_GROUPOPT_YES_CHECKED} /> {L_YES}</div>
+		<div><input type="radio" name="group_{groupoptrow.L_GROUPOPT_KEY}" value="0" {groupoptrow.S_GROUPOPT_NO_CHECKED} />	{L_NO}</div>
+	</td>
+</tr>
+<!-- END groupoptrow -->
+<tr>
+	<th colspan="2">&nbsp;</th>
+</tr>
+
+# ---- [ Открыть ] -------------------
+
+templates/default/groupcp.tpl
+
+# ---- [ Найти ] -------------------
+
+<!-- END switch_mod_option -->
+</table>
+
+</form>
+
+# ---- [ Заменить на ] -------------------
+
+<!-- END switch_mod_option -->
+<tr>
+	<td>{L_GROUP_OPT}:</td>
+	<td>{GROUP_AUTH_LIST}</td>
+</tr>
+</table>
+
+</form>
+
+# ---- [ Открыть ] -------------------
+
+templates/default/page_header.tpl
+
+# ---- [ Найти ] -------------------
+
+<!-- IF LOGGED_IN && $bb_cfg['gallery_enabled'] --><!-- IF SEO_LINK_GALLERY_PAGE --><a href="{U_GALLERY}"><!-- ENDIF --><b>{L_GALLERY}</b><!-- IF SEO_LINK_GALLERY_PAGE --></a><!-- ENDIF --><span style="color:#CDCDCD;">|</span><!-- ENDIF -->
+
+# ---- [ Заменить на ] -------------------
+
+<!-- IF LOGGED_IN && GALLERY_PERMISSION --><!-- IF SEO_LINK_GALLERY_PAGE --><a href="{U_GALLERY}"><!-- ENDIF --><b>{L_GALLERY}</b><!-- IF SEO_LINK_GALLERY_PAGE --></a><!-- ENDIF --><span style="color:#CDCDCD;">|</span><!-- ENDIF -->
+
+# ---- [ Открыть ] -------------------
+
+templates/default/viewtopic.tpl
+
+# ---- [ Найти ] -------------------
+
+		<!-- IF AUTH_MOD -->
+		<td class="small bold nowrap" style="padding: 0px 0px 0px 4px;">
+			<!-- IF IN_MODERATION -->{L_MODERATE_TOPIC}<!-- ELSE --><a href="{PAGE_URL}&amp;mod=1&amp;start={PAGE_START}" class="small bold">{L_MODERATE_TOPIC}</a><!-- ENDIF -->
+			&nbsp;<span style="color:#CDCDCD;">|</span>&nbsp;
+			<a class="small bold" href="{PIN_HREF}">{PIN_TITLE}</a>
+		</td>
+		<!-- IF SELECT_PPP -->
+
+# ---- [ Заменить на ] -------------------
+
+		<td class="small bold nowrap" style="padding: 0px 0px 0px 4px;">
+			<!-- IF AUTH_MOD -->
+			<!-- IF IN_MODERATION -->{L_MODERATE_TOPIC}<!-- ELSE --><a href="{PAGE_URL}&amp;mod=1&amp;start={PAGE_START}" class="small bold">{L_MODERATE_TOPIC}</a><!-- ENDIF -->
+			&nbsp;<span style="color:#CDCDCD;">|</span>&nbsp;
+			<!-- ENDIF / AUTH_MOD -->
+			<!-- IF AUTH_PIN --><a class="small bold" href="{PIN_HREF}">{PIN_TITLE}</a><!-- ENDIF -->
+ 		</td>
+		<!-- IF AUTH_MOD -->
+		<!-- IF SELECT_PPP -->
+
+# ---- [ Открыть ] -------------------
+
+templates/default/viewtopic_attach.tpl
+
+# ---- [ Найти ] -------------------
+
+			<select name="tor_action" id="tor-select-{postrow.attach.tor_reged.ATTACH_ID}" onchange="$('#tor-confirm-{postrow.attach.tor_reged.ATTACH_ID}').attr('checked', 0); $('#tor-submit-{postrow.attach.tor_reged.ATTACH_ID}').attr('disabled', 1)">
+				<option value="" selected="selected" class="select-action">&raquo; {L_SELECT_ACTION}</option>
+				<option value="del_torrent">{L_DELETE_TORRENT}</option>
+				<option value="del_torrent_move_topic">{L_DELETE_MOVE_TORRENT}</option>
+				<!-- IF AUTH_MOD -->
+				<!-- IF $tr_cfg['gold_silver_enabled'] -->
+				<!-- IF postrow.attach.tor_reged.TOR_SILVER_GOLD == 1 -->
+				<option value="unset_silver_gold">{L_UNSET_GOLD_TORRENT} / {L_UNSET_SILVER_TORRENT}</option>
+				<option value="set_silver">{L_SET_SILVER_TORRENT}</option>
+				<!-- ELSEIF postrow.attach.tor_reged.TOR_SILVER_GOLD == 2 -->
+				<option value="unset_silver_gold">{L_UNSET_GOLD_TORRENT} / {L_UNSET_SILVER_TORRENT}</option>
+				<option value="set_gold">{L_SET_GOLD_TORRENT}</option>
+				<!-- ELSE -->
+				<option value="set_gold">{L_SET_GOLD_TORRENT}</option>
+				<option value="set_silver">{L_SET_SILVER_TORRENT}</option>
+				<!-- ENDIF -->
+				<!-- ENDIF -->
+				<!-- ENDIF -->
+			</select>
+
+# ---- [ Заменить на ] -------------------
+
+			<select name="tor_action" id="tor-select-{postrow.attach.tor_reged.ATTACH_ID}" onchange="$('#tor-confirm-{postrow.attach.tor_reged.ATTACH_ID}').attr('checked', 0); $('#tor-submit-{postrow.attach.tor_reged.ATTACH_ID}').attr('disabled', 1)">
+				<option value="" selected="selected" class="select-action">&raquo; {L_SELECT_ACTION}</option>
+				<!-- IF CLOSE_AUTH -->
+				<option value="del_torrent">{L_DELETE_TORRENT}</option>
+				<!-- ENDIF -->
+				<!-- IF AUTH_MOD -->
+				<option value="del_torrent_move_topic">{L_DELETE_MOVE_TORRENT}</option>
+				<!-- ENDIF -->
+				<!-- IF $tr_cfg['gold_silver_enabled'] && SILVER_GOLD_AUTH -->
+				<!-- IF postrow.attach.tor_reged.TOR_SILVER_GOLD == 1 -->
+				<option value="unset_silver_gold">{L_UNSET_GOLD_TORRENT} / {L_UNSET_SILVER_TORRENT}</option>
+				<option value="set_silver">{L_SET_SILVER_TORRENT}</option>
+				<!-- ELSEIF postrow.attach.tor_reged.TOR_SILVER_GOLD == 2 -->
+				<option value="unset_silver_gold">{L_UNSET_GOLD_TORRENT} / {L_UNSET_SILVER_TORRENT}</option>
+				<option value="set_gold">{L_SET_GOLD_TORRENT}</option>
+				<!-- ELSE -->
+				<option value="set_gold">{L_SET_GOLD_TORRENT}</option>
+				<option value="set_silver">{L_SET_SILVER_TORRENT}</option>
+				<!-- ENDIF -->
+				<!-- ENDIF -->
+			</select>
+
+# ---- [ Открыть ] -------------------
+
+viewtopic.php
+
+# ---- [ Найти ] -------------------
+
+// Report
+//
+// Get report topic module and create report link
+//
+
+# ---- [ Вставить до ] -------------------
+
+if (!$is_auth['auth_mod'] && $t_data['topic_poster'] == $userdata['user_id'] && $userdata['session_logged_in'] && bf($userdata['group_opt'], 'group_opt', 'closeselftopic'))
+{
+	$topic_mod .= ( $t_data['topic_status'] == TOPIC_UNLOCKED ) ? "<a href=\"modcp.php?" . POST_TOPIC_URL . "=$topic_id&amp;mode=lock&amp;sid=" . $userdata['session_id'] . '"><img src="' . $images['topic_mod_lock'] . '" alt="' . $lang['LOCK_TOPIC'] . '" title="' . $lang['LOCK_TOPIC'] . '" border="0" /></a>&nbsp;' : "<a href=\"modcp.php?" . POST_TOPIC_URL . "=$topic_id&amp;mode=unlock&amp;sid=" . $userdata['session_id'] . '"><img src="' . $images['topic_mod_unlock'] . '" alt="' . $lang['UNLOCK_TOPIC'] . '" title="' . $lang['UNLOCK_TOPIC'] . '" border="0" /></a>&nbsp;';
+}
+
+# ---- [ Найти ] -------------------
+
+	'U_SEARCH_SELF'       => "search.php?uid={$userdata['user_id']}&t=$topic_id&dm=1",
+
+# ---- [ Вставить до ] -------------------
+
+	'AUTH_CLOSE'          => ($is_auth['auth_mod'] || (bf($userdata['group_opt'], 'group_opt', 'closeselftopic') && $userdata['user_id'] == $t_data['topic_poster'])),
+	'AUTH_PIN'            => ($is_auth['auth_mod'] || (bf($userdata['group_opt'], 'group_opt', 'stickpost') && $userdata['user_id'] == $t_data['topic_poster'])),
+
+# ---- [ Конец ] -------------------
