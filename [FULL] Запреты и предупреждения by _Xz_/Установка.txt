@@ -207,3 +207,44 @@ u.user_opt, u.user_gender, u.user_birthday, u.user_warnings,
 </div>
 <!-- ENDIF -->
 -------------------------------------------------
+
+------------------ Далее найти ------------------
+</tr>
+</tbody>
+<!-- END postrow -->
+-------------------------------------------------
+
+------------------ Ниже вставить ------------------
+<!-- IF AUTH_MOD && WARNINGS_ON -->
+<script type="text/javascript">
+	function warning(user_id, post_id) {
+		var type = $('#type-' + post_id + ' option:selected').val();
+		var term = $('#term-' + post_id).val();
+		var time = $('#time-' + post_id + ' option:selected').val();
+		var reason = $('#reason-' + post_id).val();
+		if (user_id == {WARNING_ID} && type && term && reason) {
+			if (!confirm('Вы уверены, что хотите выдать себе запрет?')) return false;
+		}
+		ajax.warning(user_id, post_id, type, term, time, reason);
+	}
+
+	ajax.warning = function (user_id, post_id, type, term, time, reason) {
+		ajax.exec({
+			action: 'warning',
+			mode: 'add',
+			user_id: user_id,
+			warning: type,
+			type: 'topic',
+			type_id: post_id,
+			term: term,
+			time: time,
+			reason: reason
+		});
+	};
+	ajax.callback.warning = function (data) {
+		if (data.info) alert(data.info);
+		if (data.url) document.location.href = data.url;
+	};
+</script>
+<!-- ENDIF -->
+---------------------------------------------------
