@@ -13,22 +13,22 @@
  - posting.php
  - viewtopic.php
  - admin/admin_groups.php
- - ajax/change_torrent.php
- - attach_mod/displaying_torrent.php
- - attach_mod/posting_attachments.php
+ - library/ajax/change_torrent.php
+ - library/attach_mod/displaying_torrent.php
+ - library/attach_mod/posting_attachments.php
  - bt/announce.php
- - includes/functions.php
- - includes/functions_torrent.php
- - includes/page_header.php
- - includes/sessions.php
- - includes/cron/jobs/update_unlim_cache.php
- - language/en/main.php
- - language/ru/main.php
- - templates/admin/admin_groups.tpl
- - templates/default/groupcp.tpl
- - templates/default/page_header.tpl
- - templates/default/viewtopic.tpl
- - templates/default/viewtopic_attach.tpl
+ - library/includes/functions.php
+ - library/includes/functions_torrent.php
+ - library/includes/page_header.php
+ - library/includes/sessions.php
+ - library/includes/cron/jobs/update_unlim_cache.php
+ - library/language/en/main.php
+ - library/language/ru/main.php
+ - styles/templates/admin/admin_groups.tpl
+ - styles/templates/default/groupcp.tpl
+ - styles/templates/default/page_header.tpl
+ - styles/templates/default/viewtopic.tpl
+ - styles/templates/default/viewtopic_attach.tpl
 --------------------------------------------------
 
 # ---- [ SQL ] -------------------
