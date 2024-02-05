@@ -45,47 +45,6 @@ function warning($type, $data = array())
 	}
 }
 
--- закинуть файл warning.php в папку ajax
-
--- viewtopic.tpl
-- найти
-				<!-- IF AUTH_MOD -->
-					<a class="menu-root menu-alt1 txtb" href="#mc_{postrow.POST_ID}">{MC_IMG}</a>{POST_BTN_SPACER}
-					<!-- IF not IN_MODERATION --><a class="txtb" href="{PAGE_URL}&amp;mod=1&amp;start={PAGE_START}#{postrow.POST_ID}">{MOD_POST_IMG}</a>{POST_BTN_SPACER}<!-- ENDIF -->
-				<!-- ENDIF -->
-			</p>
-			<div class="clear"></div>
-- заменить на
-				<!-- IF AUTH_MOD -->
-					<a class="menu-root menu-alt1 txtb" href="#mc_{postrow.POST_ID}">{MC_IMG}</a>{POST_BTN_SPACER}
-					<!-- IF not IN_MODERATION --><a class="txtb" href="{PAGE_URL}&amp;mod=1&amp;start={PAGE_START}#{postrow.POST_ID}">{MOD_POST_IMG}</a>{POST_BTN_SPACER}<!-- ENDIF -->
-					<!-- IF WARNINGS_ON --><a class="menu-root menu-alt1" href="#warning-{postrow.POST_ID}"><img src="./styles/templates/default/images/img_alert.gif" title="Выдать предупреждение"></a><!-- ENDIF -->
-				<!-- ENDIF -->
-			</p>
-			<div class="clear"></div>
-			<!-- IF WARNINGS_ON -->
-			<div class="menu-sub" id="warning-{postrow.POST_ID}">
-				<table class="nowrap" cellspacing="1" cellpadding="4">
-					<tr>
-						<th>Выдать запрет</th>
-					</tr>
-					<tr>
-						<td title="Тип блокировки" id="type-{postrow.POST_ID}">{WARNING_TYPE}</td>
-					</tr>
-					<tr>
-						<td title="Причина блокировки" class="row2 tCenter genmed">
-							<textarea id="reason-{postrow.POST_ID}" name="reason-{postrow.POST_ID}" rows="5" cols="30"></textarea>
-						</td>
-					</tr>
-					<tr>
-						<td class="cat tCenter pad_4">
-							<input title="Время блокировки" id="term-{postrow.POST_ID}" type="text" maxlength="2" size="2" name="time"><span id="time-{postrow.POST_ID}">{WARNING_TIME}</span>
-							<input onclick="warning({postrow.POSTER_ID}, {postrow.POST_ID}); return false;" type="button" value="Выдать">
-						</td>
-					</tr>
-				</table>
-			</div>
-			<!-- ENDIF -->
 - найти
 <!-- END postrow -->
 - после добавить
