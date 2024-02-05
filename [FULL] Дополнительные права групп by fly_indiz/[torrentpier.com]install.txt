@@ -487,6 +487,8 @@ includes/cron/jobs/update_unlim_cache.php
 # ---- [ Вставить после ] -------------------
 
 <?php
+if (!defined('BB_ROOT')) die(basename(__FILE__));
+global $bf;
 $sql = "
 	SELECT ug.user_id
 	FROM      ". BB_GROUPS     ." g
