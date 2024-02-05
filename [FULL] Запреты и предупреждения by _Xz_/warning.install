@@ -379,5 +379,4 @@ function send_torrent_with_passkey ($filename)
 {
 	global $attachment, $auth_pages, $userdata, $bb_cfg, $lang;
 
-    warning(7);
-
+	warning(7);
