@@ -107,22 +107,26 @@ admin/admin_groups.php
 
 library/ajax/change_torrent.php
 
-# ---- [ Найти ] -------------------
+# ---- [ Найти (для v2.1.5) ] -------------------
 
 	if ($type == 'del_torrent' || $type == 'reg' || $type == 'unreg')
 	{
 		true;
 	}
 
+# ---- [ Найти (для LTS) ] -------------------
+
+	if ($type == 'del_torrent' || $type == 'reg' || $type == 'unreg')
+	{
+	}
+
 # ---- [ Заменить на ] -------------------
 
 	if(($type == 'del_torrent' || $type == 'reg' || $type == 'unreg') && bf($userdata['group_opt'], 'group_opt', 'closeselftopic'))
 	{
-		true;
 	}
 	elseif(($type == 'set_gold' || $type == 'set_silver' || $type == 'unset_silver_gold') && bf($userdata['group_opt'], 'group_opt', 'silvergold'))
 	{
-		true;
 	}
 
 # ---- [ Открыть ] -------------------
