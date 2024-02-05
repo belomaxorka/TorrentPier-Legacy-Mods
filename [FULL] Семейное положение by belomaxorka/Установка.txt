@@ -9,7 +9,7 @@
 --------------------------------------------------------
 
 ------------------ SQL ------------------
-ALTER TABLE `bb_users` ADD `user_relationships` TINYINT(1) NOT NULL DEFAULT '';
+ALTER TABLE `bb_users` ADD `user_relationships` TINYINT(1) NOT NULL DEFAULT '0';
 -----------------------------------------
 
 ------------------ Открыть library/language/ru/main.php и в конце добавить ------------------
