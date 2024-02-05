@@ -42,19 +42,18 @@ break;
 
 ------------------ Ниже вставить ------------------
 /**
- *  Telegram (edit)
+ *  Отношения (edit)
  */
 case 'user_relationships':
 	$relationships = isset($_POST['user_relationships']) ? (int) $_POST['user_relationships'] : $pr_data['user_relationships'];
-	if ($submit && $telegram != $pr_data['user_telegram'])
+	if ($submit && $relationships != $pr_data['user_relationships'])
 	{
-		if ($telegram != '' && !preg_match("/^[A-Za-z\d_]{5,32}$/", $telegram))
+		if (isset($lang['RELATIONSHIPS_SELECTOR'][$relationships]))
 		{
-			$errors[] = $lang['TELEGRAM_ERROR'];
+			$pr_data['user_relationships'] = $relationships;
+			$db_data['user_relationships'] = (int) $relationships;
 		}
-		$pr_data['user_telegram'] = $telegram;
-		$db_data['user_telegram'] = (string) $telegram;
 	}
-	$tp_data['USER_TELEGRAM'] = $pr_data['user_telegram'];
+	$tp_data['USER_POLITICAL'] = build_select('user_relationships', array_flip($lang['RELATIONSHIPS_SELECTOR']), $pr_data['user_relationships']);
 	break;
 ---------------------------------------------------
