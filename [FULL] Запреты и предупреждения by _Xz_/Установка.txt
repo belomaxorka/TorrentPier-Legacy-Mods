@@ -22,8 +22,66 @@ CREATE TABLE IF NOT EXISTS `bb_warnings` (
 ALTER TABLE `bb_users` ADD `user_warnings` TINYINT(3) NOT NULL DEFAULT '0';
 -----------------------------------------
 
------------------- Открыть library/config и в конце вставить ------------------
--------------------------------------------------------------------------------
+------------------ Открыть library/config.php и в конце вставить ------------------
+$bb_cfg['warning'] = array(
+	'enabled' => true,
+	'time' => array(
+		60 => 'минут',
+		3600 => 'часов',
+		86400 => 'дней',
+		2592000 => 'месяцев',
+		-1 => 'бессрочный', // НЕ трогать!
+	),
+	'time_select' => 86400,
+	'type' => array(
+		0 => 'Выберите тип запрета:',
+		1 => 'оставлять сообщения',
+		2 => 'редактировать сообщения',
+		3 => 'удалять сообщения',
+		4 => 'создавать темы',
+		5 => 'загружать изображения на хостинг',
+		6 => 'доступ к репутации',
+		7 => 'скачивать торренты',
+		// id => описание,
+		-1 => 'забанить', // НЕ трогать!
+	),
+	'auth' => array( // НЕ трогать!
+		0 => 'истёк',
+		1 => 'активен',
+		2 => 'отменён',
+		3 => 'бессрочный',
+		-1 => 'удалить',
+	),
+);
+-----------------------------------------------------------------------------------
+
+------------------ Открыть library/includes/page_header.php и найти ------------------
+	'U_WATCHED_TOPICS'      => "profile.php?mode=watch",
+));
+--------------------------------------------------------------------------------------
+
+------------------ Заменить на ------------------
+	'U_WATCHED_TOPICS'      => "profile.php?mode=watch",
+	'WARNINGS_ON'	        => ($bb_cfg['warning']['enabled'] && IS_AM)
+));
+
+if ($bb_cfg['warning']['enabled'] && IS_AM) {
+	$warning_type = array();
+	foreach ($bb_cfg['warning']['type'] as $type => $key) {
+		$warning_type[$key] = $type;
+	}
+	$warning_time = array();
+	foreach ($bb_cfg['warning']['time'] as $time => $key) {
+		$warning_time[$key] = $time;
+	}
+
+	$template->assign_vars(array(
+		'WARNING_ID' => $userdata['user_id'],
+		'WARNING_TYPE' => build_select('warnings-type', $warning_type, 0, null, null),
+		'WARNING_TIME' => build_select('warnings-time', $warning_time, $bb_cfg['warning']['time_select'], null, null),
+	));
+}
+-------------------------------------------------
 
 ------------------ Открыть library/includes/ucp/viewprofile.php и найти ------------------
 'TRAF_STATS'           => !(IS_AM || $profile_user_id),
