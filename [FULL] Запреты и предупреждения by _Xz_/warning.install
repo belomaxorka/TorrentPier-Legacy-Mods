@@ -1,0 +1,401 @@
+<?
+-- functions.php
+- в самый конец
+
+function warning($type, $data = array())
+{
+	global $lang, $bb_cfg, $userdata;
+
+    if(!isset($userdata['user_warnings'])) $userdata = $data;
+
+    if(!empty($userdata['user_warnings']) && $bb_cfg['warning']['enabled'])
+    {
+		$warning = DB()->fetch_row("SELECT w.*, u.username, u.user_rank, u.user_level
+			FROM ". BB_WARNINGS ." w, ". BB_USERS ." u
+			WHERE w.user_id = ". $userdata['user_id'] ."
+				AND u.user_id = w.poster_id
+				AND w.warning = $type
+				AND w.auth IN(1,3)
+			ORDER BY w.id DESC");
+		if ($warning)
+		{
+			if ($warning['time_end'] > TIMENOW || $warning['auth'] == 3)
+			{
+				if ($warning['user_level'] == ADMIN)
+				{
+					$level = 'Администратор ';
+				}
+				elseif($warning['user_level'] == MOD)
+				{
+					$level = 'Модератор ';
+				}
+
+				$time = ($warning['auth'] == 3) ? $bb_cfg['warning']['auth'][3] : delta_time($warning['time_end']);
+
+				if (defined('IN_AJAX'))
+				{
+					$warn_text = 'Вам запрещено '. $bb_cfg['warning']['type'][$warning['warning']];
+					$warn_text .= "\nДо окончания блокировки осталось - $time";
+				}
+				else
+				{
+					$warn_text = $level . profile_url(array('username' => $warning['username'], 'user_id' => $warning['poster_id'], 'user_rank' => $warning['user_rank']));
+					$warn_text .= ' запретил вам '. $bb_cfg['warning']['type'][$warning['warning']].', подробнее <a class="gen" href="warnings.php?warnings&u='. $warning['user_id'] .'">тут</a><br />';
+					$warn_text .= '<b>по причине</b>: '. $warning['reason'] .'<br />';
+					$warn_text .= 'До окончания блокировки осталось - <b>'. $time .'</b>.';
+                }
+
+				return isset($userdata['bb_exit']) ? bb_exit($warn_text) : bb_die($warn_text);
+			}
+			else
+			{
+				DB()->query("UPDATE ". BB_WARNINGS ." SET auth = 0 WHERE id = ". $warning['id']);
+				DB()->query("UPDATE ". BB_USERS ." u SET u.user_warnings = (SELECT COUNT(w.id) FROM ". BB_WARNINGS ." w WHERE w.user_id = ". $userdata['user_id'] ." AND w.auth IN(1,3) OR w.time_end > ". TIMENOW .") WHERE u.user_id = ". $userdata['user_id']);
+			    cache_rm_user_sessions ($userdata['user_id']);
+			}
+		}
+	}
+}
+
+-- ajax.php
+- найти
+		'mod_action'        => array('mod'),
+- после добавить
+        'warning'           => array('mod'),
+- найти
+    function mod_action()
+    {
+		require(AJAX_DIR .'mod_action.php');
+    }
+- после добавить
+	function warning()
+	{
+		require(AJAX_DIR .'warning.php');
+	}
+
+-- закинуть файл warning.php в папку ajax
+
+-- сделать запросы
+- SQL
+CREATE TABLE IF NOT EXISTS `bb_warnings` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `type` varchar(100) NOT NULL,
+  `type_id` int(11) NOT NULL default '0',
+  `user_id` int(11) NOT NULL default '0',
+  `poster_id` int(11) NOT NULL default '0',
+  `warning` int(3) NOT NULL default '0',
+  `time_start` int(11) NOT NULL default '0',
+  `time_end` int(11) NOT NULL default '0',
+  `term` int(11) default NULL,
+  `reason` text,
+  `auth` int(1) NOT NULL default '1',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+ALTER TABLE `bb_users` ADD `user_warnings` TINYINT( 3 ) NOT NULL DEFAULT '0' ;
+
+-- config.php
+- в самый конец
+$bb_cfg['warning'] = array(
+	'enabled' => true,
+	'time'   => array(
+		60    => 'минут',
+		3600   => 'часов',
+		86400   => 'дней',
+		2592000  => 'месяцев',
+		-1        => 'бессрочный', //НЕ трогать!
+	),
+	'time_select' => 86400,
+	'type'   => array(
+		0    => 'Выберите тип запрета:',
+		1    => 'оставлять сообщения',
+		2    => 'редактировать сообщения',
+		3    => 'удалять сообщения',
+		4    => 'создавать темы',
+		5    => 'загружать изображения на хостинг',
+		6    => 'доступ к репутации',
+		7    => 'скачивать торренты',
+		//id => описание,
+		-1   => 'забанить', //НЕ трогать!
+	),
+	'auth'   => array( //НЕ трогать!
+		0    => 'истёк',
+		1    => 'активен',
+		2    => 'отменён',
+		3    => 'бессрочный',
+		-1   => 'удалить',
+	),
+);
+
+
+-- page_header.php
+- найти
+	'U_WATCHED_TOPICS'      => "profile.php?mode=watch",
+));
+- заменить на
+	'U_WATCHED_TOPICS'      => "profile.php?mode=watch",
+	'WARNINGS_ON'	        => ($bb_cfg['warning']['enabled'] && IS_AM)
+));
+
+if($bb_cfg['warning']['enabled'] && IS_AM)
+{
+	$warning_type = array();
+	foreach ($bb_cfg['warning']['type'] as $type => $key)
+	{
+		$warning_type[$key] = $type;
+	}
+	$warning_time = array();
+	foreach ($bb_cfg['warning']['time'] as $time => $key)
+	{
+		$warning_time[$key] = $time;
+	}
+
+	$template->assign_vars(array(
+	    'WARNING_ID'   => $userdata['user_id'],
+	    'WARNING_TYPE' => build_select('warnings-type', $warning_type, 0, null, null),
+		'WARNING_TIME' => build_select('warnings-time', $warning_time, $bb_cfg['warning']['time_select'], null, null),
+	));
+}
+
+-- viewtopic.tpl
+- найти
+				<!-- IF AUTH_MOD -->
+					<a class="menu-root menu-alt1 txtb" href="#mc_{postrow.POST_ID}">{MC_IMG}</a>{POST_BTN_SPACER}
+					<!-- IF not IN_MODERATION --><a class="txtb" href="{PAGE_URL}&amp;mod=1&amp;start={PAGE_START}#{postrow.POST_ID}">{MOD_POST_IMG}</a>{POST_BTN_SPACER}<!-- ENDIF -->
+				<!-- ENDIF -->
+			</p>
+			<div class="clear"></div>
+- заменить на
+				<!-- IF AUTH_MOD -->
+				    <a class="menu-root menu-alt1 txtb" href="#mc_{postrow.POST_ID}">{MC_IMG}</a>{POST_BTN_SPACER}
+					<!-- IF not IN_MODERATION --><a class="txtb" href="{PAGE_URL}&amp;mod=1&amp;start={PAGE_START}#{postrow.POST_ID}">{MOD_POST_IMG}</a>{POST_BTN_SPACER}<!-- ENDIF -->
+				    <!-- IF WARNINGS_ON --><a class="menu-root menu-alt1" href="#warning-{postrow.POST_ID}"><img src="./styles/templates/default/images/img_alert.gif" title="Выдать предупреждение"></a><!-- ENDIF -->
+				<!-- ENDIF -->
+			</p>
+			<div class="clear"></div>
+            <!-- IF WARNINGS_ON -->
+            <div class="menu-sub" id="warning-{postrow.POST_ID}">
+            <table class="nowrap" cellspacing="1" cellpadding="4">
+            <tr>
+	            <th>Выдать запрет</th>
+            </tr>
+            <tr>
+	            <td title="Тип блокировки" id="type-{postrow.POST_ID}">{WARNING_TYPE}</td>
+            </tr>
+            <tr>
+	            <td title="Причина блокировки" class="row2 tCenter genmed">
+		            <textarea id="reason-{postrow.POST_ID}" name="reason-{postrow.POST_ID}" rows="5" cols="30"></textarea>
+	        </td>
+            </tr>
+            <tr>
+	            <td class="cat tCenter pad_4">
+		            <input title="Время блокировки" id="term-{postrow.POST_ID}" type="text" maxlength="2" size="2" name="time"><span id="time-{postrow.POST_ID}">{WARNING_TIME}</span>
+		            <input onclick="warning({postrow.POSTER_ID}, {postrow.POST_ID}); return false;" type="button" value="Выдать">
+	            </td>
+            </tr>
+            </table>
+            </div>
+            <!-- ENDIF -->
+- найти
+<!-- END postrow -->
+- после добавить
+<!-- IF AUTH_MOD && WARNINGS_ON -->
+<script type="text/javascript">
+function warning(user_id, post_id) {
+	var type = $('#type-'+ post_id +' option:selected').val();
+	var term = $('#term-'+ post_id).val();
+	var time = $('#time-'+ post_id +' option:selected').val();
+	var reason = $('#reason-'+ post_id).val();
+	if(user_id == {WARNING_ID} && type && term && reason)
+	{
+		if(!confirm('Вы уверены, что хотите выдать себе запрет?')) return false;
+	}
+	ajax.warning(user_id, post_id, type, term, time, reason);
+}
+ajax.warning = function(user_id, post_id, type, term, time, reason) {
+	ajax.exec({
+		action  : 'warning',
+		mode    : 'add',
+		user_id : user_id,
+		warning : type,
+		type    : 'topic',
+		type_id : post_id,
+		term	: term,
+		time	: time,
+		reason  : reason
+	});
+};
+ajax.callback.warning = function(data) {
+    if(data.info) alert(data.info);
+    if(data.url) document.location.href = data.url;
+};
+</script>
+<!-- ENDIF -->
+
+-- init_bb.php
+- найти
+define('BB_WORDS',                'bb_words');
+- после добавить
+define('BB_WARNINGS',             'bb_warnings');
+
+-- крон задача
+if($bb_cfg['warning']['enabled'])
+{
+	DB()->query("UPDATE ". BB_WARNINGS ." SET auth = 0 WHERE auth != 3 AND time_end < ". TIMENOW);
+
+	DB()->query("UPDATE ". BB_USERS ." u SET u.user_warnings = (SELECT COUNT(w.id) FROM ". BB_WARNINGS ." w WHERE u.user_id = w.user_id AND w.auth IN(1,3))");
+}
+
+-- session.php
+- найти
+			if (DB()->fetch_row($sql))
+			{
+				header('Location: https://torrentpier.me/banned/');
+			}
+
+- заменить на
+			if (DB()->fetch_row($sql))
+			{
+				$this->set_session_cookies(GUEST_UID);
+				bb_exit('Вы забанены');
+			}
+			$this->data['bb_exit'] = true;
+			warning(DELETED, $this->data);
+			if(!empty($this->data['user_warnings']))
+			{
+				if($this->data['user_warnings'] >= 3) bb_exit('Вы забанены'); //Общее число активных запретов
+			}
+
+-- usercp_viewprofile.tpl
+- найти
+						<fieldset class="mrg_6">
+							<legend>{L_BAN_USER}</legend>
+							<div class="tLeft" style="padding: 2px 6px 6px; display: block;" id="user-opt">
+								<label><input type="checkbox" name="dis_avatar"/>{L_HIDE_AVATARS}</label>
+								<label><input type="checkbox" name="dis_sig"/>{L_SHOW_CAPTION}</label>
+								<label><input type="checkbox" name="dis_passkey"/>{L_DOWNLOAD_TORRENT}</label>
+								<label><input type="checkbox" name="dis_pm"/>{L_SEND_PM}</label>
+								<label><input type="checkbox" name="dis_post"/>{L_SEND_MESSAGE}</label>
+								<label><input type="checkbox" name="dis_post_edit"/>{L_EDIT_POST}</label>
+								<label><input type="checkbox" name="dis_topic"/>{L_NEW_THREADS}</label>
+							</div>
+						</fieldset>
+- ниже добавить
+						<!-- IF WARNINGS_ON -->
+						<script type="text/javascript">
+						ajax.warning = function(user_id, type, term, time, reason) {
+							ajax.exec({
+								action  : 'warning',
+								mode    : 'add',
+								user_id : user_id,
+								warning : type,
+								term	: term,
+								time	: time,
+								reason  : reason
+							});
+						};
+						ajax.callback.warning = function(data) {
+						    if(data.info) alert(data.info);
+						    if(data.url) document.location.href = data.url;
+						};
+						</script>
+
+						<fieldset class="mrg_6 tCenter"><legend>Выдать запрет</legend>
+						<div title="Тип блокировки" id="type">{WARNING_TYPE}</div>
+						<div title="Причина блокировки" class="pad_4 genmed">
+								<textarea id="reason" name="reason" rows="5" cols="30"></textarea>
+						</div>
+						<div class="cat tCenter pad_4">
+								<input title="Время блокировки" id="term" type="text" maxlength="2" size="2" name="time"><span id="time">{WARNING_TIME}</span>
+								<input onclick="ajax.warning({PROFILE_USER_ID}, $('#type option:selected').val(), $('#term').val(), $('#time option:selected').val(), $('#reason').val(), $('#auth option:selected').val() ); return false;" type="button" value="Выдать">
+						</div>
+						</fieldset>
+						<!-- ENDIF -->
+
+!!! если уже были использованы стадартные ограничения то сделать запрос UPDATE bb_users SET user_opt = 0;
+
+заперты работают так:
+1. Выбираем тип запрета, к примеру:
+	тип     описание
+	5    => 'загружать изображения на хостинг',
+	дальше будем использовать только номер, в данном примере 5
+
+2. Добавляем данную функцию warning(5); где 5 - тип указанный выше (:
+	раз тип - запрет на загрузку изображений то добавялем её в тот файл где он нужен, то-есть в gallery.php
+	пример добавляени:
+		// Start session management
+		$user->session_start(array('req_login' => true));
+		warning(5);
+	ОБЯЗАТЕЛЬНО!!! код нужно добавлять после создания сессия юзера, то-есть $user->session_start();
+
+3. Добавление новых запертов, тут всё просто
+	'type'   => array(
+		7    => 'скачивать торренты',
+	новый ид => описание
+		ИД типа не должен повторяться!
+		также для новых временных мерок, (число у времени - в секундах!)
+	ВНИМАНИЕ если написано //НЕ трогать! то лучше ничего не менять xD
+
+
+Для примера куски кода исправленного posting.php
+
+// What auth type do we need to check?
+$is_auth = array();
+switch ($mode)
+{
+	case 'newtopic':
+	    if(bf($userdata['user_opt'], 'user_opt', 'dis_topic'))
+	    {
+	    	bb_die($lang['RULES_POST_CANNOT']);
+	    }
+	    warning(4);
+		if ($topic_type == POST_ANNOUNCE)
+		{
+			$is_auth_type = 'auth_announce';
+		}
+		else if ($topic_type == POST_STICKY)
+		{
+			$is_auth_type = 'auth_sticky';
+		}
+		else
+		{
+			$is_auth_type = 'auth_post';
+		}
+		break;
+	case 'reply':
+	case 'quote':
+		if(bf($userdata['user_opt'], 'user_opt', 'dis_post'))
+	    {
+	    	bb_die($lang['RULES_REPLY_CANNOT']);
+	    }
+	    warning(1);
+		$is_auth_type = 'auth_reply';
+		break;
+	case 'editpost':
+	    if(bf($userdata['user_opt'], 'user_opt', 'dis_post_edit'))
+	    {
+	    	bb_die($lang['RULES_EDIT_CANNOT']);
+	    }
+	    warning(2);
+		$is_auth_type = 'auth_edit';
+		break;
+	case 'delete':
+	case 'poll_delete':
+		warning(3);
+		$is_auth_type = 'auth_delete';
+		break;
+	case 'vote':
+		$is_auth_type = 'auth_vote';
+		break;
+	default:
+		bb_simple_die($lang['NO_POST_MODE']);
+		break;
+}
+
+заменить в functions_torrent.php
+
+function send_torrent_with_passkey ($filename)
+{
+	global $attachment, $auth_pages, $userdata, $bb_cfg, $lang;
+
+    warning(7);
+
