@@ -2,7 +2,7 @@
 Название: Дополнительные права групп
 Автор: fly_indiz
 Описание: Дополнительные права групп
-Сложность установки: Сердняя
+Сложность установки: Средняя
 Время установки: ~ 10 минут
 Адаптирован под версию TPII: R471
 Файлы к редактированию:
@@ -223,7 +223,7 @@ attach_mod/posting_attachments.php
  							}
  						}
 					}
- 
+
 					$this->upload_attachment($this->page);
 
 					if (!$error)
@@ -439,14 +439,14 @@ includes/sessions.php
 # ---- [ Найти ] -------------------
 
  		### LOG END ###
- 
+
  		// Did the session exist in the DB?
 		if ($this->data)
 
 # ---- [ Заменить на ] -------------------
 
  		### LOG END ###
- 
+
  		// Did the session exist in the DB?
 		if ($this->data && !empty($this->data['session_ip']) && !empty($this->data['session_id']))
 
