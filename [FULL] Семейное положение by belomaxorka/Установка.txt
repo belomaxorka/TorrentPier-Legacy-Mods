@@ -67,6 +67,21 @@ case 'user_relationships':
 	break;
 ---------------------------------------------------
 
+------------------ Открыть library/ajax/edit_user_profile.php и найти ------------------
+else $this->response['new_value'] = $lang['GENDER_SELECT'][$value];
+break;
+----------------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+case 'user_relationships':
+	if (!isset($lang['RELATIONSHIPS_SELECTOR'][$value]))
+	{
+		$this->ajax_die($lang['ERROR']);
+	}
+	else $this->response['new_value'] = $lang['RELATIONSHIPS_SELECTOR'][$value];
+	break;
+---------------------------------------------------
+
 ------------------ Открыть usercp_viewprofile.tpl (В вашем шаблоне) и найти ------------------
 <var class="ajax-params">{action: "edit_user_profile", id: "user_gender",   editableType: "yesno-gender"}</var>
 ----------------------------------------------------------------------------------------------
