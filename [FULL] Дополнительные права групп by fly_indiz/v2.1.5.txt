@@ -5,7 +5,7 @@
 Описание: Дополнительные права групп
 Сложность установки: Средняя
 Время установки: ~ 10 минут
-Адаптирован под версию TPII: R471
+Адаптирован под версию TPII: v2.1.5 (LTS включительно)
 Файлы к редактированию:
  - gallery.php
  - groupcp.php
@@ -22,8 +22,8 @@
  - includes/page_header.php
  - includes/sessions.php
  - includes/cron/jobs/update_unlim_cache.php
- - language/lang_english/lang_main.php
- - language/lang_russian/lang_main.php
+ - language/en/main.php
+ - language/ru/main.php
  - templates/admin/admin_groups.tpl
  - templates/default/groupcp.tpl
  - templates/default/page_header.tpl
@@ -504,7 +504,7 @@ CACHE('tr_cache')->set('tr_unlim', $user_ids_csv);
 
 # ---- [ Открыть ] -------------------
 
-language/lang_english/lang_main.php
+language/en/main.php
 
 # ---- [ Найти ] -------------------
 
@@ -524,7 +524,7 @@ $lang['GROUP_OPT_AUTOCHECK'] = 'Members can create new releases with Checked sta
 
 # ---- [ Открыть ] -------------------
 
-language/lang_russian/lang_main.php
+language/ru/main.php
 
 # ---- [ Найти ] -------------------
 
