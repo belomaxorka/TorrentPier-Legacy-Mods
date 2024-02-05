@@ -63,24 +63,6 @@ function warning($type, $data = array())
 
 -- закинуть файл warning.php в папку ajax
 
--- сделать запросы
-- SQL
-CREATE TABLE IF NOT EXISTS `bb_warnings` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `type` varchar(100) NOT NULL,
-  `type_id` int(11) NOT NULL default '0',
-  `user_id` int(11) NOT NULL default '0',
-  `poster_id` int(11) NOT NULL default '0',
-  `warning` int(3) NOT NULL default '0',
-  `time_start` int(11) NOT NULL default '0',
-  `time_end` int(11) NOT NULL default '0',
-  `term` int(11) default NULL,
-  `reason` text,
-  `auth` int(1) NOT NULL default '1',
-  PRIMARY KEY (`id`)
-) ENGINE = MyISAM DEFAULT CHARSET = utf8;
-ALTER TABLE `bb_users` ADD `user_warnings` TINYINT(3) NOT NULL DEFAULT '0';
-
 -- config.php
 - в самый конец
 $bb_cfg['warning'] = array(
