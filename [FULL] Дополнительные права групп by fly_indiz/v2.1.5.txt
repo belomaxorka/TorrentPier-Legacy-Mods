@@ -135,13 +135,13 @@ if ($tor_auth)
 
 # ---- [ Заменить на ] -------------------
 
-if ($tor_auth || ($tor_reged && ((bf($userdata['group_opt'], 'group_opt', 'silvergold') || bf($userdata['group_opt'], 'group_opt', 'closeselftopic')) && $bt_user_id != ANONYMOUS && $bt_user_id == $poster_id && !$locked)))
+if ($tor_auth || ($tor_reged && ((bf($userdata['group_opt'], 'group_opt', 'silvergold') || bf($userdata['group_opt'], 'group_opt', 'closeselftopic')) && $bt_user_id != GUEST_UID && $bt_user_id == $poster_id && !$locked)))
 {
 	$template->assign_vars(array(
-		'TOR_CONTROLS'     => ($tor_reged && ($is_auth['auth_mod'] || ((bf($userdata['group_opt'], 'group_opt', 'silvergold') || bf($userdata['group_opt'], 'group_opt', 'closeselftopic')) && $bt_user_id != ANONYMOUS && $bt_user_id == $poster_id && !$locked))),
+		'TOR_CONTROLS'     => ($tor_reged && ($is_auth['auth_mod'] || ((bf($userdata['group_opt'], 'group_opt', 'silvergold') || bf($userdata['group_opt'], 'group_opt', 'closeselftopic')) && $bt_user_id != GUEST_UID && $bt_user_id == $poster_id && !$locked))),
 		'TOR_ATTACH_ID'    => $attach_id,
-		'SILVER_GOLD_AUTH' => ($tor_reged && ($is_auth['auth_mod'] || (bf($userdata['group_opt'], 'group_opt', 'silvergold') && $bt_user_id != ANONYMOUS && $bt_user_id == $poster_id && !$locked))),
-		'CLOSE_AUTH'       => ($tor_reged && ($is_auth['auth_mod'] || (bf($userdata['group_opt'], 'group_opt', 'closeselftopic') && $bt_user_id != ANONYMOUS && $bt_user_id == $poster_id && !$locked))),
+		'SILVER_GOLD_AUTH' => ($tor_reged && ($is_auth['auth_mod'] || (bf($userdata['group_opt'], 'group_opt', 'silvergold') && $bt_user_id != GUEST_UID && $bt_user_id == $poster_id && !$locked))),
+		'CLOSE_AUTH'       => ($tor_reged && ($is_auth['auth_mod'] || (bf($userdata['group_opt'], 'group_opt', 'closeselftopic') && $bt_user_id != GUEST_UID && $bt_user_id == $poster_id && !$locked))),
 	));
 
 # ---- [ Найти ] -------------------
@@ -324,7 +324,7 @@ $bf['group_opt'] = array(
 
 # ---- [ Найти ] -------------------
 
-if ($userdata['user_id'] == ANONYMOUS)
+if ($userdata['user_id'] == GUEST_UID)
 
 # ---- [ Вставить до ] -------------------
 
