@@ -161,13 +161,21 @@ if ($tor_auth || ($tor_reged && ((bf($userdata['group_opt'], 'group_opt', 'silve
 
 	if (($min_ratio_dl || $min_ratio_warn) && $bt_user_id != $poster_id && !bf($userdata['group_opt'], 'group_opt', 'unlim'))
 
-# ---- [ Найти ] -------------------
+# ---- [ Найти (для v2.1.5) ] -------------------
 
 	if (($min_ratio_dl || $min_ratio_warn) && $user_status != DL_STATUS_COMPLETE && $bt_user_id != $poster_id && $tor_type != TOR_TYPE_GOLD)
 
-# ---- [ Заменить на ] -------------------
+# ---- [ Найти (для LTS) ] -------------------
+
+	if (($min_ratio_dl || $min_ratio_warn) && (isset($user_status) && $user_status != DL_STATUS_COMPLETE) && ($bt_user_id != $poster_id && $bt_user_id != GUEST_UID) && $tor_type != TOR_TYPE_GOLD)
+
+# ---- [ Заменить на (для v2.1.5) ] -------------------
 
 	if (($min_ratio_dl || $min_ratio_warn) && $user_status != DL_STATUS_COMPLETE && $bt_user_id != $poster_id && $tor_type != TOR_TYPE_GOLD && !bf($userdata['group_opt'], 'group_opt', 'unlim'))
+
+# ---- [ Заменить на (для LTS) ] -------------------
+
+	if (($min_ratio_dl || $min_ratio_warn) && (isset($user_status) && $user_status != DL_STATUS_COMPLETE) && ($bt_user_id != $poster_id && $bt_user_id != GUEST_UID) && $tor_type != TOR_TYPE_GOLD && !bf($userdata['group_opt'], 'group_opt', 'unlim'))
 
 # ---- [ Открыть ] -------------------
 
