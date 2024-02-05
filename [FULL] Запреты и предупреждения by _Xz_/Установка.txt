@@ -90,6 +90,52 @@ define('BB_WORDS',                'bb_words');
 define('BB_WARNINGS',             'bb_warnings');
 ---------------------------------------------------
 
+------------------ Открыть library/includes/functions.php и найти ------------------
+function warning($type, $data = array())
+{
+	global $lang, $bb_cfg, $userdata;
+
+	if (!isset($userdata['user_warnings'])) $userdata = $data;
+
+	if (!empty($userdata['user_warnings']) && $bb_cfg['warning']['enabled']) {
+		$warning = DB()->fetch_row("SELECT w.*, u.username, u.user_rank, u.user_level
+			FROM " . BB_WARNINGS . " w, " . BB_USERS . " u
+			WHERE w.user_id = " . $userdata['user_id'] . "
+				AND u.user_id = w.poster_id
+				AND w.warning = $type
+				AND w.auth IN(1,3)
+			ORDER BY w.id DESC");
+		if ($warning) {
+			if ($warning['time_end'] > TIMENOW || $warning['auth'] == 3) {
+				if ($warning['user_level'] == ADMIN) {
+					$level = 'Администратор ';
+				} elseif ($warning['user_level'] == MOD) {
+					$level = 'Модератор ';
+				}
+
+				$time = ($warning['auth'] == 3) ? $bb_cfg['warning']['auth'][3] : delta_time($warning['time_end']);
+
+				if (defined('IN_AJAX')) {
+					$warn_text = 'Вам запрещено ' . $bb_cfg['warning']['type'][$warning['warning']];
+					$warn_text .= "\nДо окончания блокировки осталось - $time";
+				} else {
+					$warn_text = $level . profile_url(array('username' => $warning['username'], 'user_id' => $warning['poster_id'], 'user_rank' => $warning['user_rank']));
+					$warn_text .= ' запретил вам ' . $bb_cfg['warning']['type'][$warning['warning']] . ', подробнее <a class="gen" href="warnings.php?warnings&u=' . $warning['user_id'] . '">тут</a><br />';
+					$warn_text .= '<b>по причине</b>: ' . $warning['reason'] . '<br />';
+					$warn_text .= 'До окончания блокировки осталось - <b>' . $time . '</b>.';
+				}
+
+				return isset($userdata['bb_exit']) ? bb_exit($warn_text) : bb_die($warn_text);
+			} else {
+				DB()->query("UPDATE " . BB_WARNINGS . " SET auth = 0 WHERE id = " . $warning['id']);
+				DB()->query("UPDATE " . BB_USERS . " u SET u.user_warnings = (SELECT COUNT(w.id) FROM " . BB_WARNINGS . " w WHERE w.user_id = " . $userdata['user_id'] . " AND w.auth IN(1,3) OR w.time_end > " . TIMENOW . ") WHERE u.user_id = " . $userdata['user_id']);
+				cache_rm_user_sessions($userdata['user_id']);
+			}
+		}
+	}
+}
+------------------------------------------------------------------------------------
+
 ------------------ Открыть library/includes/page_header.php и найти ------------------
 	'U_WATCHED_TOPICS'      => "profile.php?mode=watch",
 ));
