@@ -279,11 +279,15 @@ gallery.php (https://torrentpier.com/resources/lokalnaja-galereja.147/)
 
 # ---- [ Найти ] -------------------
 
-if(bf($userdata['user_opt'], 'user_opt', 'allow_gallery'))
+// Start session management
+$user->session_start(array('req_login' => true));
 
 # ---- [ Заменить на ] -------------------
 
-if (bf($userdata['user_opt'], 'user_opt', 'allow_gallery') || (!bf($userdata['group_opt'], 'group_opt', 'gallery') && !IS_AM))
+if (!bf($userdata['group_opt'], 'group_opt', 'gallery') && !IS_AM)
+{
+	bb_die($lang['USE_GALLERY_OFF']);
+}
 
 # ---- [ Открыть ] -------------------
 
@@ -524,6 +528,7 @@ $lang['INDEXER'] = "Reindex search";
 # ---- [ Вставить после ] -------------------
 
 // Group permissions
+$lang['USE_GALLERY_OFF'] = 'You can not upload images';
 $lang['GROUP_OPT'] = 'Additional permissions';
 $lang['GROUP_OPT_TORSTATUS'] = 'Members can keep the status when upgrade torrent';
 $lang['GROUP_OPT_GALLERY'] = 'Members can use image upload';
@@ -544,6 +549,7 @@ $lang['INDEXER'] = "Переиндексировать поиск";
 # ---- [ Вставить после ] -------------------
 
 // Права групп
+$lang['USE_GALLERY_OFF'] = 'Вы не можете загружать изображения';
 $lang['GROUP_OPT'] = 'Дополнительные права';
 $lang['GROUP_OPT_TORSTATUS'] = 'Члены группы могут сохранять статус при обновлении торрента';
 $lang['GROUP_OPT_GALLERY'] = 'Члены группы могут загружать изображения на сайте';
