@@ -54,6 +54,6 @@ case 'user_relationships':
 			$db_data['user_relationships'] = (int) $relationships;
 		}
 	}
-	$tp_data['USER_POLITICAL'] = build_select('user_relationships', array_flip($lang['RELATIONSHIPS_SELECTOR']), $pr_data['user_relationships']);
+	$tp_data['USER_RELATIONSHIPS'] = build_select('user_relationships', array_flip($lang['RELATIONSHIPS_SELECTOR']), $pr_data['user_relationships']);
 	break;
 ---------------------------------------------------
