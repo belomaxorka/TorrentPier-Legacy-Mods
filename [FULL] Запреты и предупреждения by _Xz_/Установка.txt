@@ -22,7 +22,32 @@ CREATE TABLE IF NOT EXISTS `bb_warnings` (
 ALTER TABLE `bb_users` ADD `user_warnings` TINYINT(3) NOT NULL DEFAULT '0';
 -----------------------------------------
 
+------------------ Открыть ajax.php и найти ------------------
+'mod_action'        => array('mod'),
+--------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+// Запреты и предупреждения
+'warning'           => array('mod'),
+---------------------------------------------------
+
+------------------ Далее найти ------------------
+function mod_action()
+{
+	require(AJAX_DIR .'mod_action.php');
+}
+-------------------------------------------------
+
+------------------ Ниже вставить ------------------
+// Запреты и предупреждения
+function warning()
+{
+	require(AJAX_DIR .'warning.php');
+}
+---------------------------------------------------
+
 ------------------ Открыть library/config.php и в конце вставить ------------------
+// Запреты и предупреждения
 $bb_cfg['warning'] = array(
 	'enabled' => true,
 	'time' => array(
@@ -65,6 +90,7 @@ $bb_cfg['warning'] = array(
 	'WARNINGS_ON'	        => ($bb_cfg['warning']['enabled'] && IS_AM)
 ));
 
+// Запреты и предупреждения
 if ($bb_cfg['warning']['enabled'] && IS_AM) {
 	$warning_type = array();
 	foreach ($bb_cfg['warning']['type'] as $type => $key) {

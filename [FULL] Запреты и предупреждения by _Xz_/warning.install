@@ -45,22 +45,6 @@ function warning($type, $data = array())
 	}
 }
 
--- ajax.php
-- найти
-		'mod_action'        => array('mod'),
-- после добавить
-		'warning'           => array('mod'),
-- найти
-	function mod_action()
-	{
-		require(AJAX_DIR .'mod_action.php');
-	}
-- после добавить
-	function warning()
-	{
-		require(AJAX_DIR .'warning.php');
-	}
-
 -- закинуть файл warning.php в папку ajax
 
 -- viewtopic.tpl
