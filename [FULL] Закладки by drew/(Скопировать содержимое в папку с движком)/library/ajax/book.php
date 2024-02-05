@@ -7,6 +7,10 @@ global $bb_cfg, $lang, $userdata;
 $mode = (string)$this->request['mode'];
 $html = '';
 
+// Максимальное количество закладок (указать число) (false - выключено)
+// Исключение: Администраторы и модераторы (IS_AM)
+$max_book_marks = false;
+
 switch ($mode) {
 	case 'add':
 		$tid = (int)$this->request['tid'];
@@ -14,6 +18,14 @@ switch ($mode) {
 
 		if (DB()->fetch_row('SELECT book_id FROM ' . BB_BOOK . " WHERE topic_id = $tid AND user_id = " . $userdata['user_id'])) {
 			$this->ajax_die('Вы уже добавили данную тему в закладки');
+		}
+
+		// Проверка на лимит закладок
+		if (is_numeric($max_book_marks) && !IS_AM) {
+			$book_count = DB()->fetch_row('SELECT COUNT(book_id) FROM ' . BB_BOOK . " WHERE user_id = " . $userdata['user_id']);
+			if ($book_count > (int)$max_book_marks) {
+				$this->ajax_die('У вас слишком много закладок...');
+			}
 		}
 
 		// Добавляем закладку в базу
