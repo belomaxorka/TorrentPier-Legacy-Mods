@@ -32,7 +32,7 @@ $lang['RELATIONSHIPS_SELECTOR'] = array(
 
 ------------------ Ниже вставить ------------------
 // Семейное положение
-'RELATIONSHIPS'        => (isset($lang['RELATIONSHIPS_SELECTOR'][$relationships])) ? $lang['RELATIONSHIPS_SELECTOR'][$relationships] : '',
+'RELATIONSHIPS'        => (isset($lang['RELATIONSHIPS_SELECTOR'][$profiledata['user_relationships']])) ? $lang['RELATIONSHIPS_SELECTOR'][$profiledata['user_relationships']] : '',
 ---------------------------------------------------
 
 ------------------ Открыть library/includes/ucp/register.php и найти ------------------
