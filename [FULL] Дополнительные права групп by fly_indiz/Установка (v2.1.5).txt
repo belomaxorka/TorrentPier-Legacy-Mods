@@ -4,7 +4,7 @@
 Обновление: belomaxorka
 Описание: Дополнительные права групп
 Сложность установки: Средняя
-Время установки: ~ 10 минут
+Время установки: ~ 20 минут
 Адаптирован под версию TPII: v2.1.5 (LTS включительно)
 --------------------------------------------------
 Поскольку в v2.1.5 и выше нету локальной галереи из коробки, была
@@ -13,7 +13,7 @@
 --------------------------------------------------
 Файлы к редактированию:
  - gallery.php (https://torrentpier.com/resources/lokalnaja-galereja.147/)
- - groupcp.php
+ - group.php
  - modcp.php
  - posting.php
  - viewtopic.php
@@ -30,7 +30,7 @@
  - library/language/en/main.php
  - library/language/ru/main.php
  - styles/templates/admin/admin_groups.tpl
- - styles/templates/default/groupcp.tpl
+ - styles/templates/default/group.tpl
  - styles/templates/default/page_header.tpl
  - styles/templates/default/viewtopic.tpl
  - styles/templates/default/viewtopic_attach.tpl
@@ -81,7 +81,7 @@ admin/admin_groups.php
 
 # ---- [ Найти ] -------------------
 
-		$group_desc = isset($_POST['group_description']) ? trim($_POST['group_description']) : '';
+		$group_desc      = isset($_POST['group_description']) ? trim($_POST['group_description']) : '';
 
 # ---- [ Вставить после ] -------------------
 
@@ -109,10 +109,10 @@ library/ajax/change_torrent.php
 
 # ---- [ Найти ] -------------------
 
-    if($type == 'del_torrent' || $type == 'reg' || $type == 'unreg')
-    {
-    	true;
-    }
+	if ($type == 'del_torrent' || $type == 'reg' || $type == 'unreg')
+	{
+		true;
+	}
 
 # ---- [ Заменить на ] -------------------
 
@@ -296,13 +296,13 @@ if (!bf($userdata['group_opt'], 'group_opt', 'gallery') && !IS_AM)
 
 # ---- [ Открыть ] -------------------
 
-groupcp.php
+group.php
 
 # ---- [ Найти ] -------------------
 
 	$i = 0;
 	$template->assign_vars(array(
-		'ROW_NUMBER'    => $i + ( $start + 1 ),
+		'ROW_NUMBER'             => $i + ($start + 1),
 
 # ---- [ Вставить до ] -------------------
 
@@ -315,11 +315,11 @@ groupcp.php
 
 # ---- [ Найти ] -------------------
 
-		'S_GROUPCP_ACTION' => "groupcp.php?" . POST_GROUPS_URL . "=$group_id",
+		'S_GROUP_ACTION'         => GROUP_URL . $group_id,
 
 # ---- [ Вставить после ] -------------------
 
-		'GROUP_AUTH_LIST' => $group_auth_list,
+		'GROUP_AUTH_LIST'        => $group_auth_list,
 
 # ---- [ Открыть ] -------------------
 
@@ -343,20 +343,20 @@ $bf['group_opt'] = array(
 
 # ---- [ Найти ] -------------------
 
-if ($userdata['user_id'] == GUEST_UID)
+if ($u_data['user_id'] == GUEST_UID)
 
 # ---- [ Вставить до ] -------------------
 
 	// Get group_opt
-	if (!$userdata || !isset($userdata['user_id'])) return false;
+	if (!$u_data || !isset($u_data['user_id'])) return false;
 	$group_opt = 0;
-	if (!empty($userdata['user_id']) && $userdata['user_id'] > 0)
+	if (!empty($u_data['user_id']) && $u_data['user_id'] > 0)
 	{
 		$sql = "
 			SELECT g.group_opt
 			FROM      ". BB_USER_GROUP ." ug
 			LEFT JOIN ". BB_GROUPS ."     g  ON(g.group_id = ug.group_id AND ug.user_pending != 1)
-			WHERE ug.user_id          = ". $userdata['user_id'] ."
+			WHERE ug.user_id          = ". $u_data['user_id'] ."
 			  AND g.group_single_user = 0
 		";
 		$group_opt_ary = DB()->fetch_rowset($sql, 'group_opt');
@@ -365,7 +365,7 @@ if ($userdata['user_id'] == GUEST_UID)
 			$group_opt = $group_opt | $group_opt_tmp;
 		}
 	}
-	$userdata['group_opt'] = $group_opt;
+	$u_data['group_opt'] = $group_opt;
 
 # ---- [ Открыть ] -------------------
 
@@ -375,7 +375,7 @@ library/includes/functions_torrent.php
 
 	if (IS_ADMIN) return true;
 
-# ---- [ Вставить до ] -------------------
+# ---- [ Заменить на ] -------------------
 
 	if (IS_ADMIN || ($poster_id == $userdata['user_id'] && bf($userdata['group_opt'], 'group_opt', 'closeselftopic'))) return true;
 
@@ -397,11 +397,11 @@ library/includes/functions_torrent.php
 
 # ---- [ Найти ] -------------------
 
-	global $template, $attach_config, $bb_cfg, $lang, $return_message, $reg_mode, $tr_cfg;
+	global $bb_cfg, $lang, $reg_mode, $tr_cfg;
 
 # ---- [ Заменить на ] -------------------
 
-	global $template, $attach_config, $bb_cfg, $lang, $return_message, $reg_mode, $tr_cfg, $userdata;
+	global $bb_cfg, $lang, $reg_mode, $tr_cfg, $userdata;
 
 # ---- [ Найти ] -------------------
 
@@ -420,12 +420,12 @@ library/includes/page_header.php
 
 # ---- [ Найти ] -------------------
 
-	'U_SEARCH_SELF_BY_LAST'		=> "search.php?uid={$userdata['user_id']}&amp;o=5",
+	'U_SEARCH_SELF_BY_LAST' => "search.php?uid={$userdata['user_id']}&amp;o=5",
 
 # ---- [ Вставить после ] -------------------
 
-	'GALLERY_PERMISSION'        => ($logged_in && (bf($userdata['group_opt'], 'group_opt', 'gallery') || IS_AM)) ? true : false,
-	'U_GALLERY'                 => "gallery.php",
+	'GALLERY_PERMISSION'    => ($logged_in && (bf($userdata['group_opt'], 'group_opt', 'gallery') || IS_AM)) ? true : false,
+	'U_GALLERY'             => "gallery.php",
 
 # ---- [ Открыть ] -------------------
 
@@ -459,16 +459,12 @@ library/includes/sessions.php
 
 # ---- [ Найти ] -------------------
 
- 		### LOG END ###
-
- 		// Did the session exist in the DB?
+		// Did the session exist in the DB?
 		if ($this->data)
 
 # ---- [ Заменить на ] -------------------
 
- 		### LOG END ###
-
- 		// Did the session exist in the DB?
+		// Did the session exist in the DB?
 		if ($this->data && !empty($this->data['session_ip']) && !empty($this->data['session_id']))
 
 # ---- [ Найти ] -------------------
@@ -495,11 +491,11 @@ library/includes/sessions.php
 
 # ---- [ Найти ] -------------------
 
-		$this->opt =& $this->data['user_opt'];
+		$this->opt           =& $this->data['user_opt'];
 
 # ---- [ Вставить до ] -------------------
 
-		$this->group_opt =& $this->data['group_opt'];
+		$this->group_opt     =& $this->data['group_opt'];
 
 # ---- [ Открыть / Создать ] -------------------
 
@@ -589,7 +585,7 @@ posting.php
 
 # ---- [ Найти ] -------------------
 
-if($bb_cfg['premod'])
+if ($bb_cfg['premod'])
 
 # ---- [ Заменить на ] -------------------
 
@@ -609,11 +605,11 @@ styles/templates/admin/admin_groups.tpl
 
 # ---- [ Найти ] -------------------
 
-		<div><input type="radio" name="group_type" value="{S_GROUP_HIDDEN_TYPE}" {S_GROUP_HIDDEN_CHECKED} />	{L_GROUP_HIDDEN}</div>
+		<div><input type="radio" name="group_type" value="{S_GROUP_HIDDEN_TYPE}" {S_GROUP_HIDDEN_CHECKED} /> {L_GROUP_HIDDEN}</div>
 	</td>
 </tr>
 
-# ---- [ Вставить до ] -------------------
+# ---- [ Вставить после ] -------------------
 
 <tr>
 	<th colspan="2"><center>{L_GROUP_OPT}</center></th>
@@ -633,7 +629,7 @@ styles/templates/admin/admin_groups.tpl
 
 # ---- [ Открыть ] -------------------
 
-styles/templates/default/groupcp.tpl
+styles/templates/default/group.tpl
 
 # ---- [ Найти ] -------------------
 
@@ -673,7 +669,7 @@ styles/templates/default/viewtopic.tpl
 # ---- [ Найти ] -------------------
 
 		<!-- IF AUTH_MOD -->
-		<td class="small bold nowrap" style="padding: 0px 0px 0px 4px;">
+		<td class="small bold nowrap" style="padding: 0 0 0 4px;">
 			<!-- IF IN_MODERATION -->{L_MODERATE_TOPIC}<!-- ELSE --><a href="{PAGE_URL}&amp;mod=1&amp;start={PAGE_START}" class="small bold">{L_MODERATE_TOPIC}</a><!-- ENDIF -->
 			&nbsp;<span style="color:#CDCDCD;">|</span>&nbsp;
 			<a class="small bold" href="{PIN_HREF}">{PIN_TITLE}</a>
@@ -748,9 +744,8 @@ viewtopic.php
 
 # ---- [ Найти ] -------------------
 
-// Report
 //
-// Get report topic module and create report link
+// Topic watch information
 //
 
 # ---- [ Вставить до ] -------------------
