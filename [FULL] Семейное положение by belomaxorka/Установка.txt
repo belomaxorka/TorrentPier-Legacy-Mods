@@ -14,4 +14,47 @@ ALTER TABLE `bb_users` ADD `user_relationships` varchar(100) NOT NULL DEFAULT ''
 ------------------ Открыть library/language/ru/main.php и в конце добавить ------------------
 // Семейное положение
 $lang['RELATIONSHIPS'] = 'Семейное положение';
+$lang['RELATIONSHIPS_SELECTOR'] = array(
+	0 => 'Не выбрано',
+	1 => 'Не женат / Не замужем',
+	2 => 'Встречаюсь',
+	3 => 'Помолвлен(a)',
+	4 => 'Женат / Замужем',
+	5 => 'В гражданском браке',
+	6 => 'Влюблён / Влюблена',
+	7 => 'Всё сложно',
+	9 => 'В активном поиске'
+);
 ---------------------------------------------------------------------------------------------
+
+------------------ Открыть library/includes/ucp/register.php и найти ------------------
+'user_interests'   => true,
+---------------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+'user_relationships'   => true,
+---------------------------------------------------
+
+------------------ Далее найти ------------------
+$tp_data['USER_INTERESTS'] = $pr_data['user_interests'];
+break;
+-------------------------------------------------
+
+------------------ Ниже вставить ------------------
+/**
+ *  Telegram (edit)
+ */
+case 'user_relationships':
+	$relationships = isset($_POST['user_relationships']) ? (int) $_POST['user_relationships'] : $pr_data['user_relationships'];
+	if ($submit && $telegram != $pr_data['user_telegram'])
+	{
+		if ($telegram != '' && !preg_match("/^[A-Za-z\d_]{5,32}$/", $telegram))
+		{
+			$errors[] = $lang['TELEGRAM_ERROR'];
+		}
+		$pr_data['user_telegram'] = $telegram;
+		$db_data['user_telegram'] = (string) $telegram;
+	}
+	$tp_data['USER_TELEGRAM'] = $pr_data['user_telegram'];
+	break;
+---------------------------------------------------
