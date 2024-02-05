@@ -22,8 +22,8 @@ switch ($mode) {
 
 		// Проверка на лимит закладок
 		if (is_numeric($max_book_marks) && !IS_AM) {
-			$book_count = (int)DB()->fetch_row('SELECT COUNT(book_id) FROM ' . BB_BOOK . " WHERE user_id = " . $userdata['user_id']);
-			if ($book_count > (int)$max_book_marks) {
+			$book_count = DB()->fetch_row('SELECT COUNT(*) AS books FROM ' . BB_BOOK . " WHERE user_id = " . $userdata['user_id']);
+			if ($book_count['books'] >= $max_book_marks) {
 				$this->ajax_die('У вас слишком много закладок...');
 			}
 		}
