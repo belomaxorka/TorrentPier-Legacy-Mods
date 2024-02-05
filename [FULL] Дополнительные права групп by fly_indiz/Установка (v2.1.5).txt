@@ -100,7 +100,7 @@ admin/admin_groups.php
 
 # ---- [ Открыть ] -------------------
 
-ajax/change_torrent.php
+library/ajax/change_torrent.php
 
 # ---- [ Найти ] -------------------
 
@@ -122,7 +122,7 @@ ajax/change_torrent.php
 
 # ---- [ Открыть ] -------------------
 
-attach_mod/displaying_torrent.php
+library/attach_mod/displaying_torrent.php
 
 # ---- [ Найти ] -------------------
 
@@ -162,7 +162,7 @@ if ($tor_auth || ($tor_reged && ((bf($userdata['group_opt'], 'group_opt', 'silve
 
 # ---- [ Открыть ] -------------------
 
-attach_mod/posting_attachments.php
+library/attach_mod/posting_attachments.php
 
 # ---- [ Найти ] -------------------
 
@@ -493,7 +493,7 @@ includes/sessions.php
 
 # ---- [ Открыть / Создать ] -------------------
 
-includes/cron/jobs/update_unlim_cache.php
+library/includes/cron/jobs/update_unlim_cache.php
 
 # ---- [ Вставить после ] -------------------
 
