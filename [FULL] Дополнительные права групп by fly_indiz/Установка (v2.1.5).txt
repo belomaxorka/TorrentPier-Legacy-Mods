@@ -416,6 +416,7 @@ library/includes/page_header.php
 # ---- [ Вставить после ] -------------------
 
 	'GALLERY_PERMISSION'        => ($logged_in && (bf($userdata['group_opt'], 'group_opt', 'gallery') || IS_AM)) ? true : false,
+	'U_GALLERY'                 => "gallery.php",
 
 # ---- [ Открыть ] -------------------
 
@@ -647,11 +648,12 @@ styles/templates/default/page_header.tpl
 
 # ---- [ Найти ] -------------------
 
-<!-- IF LOGGED_IN --><!-- IF SEO_LINK_GALLERY_PAGE --><a href="{U_GALLERY}"><!-- ENDIF --><b>{L_GALLERY}</b><!-- IF SEO_LINK_GALLERY_PAGE --></a><!-- ENDIF --><span style="color:#CDCDCD;">|</span><!-- ENDIF -->
+<a href="{U_MEMBERLIST}"><b>{L_MEMBERLIST}</b></a>
 
 # ---- [ Заменить на ] -------------------
 
-<!-- IF LOGGED_IN && GALLERY_PERMISSION --><!-- IF SEO_LINK_GALLERY_PAGE --><a href="{U_GALLERY}"><!-- ENDIF --><b>{L_GALLERY}</b><!-- IF SEO_LINK_GALLERY_PAGE --></a><!-- ENDIF --><span style="color:#CDCDCD;">|</span><!-- ENDIF -->
+<a href="{U_MEMBERLIST}"><b>{L_MEMBERLIST}</b></a><span style="color:#CDCDCD;">|</span>
+<!-- IF LOGGED_IN && GALLERY_PERMISSION --><a href="{U_GALLERY}"><b>{L_GALLERY}</b></a><!-- ENDIF -->
 
 # ---- [ Открыть ] -------------------
 
