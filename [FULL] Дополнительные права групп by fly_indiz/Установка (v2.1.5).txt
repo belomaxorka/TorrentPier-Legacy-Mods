@@ -248,8 +248,8 @@ library/attach_mod/posting_attachments.php
 								{
 									CACHE('bb_cache')->set("torstatus_". $attachment_id, $old_tor_status);
 								}
- 							}
- 						}
+							}
+						}
 					}
 
 					$this->upload_attachment($this->page);
@@ -325,7 +325,11 @@ group.php
 	}
 	$group_auth_list = join("<br />\n", $group_auth_list_ary);
 
-# ---- [ Найти ] -------------------
+# ---- [ Найти (для v2.1.5) ] -------------------
+
+		'S_GROUP_ACTION'         => "group.php?" . POST_GROUPS_URL . "=$group_id",
+
+# ---- [ Найти (для LTS) ] -------------------
 
 		'S_GROUP_ACTION'         => GROUP_URL . $group_id,
 
@@ -369,7 +373,7 @@ if ($u_data['user_id'] == GUEST_UID)
 			FROM      ". BB_USER_GROUP ." ug
 			LEFT JOIN ". BB_GROUPS ."     g  ON(g.group_id = ug.group_id AND ug.user_pending != 1)
 			WHERE ug.user_id          = ". $u_data['user_id'] ."
-			  AND g.group_single_user = 0
+			AND g.group_single_user = 0
 		";
 		$group_opt_ary = DB()->fetch_rowset($sql, 'group_opt');
 		foreach ($group_opt_ary as $group_opt_tmp)
@@ -458,7 +462,7 @@ library/includes/sessions.php
 						FROM      ". BB_USER_GROUP ." ug
 						LEFT JOIN ". BB_GROUPS ."     g  ON(g.group_id = ug.group_id AND ug.user_pending != 1)
 						WHERE ug.user_id          = ". $this->data['user_id'] ."
-						  AND g.group_single_user = 0
+						AND g.group_single_user = 0
 					";
 					$group_opt_ary = DB()->fetch_rowset($sql, 'group_opt');
 					$group_opt = 0;
@@ -491,7 +495,7 @@ library/includes/sessions.php
 					FROM      ". BB_USER_GROUP ." ug
 					LEFT JOIN ". BB_GROUPS ."     g  ON(g.group_id = ug.group_id AND ug.user_pending != 1)
 					WHERE ug.user_id          = ". $userdata['user_id'] ."
-					  AND g.group_single_user = 0
+					AND g.group_single_user = 0
 				";
 				$group_opt_ary = DB()->fetch_rowset($sql, 'group_opt');
 				$group_opt = 0;
@@ -523,7 +527,7 @@ $sql = "
 	FROM      ". BB_GROUPS     ." g
 	LEFT JOIN ". BB_USER_GROUP ." ug ON(g.group_id = ug.group_id AND ug.user_pending != 1)
 	WHERE g.group_single_user = 0
-	  AND g.group_opt & ". pow(2, $bf['group_opt']['unlim']) ." = ". pow(2, $bf['group_opt']['unlim']) ."
+	AND g.group_opt & ". pow(2, $bf['group_opt']['unlim']) ." = ". pow(2, $bf['group_opt']['unlim']) ."
 ";
 $user_ids = array();
 $user_ids = DB()->fetch_rowset($sql, 'user_id');
@@ -578,9 +582,13 @@ modcp.php
 
 # ---- [ Найти ] -------------------
 
-// Exit if user not authorized
+		$_POST['insert_bot_msg'] = 1;
+		unset($_POST['topic_id_list']);
+		unset($_POST['move_leave_shadow']);
+	}
+}
 
-# ---- [ Вставить до ] -------------------
+# ---- [ Вставить после ] -------------------
 
 else if (($mode == 'lock' || $mode == 'unlock') && !$is_auth['auth_mod'] && bf($userdata['group_opt'], 'group_opt', 'closeselftopic'))
 {
