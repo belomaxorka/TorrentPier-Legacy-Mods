@@ -514,7 +514,7 @@ CACHE('tr_cache')->set('tr_unlim', $user_ids_csv);
 
 # ---- [ Открыть ] -------------------
 
-language/en/main.php
+library/language/en/main.php
 
 # ---- [ Найти ] -------------------
 
@@ -534,7 +534,7 @@ $lang['GROUP_OPT_AUTOCHECK'] = 'Members can create new releases with Checked sta
 
 # ---- [ Открыть ] -------------------
 
-language/ru/main.php
+library/language/ru/main.php
 
 # ---- [ Найти ] -------------------
 
