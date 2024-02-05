@@ -13,7 +13,7 @@ ALTER TABLE `bb_users` ADD `user_relationships` TINYINT(1) NOT NULL DEFAULT '';
 
 ------------------ Открыть library/language/ru/main.php и в конце добавить ------------------
 // Семейное положение
-$lang['RELATIONSHIPS'] = 'Семейное положение:';
+$lang['RELATIONSHIPS'] = 'Семейное положение';
 $lang['RELATIONSHIPS_SELECTOR'] = array(
 	0 => 'Не выбрано',
 	1 => 'Не женат / Не замужем',
@@ -26,6 +26,14 @@ $lang['RELATIONSHIPS_SELECTOR'] = array(
 	9 => 'В активном поиске'
 );
 ---------------------------------------------------------------------------------------------
+
+------------------ Открыть library/includes/ucp/viewprofile.php и найти ------------------
+'INTERESTS'            => $profiledata['user_interests'],
+------------------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+'RELATIONSHIPS'        => $profiledata['user_relationships'],
+---------------------------------------------------
 
 ------------------ Открыть library/includes/ucp/register.php и найти ------------------
 'user_interests'   => true,
@@ -56,4 +64,18 @@ case 'user_relationships':
 	}
 	$tp_data['USER_RELATIONSHIPS'] = build_select('user_relationships', array_flip($lang['RELATIONSHIPS_SELECTOR']), $pr_data['user_relationships']);
 	break;
+---------------------------------------------------
+
+------------------ Открыть usercp_viewprofile.tpl (В вашем шаблоне) ------------------
+<!-- IF BIRTHDAY -->
+--------------------------------------------------------------------------------------
+
+------------------ Выше вставить ------------------
+<!-- IF RELATIONSHIPS -->
+<tr>
+	<th>{L_RELATIONSHIPS}:</th>
+		<td id="user_relationships"><b class="editable">{RELATIONSHIPS}</b>
+	</td>
+</tr>
+<!-- ENDIF -->
 ---------------------------------------------------
