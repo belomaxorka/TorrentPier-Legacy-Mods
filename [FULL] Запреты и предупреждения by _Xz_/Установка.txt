@@ -53,3 +53,11 @@ u.user_opt, u.user_gender, u.user_birthday,
 ------------------ Заменить на ------------------
 u.user_opt, u.user_gender, u.user_birthday, u.user_warnings,
 -------------------------------------------------
+
+------------------ Открыть viewtopic.tpl (В вашем шаблоне) и найти ------------------
+<!-- IF postrow.POSTER_FROM --><p class="from"><em>{L_LOCATION}:</em> {postrow.POSTER_FROM}</p><!-- ENDIF -->
+-------------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+<p class="posts"><em>Наличие запрета:</em>&nbsp;<!-- IF postrow.WARNINGS --><img alt="Есть запрет" title="Есть запрет" src="{SITE_URL}styles/images/flag_red.gif"><!-- ELSE --><img alt="Нету запретов" title="Нету запретов" src="{SITE_URL}styles/images/flag_green.gif"><!-- ENDIF --></p>
+---------------------------------------------------
