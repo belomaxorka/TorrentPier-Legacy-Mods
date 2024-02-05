@@ -314,7 +314,7 @@ groupcp.php
 
 # ---- [ Открыть ] -------------------
 
-includes/functions.php
+library/includes/functions.php
 
 # ---- [ Найти ] -------------------
 
@@ -360,7 +360,7 @@ if ($userdata['user_id'] == GUEST_UID)
 
 # ---- [ Открыть ] -------------------
 
-includes/functions_torrent.php
+library/includes/functions_torrent.php
 
 # ---- [ Найти ] -------------------
 
@@ -407,7 +407,7 @@ includes/functions_torrent.php
 
 # ---- [ Открыть ] -------------------
 
-includes/page_header.php
+library/includes/page_header.php
 
 # ---- [ Найти ] -------------------
 
@@ -419,7 +419,7 @@ includes/page_header.php
 
 # ---- [ Открыть ] -------------------
 
-includes/sessions.php
+library/includes/sessions.php
 
 # ---- [ Найти ] -------------------
 
