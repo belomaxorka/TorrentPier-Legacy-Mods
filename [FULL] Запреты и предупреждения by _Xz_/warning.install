@@ -1,18 +1,4 @@
--- usercp_viewprofile.tpl
-- найти
-						<fieldset class="mrg_6">
-							<legend>{L_BAN_USER}</legend>
-							<div class="tLeft" style="padding: 2px 6px 6px; display: block;" id="user-opt">
-								<label><input type="checkbox" name="dis_avatar"/>{L_HIDE_AVATARS}</label>
-								<label><input type="checkbox" name="dis_sig"/>{L_SHOW_CAPTION}</label>
-								<label><input type="checkbox" name="dis_passkey"/>{L_DOWNLOAD_TORRENT}</label>
-								<label><input type="checkbox" name="dis_pm"/>{L_SEND_PM}</label>
-								<label><input type="checkbox" name="dis_post"/>{L_SEND_MESSAGE}</label>
-								<label><input type="checkbox" name="dis_post_edit"/>{L_EDIT_POST}</label>
-								<label><input type="checkbox" name="dis_topic"/>{L_NEW_THREADS}</label>
-							</div>
-						</fieldset>
-- ниже добавить
+
 						<!-- IF WARNINGS_ON -->
 						<script type="text/javascript">
 						ajax.warning = function(user_id, type, term, time, reason) {
