@@ -1,28 +1,28 @@
------------------- Семейное положение ------------------
+------------------ Политические взгляды ------------------
 - Автор: belomaxorka
 - Версия: v1.0.0
 - Описание: Добавляет возможность пользователю указать
-  своё семейное положение. Имеется поддержка AJAX
+  свои политические взгляды. Имеется поддержка AJAX
   редактирования.
---------------------------------------------------------
+----------------------------------------------------------
 
 ------------------ SQL ------------------
-ALTER TABLE `bb_users` ADD `user_relationships` TINYINT(1) NOT NULL DEFAULT '0';
+ALTER TABLE `bb_users` ADD `user_politics` TINYINT(1) NOT NULL DEFAULT '0';
 -----------------------------------------
 
 ------------------ Открыть library/language/ru/main.php и в конце добавить ------------------
-// Семейное положение
-$lang['RELATIONSHIPS'] = 'Семейное положение';
-$lang['RELATIONSHIPS_SELECTOR'] = array(
-	0 => 'Не выбрано',
-	1 => 'Не женат / Не замужем',
-	2 => 'Встречаюсь',
-	3 => 'Помолвлен(a)',
-	4 => 'Женат / Замужем',
-	5 => 'В гражданском браке',
-	6 => 'Влюблён / Влюблена',
-	7 => 'Всё сложно',
-	8 => 'В активном поиске'
+// Политические взгляды
+$lang['POLITICS'] = 'Полит. предпочтения';
+$lang['POLITICS_SELECTOR'] = array(
+	0 => 'Не выбраны',
+	1 => 'Индифферентные',
+	2 => 'Коммунистические',
+	3 => 'Социалистические',
+	4 => 'Умеренные',
+	5 => 'Либеральные',
+	6 => 'Консервативные',
+	7 => 'Монархические',
+	8 => 'Ультраконсервативные'
 );
 ---------------------------------------------------------------------------------------------
 
@@ -31,8 +31,8 @@ $lang['RELATIONSHIPS_SELECTOR'] = array(
 ------------------------------------------------------------------------------------------
 
 ------------------ Ниже вставить ------------------
-// Семейное положение
-'RELATIONSHIPS'        => (isset($lang['RELATIONSHIPS_SELECTOR'][$profiledata['user_relationships']])) ? $lang['RELATIONSHIPS_SELECTOR'][$profiledata['user_relationships']] : '',
+// Политические взгляды
+'POLITICS'             => (isset($lang['POLITICS_SELECTOR'][$profiledata['user_politics']])) ? $lang['POLITICS_SELECTOR'][$profiledata['user_politics']] : '',
 ---------------------------------------------------
 
 ------------------ Открыть library/includes/ucp/register.php и найти ------------------
@@ -40,8 +40,8 @@ $lang['RELATIONSHIPS_SELECTOR'] = array(
 ---------------------------------------------------------------------------------------
 
 ------------------ Ниже вставить ------------------
-// Семейное положение
-'user_relationships'   => true,
+// Политические взгляды
+'user_politics'    => true,
 ---------------------------------------------------
 
 ------------------ Далее найти ------------------
@@ -51,19 +51,19 @@ break;
 
 ------------------ Ниже вставить ------------------
 /**
- *  Отношения (edit)
+ *  Политические взгляды (edit)
  */
-case 'user_relationships':
-	$relationships = isset($_POST['user_relationships']) ? (int) $_POST['user_relationships'] : $pr_data['user_relationships'];
-	if ($submit && $relationships != $pr_data['user_relationships'])
+case 'user_politics':
+	$politics = isset($_POST['user_politics']) ? (int) $_POST['user_politics'] : $pr_data['user_politics'];
+	if ($submit && $politics != $pr_data['user_politics'])
 	{
-		if (isset($lang['RELATIONSHIPS_SELECTOR'][$relationships]))
+		if (isset($lang['POLITICS_SELECTOR'][$politics]))
 		{
-			$pr_data['user_relationships'] = $relationships;
-			$db_data['user_relationships'] = (int) $relationships;
+			$pr_data['user_politics'] = $politics;
+			$db_data['user_politics'] = (int) $politics;
 		}
 	}
-	$tp_data['USER_RELATIONSHIPS'] = build_select('user_relationships', array_flip($lang['RELATIONSHIPS_SELECTOR']), $pr_data['user_relationships']);
+	$tp_data['USER_POLITICS'] = build_select('user_politics', array_flip($lang['POLITICS_SELECTOR']), $pr_data['user_politics']);
 	break;
 ---------------------------------------------------
 
@@ -73,13 +73,13 @@ break;
 ----------------------------------------------------------------------------------------
 
 ------------------ Ниже вставить ------------------
-// Семейное положение
-case 'user_relationships':
-	if (!isset($lang['RELATIONSHIPS_SELECTOR'][$value]))
+// Политические взгляды
+case 'user_politics':
+	if (!isset($lang['POLITICS_SELECTOR'][$value]))
 	{
 		$this->ajax_die($lang['ERROR']);
 	}
-	else $this->response['new_value'] = $lang['RELATIONSHIPS_SELECTOR'][$value];
+	else $this->response['new_value'] = $lang['POLITICS_SELECTOR'][$value];
 	break;
 ---------------------------------------------------
 
@@ -88,7 +88,7 @@ case 'user_relationships':
 ----------------------------------------------------------------------------------------------
 
 ------------------ Ниже вставить ------------------
-<var class="ajax-params">{action: "edit_user_profile", id: "user_relationships",   editableType: "yesno-relationships"}</var>
+<var class="ajax-params">{action: "edit_user_profile", id: "user_politics",   editableType: "yesno-politics"}</var>
 ---------------------------------------------------
 
 ------------------ Далее найти ------------------
@@ -96,10 +96,10 @@ case 'user_relationships':
 -------------------------------------------------
 
 ------------------ Выше вставить ------------------
-<!-- IF RELATIONSHIPS -->
+<!-- IF POLITICS -->
 <tr>
-	<th>{L_RELATIONSHIPS}:</th>
-		<td id="user_relationships"><b class="editable">{RELATIONSHIPS}</b>
+	<th>{L_POLITICS}:</th>
+		<td id="user_politics"><b class="editable">{POLITICS}</b>
 	</td>
 </tr>
 <!-- ENDIF -->
@@ -111,8 +111,8 @@ case 'user_relationships':
 
 ------------------ Выше вставить ------------------
 <tr>
-	<td class="prof-title">{L_RELATIONSHIPS}:</td>
-	<td>{USER_RELATIONSHIPS}</td>
+	<td class="prof-title">{L_POLITICS}:</td>
+	<td>{USER_POLITICS}</td>
 </tr>
 ---------------------------------------------------
 
@@ -121,18 +121,18 @@ case 'user_relationships':
 ---------------------------------------------------------------------------------------
 
 ------------------ Выше вставить ------------------
-<div id="editable-tpl-yesno-relationships" style="display: none;">
+<div id="editable-tpl-yesno-politics" style="display: none;">
 	<span class="editable-inputs nowrap" style="display: none;">
 		<select class="editable-value">
-			<option value="0">&nbsp;{$lang['RELATIONSHIPS_SELECTOR'][0]}&nbsp;</option>
-			<option value="1">&nbsp;{$lang['RELATIONSHIPS_SELECTOR'][1]}&nbsp;</option>
-			<option value="2">&nbsp;{$lang['RELATIONSHIPS_SELECTOR'][2]}&nbsp;</option>
-			<option value="3">&nbsp;{$lang['RELATIONSHIPS_SELECTOR'][3]}&nbsp;</option>
-			<option value="4">&nbsp;{$lang['RELATIONSHIPS_SELECTOR'][4]}&nbsp;</option>
-			<option value="5">&nbsp;{$lang['RELATIONSHIPS_SELECTOR'][5]}&nbsp;</option>
-			<option value="6">&nbsp;{$lang['RELATIONSHIPS_SELECTOR'][6]}&nbsp;</option>
-			<option value="7">&nbsp;{$lang['RELATIONSHIPS_SELECTOR'][7]}&nbsp;</option>
-			<option value="8">&nbsp;{$lang['RELATIONSHIPS_SELECTOR'][8]}&nbsp;</option>
+			<option value="0">&nbsp;{$lang['POLITICS_SELECTOR'][0]}&nbsp;</option>
+			<option value="1">&nbsp;{$lang['POLITICS_SELECTOR'][1]}&nbsp;</option>
+			<option value="2">&nbsp;{$lang['POLITICS_SELECTOR'][2]}&nbsp;</option>
+			<option value="3">&nbsp;{$lang['POLITICS_SELECTOR'][3]}&nbsp;</option>
+			<option value="4">&nbsp;{$lang['POLITICS_SELECTOR'][4]}&nbsp;</option>
+			<option value="5">&nbsp;{$lang['POLITICS_SELECTOR'][5]}&nbsp;</option>
+			<option value="6">&nbsp;{$lang['POLITICS_SELECTOR'][6]}&nbsp;</option>
+			<option value="7">&nbsp;{$lang['POLITICS_SELECTOR'][7]}&nbsp;</option>
+			<option value="8">&nbsp;{$lang['POLITICS_SELECTOR'][8]}&nbsp;</option>
 		</select>
 		<input type="button" class="editable-submit" value="&raquo;" style="width: 30px; font-weight: bold;">
 		<input type="button" class="editable-cancel" value="x" style="width: 30px;">
