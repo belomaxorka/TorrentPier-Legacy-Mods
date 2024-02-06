@@ -1,7 +1,7 @@
 --------------------------------------------------
 Название: Дополнительные права групп
 Автор: fly_indiz
-Версия: v1.0.0
+Версия: v1.0.1
 Обновление: belomaxorka
 Описание: Дополнительные права групп
 Сложность установки: Средняя
@@ -154,13 +154,21 @@ if ($tor_auth || ($tor_reged && ((bf($userdata['group_opt'], 'group_opt', 'silve
 		'CLOSE_AUTH'       => ($tor_reged && ($is_auth['auth_mod'] || (bf($userdata['group_opt'], 'group_opt', 'closeselftopic') && $bt_user_id != GUEST_UID && $bt_user_id == $poster_id && !$locked))),
 	));
 
-# ---- [ Найти ] -------------------
+# ---- [ Найти (для v2.1.5) ] -------------------
 
 	if (($min_ratio_dl || $min_ratio_warn) && $bt_user_id != $poster_id)
 
-# ---- [ Заменить на ] -------------------
+# ---- [ Найти (для LTS) ] -------------------
+
+	if (($min_ratio_dl || $min_ratio_warn) && ($bt_user_id != $poster_id && $bt_user_id != GUEST_UID))
+
+# ---- [ Заменить на (для v2.1.5) ] -------------------
 
 	if (($min_ratio_dl || $min_ratio_warn) && $bt_user_id != $poster_id && !bf($userdata['group_opt'], 'group_opt', 'unlim'))
+
+# ---- [ Заменить на (для LTS) ] -------------------
+
+	if (($min_ratio_dl || $min_ratio_warn) && ($bt_user_id != $poster_id && $bt_user_id != GUEST_UID) && !bf($userdata['group_opt'], 'group_opt', 'unlim'))
 
 # ---- [ Найти (для v2.1.5) ] -------------------
 
