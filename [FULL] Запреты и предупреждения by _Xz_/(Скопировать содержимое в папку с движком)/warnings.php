@@ -90,10 +90,10 @@ if ($id) {
 			$poster_user = profile_url(array('username' => $warning['w_username'], 'user_id' => $warning['w_user_id'], 'user_rank' => $warning['w_user_rank']));
 
 			$type = '<b>' . $bb_cfg['warning']['type'][$warning['warning']] . '</b>: ';
-			if (($warning['time_end'] > TIMENOW && $warning['auth'] == 1) || $warning['auth'] == 3) {
+			if ($warning['auth'] == 1) {
 				$time = ($warning['time_end'] > TIMENOW) ? 'Осталось ' . delta_time($warning['time_end']) : $bb_cfg['warning']['auth'][0];
 			} else {
-				$time = $bb_cfg['warning']['auth'][0];
+				$time = $bb_cfg['warning']['auth'][$warning['auth']];
 			}
 
 			$text = warning_type($warning);
