@@ -5,6 +5,7 @@
 --------------------------------------------------------------
 
 ------------------ SQL ------------------
+SET SESSION sql_mode = '';
 CREATE TABLE IF NOT EXISTS `bb_warnings` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `type` varchar(100) NOT NULL,
