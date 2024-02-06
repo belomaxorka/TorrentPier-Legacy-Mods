@@ -43,7 +43,7 @@ switch ($mode) {
 		if (!$user_id || !$time) $this->ajax_die('Убейся, кривые руки.');
 
 		// Получаем данные по пользователю
-		$row = DB()->fetch_row("SELECT username, user_level FROM " . BB_USERS . " WHERE user_id = $user_id LIMIT 1");
+		$row = DB()->fetch_row("SELECT user_id, username, user_level, user_rank FROM " . BB_USERS . " WHERE user_id = $user_id LIMIT 1");
 
 		if (!IS_ADMIN && ($user_id != $userdata['user_id'])) {
 			// Проверка на админа и модера
@@ -93,7 +93,7 @@ switch ($mode) {
 			$time_end = (TIMENOW + ($time * $term));
 		}
 
-		$message = "Уважаемый [b]" . $row['username'] . "[/b], администрацией было выявлено нарушение одного из пунктов правил трекера с Вашей стороны![br]
+		$message = "Уважаемый " . profile_url($row) . ", администрацией было выявлено нарушение одного из пунктов правил трекера с Вашей стороны![br]
 			Рекомендуем Вам ещё раз ознакомиться с [url=" . make_url('/viewtopic.php?t=ТУТ_ID_ТОПИКА') . "]правилами[/url] данного ресурса и не повторять подобных нарушений.[br]
 			Более подробную информацию Вы можете получить [url=" . make_url('/warnings.php?u=' . $user_id) . "]на вашей странице предупреждений и наказаний[/url].[br][br]
 			[align=right]Это автоматическое сообщение! Вам не нужно на него отвечать![/align]";
