@@ -1,7 +1,7 @@
 --------------------------------------------------
 Название: Дополнительные права групп
 Автор: fly_indiz
-Версия: v1.0.1
+Версия: v1.0.2
 Обновление: belomaxorka
 Описание: Дополнительные права групп
 Сложность установки: Средняя
@@ -308,7 +308,7 @@ gallery.php (https://torrentpier.com/resources/lokalnaja-galereja.147/)
 // Start session management
 $user->session_start(array('req_login' => true));
 
-# ---- [ Заменить на ] -------------------
+# ---- [ Вставить после ] -------------------
 
 if (!bf($userdata['group_opt'], 'group_opt', 'gallery') && !IS_AM)
 {
