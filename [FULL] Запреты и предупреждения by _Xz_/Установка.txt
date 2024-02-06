@@ -95,7 +95,7 @@ warning(3, $userdata);
 ---------------------------------------------------
 
 ------------------ Далее найти ------------------
-else if (!$is_auth['auth_reply'])
+elseif(!$is_auth['auth_reply'])
 {
 	$this->ajax_die(sprintf($lang['SORRY_AUTH_REPLY'], strip_tags($is_auth['auth_reply_type'])));
 }
@@ -214,7 +214,7 @@ if ($bb_cfg['warning']['enabled'] && IS_AM) {
 ------------------ Открыть library/includes/functions_torrent.php и найти ------------------
 function send_torrent_with_passkey ($filename)
 {
-	global $attachment, $auth_pages, $userdata, $bb_cfg, $lang;
+	global $attachment, $auth_pages, $userdata, $bb_cfg, $tr_cfg, $lang;
 --------------------------------------------------------------------------------------------
 
 ------------------ Ниже вставить ------------------
