@@ -90,7 +90,8 @@ define('BB_WORDS',                'bb_words');
 define('BB_WARNINGS',             'bb_warnings');
 ---------------------------------------------------
 
------------------- Открыть library/includes/functions.php и найти ------------------
+------------------ Открыть library/includes/functions.php и в конце вставить ------------------
+// Запреты и предупреждения
 function warning($type, $data = array())
 {
 	global $lang, $bb_cfg, $userdata;
@@ -134,7 +135,7 @@ function warning($type, $data = array())
 		}
 	}
 }
-------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
 
 ------------------ Открыть library/includes/page_header.php и найти ------------------
 	'U_WATCHED_TOPICS'      => "profile.php?mode=watch",
