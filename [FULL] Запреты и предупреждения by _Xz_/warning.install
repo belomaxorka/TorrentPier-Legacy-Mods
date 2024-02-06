@@ -1,35 +1,3 @@
-
-						<!-- IF WARNINGS_ON -->
-						<script type="text/javascript">
-						ajax.warning = function(user_id, type, term, time, reason) {
-							ajax.exec({
-								action  : 'warning',
-								mode    : 'add',
-								user_id : user_id,
-								warning : type,
-								term	: term,
-								time	: time,
-								reason  : reason
-							});
-						};
-						ajax.callback.warning = function(data) {
-						    if(data.info) alert(data.info);
-						    if(data.url) document.location.href = data.url;
-						};
-						</script>
-
-						<fieldset class="mrg_6 tCenter"><legend>Выдать запрет</legend>
-						<div title="Тип блокировки" id="type">{WARNING_TYPE}</div>
-						<div title="Причина блокировки" class="pad_4 genmed">
-								<textarea id="reason" name="reason" rows="5" cols="30"></textarea>
-						</div>
-						<div class="cat tCenter pad_4">
-								<input title="Время блокировки" id="term" type="text" maxlength="2" size="2" name="time"><span id="time">{WARNING_TIME}</span>
-								<input onclick="ajax.warning({PROFILE_USER_ID}, $('#type option:selected').val(), $('#term').val(), $('#time option:selected').val(), $('#reason').val(), $('#auth option:selected').val() ); return false;" type="button" value="Выдать">
-						</div>
-						</fieldset>
-						<!-- ENDIF -->
-
 !!! если уже были использованы стадартные ограничения то сделать запрос UPDATE bb_users SET user_opt = 0;
 
 заперты работают так:
