@@ -1,7 +1,7 @@
 ------------------ Запреты и предупреждения ------------------
 Автор: _Xz_
 Обновления: belomaxorka
-Версия: v1.3.2
+Версия: v1.3.3
 --------------------------------------------------------------
 
 ------------------ SQL ------------------
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `bb_warnings` (
   PRIMARY KEY (`id`)
 ) ENGINE = MyISAM DEFAULT CHARSET = utf8;
 ALTER TABLE `bb_users` ADD `user_warnings` TINYINT(3) NOT NULL DEFAULT '0';
-INSERT INTO `bb_cron` VALUES (LAST_INSERT_ID(), '1', 'Warnings', 'warnings.php', 'interval', '', '', '255', '', '', '00:15:00', '1', '', '0', '1', '0');
+INSERT INTO `bb_cron` VALUES ('УКАЖИТЕ ТУТ ПОРЯДКОВЫЙ ID', '1', 'Warnings', 'warnings.php', 'interval', '', '', '255', '', '', '00:15:00', '1', '', '0', '1', '0');
 -----------------------------------------
 
 ------------------ Открыть ajax.php и найти ------------------
@@ -259,7 +259,7 @@ if (DB()->fetch_row($sql)) {
 $this->data['bb_exit'] = true;
 warning(DELETED, $this->data);
 if (!empty($this->data['user_warnings'])) {
-	if ($this->data['user_warnings'] >= 3) bb_exit('Вы забанены'); // Общее число активных запретов
+	if ($this->data['user_warnings'] >= 3) bb_exit($lang['YOU_BEEN_BANNED']); // Общее число активных запретов
 }
 -------------------------------------------------------
 
