@@ -175,6 +175,25 @@ function send_torrent_with_passkey ($filename)
 warning(7);
 ---------------------------------------------------
 
+------------------ Открыть library/includes/sessions.php и найти ------------------
+if (DB()->fetch_row($sql))
+{
+	header('Location: https://torrentpier.me/banned/');
+}
+-----------------------------------------------------------------------------------
+
+------------------ Заменить на ------------------
+if (DB()->fetch_row($sql)) {
+	$this->set_session_cookies(GUEST_UID);
+	bb_exit('Вы забанены');
+}
+$this->data['bb_exit'] = true;
+warning(DELETED, $this->data);
+if (!empty($this->data['user_warnings'])) {
+	if ($this->data['user_warnings'] >= 3) bb_exit('Вы забанены'); // Общее число активных запретов
+}
+-------------------------------------------------
+
 ------------------ Открыть library/includes/ucp/viewprofile.php и найти ------------------
 'TRAF_STATS'           => !(IS_AM || $profile_user_id),
 ------------------------------------------------------------------------------------------
