@@ -32,3 +32,19 @@ $post_text = sprintf($lang['BOT_TOPIC_MOVED_FROM_TO'], '[url='. make_url(FORUM_U
 $reason_move = !empty($reason_move) ? htmlCHR($reason_move) : $lang['NOSELECT'];
 $post_text = sprintf($lang['BOT_TOPIC_MOVED_FROM_TO'], '[url='. make_url(FORUM_URL . $old_forum_id) .']'. $forum_names[$old_forum_id] .'[/url]', '[url='. make_url(FORUM_URL . $forum_id) .']'. $forum_names[$forum_id] .'[/url]', profile_url($userdata), $reason_move);
 -------------------------------------------------
+
+------------------ Открыть library/includes/functions_admin.php и найти ------------------
+function topic_move ($topic_id, $to_forum_id, $from_forum_id = null, $leave_shadow = false, $insert_bot_msg = false)
+------------------------------------------------------------------------------------------
+
+------------------ Заменить на ------------------
+function topic_move ($topic_id, $to_forum_id, $from_forum_id = null, $leave_shadow = false, $insert_bot_msg = false, $reason_move = '')
+-------------------------------------------------
+
+------------------ Далее найти ------------------
+insert_post('after_move', $topic_id, $to_forum_id, $row['forum_id']);
+-------------------------------------------------
+
+------------------ Заменить на ------------------
+insert_post('after_move', $topic_id, $to_forum_id, $row['forum_id'], '', '', '', '', '', $reason_move);
+-------------------------------------------------
