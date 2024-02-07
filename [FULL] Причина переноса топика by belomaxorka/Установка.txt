@@ -39,7 +39,7 @@ $lang['BOT_TOPIC_MOVED_FROM_TO'] = 'Топик был перенесен из ф
 -------------------------------------------------
 
 ------------------ Заменить на ------------------
-$lang['BOT_TOPIC_MOVED_FROM_TO'] = 'Топик был перенесен из форума [b]%s[/b] в форум [b]%s[/b].[br]Причина переноса: %s[br][br]%s';
+$lang['BOT_TOPIC_MOVED_FROM_TO'] = 'Топик был перенесен из форума [b]%s[/b] в форум [b]%s[/b].[br][b]Причина переноса:[/b] %s[br][br]%s';
 -------------------------------------------------
 
 ------------------ Открыть library/language/en/main.php и найти ------------------
@@ -55,7 +55,7 @@ $lang['BOT_TOPIC_MOVED_FROM_TO'] = 'Topic has been moved from forum [b]%s[/b] to
 -------------------------------------------------
 
 ------------------ Заменить на ------------------
-$lang['BOT_TOPIC_MOVED_FROM_TO'] = 'Topic has been moved from forum [b]%s[/b] to forum [b]%s[/b].[br]Reason to move: %s[br][br]%s';
+$lang['BOT_TOPIC_MOVED_FROM_TO'] = 'Topic has been moved from forum [b]%s[/b] to forum [b]%s[/b].[br][b]Reason to move:[/b] %s[br][br]%s';
 -------------------------------------------------
 
 ------------------ Открыть library/includes/functions_post.php и найти ------------------
@@ -72,7 +72,7 @@ $post_text = sprintf($lang['BOT_TOPIC_MOVED_FROM_TO'], '[url='. make_url(FORUM_U
 
 ------------------ Заменить на ------------------
 $reason_move = !empty($reason_move) ? htmlCHR($reason_move) : $lang['NOSELECT'];
-$post_text = sprintf($lang['BOT_TOPIC_MOVED_FROM_TO'], '[url='. make_url(FORUM_URL . $old_forum_id) .']'. $forum_names[$old_forum_id] .'[/url]', '[url='. make_url(FORUM_URL . $forum_id) .']'. $forum_names[$forum_id] .'[/url]', profile_url($userdata), $reason_move);
+$post_text = sprintf($lang['BOT_TOPIC_MOVED_FROM_TO'], '[url='. make_url(FORUM_URL . $old_forum_id) .']'. $forum_names[$old_forum_id] .'[/url]', '[url='. make_url(FORUM_URL . $forum_id) .']'. $forum_names[$forum_id] .'[/url]', $reason_move, profile_url($userdata));
 -------------------------------------------------
 
 ------------------ Открыть library/includes/functions_admin.php и найти ------------------
