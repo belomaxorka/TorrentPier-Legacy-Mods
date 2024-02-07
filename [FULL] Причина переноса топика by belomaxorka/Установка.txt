@@ -14,7 +14,7 @@
 ------------------ Заменить на ------------------
 <!-- IF SHOW_BOT_OPTIONS -->
 <p class="mrg_2"><input type="checkbox" name="insert_bot_msg" id="insert_bot_msg" checked="checked" /><label for="insert_bot_msg">{L_BOT_LEAVE_MSG_MOVED}</label></p>
-<p class="mrg_2">{L_BOT_REASON_MOVED}&nbsp;<input name="reason_move_bot" maxlength="60" size="25" type="text" /></p>
+<p class="mrg_2">{L_BOT_REASON_MOVED}&nbsp;<input name="reason_move_bot" maxlength="60" size="30" type="text" /></p>
 <!-- ENDIF -->
 -------------------------------------------------
 
@@ -23,6 +23,7 @@ $result = topic_move($req_topics, $new_forum_id, $forum_id, isset($_POST['move_l
 ---------------------------------------------------------------
 
 ------------------ Заменить на ------------------
+// Причина переноса топика
 $result = topic_move($req_topics, $new_forum_id, $forum_id, isset($_POST['move_leave_shadow']), isset($_POST['insert_bot_msg']), $_POST['reason_move_bot']);
 -------------------------------------------------
 
@@ -31,6 +32,7 @@ $lang['BOT_LEAVE_MSG_MOVED'] = 'Оставить сообщение о пере�
 ----------------------------------------------------------------------------------
 
 ------------------ Ниже вставить ------------------
+// Причина переноса топика
 $lang['BOT_REASON_MOVED'] = 'Причина переноса';
 ---------------------------------------------------
 
@@ -39,6 +41,7 @@ $lang['BOT_TOPIC_MOVED_FROM_TO'] = 'Топик был перенесен из ф
 -------------------------------------------------
 
 ------------------ Заменить на ------------------
+// Причина переноса топика
 $lang['BOT_TOPIC_MOVED_FROM_TO'] = 'Топик был перенесен из форума [b]%s[/b] в форум [b]%s[/b].[br][b]Причина переноса:[/b] %s[br][br]%s';
 -------------------------------------------------
 
@@ -47,6 +50,7 @@ $lang['BOT_LEAVE_MSG_MOVED'] = 'Add bot-message about moving';
 ----------------------------------------------------------------------------------
 
 ------------------ Ниже вставить ------------------
+// Причина переноса топика
 $lang['BOT_REASON_MOVED'] = 'Reason to move';
 ---------------------------------------------------
 
@@ -55,6 +59,7 @@ $lang['BOT_TOPIC_MOVED_FROM_TO'] = 'Topic has been moved from forum [b]%s[/b] to
 -------------------------------------------------
 
 ------------------ Заменить на ------------------
+// Причина переноса топика
 $lang['BOT_TOPIC_MOVED_FROM_TO'] = 'Topic has been moved from forum [b]%s[/b] to forum [b]%s[/b].[br][b]Reason to move:[/b] %s[br][br]%s';
 -------------------------------------------------
 
@@ -63,6 +68,7 @@ function insert_post ($mode, $topic_id, $forum_id = '', $old_forum_id = '', $new
 -----------------------------------------------------------------------------------------
 
 ------------------ Заменить на ------------------
+// Причина переноса топика
 function insert_post ($mode, $topic_id, $forum_id = '', $old_forum_id = '', $new_topic_id = '', $new_topic_title = '', $old_topic_id = '', $message = '', $poster_id = '', $reason_move = '')
 -------------------------------------------------
 
@@ -71,6 +77,7 @@ $post_text = sprintf($lang['BOT_TOPIC_MOVED_FROM_TO'], '[url='. make_url(FORUM_U
 -------------------------------------------------
 
 ------------------ Заменить на ------------------
+// Причина переноса топика
 $reason_move = !empty($reason_move) ? htmlCHR($reason_move) : $lang['NOSELECT'];
 $post_text = sprintf($lang['BOT_TOPIC_MOVED_FROM_TO'], '[url='. make_url(FORUM_URL . $old_forum_id) .']'. $forum_names[$old_forum_id] .'[/url]', '[url='. make_url(FORUM_URL . $forum_id) .']'. $forum_names[$forum_id] .'[/url]', $reason_move, profile_url($userdata));
 -------------------------------------------------
@@ -80,6 +87,7 @@ function topic_move ($topic_id, $to_forum_id, $from_forum_id = null, $leave_shad
 ------------------------------------------------------------------------------------------
 
 ------------------ Заменить на ------------------
+// Причина переноса топика
 function topic_move ($topic_id, $to_forum_id, $from_forum_id = null, $leave_shadow = false, $insert_bot_msg = false, $reason_move = '')
 -------------------------------------------------
 
@@ -88,5 +96,6 @@ insert_post('after_move', $topic_id, $to_forum_id, $row['forum_id']);
 -------------------------------------------------
 
 ------------------ Заменить на ------------------
+// Причина переноса топика
 insert_post('after_move', $topic_id, $to_forum_id, $row['forum_id'], '', '', '', '', '', $reason_move);
 -------------------------------------------------
