@@ -12,8 +12,48 @@
 ------------------ Заменить на ------------------
 <!-- IF SHOW_BOT_OPTIONS -->
 <p class="mrg_2"><input type="checkbox" name="insert_bot_msg" id="insert_bot_msg" checked="checked" /><label for="insert_bot_msg">{L_BOT_LEAVE_MSG_MOVED}</label></p>
-<p class="mrg_2">{L_REASON_MOVE_BOT}&nbsp;<input name="reason_move_bot" maxlength="60" size="25" type="text" /></p>
+<p class="mrg_2">{L_BOT_REASON_MOVED}&nbsp;<input name="reason_move_bot" maxlength="60" size="25" type="text" /></p>
 <!-- ENDIF -->
+-------------------------------------------------
+
+------------------ Открыть modcp.php и найти ------------------
+$result = topic_move($req_topics, $new_forum_id, $forum_id, isset($_POST['move_leave_shadow']), isset($_POST['insert_bot_msg']));
+---------------------------------------------------------------
+
+------------------ Заменить на ------------------
+$result = topic_move($req_topics, $new_forum_id, $forum_id, isset($_POST['move_leave_shadow']), isset($_POST['insert_bot_msg']), $_POST['reason_move_bot']);
+-------------------------------------------------
+
+------------------ Открыть library/language/ru/main.php и найти ------------------
+$lang['BOT_LEAVE_MSG_MOVED'] = 'Оставить сообщение о переносе';
+----------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+$lang['BOT_REASON_MOVED'] = 'Причина переноса';
+---------------------------------------------------
+
+------------------ Далее найти ------------------
+$lang['BOT_TOPIC_MOVED_FROM_TO'] = 'Топик был перенесен из форума [b]%s[/b] в форум [b]%s[/b][br][br]%s';
+-------------------------------------------------
+
+------------------ Заменить на ------------------
+$lang['BOT_TOPIC_MOVED_FROM_TO'] = 'Топик был перенесен из форума [b]%s[/b] в форум [b]%s[/b].[br]Причина переноса: %s[br][br]%s';
+-------------------------------------------------
+
+------------------ Открыть library/language/en/main.php и найти ------------------
+$lang['BOT_LEAVE_MSG_MOVED'] = 'Add bot-message about moving';
+----------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+$lang['BOT_REASON_MOVED'] = 'Reason to move';
+---------------------------------------------------
+
+------------------ Далее найти ------------------
+$lang['BOT_TOPIC_MOVED_FROM_TO'] = 'Topic has been moved from forum [b]%s[/b] to forum [b]%s[/b][br][br]%s';
+-------------------------------------------------
+
+------------------ Заменить на ------------------
+$lang['BOT_TOPIC_MOVED_FROM_TO'] = 'Topic has been moved from forum [b]%s[/b] to forum [b]%s[/b].[br]Reason to move: %s[br][br]%s';
 -------------------------------------------------
 
 ------------------ Открыть library/includes/functions_post.php и найти ------------------
