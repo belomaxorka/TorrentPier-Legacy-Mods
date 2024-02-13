@@ -20,6 +20,7 @@ SET SESSION sql_mode = '';
 INSERT INTO `bb_config` VALUES ('last_added', '1');
 INSERT INTO `bb_config` VALUES ('new_poster', '0');
 INSERT INTO `bb_config` VALUES ('limit_poster', '30');
+INSERT INTO `bb_config` VALUES ('last_added_excluded', '');
 ALTER TABLE `bb_topics` ADD `topic_image` VARCHAR(255) NOT NULL DEFAULT '';
 INSERT INTO `bb_cron` VALUES ('', 1, 'Очистка мини постеров', 'clear_poster.php', 'weekly', '1', '06:00:00', 30, '', '', NULL, 0, '', 0, 0, 0);
 
@@ -62,6 +63,7 @@ admin/admin_board.php
 'LAST_ADDED_ON'  => $new['last_added'],
 'NEW_POSTER'     => $new['new_poster'],
 'LIMIT_POSTER'   => $new['limit_poster'],
+'LAST_ADDED_EXCLUDED' => $new['last_added_excluded'],
 
 #
 #-----[ OPEN ]------------------------------------------
@@ -225,7 +227,7 @@ if ($bb_cfg['last_added'] && $user->opt_js['poster'] && !IS_GUEST)
 			LEFT JOIN ". BB_TOPICS ." t  ON tr.topic_id = t.topic_id
 			LEFT JOIN ". BB_FORUMS ." f  ON tr.forum_id = f.forum_id
 			LEFT JOIN ". BB_USERS  ." u  ON tr.poster_id = u.user_id
-			WHERE tr.forum_id NOT IN (". $bb_cfg['trash_forum_id'] .")
+			WHERE tr.forum_id NOT IN (". $excluded_forums_csv . $bb_cfg['last_added_excluded'] .")
 				AND f.cat_id NOT IN($cat_ids)
 				AND f.allow_porno_topic = 0
 				AND f.allow_reg_tracker = 1
@@ -372,6 +374,10 @@ styles/templates/admin/admin_board.tpl
 <tr>
 	<td><h4>Количество раздач в ленте</h4></td>
 	<td><input class="post" type="text" name="limit_poster" value="{LIMIT_POSTER}" size="15" maxlength="4" /></td>
+</tr>
+<tr>
+	<td><h4>ID форумов из которых не выводить раздачи</h4><h6>(Указать несколько ID можно через запятую)</h6></td>
+	<td><input class="post" type="text" name="last_added_excluded" value="{LAST_ADDED_EXCLUDED}" size="15" /></td>
 </tr>
 
 #
