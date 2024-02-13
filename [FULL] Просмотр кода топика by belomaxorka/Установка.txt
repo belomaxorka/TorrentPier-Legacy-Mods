@@ -1,0 +1,98 @@
+------------------ Просмотр кода топика ------------------
+Автор: belomaxorka
+Версия: v1.0.0
+----------------------------------------------------------
+
+------------------ Открыть library/config.php и в конце вставить ------------------
+// Просмотр кода топика
+$bb_cfg['show_post_bbcode_button'] = true;
+-----------------------------------------------------------------------------------
+
+------------------ Открыть library/language/en/main.php и найти ------------------
+$lang['EDIT_DELETE_POST_TXTB'] = '[Edit]';
+----------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+// Просмотр кода топика
+$lang['CODE_TOPIC_TXTB'] = '[Code]';
+---------------------------------------------------
+
+------------------ Открыть library/language/ru/main.php и найти ------------------
+$lang['EDIT_DELETE_POST_TXTB'] = '[Изменить]';
+----------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+// Просмотр кода топика
+$lang['CODE_TOPIC_TXTB'] = '[Код]';
+---------------------------------------------------
+
+------------------ Открыть library/language/uk/main.php и найти ------------------
+$lang['EDIT_DELETE_POST_TXTB'] = '[Змінити]';
+----------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+// Просмотр кода топика
+$lang['CODE_TOPIC_TXTB'] = '[Код]';
+---------------------------------------------------
+
+------------------ Открыть tpl_config.php (В вашем шаблоне) и найти ------------------
+$images['icon_quote']          = $_lang .'icon_quote.gif';
+--------------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+// Просмотр кода топика
+$images['icon_code']           = $_lang .'icon_code.gif';
+---------------------------------------------------
+
+------------------ Далее найти ------------------
+$template->assign_vars(array(
+	'QUOTE_IMG'       => ($bb_cfg['text_buttons']) ? $lang['REPLY_WITH_QUOTE_TXTB'] : '<img src="'. $images['icon_quote']   .'" alt="'.$lang['REPLY_WITH_QUOTE_TXTB'].'" title="'. $lang['REPLY_WITH_QUOTE'] .'" />',
+-------------------------------------------------
+
+------------------ Ниже вставить ------------------
+// Просмотр кода топика
+'CODE_IMG'       => ($bb_cfg['text_buttons']) ? $lang['CODE_TOPIC_TXTB'] : '<img src="'. $images['icon_code'] .'" alt="'.$lang['CODE_TOPIC_TXTB'].'" title="'. $lang['CODE'] .'" />',
+---------------------------------------------------
+
+------------------ Открыть viewtopic.tpl (В вашем шаблоне) и найти ------------------
+<!-- IF SPOILER_OPENED -->
+<script type="text/javascript">
+	$(document).ready(function(){ $('div.sp-head').click(); });
+</script>
+<!-- ENDIF -->
+-------------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+<!-- IF $bb_cfg['show_post_bbcode_button'] -->
+<script type="text/javascript">
+    (function () {
+        let loadedText = [];
+        ajax.view_post = function (post_id) {
+            if (loadedText[post_id] != null) {
+                $('#ptx-' + post_id).toggle();
+                return;
+            }
+            ajax.exec({
+                action: 'view_post',
+                post_id: post_id,
+                return_text: true,
+            });
+        };
+        ajax.callback.view_post = function (data) {
+            loadedText[data.post_id] = true;
+            $('#post_' + data.post_id + ' div.post_body').prepend(
+                '<div class="tCenter" id="ptx-' + data.post_id + '"><textarea style="width: 99%; height: 200px; line-height: 1.2;">' + data['post_text'] + '</textarea><hr></div>'
+            );
+        };
+    })();
+</script>
+<!-- ENDIF -->
+---------------------------------------------------
+
+------------------ Далее найти ------------------
+<!-- IF postrow.DELETE --><a class="txtb" href="<!-- IF $bb_cfg['use_ajax_posts'] -->" onclick="ajax.exec({ action: 'posts', post_id: {postrow.POST_ID}, topic_id : {TOPIC_ID}, type: 'delete'}); return false;<!-- ELSE -->{DELETE_POST_URL}{postrow.POST_ID}<!-- ENDIF -->">{DELETE_POST_IMG}</a>{POST_BTN_SPACER}<!-- ENDIF -->
+-------------------------------------------------
+
+------------------ Ниже вставить ------------------
+<!-- IF postrow.IS_FIRST_POST && $bb_cfg['show_post_bbcode_button'] --><a href="#" class="txtb" onclick="ajax.view_post('{postrow.POST_ID}'); return false;">{CODE_IMG}</a><!-- ENDIF -->
+---------------------------------------------------
