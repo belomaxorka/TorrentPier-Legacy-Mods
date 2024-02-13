@@ -98,7 +98,7 @@ $template->assign_vars(array(
 
 ------------------ Ниже вставить ------------------
 // Просмотр кода топика
-'CODE_IMG'       => ($bb_cfg['text_buttons']) ? $lang['CODE_TOPIC_TXTB'] : '<img src="'. $images['icon_code'] .'" alt="'.$lang['CODE_TOPIC_TXTB'].'" title="'. $lang['CODE'] .'" />',
+'CODE_IMG'        => ($bb_cfg['text_buttons']) ? $lang['CODE_TOPIC_TXTB'] : '<img src="'. $images['icon_code'] .'" alt="'.$lang['CODE_TOPIC_TXTB'].'" title="'. $lang['CODE'] .'" />',
 ---------------------------------------------------
 
 ------------------ Открыть viewtopic.tpl (В вашем шаблоне) и найти ------------------
