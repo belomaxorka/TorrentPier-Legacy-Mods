@@ -1,3 +1,27 @@
+<script type="text/javascript">
+	(function () {
+		let loadedText = [];
+		ajax.view_post = function (post_id) {
+			if (loadedText[post_id] != null) {
+				$('#ptx-' + post_id).toggle();
+				return;
+			}
+			ajax.exec({
+				action: 'view_post',
+				post_id: post_id,
+				return_text: true,
+			});
+		};
+		ajax.callback.view_post = function (data) {
+			loadedText[data.post_id] = true;
+			$('#post_' + data.post_id + ' div.post_body').prepend(
+				'<div class="tCenter" id="ptx-' + data.post_id + '"><textarea style="width: 99%; height: 200px; line-height: 1.2;">' + data['post_text'] + '</textarea><hr></div>'
+			);
+		};
+	})();
+</script>
+
+
 <h1 class="pagetitle">Закладки</h1>
 
 <script type="text/javascript">

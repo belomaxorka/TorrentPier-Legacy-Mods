@@ -8,6 +8,53 @@
 $bb_cfg['show_post_bbcode_button'] = true;
 -----------------------------------------------------------------------------------
 
+------------------ Открыть library/ajax/view_post.php и найти ------------------
+global $user, $lang;
+--------------------------------------------------------------------------------
+
+------------------ Заменить на ------------------
+global $user, $lang, $bb_cfg;
+-------------------------------------------------
+
+------------------ Далее найти ------------------
+$topic_id = (int) @$this->request['topic_id'];
+-------------------------------------------------
+
+------------------ Ниже вставить ------------------
+$return_text = $bb_cfg['show_post_bbcode_button'] && isset($this->request['return_text']) && (bool) $this->request['return_text'];
+---------------------------------------------------
+
+------------------ Далее найти ------------------
+$sql = "
+-------------------------------------------------
+
+------------------ Выше вставить ------------------
+$post_text_sql = $return_text ? "pt.post_text," : "IF(h.post_html IS NULL, pt.post_text, NULL) AS post_text,";
+---------------------------------------------------
+
+------------------ Далее найти ------------------
+h.post_html, IF(h.post_html IS NULL, pt.post_text, NULL) AS post_text,
+-------------------------------------------------
+
+------------------ Заменить на ------------------
+h.post_html, $post_text_sql
+-------------------------------------------------
+
+------------------ Далее найти ------------------
+$this->response['post_html'] = get_parsed_post($post_data);
+-------------------------------------------------
+
+------------------ Заменить на ------------------
+if ($return_text)
+{
+	$this->response['post_text'] = $post_data['post_text'];
+}
+else
+{
+	$this->response['post_html'] = get_parsed_post($post_data);
+}
+-------------------------------------------------
+
 ------------------ Открыть library/language/en/main.php и найти ------------------
 $lang['EDIT_DELETE_POST_TXTB'] = '[Edit]';
 ----------------------------------------------------------------------------------
@@ -65,26 +112,26 @@ $template->assign_vars(array(
 ------------------ Ниже вставить ------------------
 <!-- IF $bb_cfg['show_post_bbcode_button'] -->
 <script type="text/javascript">
-    (function () {
-        let loadedText = [];
-        ajax.view_post = function (post_id) {
-            if (loadedText[post_id] != null) {
-                $('#ptx-' + post_id).toggle();
-                return;
-            }
-            ajax.exec({
-                action: 'view_post',
-                post_id: post_id,
-                return_text: true,
-            });
-        };
-        ajax.callback.view_post = function (data) {
-            loadedText[data.post_id] = true;
-            $('#post_' + data.post_id + ' div.post_body').prepend(
-                '<div class="tCenter" id="ptx-' + data.post_id + '"><textarea style="width: 99%; height: 200px; line-height: 1.2;">' + data['post_text'] + '</textarea><hr></div>'
-            );
-        };
-    })();
+	(function () {
+		let loadedText = [];
+		ajax.view_post = function (post_id) {
+			if (loadedText[post_id] != null) {
+				$('#ptx-' + post_id).toggle();
+				return;
+			}
+			ajax.exec({
+				action: 'view_post',
+				post_id: post_id,
+				return_text: true,
+			});
+		};
+		ajax.callback.view_post = function (data) {
+			loadedText[data.post_id] = true;
+			$('#post_' + data.post_id + ' div.post_body').prepend(
+				'<div class="tCenter" id="ptx-' + data.post_id + '"><textarea style="width: 99%; height: 200px; line-height: 1.2;">' + data['post_text'] + '</textarea><hr></div>'
+			);
+		};
+	})();
 </script>
 <!-- ENDIF -->
 ---------------------------------------------------
