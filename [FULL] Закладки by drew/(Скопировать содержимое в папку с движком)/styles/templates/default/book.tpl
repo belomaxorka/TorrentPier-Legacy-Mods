@@ -18,7 +18,7 @@
 	<tbody>
 	<tr>
 		<td class="nav w100">
-			<a href="#" class="med normal" onclick="setCookie('{COOKIE_MARK}', 'all_forums');">{L_MARK_ALL_FORUMS_READ}</a>
+			<!-- IF LOGGED_IN --><a href="#" class="med normal" onclick="setCookie('{COOKIE_MARK}', 'all_forums'); window.location.reload();">{L_MARK_ALL_FORUMS_READ}</a><!-- ENDIF -->
 		</td>
 	</tr>
 	</tbody>
