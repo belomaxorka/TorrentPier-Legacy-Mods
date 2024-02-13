@@ -221,13 +221,14 @@ if ($bb_cfg['last_added'] && $user->opt_js['poster'] && !IS_GUEST)
 	if (!$last_added = CACHE('lenta')->get("last_added$hide_poster_opt"))
 	{
 		$cat_ids = ($hide_poster_opt) ? implode(',', array_flip($hide_poster_user)) : 0;
+		$last_added_excluded = array_values(array_unique(array_merge(explode(',', $excluded_forums_csv), explode(',', $bb_cfg['last_added_excluded'])), SORT_NUMERIC));
 		$last_added = DB()->fetch_rowset("SELECT tr.topic_id, tr.forum_id,
 			tr.size, t.topic_title, t.topic_image, f.forum_name, u.username, u.user_rank
 			FROM  ". BB_BT_TORRENTS ." tr
 			LEFT JOIN ". BB_TOPICS ." t  ON tr.topic_id = t.topic_id
 			LEFT JOIN ". BB_FORUMS ." f  ON tr.forum_id = f.forum_id
 			LEFT JOIN ". BB_USERS  ." u  ON tr.poster_id = u.user_id
-			WHERE tr.forum_id NOT IN (". $excluded_forums_csv . $bb_cfg['last_added_excluded'] .")
+			WHERE tr.forum_id NOT IN (". implode(',', $last_added_excluded) .")
 				AND f.cat_id NOT IN($cat_ids)
 				AND f.allow_porno_topic = 0
 				AND f.allow_reg_tracker = 1
