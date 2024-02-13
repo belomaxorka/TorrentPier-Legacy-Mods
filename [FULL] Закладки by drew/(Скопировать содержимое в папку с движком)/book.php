@@ -4,6 +4,12 @@ define('BB_SCRIPT', 'book');
 define('BB_ROOT', './');
 require(BB_ROOT . 'common.php');
 
+//
+// Define censored word matches
+//
+$orig_word = $replacement_word = array();
+obtain_word_list($orig_word, $replacement_word);
+
 $page_cfg['use_tablesorter'] = true;
 
 // Init userdata
@@ -27,7 +33,7 @@ if (!$sql) {
 			'VIEWS' => $row['topic_views'],
 			'ID' => $row['topic_id'],
 			'FORUM' => '<a href="' . FORUM_URL . $row['forum_id'] . '">' . $row['forum_name'] . '</a>',
-			'TOPIC' => '<a href="' . TOPIC_URL . $row['topic_id'] . '">' . $row['topic_title'] . '</a>',
+			'TOPIC' => '<a title="' . preg_replace($orig_word, $replacement_word, $row['topic_title']) . '" href="' . TOPIC_URL . $row['topic_id'] . '">' . str_short(preg_replace($orig_word, $replacement_word, $row['topic_title']), 70) . '</a>',
 			'TOPIC_ICON' => get_topic_icon($row, $is_unread)
 		));
 	}
