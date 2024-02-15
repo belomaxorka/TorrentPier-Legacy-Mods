@@ -53,10 +53,23 @@ admin/admin_board.php
 #-----[ FIND ]------------------------------------------
 #
 
-'SEED_BONUS_USER_REGDATE' => $new['seed_bonus_user_regdate'],
+bb_update_config(array($config_name => $new[$config_name]));
 
 #
 #-----[ AFTER ADD ]-------------------------------------
+#
+
+// Постеры раздач
+if ($bb_cfg['last_added'] && $config_name == 'last_added_excluded') CACHE('lenta')->rm();
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+'SEED_BONUS_USER_REGDATE' => $new['seed_bonus_user_regdate'],
+
+#
+#-----[ BEFORE ADD ]------------------------------------------
 #
 
 // Постеры раздач
@@ -64,19 +77,6 @@ admin/admin_board.php
 'NEW_POSTER'     => $new['new_poster'],
 'LIMIT_POSTER'   => $new['limit_poster'],
 'LAST_ADDED_EXCLUDED' => $new['last_added_excluded'],
-
-#
-#-----[ FIND ]------------------------------------------
-#
-
-bb_update_config(array($config_name => $new[$config_name]));
-
-#
-#-----[ BEFORE ADD ]------------------------------------------
-#
-
-// Постеры раздач
-if ($bb_cfg['last_added'] && $config_name == 'last_added_excluded') CACHE('lenta')->rm();
 
 #
 #-----[ OPEN ]------------------------------------------
