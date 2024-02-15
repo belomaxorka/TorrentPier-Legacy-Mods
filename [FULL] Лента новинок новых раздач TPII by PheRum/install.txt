@@ -60,7 +60,7 @@ bb_update_config(array($config_name => $new[$config_name]));
 #
 
 // Постеры раздач
-if ($bb_cfg['last_added'] && $config_name == 'last_added_excluded') CACHE('lenta')->rm();
+if ($bb_cfg['last_added'] && ($config_name == 'last_added_excluded' || $config_name == 'limit_poster')) CACHE('lenta')->rm();
 
 #
 #-----[ FIND ]------------------------------------------
