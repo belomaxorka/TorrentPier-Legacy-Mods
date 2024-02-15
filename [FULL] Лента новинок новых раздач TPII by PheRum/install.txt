@@ -4,7 +4,7 @@
 ## Описание мода: Мод позволяет видеть новые раздачи на трекере в виде ленты последних релизов.
 ##
 ## Адаптация: belomaxorka
-## Версия: v1.1.8
+## Версия: v1.1.9
 ## Совместимость: v2.1.5 / LTS
 ##
 ## Уровень инсталяции: простой
@@ -64,6 +64,19 @@ admin/admin_board.php
 'NEW_POSTER'     => $new['new_poster'],
 'LIMIT_POSTER'   => $new['limit_poster'],
 'LAST_ADDED_EXCLUDED' => $new['last_added_excluded'],
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+bb_update_config(array($config_name => $new[$config_name]));
+
+#
+#-----[ BEFORE ADD ]------------------------------------------
+#
+
+// Постеры раздач
+if ($bb_cfg['last_added'] && $config_name == 'last_added_excluded') CACHE('lenta')->rm();
 
 #
 #-----[ OPEN ]------------------------------------------
