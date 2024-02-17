@@ -114,8 +114,8 @@ library/includes/page_header.php
 #
 
 // Постеры раздач
-'LAST_ADDED'    => ($bb_cfg['last_added'] && BB_SCRIPT == 'index'),
-'POSTER'        => $user->opt_js['poster'],
+'LAST_ADDED'         => ($bb_cfg['last_added'] && BB_SCRIPT == 'index'),
+'POSTER'             => $user->opt_js['poster'],
 
 #
 #-----[ OPEN ]------------------------------------------
