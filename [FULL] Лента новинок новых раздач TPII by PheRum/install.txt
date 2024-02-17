@@ -91,7 +91,7 @@ library/includes/sessions.php
 'hl_tr'    => 1,     // show cursor in tracker.php
 
 #
-#-----[ ADD ]------------------------------------------
+#-----[ AFTER ADD ]------------------------------------------
 #
 
 // Постеры раздач
@@ -110,7 +110,7 @@ library/includes/page_header.php
 'USE_TABLESORTER'    => !empty($page_cfg['use_tablesorter']),
 
 #
-#-----[ ADD ]------------------------------------------
+#-----[ AFTER ADD ]------------------------------------------
 #
 
 // Постеры раздач
