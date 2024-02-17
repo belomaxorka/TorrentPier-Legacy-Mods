@@ -234,7 +234,6 @@ if ($bb_cfg['last_added'] && $user->opt_js['poster'] && !IS_GUEST)
 	if (!$last_added = CACHE('lenta')->get("last_added$hide_poster_opt"))
 	{
 		$cat_ids = ($hide_poster_opt) ? implode(',', array_flip($hide_poster_user)) : 0;
-		$last_added_excluded = array_values(array_unique(array_merge(explode(',', $bb_cfg['last_added_excluded']), explode(',', $bb_cfg['trash_forum_id'])), SORT_NUMERIC));
 		$last_added = DB()->fetch_rowset("SELECT tr.topic_id, tr.forum_id,
 			tr.size, t.topic_title, t.topic_image, f.forum_name, u.username, u.user_rank
 			FROM  ". BB_BT_TORRENTS ." tr
