@@ -240,7 +240,7 @@ if ($bb_cfg['last_added'] && $user->opt_js['poster'] && !IS_GUEST)
 			LEFT JOIN ". BB_TOPICS ." t  ON tr.topic_id = t.topic_id
 			LEFT JOIN ". BB_FORUMS ." f  ON tr.forum_id = f.forum_id
 			LEFT JOIN ". BB_USERS  ." u  ON tr.poster_id = u.user_id
-			WHERE tr.forum_id NOT IN (". implode(',', $last_added_excluded) .")
+			WHERE tr.forum_id NOT IN (". get_id_csv(explode(',', $bb_cfg['last_added_excluded'])) .")
 				AND f.cat_id NOT IN($cat_ids)
 				AND f.allow_porno_topic = 0
 				AND f.allow_reg_tracker = 1
