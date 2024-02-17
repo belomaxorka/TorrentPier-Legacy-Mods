@@ -73,10 +73,10 @@ if ($bb_cfg['last_added'] && ($config_name == 'last_added_excluded' || $config_n
 #
 
 // Постеры раздач
-'LAST_ADDED_ON'  => $new['last_added'],
-'NEW_POSTER'     => $new['new_poster'],
-'LIMIT_POSTER'   => $new['limit_poster'],
-'LAST_ADDED_EXCLUDED' => $new['last_added_excluded'],
+'LAST_ADDED_ON'           => $new['last_added'],
+'NEW_POSTER'              => $new['new_poster'],
+'LIMIT_POSTER'            => $new['limit_poster'],
+'LAST_ADDED_EXCLUDED'     => $new['last_added_excluded'],
 
 #
 #-----[ OPEN ]------------------------------------------
