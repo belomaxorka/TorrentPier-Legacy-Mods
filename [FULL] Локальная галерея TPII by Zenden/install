@@ -116,6 +116,7 @@ function thumb($path)
 {
 	global $bb_cfg, $userdata;
 
+	$img = null;
 	if (($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpg') or ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpeg')) {
 		$img = imagecreatefromjpeg($path);
 	} elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'png') {
