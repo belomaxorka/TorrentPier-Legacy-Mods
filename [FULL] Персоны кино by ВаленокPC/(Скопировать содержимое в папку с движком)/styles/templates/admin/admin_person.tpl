@@ -164,7 +164,7 @@
 <br/>
 
 <a href="{U_PERS_ADD}" class="bold">{L_AD_PERS_ADD_NEW}</a> &#0183;
-<a href="{U_PERS_POST_UP}" onclick="window.open(this.href, '', 'HEIGHT=430, WIDTH=760, resizable=yes'); return false;" class="bold">{L_AD_PERS_SYC}</a>&#0183;
+<a href="{U_PERS_POST_UP}" onclick="window.open(this.href, '', 'HEIGHT=430, WIDTH=760, resizable=yes'); return false;" class="bold">{L_AD_PERS_SYC}</a> &#0183;
 <a href="{U_PERS_CONF}" class="bold">{L_AD_PERS_CONFIG}</a> &#0183;
 <a href="{U_PERS_PARSER}" onclick="window.open(this.href, '', 'HEIGHT=430, WIDTH=760, resizable=yes'); return false;" class="bold">{L_AD_PERS_PARSER}</a>
 <br/><br/>
@@ -229,7 +229,7 @@
 <br/>
 
 <a href="{U_PERS_ADD}" class="bold">{L_AD_PERS_ADD_NEW}</a> &#0183;
-<a href="{U_PERS_POST_UP}" onclick="window.open(this.href, '', 'HEIGHT=430, WIDTH=760, resizable=yes'); return false;" class="bold">{L_AD_PERS_SYC}</a>&#0183;
+<a href="{U_PERS_POST_UP}" onclick="window.open(this.href, '', 'HEIGHT=430, WIDTH=760, resizable=yes'); return false;" class="bold">{L_AD_PERS_SYC}</a> &#0183;
 <a href="{U_PERS_CONF}" class="bold">{L_AD_PERS_CONFIG}</a> &#0183;
 <a href="{U_PERS_PARSER}" onclick="window.open(this.href, '', 'HEIGHT=430, WIDTH=760, resizable=yes'); return false;" class="bold">{L_AD_PERS_PARSER}</a>
 <br/><br/>

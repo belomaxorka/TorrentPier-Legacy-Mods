@@ -101,7 +101,7 @@
 	<tr>
 		<td class="row1 vTop tCenter" width="5%">
 			<div id="avatar-img" class="mrg_4 med">
-				<img title="{PERS_NAME_RU} <!-- IF PERS_NAME_EN -->({PERS_NAME_EN})<!-- ENDIF -->" width="260px" height="370px" src="{PERS_IMAGES}" alt="{PERS_NAME_RU} <!-- IF PERS_NAME_EN -->({PERS_NAME_EN})<!-- ENDIF -->">
+				<img title="{PERS_NAME_RU} <!-- IF PERS_NAME_EN -->({PERS_NAME_EN})<!-- ENDIF -->" width="240px" height="385px" src="{PERS_IMAGES}" alt="{PERS_NAME_RU} <!-- IF PERS_NAME_EN -->({PERS_NAME_EN})<!-- ENDIF -->">
 			</div>
 			<div class="spacer_4"></div>
 			<h4 class="cat border bw_TB" id="username">{L_DISPLAYING_OPTIONS}</h4>
