@@ -1,8 +1,8 @@
------------------- Блэкджек ------------------
+------------------ Персоны кино ------------------
 Автор: ВаленокPC
 Обновления: belomaxorka
 Версия: v3.0.0
-----------------------------------------------
+--------------------------------------------------
 
 ------------------ SQL ------------------
 CREATE TABLE IF NOT EXISTS `bb_person`
@@ -141,7 +141,6 @@ $lang['AD_PERS_PARSER_NOT_ID'] = 'Вы не указали ID персоны!';
 	font-family: Tahoma, Geneva, sans-serif;
 	width: 100%
 }
-
 .listPersons li {
 	box-shadow: 1px 1px 0 rgba(0, 0, 0, .1) inset, -1px -1px 0 rgba(0, 0, 0, .1) inset;
 	margin: 0 .4% 1%;
@@ -156,7 +155,6 @@ $lang['AD_PERS_PARSER_NOT_ID'] = 'Вы не указали ID персоны!';
 	color: #666;
 	position: relative
 }
-
 .listPersons li a.thumb {
 	margin: 0;
 	background-size: auto 101%;
@@ -167,7 +165,6 @@ $lang['AD_PERS_PARSER_NOT_ID'] = 'Вы не указали ID персоны!';
 	border-radius: 2px;
 	overflow: hidden
 }
-
 .listPersons li a.thumb img, .listPersons li span.sthumbs a img {
 	width: 100%;
 	height: auto;
@@ -175,7 +172,6 @@ $lang['AD_PERS_PARSER_NOT_ID'] = 'Вы не указали ID персоны!';
 	zoom: 1;
 	border: none
 }
-
 .listPersons li span.base {
 	position: absolute;
 	bottom: 0;
@@ -184,7 +180,6 @@ $lang['AD_PERS_PARSER_NOT_ID'] = 'Вы не указали ID персоны!';
 	padding: .3% 2.5%;
 	background: rgba(0, 0, 0, .75)
 }
-
 .listPersons li span.nameru {
 	font-size: 160%;
 	font-weight: 700;
@@ -198,7 +193,6 @@ $lang['AD_PERS_PARSER_NOT_ID'] = 'Вы не указали ID персоны!';
 	display: block;
 	text-decoration: none
 }
-
 .listPersons li p.nameen {
 	font-size: 90%;
 	display: block;
