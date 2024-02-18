@@ -44,9 +44,7 @@ if (!empty($_FILES['imgfile']['name']) && $bb_cfg['imgs']['up_allowed']) {
 			$imgs_tags_thumb[] = '[url=' . FULL_URL . $path . '][img]' . FULL_URL . $thumb . '[/img][/url]';
 			$imgs_tags_spoiler[] = isset($_POST['thumb']) ? '[url=' . FULL_URL . $path . '][img]' . FULL_URL . $thumb . '[/img][/url]' : '[img]' . FULL_URL . $path . '[/img]';
 
-			if (isset($_POST['thumb'])) {
-				$upload->thumb($path);
-			}
+			$upload->thumb($path, isset($_POST['thumb']));
 		} else {
 			$errors = array_merge($errors, $upload->errors);
 		}
