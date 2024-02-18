@@ -122,3 +122,97 @@ $lang['AD_PERS_PARSER_LIST_EMPTY'] = '<b>ОШИБКА</b>, Список ID пе�
 $lang['AD_PERS_PARSER_INVALID_ID'] = 'Персоны с таким ID нет!';
 $lang['AD_PERS_PARSER_NOT_ID'] = 'Вы не указали ID персоны!';
 ------------------------------------------------------------------------------------------------------
+
+------------------ Открыть page_header.tpl (В вашем шаблоне) и найти ------------------
+<a href="{U_TRACKER}"><b>{L_TRACKER}</b></a><span style="color:#CDCDCD;">|</span>
+---------------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+<a href="{U_PERSON}"><b>{L_PERS_PERSONS}</b></a><span style="color:#CDCDCD;">|</span>
+---------------------------------------------------
+
+------------------ Открыть main.css (В вашем шаблоне) и вставить в конце ------------------
+.listPersons {
+	letter-spacing: -5px;
+	clear: both;
+	display: inline-block;
+	font-family: Tahoma, Geneva, sans-serif;
+	width: 100%
+}
+
+.listPersons li {
+	box-shadow: 1px 1px 0 rgba(0, 0, 0, .1) inset, -1px -1px 0 rgba(0, 0, 0, .1) inset;
+	margin: 0 .4% 1%;
+	width: 11%;
+	padding: .3%;
+	border-radius: 2px;
+	display: inline-block;
+	zoom: 1;
+	vertical-align: top;
+	letter-spacing: normal;
+	font-size: 80%;
+	color: #666;
+	position: relative
+}
+
+.listPersons li a.thumb {
+	margin: 0;
+	background-size: auto 101%;
+	background-position: center;
+	background-repeat: no-repeat;
+	display: block;
+	position: relative;
+	border-radius: 2px;
+	overflow: hidden
+}
+
+.listPersons li a.thumb img, .listPersons li span.sthumbs a img {
+	width: 100%;
+	height: auto;
+	display: inline-block;
+	zoom: 1;
+	border: none
+}
+
+.listPersons li span.base {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 95%;
+	padding: .3% 2.5%;
+	background: rgba(0, 0, 0, .75)
+}
+
+.listPersons li span.nameru {
+	font-size: 160%;
+	font-weight: 700;
+	margin: 0;
+	color: #fff;
+	line-height: 160%;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	display: block;
+	text-decoration: none
+}
+
+.listPersons li p.nameen {
+	font-size: 90%;
+	display: block;
+	margin: 0 0 6px;
+	color: #ccc
+}
+-------------------------------------------------------------------------------------------
+
+------------------ Открыть ajax.php и найти ------------------
+case 'sitemap':
+	require(CLASS_DIR .'sitemap.php');
+	break;
+--------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+case 'person':
+	require_once (CLASS_DIR .'person.class.php');
+	break;
+---------------------------------------------------
