@@ -112,7 +112,7 @@ else if ($mode == 'imgfile')
 	return $this->_move($file_path);
 }
 ------------------------------ [ Далее в самом низу перед последней фигурной скобкой вставить ] ------------------------------
-function thumb($path)
+function thumb($path, $with_thumb)
 {
 	global $bb_cfg, $userdata;
 
@@ -145,31 +145,34 @@ function thumb($path)
 		imagedestroy($img_watermark);
 	}
 
-	$resize = imagesy($img) / imagesx($img);
-	$new_width = $this->cfg['thumb_height'] / $resize;
-	$out_img = get_imgfile_path($userdata['user_id'], $this->file_ext_id, $userdata['user_id'] . $this->file['name'] . $this->file['size'], true);
-	$img_create = imagecreatetruecolor($new_width, $this->cfg['thumb_height']);
+	if ($with_thumb) {
+		$resize = imagesy($img) / imagesx($img);
+		$new_width = $this->cfg['thumb_height'] / $resize;
+		$out_img = get_imgfile_path($userdata['user_id'], $this->file_ext_id, $userdata['user_id'] . $this->file['name'] . $this->file['size'], true);
+		$img_create = imagecreatetruecolor($new_width, $this->cfg['thumb_height']);
 
-	if ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'gif' || $bb_cfg['file_id_ext'][$this->file_ext_id] == 'png') {
-		imagecolortransparent($img_create, imagecolorallocate($img_create, 0, 0, 0));
-		if ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'png') {
-			imagealphablending($img_create, false);
-			imagesavealpha($img_create, true);
+		if ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'gif' || $bb_cfg['file_id_ext'][$this->file_ext_id] == 'png') {
+			imagecolortransparent($img_create, imagecolorallocate($img_create, 0, 0, 0));
+			if ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'png') {
+				imagealphablending($img_create, false);
+				imagesavealpha($img_create, true);
+			}
 		}
-	}
 
-	imagecopyresampled($img_create, $img, 0, 0, 0, 0, $new_width, $this->cfg['thumb_height'], imagesx($img), imagesy($img));
+		imagecopyresampled($img_create, $img, 0, 0, 0, 0, $new_width, $this->cfg['thumb_height'], imagesx($img), imagesy($img));
 
-	if (($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpg') or ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpeg')) {
-		imagejpeg($img_create, $out_img, 75);
-	} elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'png') {
-		imagepng($img_create, $out_img);
-	} elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'gif') {
-		imagegif($img_create, $out_img);
+		if (($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpg') or ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpeg')) {
+			imagejpeg($img_create, $out_img, 75);
+		} elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'png') {
+			imagepng($img_create, $out_img);
+		} elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'gif') {
+			imagegif($img_create, $out_img);
+		}
+
+		imagedestroy($img_create);
 	}
 
 	imagedestroy($img);
-	imagedestroy($img_create);
 }
 ------------------------------ [ Открыть function_admin.php и найти ] ------------------------------
 function topic_delete ($mode_or_topic_id, $forum_id = null, $prune_time = 0, $prune_all = false)
