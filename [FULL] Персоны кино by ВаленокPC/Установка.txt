@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `bb_person`
 	`pers_gender`     tinyint(1)           NOT NULL DEFAULT '0',
 	`pers_biography`  text                 NOT NULL,
 	`pers_career`     varchar(150)         NOT NULL DEFAULT '',
-	`pers_foto`       varchar(200)         NOT NULL DEFAULT '',
+	`pers_foto`       varchar(255)         NOT NULL DEFAULT '',
 	`pers_birthdate`  date                 NOT NULL DEFAULT '0000-00-00',
 	`pers_birthplace` varchar(255)         NOT NULL,
 	`kp_id`           mediumint(8)         NOT NULL,
@@ -221,7 +221,7 @@ case 'person':
 -------------------------------------------------
 
 ------------------ Ниже вставить ------------------
-'person'  => array('mod'),
+'person'            => array('mod'),
 ---------------------------------------------------
 
 ------------------ Далее найти ------------------
@@ -263,8 +263,8 @@ if ($bb_cfg['pers_enable']) {
 
 ------------------ Открыть library/includes/functions_post.php и найти ------------------
 update_post_html(array(
-	'post_id'  => $post_id,
-	'post_text'  => $post_message,
+	'post_id'        => $post_id,
+	'post_text'      => $post_message,
 ));
 -----------------------------------------------------------------------------------------
 
