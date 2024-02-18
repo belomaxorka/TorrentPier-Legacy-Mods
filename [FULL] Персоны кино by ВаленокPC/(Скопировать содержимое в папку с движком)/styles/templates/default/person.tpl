@@ -277,10 +277,12 @@
                             </p>
                         </span>
 					</a>
+					<!-- IF IS_ADMIN -->
 					<span class="action">
                         <span class="floatL"><a href="{pers_list.U_PERS_IDIT}">{L_EDIT}</a></span>
                         <span class="floatR"><a href="#" onclick="ajax.exec({ action: 'person', pers_id: {pers_list.PERS_ID}, type: 'delete'}); return false;">{L_DELETE}</a></span>
                     </span>
+					<!-- ENDIF -->
 				</li>
 				<!-- END pers_list -->
 			</ui>
