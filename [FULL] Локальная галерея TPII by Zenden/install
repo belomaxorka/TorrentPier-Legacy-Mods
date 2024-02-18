@@ -130,14 +130,16 @@ function thumb($path)
 		// Get available space
 		$spaceX = imagesx($img) - imagesx($img_watermark);
 		$spaceY = imagesy($img) - imagesy($img_watermark);
-		// Set default center
-		$x = (int) round(($spaceX / 2) + 0);
-		$y = (int) round(($spaceY / 2) + 0);
-		// Set bottom-right as default position
-		$y = $spaceY + 0;
-		$x = $spaceX + 0;
 		// Append watermark to image
-		imagecopy($img, $img_watermark, $x, $y, 0, 0, imagesx($img_watermark), imagesy($img_watermark));
+		imagecopy($img, $img_watermark, $spaceX, $spaceY, 0, 0, imagesx($img_watermark), imagesy($img_watermark));
+		// Save original image with watermark
+		if (($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpg') or ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'jpeg')) {
+			imagejpeg($img, $path, 100);
+		} elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'png') {
+			imagepng($img, $path);
+		} elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'gif') {
+			imagegif($img, $path);
+		}
 		// Unset gd object
 		imagedestroy($img_watermark);
 	}
