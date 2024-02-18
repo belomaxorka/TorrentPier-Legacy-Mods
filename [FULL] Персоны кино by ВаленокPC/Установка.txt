@@ -238,3 +238,52 @@ function person()
 	require(AJAX_DIR .'mod_person.php');
 }
 ---------------------------------------------------
+
+------------------ Открыть library/includes/bbcode.php и найти ------------------
+$message = bbcode2html($postrow['post_text']);
+---------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+if ($bb_cfg['pers_enable']) {
+	$actrow = DB()->fetch_rowset("SELECT pers_id, pers_runame, pers_enname FROM " . BB_PERSON . ' ORDER BY pers_id ASC');
+	if ($actrow) {
+		foreach ($actrow as $key => $row) {
+			$runame = explode(',', $row['pers_runame']);
+			$enname = explode(',', $row['pers_enname']);
+			$array_name = array_diff(array_merge($runame, $enname), array(''));
+
+			foreach ($array_name as $word) {
+				$name[] = $word;
+				$replace[] = str_replace(array('{id}', '{name}'), array($row['pers_id'], $word), $bb_cfg['pers_repl_text']);
+			}
+		}
+		$message = str_replace($name, $replace, $message);
+	}
+}
+---------------------------------------------------
+
+------------------ Открыть library/includes/functions_post.php и найти ------------------
+update_post_html(array(
+	'post_id'  => $post_id,
+	'post_text'  => $post_message,
+));
+-----------------------------------------------------------------------------------------
+
+------------------ Выше вставить ------------------
+if ($bb_cfg['pers_enable']) {
+	$actrow = DB()->fetch_rowset("SELECT pers_id, pers_runame, pers_enname FROM " . BB_PERSON . ' ORDER BY pers_id ASC');
+	if ($actrow) {
+		foreach ($actrow as $key => $row) {
+			$runame = explode(',', $row['pers_runame']);
+			$enname = explode(',', $row['pers_enname']);
+			$array_name = array_diff(array_merge($runame, $enname), array(''));
+
+			foreach ($array_name as $word) {
+				$name[] = $word;
+				$replace[] = str_replace(array('{id}', '{name}'), array($row['pers_id'], $word), $bb_cfg['pers_repl_text']);
+			}
+		}
+		$message = str_replace($name, $replace, $message);
+	}
+}
+---------------------------------------------------
