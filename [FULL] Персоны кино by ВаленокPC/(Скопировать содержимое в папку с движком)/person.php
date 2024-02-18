@@ -6,7 +6,9 @@ define('BB_ROOT', './');
 require(BB_ROOT . 'common.php');
 require(INC_DIR . 'bbcode.php');
 
-$user->session_start(array('req_login' => true));
+$allow_for_guests = true; // Показывать персоны гостям
+
+$user->session_start(array('req_login' => $allow_for_guests));
 
 $mode = request_var('mode', '');
 $page = isset($_REQUEST['start']) ? abs(intval($_REQUEST['start'])) : 0;
