@@ -5,19 +5,21 @@
 ----------------------------------------------
 
 ------------------ SQL ------------------
-CREATE TABLE IF NOT EXISTS `bb_person` (
-  `pers_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  `pers_runame` varchar(150) NOT NULL DEFAULT '',
-  `pers_enname` varchar(150) NOT NULL DEFAULT '',
-  `pers_gender` tinyint(1) NOT NULL DEFAULT '0',
-  `pers_biography` text NOT NULL,
-  `pers_career` varchar(150) NOT NULL DEFAULT '',
-  `pers_foto` varchar(200) NOT NULL DEFAULT '',
-  `pers_birthdate` date NOT NULL DEFAULT '0000-00-00',
-  `pers_birthplace` varchar(255) NOT NULL,
-  `kp_id` mediumint(8) NOT NULL,
-  PRIMARY KEY (`pers_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+CREATE TABLE IF NOT EXISTS `bb_person`
+(
+	`pers_id`         smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+	`pers_runame`     varchar(150)         NOT NULL DEFAULT '',
+	`pers_enname`     varchar(150)         NOT NULL DEFAULT '',
+	`pers_gender`     tinyint(1)           NOT NULL DEFAULT '0',
+	`pers_biography`  text                 NOT NULL,
+	`pers_career`     varchar(150)         NOT NULL DEFAULT '',
+	`pers_foto`       varchar(200)         NOT NULL DEFAULT '',
+	`pers_birthdate`  date                 NOT NULL DEFAULT '0000-00-00',
+	`pers_birthplace` varchar(255)         NOT NULL,
+	`kp_id`           mediumint(8)         NOT NULL,
+	PRIMARY KEY (`pers_id`)
+) ENGINE = MyISAM
+  DEFAULT CHARSET = utf8;
 
 INSERT INTO `bb_config` VALUES ('pers_enable', '1');
 INSERT INTO `bb_config` VALUES ('pers_repl_text', '<a href="person.php?id={id}">{name}</a>');
