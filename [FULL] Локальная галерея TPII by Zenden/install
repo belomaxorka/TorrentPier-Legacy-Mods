@@ -126,7 +126,7 @@ function thumb($path, $with_thumb)
 	}
 
 	// Append watermark
-	if (is_file($this->cfg['watermark'])) {
+	if (is_file($this->cfg['watermark']) && (pathinfo($this->cfg['watermark'], PATHINFO_EXTENSION) == 'png')) {
 		$img_watermark = imagecreatefrompng($this->cfg['watermark']);
 		// Get available space
 		$spaceX = imagesx($img) - imagesx($img_watermark);
