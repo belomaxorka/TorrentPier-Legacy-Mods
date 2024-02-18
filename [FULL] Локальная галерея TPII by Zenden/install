@@ -17,7 +17,7 @@ $bb_cfg['imgs'] = array(
 	'delete_img'	=> true,							// удалять картинку, при удалении топика или поста
 	'limit_imgs'	=> '5',								// ограничение на количество картинок за одну загрузку
 	'imgs_page'		=> '10',							// картинок на страницу
-	'watermark'     => DATA_DIR . '/watermark.jpg'      // водяной знак на изображении (false - чтобы отключить)
+	'watermark'     => DATA_DIR . '/watermark.png'      // водяной знак на изображении (false - чтобы отключить)
 );
 ------------------------------ [ Открыть main.php (языковые переменные) и в самом низу вставить ] ------------------------------
 // Галерея
@@ -122,6 +122,21 @@ function thumb($path)
 		$img = imagecreatefrompng($path);
 	} elseif ($bb_cfg['file_id_ext'][$this->file_ext_id] == 'gif') {
 		$img = imagecreatefromgif($path);
+	}
+
+	// Append watermark
+	if (is_file($this->cfg['watermark']))
+	{
+		$img_watermark = imagecreatefrompng($this->cfg['watermark']);
+		// Get available space
+		$spaceX = imagesx($img) - imagesx($img_watermark);
+		$spaceY = imagesy($img) - imagesy($img_watermark);
+		// Set default center
+		$x = (int) round(($spaceX / 2) + 0);
+		$y = (int) round(($spaceY / 2) + 0);
+		// Set bottom-right as default position
+		$y = $spaceY + 0;
+		$x = $spaceX + 0;
 	}
 
 	$resize = imagesy($img) / imagesx($img);
