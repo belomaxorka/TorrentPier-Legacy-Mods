@@ -92,15 +92,15 @@ $lang['ZODIAC_SIGN'] = array(
 
 // Person Admin
 $lang['AD_PERS_PANEL'] = 'Управление персонами';
-$lang['AD_PERS_PANEL_EXPLAIN'] = 'Здесь вы можете добавлять, редактировать, просматривать и удалять персон. Вы также можете обновить базу.';
+$lang['AD_PERS_PANEL_EXPLAIN'] = 'Здесь вы сможете добавлять, редактировать, просматривать и удалять персон. Так же доступна функция обновление старых тем.';
 $lang['AD_PERS_ADD_NEW'] = 'Добавить персону';
-$lang['AD_PERS_SYC'] = 'Обновить посты';
+$lang['AD_PERS_SYC'] = 'Обновить старые темы';
 $lang['AD_PERS_ENABLE'] = 'Включить показ персон';
 $lang['AD_PERS_ENABLE_EXPLAIN'] = 'Выделять персон в торрент раздачах';
 $lang['AD_PERS_PER_PAGE'] = 'Персон на страницу';
 $lang['AD_PERS_REPLACE_TEXT'] = 'Как будет выглядеть ссылка в топиках';
 $lang['AD_PERS_CONFIG'] = 'Настройки';
-$lang['AD_PERS_CONFIG_EXPLAIN'] = 'Эта форма позволит вам изменить настройки мода персоны.';
+$lang['AD_PERS_CONFIG_EXPLAIN'] = 'Здесь вы сможете отредактировать настройки мода "Персоны"';
 $lang['AD_PERS_CONFIG_UPDATED'] = 'Настройки персон успешно изменены';
 $lang['AD_CLICK_RETURN_PERS_LIST'] = '%sПерейти к списку персон%s';
 $lang['AD_CLICK_RETURN_PERS_CONFIG'] = '%sВернуться к настройкам%s';
