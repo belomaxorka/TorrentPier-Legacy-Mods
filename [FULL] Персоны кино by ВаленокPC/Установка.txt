@@ -1,0 +1,124 @@
+------------------ Блэкджек ------------------
+Автор: ВаленокPC
+Обновления: belomaxorka
+Версия: v3.0.0
+----------------------------------------------
+
+------------------ SQL ------------------
+CREATE TABLE IF NOT EXISTS `bb_person` (
+  `pers_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `pers_runame` varchar(150) NOT NULL DEFAULT '',
+  `pers_enname` varchar(150) NOT NULL DEFAULT '',
+  `pers_gender` tinyint(1) NOT NULL DEFAULT '0',
+  `pers_biography` text NOT NULL,
+  `pers_career` varchar(150) NOT NULL DEFAULT '',
+  `pers_foto` varchar(200) NOT NULL DEFAULT '',
+  `pers_birthdate` date NOT NULL DEFAULT '0000-00-00',
+  `pers_birthplace` varchar(255) NOT NULL,
+  `kp_id` mediumint(8) NOT NULL,
+  PRIMARY KEY (`pers_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `bb_config` VALUES ('pers_enable', '1');
+INSERT INTO `bb_config` VALUES ('pers_repl_text', '<a href="person.php?id={id}">{name}</a>');
+INSERT INTO `bb_config` VALUES ('pers_per_page', '40');
+INSERT INTO `bb_config` VALUES ('pers_photo_dir', 'data/person');
+INSERT INTO `bb_config` VALUES ('pers_idkp_list', '');
+-----------------------------------------
+
+------------------ Открыть library/includes/init_bb.php и найти ------------------
+define('BB_ADS', 'bb_ads');
+----------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+define('BB_PERSON', 'bb_person');
+---------------------------------------------------
+
+------------------ Открыть library\includes\page_header.php и найти ------------------
+'U_TRACKER'  => "tracker.php",
+--------------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+'U_PERSON'         => "person.php",
+---------------------------------------------------
+
+------------------ Открыть library\includes\language\ru\main.php и в конце вставить ------------------
+// Person
+$lang['PERS_PERSONS'] = 'Персоны';
+$lang['PERS_RU_NAME'] = 'Имя на Русском';
+$lang['PERS_EN_NAME'] = 'Имя на Английском';
+$lang['PERS_NAME'] = 'Имя персоны';
+$lang['PERS_ID'] = 'ID персоны';
+$lang['PERS_BIRTHDATE'] = 'Дата рождения';
+$lang['PERS_BIRTHPLACE'] = 'Место рождения';
+$lang['PERS_FOTO'] = 'Фотография';
+$lang['PERS_CAREER'] = 'Карьера';
+$lang['PERS_BIOGRAPHY'] = 'Биография';
+$lang['KP_ID'] = 'ID страницы на Кинопоиске';
+$lang['KP_STR'] = 'Страница на Кинопоиске';
+$lang['PERS_INFO'] = 'Информация о персоне';
+$lang['PERS_LIST'] = 'Список персон';
+$lang['PERS_EDIT'] = 'Редактирование персоны';
+$lang['PERS_LIST_TORR'] = 'Раздачи с персоной';
+$lang['PERS_EDIT_TETLE'] = 'Редактирование персоны';
+$lang['PERS_NEW_ADD_TETLE'] = 'Добавление персоны';
+$lang['NO_PERS_NAME'] = 'Вы должны указать имя персоны.';
+$lang['PERS_NO_LIST'] = 'Список пуст';
+$lang['PERS_NO'] = 'Такого актера не существует.';
+$lang['PERS_ADD'] = 'Персона была успешно добавлена!';
+$lang['PERS_EDITED'] = 'Персона была успешно изменена!';
+$lang['PERS_DELETED'] = 'Персона была успешно удалена!';
+$lang['PERS_U_RETURN'] = 'Перейти к просмотру персоны';
+$lang['PERS_CONFIRM_DELETE'] = 'Вы уверены, что хотите удалить эту персону?';
+$lang['PERS_NO_BIRTHDAY'] = 'Вы не указали дату рождения!';
+$lang['PERS_WORK_IMAGES_FORMAT'] = 'Не верный формат изображения! Доступны только (gif, png, jpg)';
+$lang['PERS_NO_TORR_LIST'] = 'Нет раздач с этой персоной.';
+$lang['KP_ID_NO_FORMAT'] = 'Вы должны указать только число.';
+$lang['PERS_THERE'] = 'Эта персона уже есть!';
+$lang['ZODIAC_SIGN'] = array(
+  'AQUARIUS'  => 'Водолей',
+  'ARIES'  => 'Овен',
+  'CANCER'  => 'Рак',
+  'CAPRICORN'  => 'Козерог',
+  'GEMINI'  => 'Близнецы',
+  'LEO'  => 'Лев',
+  'LIBRA'  => 'Весы',
+  'PISCES'  => 'Рыбы',
+  'SAGITTARIUS'  => 'Стрелец',
+  'SCORPIO'  => 'Скорпион',
+  'TAURUS'  => 'Телец',
+  'VIRGO'  => 'Дева',
+);
+
+// Person Admin
+$lang['AD_PERS_PANEL'] = 'Управление персонами';
+$lang['AD_PERS_PANEL_EXPLAIN'] = 'Здесь вы можете добавлять, редактировать, просматривать и удалять персон. Вы также можете обновить базу.';
+$lang['AD_PERS_ADD_NEW'] = 'Добавить персону';
+$lang['AD_PERS_SYC'] = 'Обновить посты';
+$lang['AD_PERS_ENABLE'] = 'Включить показ персон';
+$lang['AD_PERS_ENABLE_EXPLAIN'] = 'Выделять персон в торрент раздачах';
+$lang['AD_PERS_PER_PAGE'] = 'Персон на страницу';
+$lang['AD_PERS_REPLACE_TEXT'] = 'Как будет выглядеть ссылка в топиках';
+$lang['AD_PERS_CONFIG'] = 'Настройки';
+$lang['AD_PERS_CONFIG_EXPLAIN'] = 'Эта форма позволит вам изменить настройки мода персоны.';
+$lang['AD_PERS_CONFIG_UPDATED'] = 'Настройки персон успешно изменены';
+$lang['AD_CLICK_RETURN_PERS_LIST'] = '%sПерейти к списку персон%s';
+$lang['AD_CLICK_RETURN_PERS_CONFIG'] = '%sВернуться к настройкам%s';
+$lang['AD_PERS_IDKP_LIST'] = 'Список ID персон с КиноПоиска';
+$lang['AD_PERS_IDKP_LIST_EXPLAIN'] = 'Каждый <b>ID</b> должен отделятся запятой!';
+$lang['AD_PERS_PHOTO_DIR'] = 'Путь к фотографиям';
+$lang['AD_PERS_PHOTO_DIR_EXPLAIN'] = 'Куда будут скачиваться фотографии персон (Путь указывать относительно корня сайта).';
+
+// Person Parser Admin
+$lang['AD_PERS_PARSER'] = 'Парсер';
+$lang['AD_PERS_PARSER_RUN'] = 'Запустить парсер';
+$lang['AD_PERS_AUTO_PARSER'] = 'Автоматический парсер персон';
+$lang['AD_PERS_PARSER_THERE'] = 'Эта персона уже есть! - <b>[NAME:<a target="_parent" href="/person.php?id=%s">%s</a>]</b>';
+$lang['AD_PERS_PARSER_NOT_FOUND'] = 'Ничего не найдено! - <b>[ID:%s]</b>';
+$lang['AD_PERS_PARSER_ADD_NEWS'] = 'Добавлена новая персона! - (<b><a target="_parent" href="/person.php?id=%s">%s</a></b>)';
+$lang['AD_PERS_PARSER_ERROR_NOT_NAME'] = '<b>Персона не добавлена (Имя персоны пусто)! - <i>[ID:%s]</i><b> ';
+$lang['AD_PERS_PARSER_ERROR'] = '<b>ОШИБКА</b>, неверные настройки парсера!';
+$lang['AD_PERS_PARSER_LIST_EMPTY'] = '<b>ОШИБКА</b>, Список ID персон пуст! Укажите в настройках.';
+$lang['AD_PERS_PARSER_INVALID_ID'] = 'Персоны с таким ID нет!';
+$lang['AD_PERS_PARSER_NOT_ID'] = 'Вы не указали ID персоны!';
+------------------------------------------------------------------------------------------------------
