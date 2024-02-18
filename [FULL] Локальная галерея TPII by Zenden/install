@@ -136,6 +136,10 @@ function thumb($path)
 		// Set bottom-right as default position
 		$y = $spaceY + 0;
 		$x = $spaceX + 0;
+		// Append watermark to image
+		imagecopy($img, $img_watermark, $x, $y, 0, 0, imagesx($img_watermark), imagesy($img_watermark));
+		// Unset gd object
+		imagedestroy($img_watermark);
 	}
 
 	$resize = imagesy($img) / imagesx($img);
