@@ -77,7 +77,9 @@
 					$("input[name='birthplace']").val(data.birthplace);
 					$("input[name='career']").val(data.career);
 				};
-			} else {alert('{L_AD_PERS_PARSER_NOT_ID}')}
+			} else {
+				alert('{L_AD_PERS_PARSER_NOT_ID}');
+			}
 		});
 	});
 </script>
@@ -147,7 +149,7 @@
 		</tr>
 		<tr>
 			<td class="catBottom" colspan="2">
-				<input type="submit" name="submit" value="{L_SUBMIT}" class="mainoption"/>&nbsp; &nbsp;
+				<input type="submit" name="submit" value="{L_SUBMIT}" class="mainoption"/>&nbsp;&nbsp;
 				<input type="reset" value="{L_RESET}" class="liteoption"/>
 			</td>
 		</tr>
@@ -227,11 +229,9 @@
 <br/>
 
 <a href="{U_PERS_ADD}" class="bold">{L_AD_PERS_ADD_NEW}</a> &#0183;
-<a href="{U_PERS_POST_UP}" onclick="window.open(this.href, '', 'HEIGHT=430, WIDTH=760, resizable=yes'); return false;"
-   class="bold">{L_AD_PERS_SYC}</a>&#0183;
+<a href="{U_PERS_POST_UP}" onclick="window.open(this.href, '', 'HEIGHT=430, WIDTH=760, resizable=yes'); return false;" class="bold">{L_AD_PERS_SYC}</a>&#0183;
 <a href="{U_PERS_CONF}" class="bold">{L_AD_PERS_CONFIG}</a> &#0183;
-<a href="{U_PERS_PARSER}" onclick="window.open(this.href, '', 'HEIGHT=430, WIDTH=760, resizable=yes'); return false;"
-   class="bold">{L_AD_PERS_PARSER}</a>
+<a href="{U_PERS_PARSER}" onclick="window.open(this.href, '', 'HEIGHT=430, WIDTH=760, resizable=yes'); return false;" class="bold">{L_AD_PERS_PARSER}</a>
 <br/><br/>
 <table class="forumline">
 	<tr>
