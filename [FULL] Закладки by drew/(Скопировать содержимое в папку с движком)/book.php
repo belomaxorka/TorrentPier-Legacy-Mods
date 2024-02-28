@@ -33,6 +33,7 @@ if (!$sql) {
 			'VIEWS' => $row['topic_views'],
 			'ID' => $row['topic_id'],
 			'FORUM' => '<a href="' . FORUM_URL . $row['forum_id'] . '">' . $row['forum_name'] . '</a>',
+			'POLL' => (bool)$row['topic_vote'],
 			'TOPIC' => '<a title="' . preg_replace($orig_word, $replacement_word, $row['topic_title']) . '" href="' . TOPIC_URL . $row['topic_id'] . '">' . str_short(preg_replace($orig_word, $replacement_word, $row['topic_title']), 70) . '</a>',
 			'TOPIC_ICON' => get_topic_icon($row, $is_unread)
 		));
