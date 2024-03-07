@@ -16,8 +16,8 @@
 #############################################
 
 ################## [НИЖЕ ВСТАВИТЬ] ##################
-'#\[acronym="([\w\- \']+)"\](.*?)\[/acronym\]#isu'       => '<span class="post-acronym" title="$1">$2</span>',
-'#\[acronym=([\w\- \']+)\](.*?)\[/acronym\]#isu'         => '<span class="post-acronym" title="$1">$2</span>',
+'#\[acronym="(.*?)"\](.*?)\[/acronym\]#isu'              => '<span class="post-acronym" title="$1">$2</span>',
+'#\[acronym=(.*?)\](.*?)\[/acronym\]#isu'                => '<span class="post-acronym" title="$1">$2</span>',
 #####################################################
 
 ################# [ОТКРЫТЬ] #################
