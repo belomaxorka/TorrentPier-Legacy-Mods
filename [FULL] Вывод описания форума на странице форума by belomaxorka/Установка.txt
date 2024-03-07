@@ -1,20 +1,16 @@
 Описание: Мод выводит описание форума на странице самого форума, под названием форума. Мод присутствует начиная с версии v2.3.0.4-beta.
 Автор: belomaxorka
-Версия: v1.0.0
+Версия: v1.0.1
 
 =========== Открыть viewforum.php и найти ===========
-$template->assign_vars(array(
-    'SHOW_JUMPBOX' => true,
-    'PAGE_TITLE' => htmlCHR($forum_data['forum_name']),
-    'FORUM_ID' => $forum_id,
-    'FORUM_NAME' => htmlCHR($forum_data['forum_name']),
+'FORUM_NAME' => htmlCHR($forum_data['forum_name']),
 =========== Вставить ниже ===========
 'FORUM_DESC' => htmlCHR($forum_data['forum_desc']),
 =========== Открыть viewforum.tpl (внутри вашего шаблона) и найти ===========
 <h1 class="maintitle"><a href="{U_VIEW_FORUM}">{FORUM_NAME}</a></h1>
 =========== Заменить на ===========
 <h1 class="maintitle">
-    <a href="{U_VIEW_FORUM}">{FORUM_NAME}</a>
-    <!-- IF FORUM_DESC --><br><span style="font-size: 18px !important;">{FORUM_DESC}</span><!-- ENDIF -->
+	<a href="{U_VIEW_FORUM}">{FORUM_NAME}</a>
+	<!-- IF FORUM_DESC --><br><span style="font-size: 18px !important;">{FORUM_DESC}</span><!-- ENDIF -->
 </h1>
 =========== Сохранить все файлы ===========
