@@ -173,10 +173,7 @@ class uLogin
 
 		if ($_POST['token']) {
 			$info = $this->get_response('https://ulogin.ru/token.php?token=' . $_POST['token']);
-
-			if (function_exists('json_decode')) {
-				$this->user = json_decode($info, true);
-			}
+			$this->user = json_decode($info, true);
 
 			return $this->user;
 		}
