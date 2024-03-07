@@ -1,7 +1,7 @@
 ##############################################################
 ## Название: BBCode - Акроним
 ## Автор: Conteo
-## Версия: v1.0.2
+## Версия: v2.0.0
 ## Совместимость: v2.1.5 и LTS
 ## Уровень установки: Легкий
 ## Время установки: 2 минуты
@@ -25,11 +25,11 @@
 #############################################
 
 ################## [НАЙТИ] ##################
-<input type="button" value="{L_LIST}" name="codeList" title="{L_LIST_TITLE}" style="width: 60px;"/>
+<input type="button" value="{L_SPOILER}" name="codeSpoiler" title="{L_SPOILER}" style="width: 65px;" />
 #############################################
 
 ################## [НИЖЕ ВСТАВИТЬ] ##################
-<input type="button" value="{L_ACR}" name="codeAcronym" title="{L_ACR_TITLE}" style="width: 65px;"/>
+<input type="button" value="{L_ACRONYM}" name="codeAcronym" title="{L_ACRONYM_TITLE}" style="width: 70px;" />
 #####################################################
 
 ################## [ДАЛЕЕ НАЙТИ] ##################
@@ -50,8 +50,8 @@ $lang['LIST_TITLE'] = 'Список: [list]текст[/list] (Ctrl+L)';
 
 ################## [НИЖЕ ВСТАВИТЬ] ##################
 // Акроним
-$lang['ACR'] = 'Акроним';
-$lang['ACR_TITLE'] = 'Акроним: [acronym=Полный текст]Сокращенный текст[/acronym]';
+$lang['ACRONYM'] = 'Акроним';
+$lang['ACRONYM_TITLE'] = 'Акроним: [acronym=Полный текст]Сокращенный текст[/acronym]';
 #####################################################
 
 ################# [ОТКРЫТЬ] #################
@@ -64,8 +64,8 @@ $lang['LIST_TITLE'] = 'List: [list]text[/list] (Ctrl+l)';
 
 ################## [НИЖЕ ВСТАВИТЬ] ##################
 // Акроним
-$lang['ACR'] = 'Acronym';
-$lang['ACR_TITLE'] = 'Acronym: [acronym=Full text]Short text[/acronym]';
+$lang['ACRONYM'] = 'Acronym';
+$lang['ACRONYM_TITLE'] = 'Acronym: [acronym=Full text]Short text[/acronym]';
 #####################################################
 
 ################# [ОТКРЫТЬ] #################
