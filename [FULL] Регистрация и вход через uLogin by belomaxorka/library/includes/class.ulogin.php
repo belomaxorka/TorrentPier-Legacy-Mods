@@ -67,7 +67,9 @@ class uLogin
 			$name = $this->user['first_name'] . ' ' . $this->user['last_name'];
 		}
 		elseif (!empty($this->user['email']) && preg_match('/^(.+)\@/i', $this->user['email'], $nickname))
-		{			$name = $nickname[1];;		}
+		{
+			$name = $nickname[1];;
+		}
 		else if (!empty($this->user['first_name']))
 		{
 			$name = $this->user['first_name'];
