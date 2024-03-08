@@ -18,42 +18,37 @@ if ($submit && !$errors)
 ----------------------------- Перед добавить -----------------------------
 // Регистрация и вход через uLogin
 $tp_data['ULOGIN'] = 0;
-if (!empty($_POST['token']))
-{
-	require_once (INC_DIR .'class.ulogin.php');
+if (!empty($_POST['token'])) {
+	require_once(INC_DIR . 'class.ulogin.php');
 	$uLogin = new uLogin();
 
-	if ($row = $uLogin->auth())
-	{
-		$user->session_create($row, false);
-		// Removing guest sessions from this IP
-		DB()->query("DELETE FROM ". BB_SESSIONS ." WHERE session_ip = '". USER_IP ."' AND session_user_id = ". GUEST_UID ."");
+	if ($row = $uLogin->auth()) {
+		if ($user->session_create($row, false)) {
+			// Removing guest sessions from this IP
+			DB()->query("DELETE FROM " . BB_SESSIONS . " WHERE session_ip = '" . USER_IP . "' AND session_user_id = " . GUEST_UID . "");
+		}
 
 		$redirect_url = (defined('FIRST_LOGON')) ? $bb_cfg['first_logon_redirect_url'] : $_SERVER['QUERY_STRING'];
-		if ($redirect_url == '/login.php' || $redirect_url == 'login.php') $redirect_url = 'index.php';
-
+		if ($redirect_url == '/' . LOGIN_URL || $redirect_url == LOGIN_URL) $redirect_url = 'index.php';
 		redirect($redirect_url);
 	}
 
 	$db_data = array(
-		'username'		    => clean_username($uLogin->name()),
-		'user_password'		=> $uLogin->password(defined('NEWPASSWD_LENGTH') ? NEWPASSWD_LENGTH : 8),
-		'user_email'		=> strtolower($uLogin->email()),
-		'user_from' 		=> $uLogin->from(),
+		'username' => clean_username($uLogin->name()),
+		'user_password' => $uLogin->password(defined('NEWPASSWD_LENGTH') ? NEWPASSWD_LENGTH : 8),
+		'user_email' => strtolower($uLogin->email()),
+		'user_from' => $uLogin->from(),
 	);
 
 	$tp_data = array(
 		'CAN_EDIT_USERNAME' => true,
-		'USERNAME'		    => clean_username($uLogin->name()),
-		'USER_PASSWORD'		=> $uLogin->password(defined('NEWPASSWD_LENGTH') ? NEWPASSWD_LENGTH : 8),
-		'USER_EMAIL'		=> strtolower($uLogin->email()),
-		'ULOGIN'            => $uLogin->identity(),
+		'USERNAME' => clean_username($uLogin->name()),
+		'USER_PASSWORD' => $uLogin->password(defined('NEWPASSWD_LENGTH') ? NEWPASSWD_LENGTH : 8),
+		'USER_EMAIL' => strtolower($uLogin->email()),
+		'ULOGIN' => $uLogin->identity(),
 	);
-}
-else
-{
-	if (!empty($_POST['ulogin']))
-	{
+} else {
+	if (!empty($_POST['ulogin'])) {
 		$tp_data['ULOGIN'] = $_POST['ulogin'];
 	}
 }
