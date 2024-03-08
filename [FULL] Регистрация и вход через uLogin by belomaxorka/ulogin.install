@@ -25,6 +25,8 @@ if (!empty($_POST['token']))
 
 	if ($row = $uLogin->auth())
 	{
+		$user->session_create($row);
+
 		$redirect_url = (defined('FIRST_LOGON')) ? $bb_cfg['first_logon_redirect_url'] : $_SERVER['QUERY_STRING'];
 		if ($redirect_url == '/login.php' || $redirect_url == 'login.php') $redirect_url = 'index.php';
 
