@@ -23,9 +23,11 @@ if (!empty($_POST['token'])) {
 	$uLogin = new uLogin();
 
 	if ($row = $uLogin->auth()) {
-		if ($user->session_create($row, false)) {
+		if (($row['user_active'] == 1) && $user->session_create($row, false)) {
 			// Removing guest sessions from this IP
 			DB()->query("DELETE FROM " . BB_SESSIONS . " WHERE session_ip = '" . USER_IP . "' AND session_user_id = " . GUEST_UID . "");
+		} else {
+			bb_die($lang['ERROR_LOGIN']);
 		}
 
 		$redirect_url = (defined('FIRST_LOGON')) ? $bb_cfg['first_logon_redirect_url'] : $_SERVER['QUERY_STRING'];
@@ -65,7 +67,7 @@ $bb_cfg['ulogin_hidden'] = 'twitter,google,yandex,livejournal,liveid,soundcloud,
 <a href="{U_SEND_PASSWORD}">{L_FORGOTTEN_PASSWORD}</a>
 ----------------------------- Заменить на -----------------------------
 <a href="{U_SEND_PASSWORD}">{L_FORGOTTEN_PASSWORD}</a>
-<script src="https://ulogin.ru/js/ulogin.js"></script>
+<script src="//ulogin.ru/js/ulogin.js"></script>
 &#0183; войти через: <span id="uLogin" x-ulogin-params="display=small&fields=first_name,last_name,email,photo&optional=bdate,country,city&providers={$bb_cfg['ulogin_shown']}&hidden={$bb_cfg['ulogin_hidden']}&redirect_uri={SITE_URL}profile.php"></span>
 ----------------------------- Выполнить SQL запрос -----------------------------
 CREATE TABLE IF NOT EXISTS `bb_ulogin` (
