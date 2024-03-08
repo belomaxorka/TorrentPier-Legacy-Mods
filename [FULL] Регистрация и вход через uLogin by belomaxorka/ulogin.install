@@ -67,7 +67,7 @@ $bb_cfg['ulogin_hidden'] = 'twitter,google,yandex,livejournal,liveid,soundcloud,
 <a href="{U_SEND_PASSWORD}">{L_FORGOTTEN_PASSWORD}</a>
 ----------------------------- Заменить на -----------------------------
 <a href="{U_SEND_PASSWORD}">{L_FORGOTTEN_PASSWORD}</a>
-<script src="//ulogin.ru/js/ulogin.js"></script>
+<script src="https://ulogin.ru/js/ulogin.js"></script>
 &#0183; войти через: <span id="uLogin" x-ulogin-params="display=small&fields=first_name,last_name,email,photo&optional=bdate,country,city&providers={$bb_cfg['ulogin_shown']}&hidden={$bb_cfg['ulogin_hidden']}&redirect_uri={SITE_URL}profile.php"></span>
 ----------------------------- Выполнить SQL запрос -----------------------------
 CREATE TABLE IF NOT EXISTS `bb_ulogin` (
