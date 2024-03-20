@@ -109,15 +109,14 @@ class uLogin
 	{
 		$s = '{"ext_error": "(file_get_contents & allow_url_fopen) or curl extension required!"}';
 
-		if (in_array('curl', get_loaded_extensions())) {
-			$request = curl_init($url);
-			curl_setopt($request, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($request, CURLOPT_BINARYTRANSFER, 1);
-			$result = curl_exec($request);
-			$s = $result ?: $s;
-		} elseif (function_exists('file_get_contents') && filter_var(ini_get('allow_url_fopen'), FILTER_VALIDATE_BOOLEAN)) {
-			$result = file_get_contents($url);
-			$s = $result ?: $s;
+		if (function_exists('file_get_contents') && filter_var(ini_get('allow_url_fopen'), FILTER_VALIDATE_BOOLEAN)) {
+			$s = file_get_contents($url);
+		} elseif (in_array('curl', get_loaded_extensions())) {
+			$request = curl_init();
+			curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($request, CURLOPT_URL, $url);
+			$s = curl_exec($request);
+			curl_close($request);
 		}
 
 		return $s;
