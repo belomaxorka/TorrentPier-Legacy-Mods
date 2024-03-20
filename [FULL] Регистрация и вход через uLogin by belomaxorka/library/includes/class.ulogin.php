@@ -103,11 +103,11 @@ class uLogin
 	 * Read response with available wrapper
 	 *
 	 * @param string $url
-	 * @return bool|string|string[]
+	 * @return bool|string
 	 */
 	private function get_response($url = "")
 	{
-		$s = array("error" => "file_get_contents or curl required");
+		$s = '{"ext_error": "file_get_contents or curl required"}';
 
 		if (in_array('curl', get_loaded_extensions())) {
 			$request = curl_init($url);
@@ -174,6 +174,9 @@ class uLogin
 		if ($_POST['token']) {
 			$info = $this->get_response('https://ulogin.ru/token.php?token=' . $_POST['token']);
 			$this->user = json_decode($info, true);
+			if (isset($this->user['ext_error'])) {
+				bb_die($this->user['ext_error']);
+			}
 
 			return $this->user;
 		}
