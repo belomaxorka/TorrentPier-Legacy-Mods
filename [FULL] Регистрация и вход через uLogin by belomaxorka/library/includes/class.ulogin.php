@@ -115,7 +115,7 @@ class uLogin
 			curl_setopt($request, CURLOPT_BINARYTRANSFER, 1);
 			$result = curl_exec($request);
 			$s = $result ?: $s;
-		} elseif (function_exists('file_get_contents') && ini_get('allow_url_fopen')) {
+		} elseif (function_exists('file_get_contents') && filter_var(ini_get('allow_url_fopen'), FILTER_VALIDATE_BOOLEAN)) {
 			$result = file_get_contents($url);
 			$s = $result ?: $s;
 		}
