@@ -59,6 +59,11 @@ $new_user_id = DB()->sql_nextid();
 ----------------------------- После добавить -----------------------------
 // Регистрация и вход через uLogin
 if (!empty($_POST['ulogin'])) DB()->query("INSERT INTO bb_ulogin VALUES (NULL, $new_user_id, '" . DB()->escape($_POST['ulogin']) . "')");
+----------------------------- Открыть library/includes/functions_admin.php и найти -----------------------------
+// Delete user feed
+----------------------------- Перед добавить -----------------------------
+// Регистрация и вход через uLogin
+DB()->query("DELETE FROM bb_ulogin WHERE userid = IN($user_csv)");
 ----------------------------- Открыть library/config.php и добавить -----------------------------
 // Регистрация и вход через uLogin
 $bb_cfg['ulogin_shown'] = 'vkontakte,odnoklassniki,mailru,facebook';
