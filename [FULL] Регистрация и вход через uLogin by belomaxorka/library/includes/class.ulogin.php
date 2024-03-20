@@ -107,7 +107,7 @@ class uLogin
 	 */
 	private function get_response($url = "")
 	{
-		$s = '{"ext_error": "file_get_contents or curl required"}';
+		$s = '{"ext_error": "(file_get_contents & allow_url_fopen) or curl extension required!"}';
 
 		if (in_array('curl', get_loaded_extensions())) {
 			$request = curl_init($url);
