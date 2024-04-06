@@ -92,6 +92,9 @@ torrentbar($pr_data['user_id'], 'user');
 =============================================
 
 ============== [Открыть library/includes/functions_selects.php и вставить] ==============
+//
+// Торрентбар
+//
 function torrentbar_select($default)
 {
 	global $bb_cfg;
