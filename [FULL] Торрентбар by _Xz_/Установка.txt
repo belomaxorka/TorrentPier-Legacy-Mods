@@ -1,0 +1,66 @@
+------------ Торрентбар ------------
+Автор: _Xz_
+Версия: v1.0.0
+------------------------------------
+
+============== [Выполнить SQL] ==============
+ALTER TABLE `bb_users` ADD `user_bar` varchar(100) NOT NULL DEFAULT '0';
+=============================================
+
+============== [Открыть .htaccess и вставить] ==============
+# Торрентбар
+RewriteRule ^([0-9]*)\.png$ /torrentbar/index.php?u=$1 [L]
+============================================================
+
+============== [Открыть config.php и вставить] ==============
+// Торрентбар
+define('TORRENTBAR_DIR', BB_PATH .'/torrentbar/');
+$bb_cfg['torrentbar']['0']        = 'Выберите цвет';
+$bb_cfg['torrentbar']['blue']     = 'Синий';
+$bb_cfg['torrentbar']['green']    = 'Зелёный';
+$bb_cfg['torrentbar']['black']    = 'Чёрный';
+$bb_cfg['torrentbar']['red']      = 'Красный';
+$bb_cfg['torrentbar']['orange']   = 'Оранжевый';
+$bb_cfg['torrentbar']['original'] = 'Оригинальный';
+=============================================================
+
+============== [Открыть library/includes/ucp/register.php и найти] ==============
+cache_rm_user_sessions ($pr_data['user_id']);
+=================================================================================
+
+============== [Ниже вставить] ==============
+// Торрентбар
+require(INC_DIR . 'class.torrentbar.php');
+torrentbar($pr_data['user_id'], 'user');
+=============================================
+
+============== [Далее найти] ==============
+'USER_TIMEZONE'      => $pr_data['user_timezone'],
+===========================================
+
+============== [Ниже вставить] ==============
+// Торрентбар
+'TORRENTBAR_SELECT'  => torrentbar_select($user_bar),
+=============================================
+
+============== [Открыть library/includes/functions_selects.php и вставить] ==============
+function torrentbar_select($default)
+{
+	global $bb_cfg;
+
+	$torrentbar_select = '<select name="user_bar" onChange="document.images[\'user_bar\'].src = \'torrentbar/images/\'+ this.value +\'.png\';" >';
+	$torrentbar_img = '';
+	while (list($bar, $bar_name) = @each($bb_cfg['torrentbar'])) {
+		$bar_img = $bar;
+
+		$selected = ($bar == $default) ? ' selected="selected"' : '';
+		$torrentbar_select .= '<option value="' . $bar . '"' . $selected . '>' . $bar_name . '</option>';
+		if (isset($bar) && ($bar == $default)) {
+			$torrentbar_img = ($bar_img) ? $bar_img : 'spacer';
+		}
+	}
+	$torrentbar_select .= '</select>&nbsp;&nbsp;<img align="absmiddle" name="user_bar" src="torrentbar/images/' . $torrentbar_img . '.png">';
+
+	return $torrentbar_select;
+}
+=========================================================================================
