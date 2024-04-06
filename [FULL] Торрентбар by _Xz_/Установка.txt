@@ -17,13 +17,9 @@ rewrite ^/([0-9]*)\.png$ /torrentbar/index.php?u=$1;
 
 ============== [Открыть config.php и вставить] ==============
 // Торрентбар
+// Пример: $bb_cfg['torrentbar']['имя файла'] = 'Название';
 define('TORRENTBAR_DIR', BB_PATH .'/torrentbar/');
 $bb_cfg['torrentbar']['0']        = 'Выберите цвет';
-$bb_cfg['torrentbar']['blue']     = 'Синий';
-$bb_cfg['torrentbar']['green']    = 'Зелёный';
-$bb_cfg['torrentbar']['black']    = 'Чёрный';
-$bb_cfg['torrentbar']['red']      = 'Красный';
-$bb_cfg['torrentbar']['orange']   = 'Оранжевый';
 $bb_cfg['torrentbar']['original'] = 'Оригинальный';
 =============================================================
 
