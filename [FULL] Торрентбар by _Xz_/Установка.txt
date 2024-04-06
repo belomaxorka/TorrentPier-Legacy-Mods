@@ -77,7 +77,7 @@ function torrentbar_select($default)
 {
 	global $bb_cfg, $lang;
 
-	$torrentbar_select = '<select name="user_bar" onChange="document.images[\'user_bar\'].src = \'torrentbar/images/\'+ (this.value != \'0\' ? this.value : \'spacer\') +\'.png\';" >';
+	$torrentbar_select = '<select name="user_bar" onChange="document.images[\'user_bar\'].src = \'' . hide_bb_path(TORRENTBAR_DIR) . 'images/' . '\'+ (this.value != \'0\' ? this.value : \'spacer\') +\'.png\';" >';
 	$torrentbar_img = '';
 	while (list($bar, $bar_name) = @each($bb_cfg['torrentbar'])) {
 		$bar_img = $bar;
