@@ -79,6 +79,14 @@ torrentbar($pr_data['user_id'], 'user');
 'TORRENTBAR_SELECT'  => torrentbar_select($user_bar),
 =============================================
 
+============== [Открыть library/includes/ucp/viewprofile.php и найти] ==============
+'SIGNATURE'            => $signature,
+====================================================================================
+
+============== [Ниже вставить] ==============
+'TORRENTBAR_URL'       => make_url(‘/‘),
+=============================================
+
 ============== [Открыть library/includes/functions_selects.php и вставить] ==============
 function torrentbar_select($default)
 {
