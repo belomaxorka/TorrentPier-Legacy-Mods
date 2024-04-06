@@ -4,25 +4,6 @@ if (!defined('BB_ROOT')) die(basename(__FILE__));
 
 @set_time_limit(0);
 
-/**
- * Очистка кеша
- * Пример: unlink_dir(BB_ROOT . 'torrentbar/cache/')
- *
- * @param $dir
- * @return void
- */
-function unlink_dir($dir)
-{
-	if ($handle = opendir($dir)) {
-		while (false !== ($file = readdir($handle))) {
-			if ($file != "." && $file != "..") {
-				unlink($dir . $file);
-			}
-		}
-		@closedir($dir);
-	}
-}
-
 class torrentbar
 {
 	/**
@@ -33,43 +14,16 @@ class torrentbar
 	 */
 	function create($user_id)
 	{
-		$check = $this->check($user_id);
-
-		// Вывод
-		if (!$check) {
-			$this->create_user($user_id);
+		if (!CACHE('bb_torrentbar')->get('user_' . $user_id)) {
+			@unlink(TORRENTBAR_DIR . 'cache/' . $user_id . '.png');
+			if (!file_exists(TORRENTBAR_DIR . 'cache/' . $user_id . '.png')) {
+				$data = $this->sql($user_id);
+				$this->make($data);
+				CACHE('bb_torrentbar')->set('user_' . $user_id, TIMENOW, 600);
+			}
 		}
+
 		$this->output($user_id);
-	}
-
-	/**
-	 * Обновить торрент-бар
-	 *
-	 * @param $user_id
-	 * @return void
-	 */
-	function create_user($user_id)
-	{
-		$data = $this->sql($user_id);
-		$this->make($data);
-	}
-
-	/**
-	 * Создаем torrentbar для всех пользователей
-	 *
-	 * @return void
-	 */
-	function create_all()
-	{
-		$row = DB()->fetch_rowset("
-			SELECT u.*, bu.u_up_total, bu.u_down_total, bu.u_up_release, bu.u_up_bonus
-			FROM " . BB_USERS . " u
-				LEFT JOIN " . BB_BT_USERS . " bu ON(bu.user_id = u.user_id)
-			WHERE user_active = 1");
-
-		foreach ($row as $data) {
-			$this->make($data);
-		}
 	}
 
 	/**
@@ -304,20 +258,6 @@ class torrentbar
 	}
 
 	/**
-	 * Проверка в кеше
-	 *
-	 * @param $user_id
-	 * @return bool
-	 */
-	function check($user_id)
-	{
-		if (@fopen(TORRENTBAR_DIR . 'cache/' . $user_id . '.png', "r")) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Вывод
 	 *
 	 * @param $user_id
@@ -334,13 +274,11 @@ class torrentbar
 
 /**
  * torrentbar
- * Примечание: если нужны бары для всех, запускаем функцию с type = all
  *
  * @param $user_id
- * @param $type
  * @return void
  */
-function torrentbar($user_id, $type = false)
+function torrentbar($user_id)
 {
 	global $bar;
 
@@ -348,12 +286,5 @@ function torrentbar($user_id, $type = false)
 		$bar = new torrentbar();
 	}
 
-	if (!$type) {
-		$bar->create($user_id);
-	} else if ($type == 'all') {
-		$bar->create_all();
-	} else if ($type == 'user') {
-		// Для обновления уже сохраненного бара torrentbar($user_id, 'user');
-		$bar->create_user($user_id);
-	}
+	$bar->create($user_id);
 }
