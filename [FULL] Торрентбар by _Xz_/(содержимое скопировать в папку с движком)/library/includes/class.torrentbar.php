@@ -94,7 +94,7 @@ class torrentbar
 	 */
 	function make($row)
 	{
-		global $bb_cfg;
+		global $bb_cfg, $domain_name;
 
 		if (!$row['user_bar'])// && (($row['user_level'] == ADMIN) || ($row['user_level'] == MOD)) делать принудительно бар если он отключен в настройках профиля
 		{
@@ -251,6 +251,7 @@ class torrentbar
 				$l2 = 124;
 			}
 
+			$font_domain = TORRENTBAR_DIR . 'fonts/domain.ttf';
 			$font_username = TORRENTBAR_DIR . 'fonts/username.ttf';
 			$font_rank = TORRENTBAR_DIR . 'fonts/user_rank.ttf';
 			$font_ratio = TORRENTBAR_DIR . 'fonts/ratio.ttf';
@@ -265,6 +266,8 @@ class torrentbar
 
 			// Наносим надписи
 			ImageTTFtext($userbar, 12, 0, $l2, 39, $rank_color, $font_rank, $rank);
+			// Ссылка на трекер
+			ImageTTFtext($userbar, 12, 0, 7, 20, 0, $font_domain, $domain_name);
 
 			$ratio_l = $this->text_l(8, $font_ratio, $ratio);
 			$up_l = $this->text_l(8, $font_ratio, $up);
