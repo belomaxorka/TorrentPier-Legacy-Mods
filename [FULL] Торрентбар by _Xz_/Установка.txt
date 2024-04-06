@@ -69,15 +69,6 @@ torrentbar($pr_data['user_id'], 'user');
 'TORRENTBAR_SELECT'  => torrentbar_select($user_bar),
 =============================================
 
-============== [Открыть library/includes/ucp/viewprofile.php и найти] ==============
-'SIGNATURE'            => $signature,
-====================================================================================
-
-============== [Ниже вставить] ==============
-// Торрентбар
-'TORRENTBAR_URL'       => make_url(),
-=============================================
-
 ============== [Открыть library/includes/functions_selects.php и вставить] ==============
 //
 // Торрентбар
@@ -109,7 +100,6 @@ function torrentbar_select($default)
 ===============================================================================================
 
 ============== [Выше вставить] ==============
-<!-- IF TORRENTBAR -->
 <tr>
 	<th colspan="2" class="thHead">Торрентбар</th>
 </tr>
@@ -121,7 +111,6 @@ function torrentbar_select($default)
 	<th class="row1">BBCode для вставки</th>
 	<td class="row1 pad_4"><input type="text" id="codebb" size="50" value="[url={FULL_URL}][img]{FULL_URL}{PROFILE_USER_ID}.png[/img][/url]" onclick="this.focus();this.select();" readonly="readonly"/></td>
 </tr>
-<!-- ENDIF -->
 =============================================
 
 ============== [Открыть styles/templates/default/usercp_register.tpl и найти] ==============
