@@ -128,7 +128,23 @@ function torrentbar_select($default)
 </tr>
 <tr>
 	<th class="row1">BBCode для вставки</th>
-	<td class="row1 pad_4"><input type="text" id="codebb" size="48" value="[url={TORRENTBAR_URL}][img]{TORRENTBAR_URL}{PROFILE_USER_ID}.png[/img][/url]" onclick="this.focus();this.select();" readonly="readonly"/></td>
+	<td class="row1 pad_4"><input type="text" id="codebb" size="50" value="[url={TORRENTBAR_URL}][img]{TORRENTBAR_URL}{PROFILE_USER_ID}.png[/img][/url]" onclick="this.focus();this.select();" readonly="readonly"/></td>
 </tr>
 <!-- ENDIF -->
+=============================================
+
+============== [Открыть styles/templates/default/usercp_register.tpl и найти] ==============
+<tr>
+	<th colspan="2">{L_AVATAR_PANEL}</th>
+</tr>
+============================================================================================
+
+============== [Выше вставить] ==============
+<tr>
+	<th colspan="2">Управление торрентбаром</th>
+</tr>
+<tr>
+	<td class="prof-title">Шаблон торрентбара:</td>
+	<td>{TORRENTBAR_SELECT}</td>
+</tr>
 =============================================
