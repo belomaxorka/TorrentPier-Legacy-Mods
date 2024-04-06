@@ -75,7 +75,7 @@ torrentbar($pr_data['user_id'], 'user');
 
 ============== [Ниже вставить] ==============
 // Торрентбар
-'TORRENTBAR_URL'       => make_url(),
+'TORRENTBAR'           => make_url(),
 =============================================
 
 ============== [Открыть library/includes/functions_selects.php и вставить] ==============
