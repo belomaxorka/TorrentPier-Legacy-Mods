@@ -111,3 +111,22 @@ function torrentbar_select($default)
 	return $torrentbar_select;
 }
 =========================================================================================
+
+============== [Открыть styles/templates/default/usercp_viewprofile.tpl и найти] ==============
+	<!-- IF IS_AM --><span id="ip_list"></span><!-- ENDIF -->
+	</td>
+</tr>
+===============================================================================================
+
+============== [Ниже вставить] ==============
+<!-- IF TORRENTBAR -->
+<tr>
+	<th class="row1">Ваш торрентбар</th>
+	<td class="row1 pad_4"><img src="{BB_ROOT}{PROFILE_USER_ID}.png"></td>
+</tr>
+<tr>
+	<th class="row1">BBCode для вставки</th>
+	<td class="row1 pad_4"><input type="text" id="codebb" size="48" value="[url={TORRENTBAR_URL}][img]{TORRENTBAR_URL}{PROFILE_USER_ID}.png[/img][/url]" onclick="javascript:this.focus();this.select();" readonly="readonly" /></td>
+</tr>
+<!-- ENDIF -->
+=============================================
