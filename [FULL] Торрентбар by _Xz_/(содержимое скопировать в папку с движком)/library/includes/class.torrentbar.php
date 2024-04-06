@@ -26,7 +26,10 @@ function unlink_dir($dir)
 class torrentbar
 {
 	/**
-	 * старт
+	 * Создать торрентбар
+	 *
+	 * @param $user_id
+	 * @return void
 	 */
 	function create($user_id)
 	{
@@ -40,7 +43,7 @@ class torrentbar
 	}
 
 	/**
-	 * Создаем torrentbar для пользователя
+	 * Обновить торрент-бар
 	 *
 	 * @param $user_id
 	 * @return void
