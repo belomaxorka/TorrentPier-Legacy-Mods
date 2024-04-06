@@ -10,6 +10,9 @@ ALTER TABLE `bb_users` ADD `user_bar` varchar(100) NOT NULL DEFAULT '0';
 ============== [Открыть .htaccess и вставить] ==============
 # Торрентбар
 RewriteRule ^([0-9]*)\.png$ /torrentbar/index.php?u=$1 [L]
+============== [Если nginx, то] ============================
+# Торрентбар
+rewrite ^/([0-9]*)\.png$ /torrentbar/index.php?u=$1;
 ============================================================
 
 ============== [Открыть config.php и вставить] ==============
