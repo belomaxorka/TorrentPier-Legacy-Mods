@@ -119,14 +119,15 @@ function torrentbar_select($default)
 ===============================================================================================
 
 ============== [Ниже вставить] ==============
-<!-- IF TORRENTBAR -->
 <tr>
-	<th class="row1">Ваш торрентбар</th>
+	<th colspan="2" class="thHead">Торрентбар</th>
+</tr>
+<tr>
+	<th class="row1">{L_PREVIEW}</th>
 	<td class="row1 pad_4"><img src="{BB_ROOT}{PROFILE_USER_ID}.png"></td>
 </tr>
 <tr>
 	<th class="row1">BBCode для вставки</th>
-	<td class="row1 pad_4"><input type="text" id="codebb" size="48" value="[url={TORRENTBAR_URL}][img]{TORRENTBAR_URL}{PROFILE_USER_ID}.png[/img][/url]" onclick="javascript:this.focus();this.select();" readonly="readonly" /></td>
+	<td class="row1 pad_4"><input type="text" id="codebb" size="48" value="[url={TORRENTBAR_URL}][img]{TORRENTBAR_URL}{PROFILE_USER_ID}.png[/img][/url]" onclick="this.focus();this.select();" readonly="readonly"/></td>
 </tr>
-<!-- ENDIF -->
 =============================================
