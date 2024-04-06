@@ -19,7 +19,7 @@ rewrite ^/([0-9]*)\.png$ /torrentbar/index.php?u=$1;
 // Торрентбар
 // Пример: $bb_cfg['torrentbar']['имя файла'] = 'Название';
 define('TORRENTBAR_DIR', BB_PATH .'/torrentbar/');
-$bb_cfg['torrentbar']['0']        = 'Выберите цвет';
+$bb_cfg['torrentbar']['0']        = 'Выберите шаблон';
 $bb_cfg['torrentbar']['original'] = 'Оригинальный';
 =============================================================
 
@@ -75,9 +75,9 @@ torrentbar($pr_data['user_id'], 'user');
 //
 function torrentbar_select($default)
 {
-	global $bb_cfg;
+	global $bb_cfg, $lang;
 
-	$torrentbar_select = '<select name="user_bar" onChange="document.images[\'user_bar\'].src = \'torrentbar/images/\'+ this.value +\'.png\';" >';
+	$torrentbar_select = '<select name="user_bar" onChange="document.images[\'user_bar\'].src = \'torrentbar/images/\'+ (this.value != \'0\' ? this.value : \'spacer\') +\'.png\';" >';
 	$torrentbar_img = '';
 	while (list($bar, $bar_name) = @each($bb_cfg['torrentbar'])) {
 		$bar_img = $bar;
@@ -85,10 +85,16 @@ function torrentbar_select($default)
 		$selected = ($bar == $default) ? ' selected="selected"' : '';
 		$torrentbar_select .= '<option value="' . $bar . '"' . $selected . '>' . $bar_name . '</option>';
 		if (isset($bar) && ($bar == $default)) {
-			$torrentbar_img = ($bar_img) ? $bar_img : 'spacer';
+			$torrentbar_img = ($bar_img != '0') ? $bar_img : 'spacer';
 		}
 	}
-	$torrentbar_select .= '</select>&nbsp;&nbsp;<img align="absmiddle" name="user_bar" src="torrentbar/images/' . $torrentbar_img . '.png">';
+	$torrentbar_select .= '</select>';
+
+	if (file_exists(TORRENTBAR_DIR . 'images/' . $torrentbar_img . '.png')) {
+		$torrentbar_select .= '&nbsp;&nbsp;<img align="absmiddle" name="user_bar" src="' . hide_bb_path(TORRENTBAR_DIR) . 'images/' . $torrentbar_img . '.png">';
+	} else {
+		$torrentbar_select .= '&nbsp;&nbsp;' . $lang['NOT_FOUND'] . ':&nbsp;' . hide_bb_path(TORRENTBAR_DIR) . 'images/' . $torrentbar_img . '.png';
+	}
 
 	return $torrentbar_select;
 }
