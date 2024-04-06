@@ -24,21 +24,12 @@ $bb_cfg['torrentbar']['original'] = 'Оригинальный';
 =============================================================
 
 ============== [Открыть library/includes/ucp/register.php и найти] ==============
-'user_opt'         => true,
+'user_interests'   => true,
 =================================================================================
 
 ============== [Ниже вставить] ==============
 // Торрентбар
 'user_bar'         => true,
-=============================================
-
-============== [Далее найти] ==============
-'user_opt'         => 0,
-===========================================
-
-============== [Ниже вставить] ==============
-// Торрентбар
-'user_bar'         => 0,
 =============================================
 
 ============== [Далее найти] ==============
@@ -128,7 +119,7 @@ function torrentbar_select($default)
 </tr>
 <tr>
 	<th class="row1">BBCode для вставки</th>
-	<td class="row1 pad_4"><input type="text" id="codebb" size="50" value="[url={TORRENTBAR_URL}][img]{TORRENTBAR_URL}{PROFILE_USER_ID}.png[/img][/url]" onclick="this.focus();this.select();" readonly="readonly"/></td>
+	<td class="row1 pad_4"><input type="text" id="codebb" size="50" value="[url={FULL_URL}][img]{FULL_URL}{PROFILE_USER_ID}.png[/img][/url]" onclick="this.focus();this.select();" readonly="readonly"/></td>
 </tr>
 <!-- ENDIF -->
 =============================================
