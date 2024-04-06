@@ -63,15 +63,13 @@ class torrentbar
 
 			$user_id = $row['user_id'];
 			$ext_id = $row['avatar_ext_id'];
-			$allow_avatar = !bf($row['user_opt'], 'user_opt', 'dis_avatar');
 
 			$user_avatar = $bb_cfg['avatars']['upload_path'] . $bb_cfg['avatars']['no_avatar'];
-
 			if ($user_id == BOT_UID && $bb_cfg['avatars']['bot_avatar']) {
 				$user_avatar = $bb_cfg['avatars']['upload_path'] . $bb_cfg['avatars']['bot_avatar'];
-			} elseif ($allow_avatar && $ext_id) {
-				if (file_exists($bb_cfg['avatars']['upload_path'] . get_avatar_path($user_id, $ext_id))) {
-					$user_avatar = $bb_cfg['avatars']['upload_path'] . get_avatar_path($user_id, $ext_id);
+			} else if (!bf($row['user_opt'], 'user_opt', 'dis_avatar') && $ext_id) {
+				if (file_exists(get_avatar_path($user_id, $ext_id))) {
+					$user_avatar = get_avatar_path($user_id, $ext_id);
 				}
 			}
 
@@ -107,8 +105,13 @@ class torrentbar
 			if (($avatar_width > $avatar_size) || ($avatar_height > $avatar_size)) {
 				$avatar_bar = ImageCreateTrueColor($avatar_width, $avatar_height);
 
-				ImageAlphaBlending($avatar_bar, false);
-				ImageSaveAlpha($avatar_bar, true);
+				if ($type == 1 || $type == 3) {
+					imagecolortransparent($avatar_bar, imageColorAllocate($avatar_bar, 0, 0, 0));
+					if ($type == 3) {
+						ImageAlphaBlending($avatar_bar, false);
+						ImageSaveAlpha($avatar_bar, true);
+					}
+				}
 
 				ImageCopyResampled($avatar_bar, $avatar, 0, 0, 0, 0, $avatar_bar_width, $avatar_bar_height, $avatar_width, $avatar_height);
 			} else {
