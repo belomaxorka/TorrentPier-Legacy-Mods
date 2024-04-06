@@ -34,8 +34,7 @@ class torrentbar
 
 		// Вывод
 		if (!$check) {
-			$data = $this->sql($user_id);
-			$this->make($data);
+			$this->create_user($user_id);
 		}
 		$this->output($user_id);
 	}
