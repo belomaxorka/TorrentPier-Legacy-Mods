@@ -265,7 +265,7 @@ class torrentbar
 			}
 
 			// Наносим надписи
-			ImageTTFtext($userbar, 12, 0, $l2, 39, $rank_color, $font_rank, $rank);
+			ImageTTFtext($userbar, 12, 0, $l2, 37, $rank_color, $font_rank, $rank);
 			// Ссылка на трекер
 			ImageTTFtext($userbar, 12, 0, 7, 20, 0, $font_domain, $domain_name);
 
