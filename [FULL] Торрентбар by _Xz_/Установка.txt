@@ -75,7 +75,7 @@ torrentbar($pr_data['user_id'], 'user');
 
 ============== [Ниже вставить] ==============
 // Торрентбар
-'TORRENTBAR'           => make_url(),
+'TORRENTBAR'           => ($profiledata['user_bar'] != 'spacer') && file_exists(TORRENTBAR_DIR . 'images/' . $profiledata['user_bar'] . '.png'),
 =============================================
 
 ============== [Открыть library/includes/functions_selects.php и вставить] ==============
