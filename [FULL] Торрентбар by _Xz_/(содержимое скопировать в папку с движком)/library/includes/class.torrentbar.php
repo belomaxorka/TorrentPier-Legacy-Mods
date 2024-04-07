@@ -226,7 +226,7 @@ class torrentbar
 			// Наносим надписи
 			ImageTTFtext($userbar, 12, 0, $l2, 37, $rank_color, $font_rank, $rank);
 			// Ссылка на трекер
-			ImageTTFtext($userbar, 11, 0, 6, 20, 0, $font_domain, $domain_name);
+			ImageTTFtext($userbar, 11, 0, 7, 18, 0, $font_domain, $domain_name);
 
 			$ratio_l = $this->text_l(8, $font_ratio, $ratio);
 			$up_l = $this->text_l(8, $font_ratio, $up);
