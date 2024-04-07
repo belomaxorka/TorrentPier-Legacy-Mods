@@ -23,6 +23,7 @@ rewrite ^/([0-9]*)\.png$ /torrentbar/index.php?u=$1;
 ============== [Открыть config.php и вставить] ==============
 // Торрентбар
 // Пример: $bb_cfg['torrentbar']['имя файла'] = 'Название шаблона';
+// Примечание: $bb_cfg['torrentbar']['0'] нельзя удалять!
 define('TORRENTBAR_DIR', BB_PATH .'/torrentbar/');
 $bb_cfg['torrentbar']['0']        = 'Выберите шаблон';
 $bb_cfg['torrentbar']['original'] = 'Оригинальный';
