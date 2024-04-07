@@ -14,13 +14,11 @@ class torrentbar
 	 */
 	function create($user_id)
 	{
-		if (!CACHE('bb_torrentbar')->get('user_' . $user_id)) {
+		if (!file_exists(TORRENTBAR_DIR . 'cache/' . $user_id . '.png') || !CACHE('bb_torrentbar')->get('user_' . $user_id)) {
 			@unlink(TORRENTBAR_DIR . 'cache/' . $user_id . '.png');
-			if (!file_exists(TORRENTBAR_DIR . 'cache/' . $user_id . '.png')) {
-				$data = $this->sql($user_id);
-				$this->make($data);
-				CACHE('bb_torrentbar')->set('user_' . $user_id, TIMENOW, 600);
-			}
+			$data = $this->sql($user_id);
+			$this->make($data);
+			CACHE('bb_torrentbar')->set('user_' . $user_id, TIMENOW, 600);
 		}
 
 		$this->output($user_id);
@@ -254,6 +252,14 @@ class torrentbar
 		}
 	}
 
+	/**
+	 * text_l
+	 *
+	 * @param $size
+	 * @param $font
+	 * @param $text
+	 * @return mixed
+	 */
 	static function text_l($size, $font, $text)
 	{
 		$l = imagettfbbox($size, 0, $font, $text);
