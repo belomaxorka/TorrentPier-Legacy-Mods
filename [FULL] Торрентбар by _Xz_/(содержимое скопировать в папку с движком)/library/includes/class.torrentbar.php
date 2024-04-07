@@ -16,6 +16,7 @@ class torrentbar
 	{
 		if (!file_exists(TORRENTBAR_DIR . 'cache/' . $user_id . '.png') || !CACHE('bb_torrentbar')->get('user_' . $user_id)) {
 			@unlink(TORRENTBAR_DIR . 'cache/' . $user_id . '.png');
+			CACHE('bb_torrentbar')->rm('user_' . $user_id);
 			$data = $this->sql($user_id);
 			$this->make($data);
 			CACHE('bb_torrentbar')->set('user_' . $user_id, TIMENOW, 600);
