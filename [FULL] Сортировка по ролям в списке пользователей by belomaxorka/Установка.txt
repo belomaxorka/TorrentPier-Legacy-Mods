@@ -1,34 +1,73 @@
 ﻿- Автор: belomaxorka
-- Версия: v1.0.0
+- Версия: v2.0.0
 - Описание: Добавляет сортировку по ролям (Администратор, Модератор) в список пользователей.
 
 ---------- Открыть memberlist.php и найти ----------
-//
-// Memberlist sorting
-//
+$username   = request_var('username', '');
 ----------------------------------------------------
 
----------- Выше вставить ----------
+---------- Ниже вставить ----------
 // Сортировка по ролям в списке пользователей
-$role = (string) request_var('role', '');
-$selected_role = '';
-if ($role == 'admins')
-{
-	$selected_role = " AND user_level = " . ADMIN;
-}
-elseif ($role == 'moderators')
-{
-	$selected_role = " AND user_level = " . MOD;
-}
+$role       = (string) request_var('role', 'all');
 -----------------------------------
 
 ---------- Далее найти ----------
-$sql .= " ORDER BY $order_by";
+$select_sort_order .= '</select>';
+---------------------------------
+
+---------- Ниже вставить ----------
+// Сортировка по ролям в списке пользователей
+$role_select = array(
+	'all' => $lang['ALL'],
+	'user' => $lang['USERS'],
+	'admin' => $lang['ADMINISTRATORS'],
+	'moderator' => $lang['MODERATORS']
+);
+$select_sort_role = '<select name="role">';
+foreach ($role_select as $key => $value)
+{
+	$selected = ($role == $key) ? ' selected' : '';
+	$select_sort_role .= '<option value="' . $key . '"' . $selected . '>' . $value . '</option>';
+}
+$select_sort_role .= '</select>';
+-----------------------------------
+
+---------- Далее найти ----------
+'S_MODE_SELECT'  => $select_sort_mode,
+---------------------------------
+
+---------- Ниже вставить ----------
+'S_ROLE_SELECT'  => $select_sort_role,
+-----------------------------------
+
+---------- Далее найти ----------
+// per-letter selection
 ---------------------------------
 
 ---------- Выше вставить ----------
 // Сортировка по ролям в списке пользователей
-$sql .= $selected_role;
+$where_sql = '';
+switch ($role)
+{
+	case 'user':
+		$where_sql = ' AND user_level = ' . USER;
+		break;
+	case 'admin':
+		$where_sql = ' AND user_level = ' . ADMIN;
+		break;
+	case 'moderator':
+		$where_sql = ' AND user_level = ' . MOD;
+		break;
+}
+-----------------------------------
+
+---------- Далее найти ----------
+$sql .= ($letter_sql) ? " AND $letter_sql" : '';
+---------------------------------
+
+---------- Выше вставить ----------
+// Сортировка по ролям в списке пользователей
+$sql .= $where_sql;
 -----------------------------------
 
 ---------- Далее найти ----------
@@ -36,17 +75,27 @@ $paginationurl = "memberlist.php?mode=$mode&amp;order=$sort_order&amp;letter=$by
 ---------------------------------
 
 ---------- Заменить на ----------
-$paginationurl = "memberlist.php?mode=$mode&amp;order=$sort_order&amp;role=$role&amp;letter=$by_letter";
+// Сортировка по ролям в списке пользователей
+$paginationurl = "memberlist.php?mode=$mode&amp;order=$sort_order&amp;letter=$by_letter&amp;role=$role";
 ---------------------------------
+
+---------- Далее найти ----------
+$sql .=	($letter_sql) ? " WHERE $letter_sql" : " WHERE user_id NOT IN(". EXCLUDED_USERS_CSV .")";
+---------------------------------
+
+---------- Ниже вставить ----------
+// Сортировка по ролям в списке пользователей
+$sql .= $where_sql;
+-----------------------------------
 
 ---------- Открыть memberlist.tpl (В вашем шаблоне) и найти ----------
 <tr>
-	<td align="right" class="med">{L_SORT_PER_LETTER}:&nbsp;{S_LETTER_SELECT}{S_LETTER_HIDDEN}</td>
+	<td align="right" class="med" nowrap="nowrap">{L_SORT_BY}:&nbsp;{S_MODE_SELECT}&nbsp;&nbsp;{L_ORDER}:&nbsp;{S_ORDER_SELECT}&nbsp;&nbsp;<input type="submit" name="submit" value="{L_SUBMIT}" /></td>
 </tr>
 ----------------------------------------------------------------------
 
----------- Выше вставить ----------
+---------- Заменить на ----------
 <tr>
-	<td align="left" class="med">{L_ROLE}&nbsp;<a href="memberlist.php?role=admins">{L_ADMINISTRATORS}</a>,&nbsp;<a href="memberlist.php?role=moderators">{L_MODERATORS}</a></td>
+	<td align="right" class="med" nowrap="nowrap">{L_SORT_BY}:&nbsp;{S_MODE_SELECT}&nbsp;&nbsp;{L_ORDER}:&nbsp;{S_ORDER_SELECT}&nbsp;&middot;&nbsp;{L_ROLE}&nbsp;{S_ROLE_SELECT}&nbsp;&nbsp;<input type="submit" name="submit" value="{L_SUBMIT}" /></td>
 </tr>
------------------------------------
+---------------------------------
