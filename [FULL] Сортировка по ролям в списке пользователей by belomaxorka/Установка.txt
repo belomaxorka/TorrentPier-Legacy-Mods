@@ -63,6 +63,38 @@ switch ($role)
 -----------------------------------
 
 ---------- Далее найти ----------
+$select_letter .= (strtoupper($by_letter) == chr($i)) ? '<b>'. chr($i) .'</b>&nbsp;' : '<a class="genmed" href="'. ("memberlist.php?letter=". chr($i) ."&amp;mode=$mode&amp;order=$sort_order") .'">'. chr($i) .'</a>&nbsp;';
+---------------------------------
+
+---------- Заменить на ----------
+$select_letter .= (strtoupper($by_letter) == chr($i)) ? '<b>'. chr($i) .'</b>&nbsp;' : '<a class="genmed" href="'. ("memberlist.php?letter=". chr($i) ."&amp;mode=$mode&amp;order=$sort_order&amp;role=$role") .'">'. chr($i) .'</a>&nbsp;';
+---------------------------------
+
+---------- Далее найти ----------
+$select_letter .= ($by_letter == iconv('windows-1251', 'UTF-8', chr($i))) ? '<b>'. iconv('windows-1251', 'UTF-8', chr($i-32)) .'</b>&nbsp;' : '<a class="genmed" href="'. ("memberlist.php?letter=%". strtoupper(base_convert($i, 10, 16)) ."&amp;mode=$mode&amp;order=$sort_order") .'">'. iconv('windows-1251', 'UTF-8', chr($i-32)) .'</a>&nbsp;';
+---------------------------------
+
+---------- Заменить на ----------
+$select_letter .= ($by_letter == iconv('windows-1251', 'UTF-8', chr($i))) ? '<b>'. iconv('windows-1251', 'UTF-8', chr($i-32)) .'</b>&nbsp;' : '<a class="genmed" href="'. ("memberlist.php?letter=%". strtoupper(base_convert($i, 10, 16)) ."&amp;mode=$mode&amp;order=$sort_order&amp;role=$role") .'">'. iconv('windows-1251', 'UTF-8', chr($i-32)) .'</a>&nbsp;';
+---------------------------------
+
+---------- Далее найти ----------
+$select_letter .= ($by_letter == 'others') ? '<b>'. $lang['OTHERS'] .'</b>&nbsp;' : '<a class="genmed" href="'. ("memberlist.php?letter=others&amp;mode=$mode&amp;order=$sort_order") .'">'. $lang['OTHERS'] .'</a>&nbsp;';
+---------------------------------
+
+---------- Заменить на ----------
+$select_letter .= ($by_letter == 'others') ? '<b>'. $lang['OTHERS'] .'</b>&nbsp;' : '<a class="genmed" href="'. ("memberlist.php?letter=others&amp;mode=$mode&amp;order=$sort_order&amp;role=$role") .'">'. $lang['OTHERS'] .'</a>&nbsp;';
+---------------------------------
+
+---------- Далее найти ----------
+$select_letter .= ($by_letter == 'all') ? '<b>'. $lang['ALL'] .'</b>' : '<a class="genmed" href="'. ("memberlist.php?letter=all&amp;mode=$mode&amp;order=$sort_order") .'">'. $lang['ALL'] .'</a>';
+---------------------------------
+
+---------- Заменить на ----------
+$select_letter .= ($by_letter == 'all') ? '<b>'. $lang['ALL'] .'</b>' : '<a class="genmed" href="'. ("memberlist.php?letter=all&amp;mode=$mode&amp;order=$sort_order&amp;role=$role") .'">'. $lang['ALL'] .'</a>';
+---------------------------------
+
+---------- Далее найти ----------
 $sql .= ($letter_sql) ? " AND $letter_sql" : '';
 ---------------------------------
 
