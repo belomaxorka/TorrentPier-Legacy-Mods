@@ -1,0 +1,44 @@
+============= [Открыть tracker.php и найти] =============
+$session_id  = $userdata['session_id'];
+=========================================================
+
+============= [Ниже вставить] =============
+$status      = (isset($_REQUEST['status'])) ? $_REQUEST['status'] : false;
+===========================================
+
+============= [Далее найти] =============
+	$SQL['WHERE'][] = "tor.tor_type IN(1,2)";
+}
+=========================================
+
+============= [Ниже вставить] =============
+if (is_array($status) && count($status) > 0)
+{
+	$SQL['WHERE'][] = "tor.tor_status IN(" . implode(', ', $status) . ")";
+}
+===========================================
+
+============= [Далее найти] =============
+// Sort dir
+$template->assign_vars(array(
+=========================================
+
+============= [Выше вставить] =============
+// Status select
+$statuses = '';
+if ($tr_cfg['search_by_tor_status'])
+{
+	$statuses = '<table border="0" cellpadding="0" cellspacing="0">';
+	foreach (array_chunk($bb_cfg['tor_icons'], 2, true) as $statuses_part)
+	{
+		$statuses .= '<tr>';
+		foreach ($statuses_part as $status_id => $status_styles)
+		{
+			$checked_status = ((is_array($status) && count($status) > 0) && in_array($status_id, $status)) ? 'checked' : '';
+			$statuses .= '<td><p class="chbox"><input type="checkbox" name="status[]" value="' . $status_id . '"' . $checked_status . '>' . $status_styles . '&nbsp;' . $lang['TOR_STATUS_NAME'][$status_id] . '</p></td>';
+		}
+		$statuses .= '</tr>';
+	}
+	$statuses .= '</table>';
+}
+===========================================
