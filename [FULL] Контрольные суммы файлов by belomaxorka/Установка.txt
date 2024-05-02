@@ -93,3 +93,12 @@ global $bb_cfg;
 <p class="attach_comment med">MD5: {postrow.attach.attachrow.HASH}</p>
 <!-- ENDIF -->
 -------------------------------------------
+
+------------ [ Открыть admin/admin_attach_cp.php и найти ] ------------
+'COMMENT' => htmlspecialchars($attachments[$i]['comment']),
+-----------------------------------------------------------------------
+
+------------ [ Ниже вставить ] ------------
+// Контрольные суммы файлов
+'HASH'    => ($bb_cfg['attach_file_hash'] && !empty($attachments[$i]['hash'])) ? strtoupper(htmlCHR($attachments[$i]['hash'])) : '',
+-------------------------------------------
