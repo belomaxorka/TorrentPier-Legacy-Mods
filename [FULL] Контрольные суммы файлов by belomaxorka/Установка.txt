@@ -145,6 +145,14 @@ if ($bb_cfg['attach_file_hash'] && !empty($search_hash))
 -------------------------------------------
 
 ------------ [ Далее найти ] ------------
+<th>{L_FILE_COMMENT}</th>
+-----------------------------------------
+
+------------ [ Заменить на ] ------------
+<th>{L_FILE_COMMENT}<!-- IF $bb_cfg['attach_file_hash'] --> / MD5<!-- ENDIF --></th>
+-----------------------------------------
+
+------------ [ Далее найти ] ------------
 <td class="{attachrow.ROW_CLASS}" align="center"><span class="gen"><input type="text" size="40" maxlength="200" name="attach_comment_list[]" value="{attachrow.COMMENT}" class="post" /></span></td>
 -----------------------------------------
 
