@@ -103,6 +103,14 @@ global $bb_cfg;
 'HASH'    => ($bb_cfg['attach_file_hash'] && !empty($attachments[$i]['hash'])) ? strtoupper(htmlCHR($attachments[$i]['hash'])) : '',
 -------------------------------------------
 
+------------ [ Открыть library/attach_mod/includes/functions_admin.php и найти ] ------------
+$search_vars = array('search_keyword_fname', 'search_keyword_comment',
+---------------------------------------------------------------------------------------------
+
+------------ [ Заменить на ] ------------
+$search_vars = array('search_keyword_fname', 'search_keyword_comment', 'search_hash',
+-----------------------------------------
+
 ------------ [ Открыть admin_attach_cp.tpl и найти ] ------------
 <tr>
 	<td class="row1" colspan="2"><span class="gen">{L_FILE_COMMENT}:</span><br /><span class="small">{L_SEARCH_WILDCARD_EXPLAIN}</span></td>
@@ -111,10 +119,12 @@ global $bb_cfg;
 -----------------------------------------------------------------
 
 ------------ [ Ниже вставить ] ------------
+<!-- IF $bb_cfg['attach_file_hash'] -->
 <tr>
 	<td class="row1" colspan="2"><span class="gen">MD5:</span><br /><span class="small">{L_SEARCH_WILDCARD_EXPLAIN}</span></td>
 	<td class="row2" colspan="2"><span class="med"><input type="text" style="width: 200px" class="post" name="search_hash" size="20" /></span></td>
 </tr>
+<!-- ENDIF -->
 -------------------------------------------
 
 ------------ [ Далее найти ] ------------
