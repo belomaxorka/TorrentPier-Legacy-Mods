@@ -102,3 +102,11 @@ global $bb_cfg;
 // Контрольные суммы файлов
 'HASH'    => ($bb_cfg['attach_file_hash'] && !empty($attachments[$i]['hash'])) ? strtoupper(htmlCHR($attachments[$i]['hash'])) : '',
 -------------------------------------------
+
+------------ [ Открыть admin_attach_cp.tpl и найти ] ------------
+<td class="{attachrow.ROW_CLASS}" align="center"><span class="gen"><input type="text" size="40" maxlength="200" name="attach_comment_list[]" value="{attachrow.COMMENT}" class="post" /></span></td>
+-----------------------------------------------------------------
+
+------------ [ Заменить на ] ------------
+<td class="{attachrow.ROW_CLASS}" align="center"><span class="gen"><input type="text" size="40" maxlength="200" name="attach_comment_list[]" value="{attachrow.COMMENT}" class="post" /></span><!-- IF attachrow.HASH --><hr>MD5: {attachrow.HASH}<!-- ENDIF --></td>
+-----------------------------------------
