@@ -111,6 +111,18 @@ $search_vars = array('search_keyword_fname', 'search_keyword_comment',
 $search_vars = array('search_keyword_fname', 'search_keyword_comment', 'search_hash',
 -----------------------------------------
 
+------------ [ Далее найти ] ------------
+// Search Download Count
+-----------------------------------------
+
+------------ [ Выше вставить ] ------------
+if ($bb_cfg['attach_file_hash'] && !empty($search_hash) && ($search_hash <= 32))
+{
+	$match_word = str_replace('*', '%', $search_hash);
+	$where_sql[] = " (a.hash LIKE '" . attach_mod_sql_escape($match_word) . "') ";
+}
+-------------------------------------------
+
 ------------ [ Открыть admin_attach_cp.tpl и найти ] ------------
 <tr>
 	<td class="row1" colspan="2"><span class="gen">{L_FILE_COMMENT}:</span><br /><span class="small">{L_SEARCH_WILDCARD_EXPLAIN}</span></td>
