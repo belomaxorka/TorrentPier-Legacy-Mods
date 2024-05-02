@@ -120,6 +120,7 @@ $search_vars = array('search_keyword_fname', 'search_keyword_comment', 'search_h
 
 ------------ [ Выше вставить ] ------------
 // Контрольные суммы файлов
+global $bb_cfg;
 if ($bb_cfg['attach_file_hash'] && !empty($search_hash))
 {
 	$match_word = str_replace('*', '%', $search_hash);
