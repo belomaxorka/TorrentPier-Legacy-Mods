@@ -20,7 +20,8 @@ function get_file_hash($filepath)
 {
 	global $bb_cfg;
 
-	if (!$bb_cfg['attach_file_hash']) {
+	if (!$bb_cfg['attach_file_hash'])
+	{
 		return '';
 	}
 
