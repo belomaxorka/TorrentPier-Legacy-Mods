@@ -68,6 +68,7 @@ $template->assign_block_vars('postrow.attach.attachrow', array(
 -------------------------------------------------------------------------------
 
 ------------ [ Выше вставить ] ------------
+// Контрольные суммы файлов
 global $bb_cfg;
 -------------------------------------------
 
@@ -108,6 +109,7 @@ $search_vars = array('search_keyword_fname', 'search_keyword_comment',
 ---------------------------------------------------------------------------------------------
 
 ------------ [ Заменить на ] ------------
+// Контрольные суммы файлов
 $search_vars = array('search_keyword_fname', 'search_keyword_comment', 'search_hash',
 -----------------------------------------
 
@@ -116,6 +118,7 @@ $search_vars = array('search_keyword_fname', 'search_keyword_comment', 'search_h
 -----------------------------------------
 
 ------------ [ Выше вставить ] ------------
+// Контрольные суммы файлов
 if ($bb_cfg['attach_file_hash'] && !empty($search_hash) && ($search_hash <= 32))
 {
 	$match_word = str_replace('*', '%', $search_hash);
