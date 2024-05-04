@@ -70,7 +70,7 @@ $upload_dir,
 
 ------------ [ Ниже вставить ] ------------
 // Контрольные суммы файлов
-'FILE_HASH'         => get_file_hash($upload_dir . '/' . $this->attachment_list[$i])
+'FILE_HASH'         => get_file_hash($upload_dir . '/' . $this->attachment_list[$i]),
 -------------------------------------------
 
 ------------ [ Открыть library/attach_mod/displaying.php и найти ] ------------
