@@ -105,6 +105,14 @@ global $bb_cfg;
 <!-- ENDIF -->
 -------------------------------------------
 
+------------ [ Открыть posting_attach.tpl (В вашем шаблоне) и найти ] ------------
+<td class="row5"><a class="gen" href="{attach_row.U_VIEW_ATTACHMENT}" target="_blank"><b>{attach_row.FILE_NAME}</b></a></td>
+----------------------------------------------------------------------------------
+
+------------ [ Заменить на ] ------------
+<td class="row5"><a class="gen" href="{attach_row.U_VIEW_ATTACHMENT}" target="_blank"><b>{attach_row.FILE_NAME}</b></a>&nbsp;MD5: {attach_row.FILE_HASH}</td>
+-----------------------------------------
+
 ------------ [ Открыть admin/admin_attach_cp.php и найти ] ------------
 'COMMENT' => htmlspecialchars($attachments[$i]['comment']),
 -----------------------------------------------------------------------
