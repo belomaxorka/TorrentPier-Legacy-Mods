@@ -20,7 +20,7 @@ function get_file_hash($filepath)
 {
 	global $bb_cfg;
 
-	if (!$bb_cfg['attach_file_hash'])
+	if (!$bb_cfg['attach_file_hash'] || !is_file($filepath))
 	{
 		return '';
 	}
@@ -62,6 +62,14 @@ $upload_dir,
 ------------ [ Выше вставить ] ------------
 // Контрольные суммы файлов
 'hash'                  => get_file_hash($upload_dir . '/' . $this->attach_filename),
+-------------------------------------------
+
+------------ [ Далее найти ] ------------
+'FILE_COMMENT'      => @htmlspecialchars($this->attachment_comment_list[$i]),
+-----------------------------------------
+
+------------ [ Ниже вставить ] ------------
+'FILE_HASH'         => get_file_hash($upload_dir . '/' . $this->attachment_list[$i])
 -------------------------------------------
 
 ------------ [ Открыть library/attach_mod/displaying.php и найти ] ------------
