@@ -1,0 +1,709 @@
+<?php
+
+####[ОТКРЫТЬ]-----.htaccess
++ (добавить после RewriteEngine On) [Примечание, на сервере дожен был включен mod rewrite]
+# Главная
+RewriteRule ^index\.html$ /index.php [QSA,L,NC]
+# Категории
+RewriteRule ^category-(.*)-(.*).html /index.php?$2 [QSA,L,NC]
+# Форумы
+RewriteRule ^forum-(.*)-(.*).html /viewforum.php?$2 [QSA,L,NC]
+# Темы
+RewriteRule ^topic-(.*)-(.*).html /viewtopic.php?$2 [QSA,L,NC]
+# Профиль
+RewriteRule ^profile-(.*)-(.*).html /profile.php?$2 [QSA,L,NC]
+
+####[SAVE_FILE]####
+
+####[ОТКРЫТЬ]-----includes/functions.php
+
+-----в конец добавить-----
+
+function encodestring($text)
+{
+	$text = mb_strtolower(trim($text), 'UTF-8');
+    $text = str_replace('ё', 'e', $text);
+
+	$search  = array(
+		'#([\ri\n])[\s]+#is',
+		'#[^a-zа-я0-9-\/\s]#ui',
+		'#\s+#i',
+		'#[\/]#',
+		'#_+#'
+	);
+	$replace = array(
+		'$1',
+		'',
+		'_',
+		'_',
+		'_'
+	);
+	$text = preg_replace($search, $replace, $text);
+
+	$text = strtr($text, array("а"=>"a","б"=>"b",
+		"в"=>"v","г"=>"g","д"=>"d","е"=>"e","ж"=>"j",
+		"з"=>"z","и"=>"i","й"=>"y","к"=>"k","л"=>"l",
+		"м"=>"m","н"=>"n","о"=>"o","п"=>"p","р"=>"r",
+		"с"=>"s","т"=>"t","у"=>"u","ф"=>"f","х"=>"h",
+		"ц"=>"ts","ч"=>"ch","ш"=>"sh","щ"=>"sch","ъ"=>"y",
+		"ы"=>"yi","ь"=>"'","э"=>"e","ю"=>"yu","я"=>"ya"
+	));
+
+	$text = trim($text, "_");
+
+	return $text;
+}
+
+function seo_url($url, $title = false)
+{
+	global $bb_cfg;
+
+	if(!$bb_cfg['seo_url_enabled']) return $url;
+
+	$url_start = '';
+
+	$url_title = encodestring(html_ent_decode($title));
+	if(!$url_title) return $url;
+
+	$url_end = '.html';
+
+	$url = str_replace('/', '', $url);
+	$url_temp = parse_url($url);
+
+	switch($url_temp['path'])
+	{
+		case 'index.php':
+			$url_start .= 'category-';
+		break;
+
+		case 'viewtopic.php':
+			$url_start .= 'topic-';
+		break;
+
+		case 'viewforum.php':
+			$url_start .= 'forum-';
+		break;
+
+		case 'profile.php':
+			$url_start .= 'profile-';
+		break;
+	}
+
+	$url = str_replace($url_temp['path'], '', $url);
+	$url = str_replace('?', '-', $url);
+
+	if(isset($url_temp['fragment']))
+	{
+	$url_end .= '#'. $url_temp['fragment'];
+	$url = str_replace('#'. $url_temp['fragment'], '', $url);
+	}
+
+	return $url_start . $url_title . $url . $url_end;
+}
+
+function seo_url_check($url)
+{
+	global $bb_cfg;
+	//if(isset($bb_cfg['seo_ids'][$userdata['user_id']])) $bb_cfg['seo_url_enabled'] = true;
+
+	if ($bb_cfg['seo_url_enabled'] && !preg_match('#(category-|topic-|forum-|profile-)#is', $url)) return true;
+	return false;
+}
+
+-----заменить функцию-----
+
+function generate_pagination($base_url, $num_items, $per_page, $start_item, $title = false, $style = false)
+{
+	global $lang, $template;
+
+// Pagination Mod
+	$begin_end = 3;
+	$from_middle = 1;
+/*
+	By default, $begin_end is 3, and $from_middle is 1, so on page 6 in a 12 page view, it will look like this:
+
+	a, d = $begin_end = 3
+	b, c = $from_middle = 1
+
+ "begin"        "middle"           "end"
+    |              |                 |
+    |     a     b  |  c     d        |
+    |     |     |  |  |     |        |
+    v     v     v  v  v     v        v
+    1, 2, 3 ... 5, 6, 7 ... 10, 11, 12
+
+	Change $begin_end and $from_middle to suit your needs appropriately
+*/
+
+	$total_pages = ceil($num_items/$per_page);
+
+	if ( $total_pages == 1 || $num_items == 0 )
+	{
+		return '';
+	}
+
+    if($style) $style = "#$style";
+
+	$on_page = floor($start_item / $per_page) + 1;
+
+	$page_string = '';
+	if ( $total_pages > ((2*($begin_end + $from_middle)) + 2) )
+	{
+		$init_page_max = ( $total_pages > $begin_end ) ? $begin_end : $total_pages;
+		for($i = 1; $i < $init_page_max + 1; $i++)
+		{
+			$page_string .= ( $i == $on_page ) ? '<b>' . $i . '</b>' : '<a href="' . seo_url($base_url . "&amp;start=" . ( ( $i - 1 ) * $per_page ) . $style, $title) .'">' . $i . '</a>';
+
+			if ( $i <  $init_page_max )
+			{
+				$page_string .= ", ";
+			}
+		}
+		if ( $total_pages > $begin_end )
+		{
+			if ( $on_page > 1  && $on_page < $total_pages )
+			{
+				$page_string .= ( $on_page > ($begin_end + $from_middle + 1) ) ? ' ... ' : ', ';
+
+				$init_page_min = ( $on_page > ($begin_end + $from_middle) ) ? $on_page : ($begin_end + $from_middle + 1);
+
+				$init_page_max = ( $on_page < $total_pages - ($begin_end + $from_middle) ) ? $on_page : $total_pages - ($begin_end + $from_middle);
+
+				for($i = $init_page_min - $from_middle; $i < $init_page_max + ($from_middle + 1); $i++)
+				{
+					$page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . seo_url($base_url . "&amp;start=" . ( ( $i - 1 ) * $per_page ) . $style, $title) .'">' . $i . '</a>';
+
+					if ( $i <  $init_page_max + $from_middle )
+					{
+						$page_string .= ', ';
+					}
+				}
+				$page_string .= ( $on_page < $total_pages - ($begin_end + $from_middle) ) ? ' ... ' : ', ';
+			}
+			else
+			{
+				$page_string .= '&nbsp;...&nbsp;';
+			}
+			for($i = $total_pages - ($begin_end - 1); $i < $total_pages + 1; $i++)
+			{
+				$page_string .= ( $i == $on_page ) ? '<b>' . $i . '</b>'  : '<a href="' . seo_url($base_url . "&amp;start=" . ( ( $i - 1 ) * $per_page ) . $style, $title) .'">' . $i . '</a>';
+
+				if( $i <  $total_pages )
+				{
+					$page_string .= ", ";
+				}
+			}
+		}
+	}
+	else
+	{
+		for($i = 1; $i < $total_pages + 1; $i++)
+		{
+			$page_string .= ( $i == $on_page ) ? '<b>' . $i . '</b>' : '<a href="' . seo_url($base_url . "&amp;start=" . ( ( $i - 1 ) * $per_page ) . $style, $title) .'">' . $i . '</a>';
+
+			if ( $i <  $total_pages )
+			{
+				$page_string .= ', ';
+			}
+		}
+	}
+
+	if ( $on_page > 1 )
+	{
+		$page_string = ' <a href="' . seo_url($base_url . "&amp;start=" . ( ( $on_page - 2 ) * $per_page ) . $style, $title) .'">' . $lang['PREVIOUS'] . '</a>&nbsp;&nbsp;' . $page_string;
+	}
+
+	if ( $on_page < $total_pages )
+	{
+		$page_string .= '&nbsp;&nbsp;<a href="' . seo_url($base_url . "&amp;start=" . ( $on_page * $per_page ) . $style, $title) .'">' . $lang['NEXT'] . '</a>';
+	}
+
+	$pagination = ($page_string) ? '<a class="menu-root" href="#pg-jump">'. $lang['GOTO_PAGE'] .'</a> :&nbsp;&nbsp;'. $page_string : '';
+	$pagination = str_replace('&amp;start=0', '', $pagination);
+
+	$template->assign_vars(array(
+		'PAGINATION'   => $pagination,
+		'PAGE_NUMBER'  => sprintf($lang['PAGE_OF'], ( floor($start_item/$per_page) + 1 ), ceil( $num_items / $per_page )),
+		'PAGE_NUMBER_TITLE'  => 'страница '. (floor($start_item/$per_page) + 1 ) .' из '. ceil( $num_items / $per_page ),
+		'PG_BASE_URL'  => $base_url,
+		'PG_PER_PAGE'  => $per_page,
+	));
+
+	return $pagination;
+}
+
+-----заменить функцию-----
+
+function build_topic_pagination ($url, $replies, $per_page, $title = false)
+{
+	$pg = '';
+
+	if (++$replies > $per_page)
+	{
+		$total_pages = ceil($replies / $per_page);
+
+		for ($j=0, $page=1; $j < $replies; $j += $per_page, $page++)
+		{
+			$href = ($j) ? seo_url("$url&amp;start=$j", $title) : seo_url($url, $title);
+			$pg .= '<a href="'. $href .'" class="topicPG">'. $page .'</a>';
+
+			if ($page == 1 && $total_pages > 3)
+			{
+				$pg .= ' .. ';
+				$page = $total_pages - 2;
+				$j += ($total_pages - 3) * $per_page;
+			}
+			else if ($page < $total_pages)
+			{
+				$pg .= ', ';
+			}
+		}
+	}
+
+	return $pg;
+}
+
+-----найти-----
+
+	if (!in_array($user_id, array('', GUEST_UID, BOT_UID)) && $username)
+	{
+		$profile = '<a href="'. make_url(PROFILE_URL . $user_id) .'">'. $profile .'</a>';
+	}
+
+-----заменить-----
+
+	if (!in_array($user_id, array('', GUEST_UID, BOT_UID)) && $username)
+    {
+        $profile = '<a href="'. seo_url(PROFILE_URL . $user_id, $username) .'">'. $profile .'</a>';
+    }
+
+####[SAVE_FILE]####
+
+####[ОТКРЫТЬ]-----config.php
+
+-----в конец добавить-----
+
+$bb_cfg['seo_url_enabled'] = true;
+
+####[SAVE_FILE]####
+
+####[ОТКРЫТЬ]-----index.php
+
+-----найти-----
+
+// Build index page
+foreach ($cat_forums as $cid => $c)
+
+-----выше добавить-----
+
+if($viewcat && seo_url_check($_SERVER['REQUEST_URI'])) redirect(seo_url($_SERVER['REQUEST_URI'], $cat_title_html[$viewcat]));
+
+-----найти-----
+
+		'U_VIEWCAT' => CAT_URL . $cid,
+
+-----заменить-----
+
+		'U_VIEWCAT' => seo_url(CAT_URL . $cid, $cat_title_html[$cid]),
+
+-----найти-----
+
+				'SF_NEW'  => $new ? ' new' : '',
+
+-----выше добавить-----
+
+				'SF_URL'  => seo_url(FORUM_URL . $fid, $fname_html),
+
+-----найти-----
+
+			'FORUM_FOLDER_IMG' => $folder_image,
+
+-----ниже добавить-----
+
+                        'FORUM_URL'        => seo_url(FORUM_URL . $fid, $fname_html),
+
+-----найти-----
+
+			'NEWS_TOPIC_ID' => $news['topic_id'],
+
+-----ниже добавить-----
+
+			'U_NEWS_TOPIC'  => seo_url(TOPIC_URL . $news['topic_id'], $news['topic_title']),
+
+-----найти-----
+
+			'NEWS_TOPIC_ID' => $net['topic_id'],
+
+-----ниже добавить-----
+
+			'U_NEWS_TOPIC'  => seo_url(TOPIC_URL . $net['topic_id'], $net['topic_title']),
+
+-----найти-----
+
+				'LAST_TOPIC_ID'       => $f['last_topic_id'],
+
+-----ниже добавить-----
+
+				'LAST_TOPIC_URL'      => seo_url(TOPIC_URL . $f['last_topic_id'] .'&amp;view=newest#newest', $f['last_topic_title']),
+
+####[SAVE_FILE]####
+
+####[ОТКРЫТЬ]-----viewforum.php
+
+-----найти-----
+
+// Only new
+$only_new = $user->opt_js['only_new'];
+
+-----выше добавить-----
+
+if(seo_url_check($_SERVER['REQUEST_URI'])) redirect(seo_url($_SERVER['REQUEST_URI'], $forums['forum'][$forum_id]['forum_name']));
+
+-----найти-----
+
+			'U_VIEWFORUM' => FORUM_URL . $sf_forum_id,
+
+-----заменить-----
+
+			'U_VIEWFORUM' => seo_url(FORUM_URL . $sf_forum_id, $fname_html),
+
+-----найти-----
+
+				'ICON_LATEST_REPLY'   => $images['icon_latest_reply'],
+
+-----ниже добавить-----
+
+				'U_LAST_POST_ID'      => seo_url(POST_URL . $sf_data['forum_last_post_id'] .'#'. $sf_data['forum_last_post_id'],  $sf_data['last_topic_title']),
+
+-----найти-----
+
+		'PARENT_FORUM_HREF'	  => ($parent_id = $forum_data['forum_parent']) ? FORUM_URL . $forum_data['forum_parent'] : '',
+
+-----заменить-----
+
+		'PARENT_FORUM_HREF'	  => ($parent_id = $forum_data['forum_parent']) ? seo_url(FORUM_URL . $forum_data['forum_parent'], $forums['forum_name_html'][$parent_id]) : '',
+
+-----найти-----
+
+	'U_VIEW_FORUM'        => FORUM_URL . $forum_id,
+	'U_MARK_READ'         => FORUM_URL . $forum_id ."&amp;mark=topics",
+
+-----заменить-----
+
+	'U_VIEW_FORUM'        => seo_url(FORUM_URL . $forum_id, $forum_data['forum_name']),
+    'U_MARK_READ'         => seo_url(FORUM_URL . $forum_id ."&amp;mark=topics", $forum_data['forum_name']),
+
+-----найти-----
+
+	$template->assign_block_vars('t', array(
+		'FORUM_ID'         => $forum_id,
+
+-----выше добавить-----
+
+    $moved_id = ($moved) ? $topic['topic_moved_id'] : $topic['topic_id'];
+
+-----найти-----
+
+		'HREF_TOPIC_ID'    => ($moved) ? $topic['topic_moved_id'] : $topic['topic_id'],
+
+-----заменить-----
+
+		'HREF_TOPIC_ID'    => seo_url(TOPIC_URL . $moved_id, $topic['topic_title']),
+        'HREF_TOPIC_ID_UN' => seo_url(TOPIC_URL . $moved_id .'&amp;view=newest#newest', $topic['topic_title']),
+        'POSTER_URL'       => seo_url(PROFILE_URL . $topic['first_user_id'], $topic['last_username']),
+
+-----найти-----
+
+        'PAGINATION'       => ($moved) ? '' : build_topic_pagination(TOPIC_URL . $topic_id, $replies, $bb_cfg['posts_per_page']),
+
+-----заменить-----
+
+        'PAGINATION'       => ($moved) ? '' : build_topic_pagination(TOPIC_URL . $topic_id, $replies, $bb_cfg['posts_per_page'], $topic['topic_title']),
+
+-----найти-----
+
+		'LAST_POST_ID'     => $topic['topic_last_post_id'],
+
+-----ниже добавить-----
+
+		'U_LAST_POST_ID'   => seo_url(POST_URL . $topic['topic_last_post_id'] .'#'. $topic['topic_last_post_id'], $topic['topic_title']),
+
+-----найти-----
+
+	generate_pagination($pg_url, $forum_topics, $topics_per_page, $start);
+
+-----заменить-----
+
+	generate_pagination($pg_url, $forum_topics, $topics_per_page, $start, $forum_data['forum_name']);
+
+####[SAVE_FILE]####
+
+####[ОТКРЫТЬ]-----viewtopic.php
+
+-----найти-----
+
+if (!$t_data = DB()->fetch_row($sql))
+{
+	meta_refresh('index.php' , 10);
+	bb_die($lang['TOPIC_POST_NOT_EXIST']);
+}
+
+-----ниже добавить-----
+
+if($post_id == $t_data['topic_first_post_id']) redirect(seo_url(TOPIC_URL . $t_data['topic_id'], $t_data['topic_title']));
+if(seo_url_check($_SERVER['REQUEST_URI'])) redirect(seo_url($_SERVER['REQUEST_URI'], $t_data['topic_title']));
+
+-----найти-----
+
+		'PARENT_FORUM_HREF'	=> ($parent_id = $t_data['forum_parent']) ? FORUM_URL . $parent_id : '',
+
+-----заменить-----
+
+		'PARENT_FORUM_HREF'	=> ($parent_id = $t_data['forum_parent']) ? seo_url(FORUM_URL . $parent_id, $forums['f'][$parent_id]['forum_name']) : '',
+
+-----найти-----
+
+	'U_VIEW_TOPIC'        => TOPIC_URL . $topic_id,
+	'U_VIEW_FORUM'        => $view_forum_url,
+	'U_VIEW_OLDER_TOPIC'  => $view_prev_topic_url,
+	'U_VIEW_NEWER_TOPIC'  => $view_next_topic_url,
+	'U_POST_NEW_TOPIC'    => $new_topic_url,
+	'U_POST_REPLY_TOPIC'  => $reply_topic_url,
+
+-----заменить-----
+
+	'U_VIEW_TOPIC'        => seo_url(TOPIC_URL . $topic_id, $topic_title),
+    'U_VIEW_FORUM'        => seo_url($view_forum_url, $forum_name),
+    'U_VIEW_OLDER_TOPIC'  => seo_url($view_prev_topic_url, $topic_title),
+    'U_VIEW_NEWER_TOPIC'  => seo_url($view_next_topic_url, $topic_title),
+    'U_POST_NEW_TOPIC'    => seo_url($new_topic_url, $topic_title),
+    'U_POST_REPLY_TOPIC'  => seo_url($reply_topic_url, $topic_title),
+
+
+-----найти-----
+
+generate_pagination($pg_url, $total_replies, $posts_per_page, $start);
+
+-----заменить-----
+
+generate_pagination($pg_url, $total_replies, $posts_per_page, $start, $topic_title);
+
+####[SAVE_FILE]####
+
+####[ОТКРЫТЬ]-----search.php
+-----найти------
+
+		$template->assign_block_vars('t', array(
+			'FORUM_ID'    => $forum_id,
+			'FORUM_NAME'  => $forum_name_html[$forum_id],
+			'TOPIC_ID'    => $topic_id,
+
+-----ниже добавить------
+
+			'S_TOPIC_URL' => seo_url(TOPIC_URL . $topic_id, $first_post['topic_title']),
+            'S_FORUM_URL' => seo_url(FORUM_URL . $forum_id, $forum_name_html[$forum_id]),
+
+-----найти------
+
+			'HREF_TOPIC_ID' => ($moved) ? $topic['topic_moved_id'] : $topic['topic_id'],
+
+-----заменить------
+
+			'HREF_TOPIC_ID' => ($moved) ? seo_url(TOPIC_URL . $topic['topic_moved_id'], $topic['topic_title']) : seo_url(TOPIC_URL . $topic['topic_id'], $topic['topic_title']),
+
+-----найти------
+
+			'LAST_POSTER'   => profile_url(array('username' => $topic['last_username'], 'user_id' => $topic['last_user_id'], 'user_rank' => $topic['last_user_rank'])),
+			'LAST_POST_TIME' => bb_date($topic['topic_last_post_time']),
+			'LAST_POST_ID'  => $topic['topic_last_post_id'],
+
+-----ниже добавить------
+
+			'S_TOPIC_URL'   => seo_url(TOPIC_URL . $topic_id, $topic['topic_title']),
+            'S_FORUM_URL'   => seo_url(FORUM_URL . $forum_id, $forum_name_html[$forum_id]),
+
+-----найти------
+
+			$template->assign_block_vars('t.p', array(
+
+-----ниже добавить------
+
+			    'S_TOPIC_URL'  => seo_url(TOPIC_URL . $topic_id, $first_post['topic_title']),
+
+####[SAVE_FILE]####
+
+####[ОТКРЫТЬ]-----tracker.php
+
+-----найти------
+
+				'ADDED_RAW'    => $tor['reg_time'],
+				'ADDED_TIME'   => bb_date($tor['reg_time'], $time_format),
+				'ADDED_DATE'   => bb_date($tor['reg_time'], $date_format, false),
+
+-----ниже добавить------
+
+				'TOR_TOPIC_URL'=> seo_url(TOPIC_URL . $tor['topic_id'], $tor['topic_title']),
+                'TOR_FORUM_URL'=> seo_url(FORUM_URL . $forum_id, $forum_name_html[$forum_id]),
+
+####[SAVE_FILE]####
+
+####[ОТКРЫТЬ]-----viewprofile.php
+
+-----найти------
+
+if (!$userdata['session_logged_in'])
+{
+	redirect(LOGIN_URL . "?redirect={$_SERVER['REQUEST_URI']}");
+}
+
+-----ниже добавить------
+
+if(seo_url_check($_SERVER['REQUEST_URI'])) redirect(seo_url($_SERVER['REQUEST_URI'], $profiledata['username']));
+
+####[SAVE_FILE]####
+
+####[ОТКРЫТЬ]-----templates/default/index.tpl
+
+-----найти------
+
+				<h4 class="forumlink"><a href="{FORUM_URL}{c.f.FORUM_ID}">{c.f.FORUM_NAME}</a></h4>
+
+-----заменить------
+
+				<h4 class="forumlink"><a href="{c.f.FORUM_URL}">{c.f.FORUM_NAME}</a></h4>
+
+-----найти------
+
+					<span class="sf_title{c.f.sf.SF_NEW}"><a href="search.php?f={c.f.sf.SF_ID}&amp;new=1&amp;dm=1&amp;s=0&amp;o=1" class="dot-sf">&#9658;</a><a href="{FORUM_URL}{c.f.sf.SF_ID}" class="dot-sf">{c.f.sf.SF_NAME}</a></span><span class="sf_separator"></span>
+
+-----заменить------
+
+					<span class="sf_title{c.f.sf.SF_NEW}"><a href="search.php?f={c.f.sf.SF_ID}&amp;new=1&amp;dm=1&amp;s=0&amp;o=1" class="dot-sf">&#9658;</a><a href="{c.f.sf.SF_URL}">{c.f.sf.SF_NAME}</a></span><span class="sf_separator"></span>
+
+-----найти------
+
+						<a href="{TOPIC_URL}{c.f.last.LAST_TOPIC_ID}{NEWEST_URL}" title="{c.f.last.LAST_TOPIC_TIP}">{c.f.last.LAST_TOPIC_TITLE}</a>
+
+-----заменить------
+
+						<a href="{c.f.last.LAST_TOPIC_URL}" title="{c.f.last.LAST_TOPIC_TIP}">{c.f.last.LAST_TOPIC_TITLE}</a>
+
+####[SAVE_FILE]####
+
+####[ОТКРЫТЬ]-----templates/default/viewforum.tpl
+
+-----найти------
+
+{TOPIC_URL}{t.HREF_TOPIC_ID}{NEWEST_URL}
+
+-----заменить везде------
+
+{t.HREF_TOPIC_ID_UN}
+
+-----найти------
+
+{TOPIC_URL}{t.HREF_TOPIC_ID}
+
+-----заменить везде------
+
+{t.HREF_TOPIC_ID}
+
+-----найти------
+
+{POST_URL}{t.LAST_POST_ID}#{t.LAST_POST_ID}
+
+-----заменить везде------
+
+{t.U_LAST_POST_ID}
+
+####[SAVE_FILE]####
+
+####[ОТКРЫТЬ]-----templates/default/viewtopic.tpl
+
+-----найти------
+
+{POST_URL}{postrow.POST_ID}#{postrow.POST_ID}
+
+-----заменить------
+
+{U_POST_ID}
+
+####[SAVE_FILE]####
+
+####[ОТКРЫТЬ]-----templates/default/tracker.tpl
+-----найти-----
+
+<a class="gen" href="{TR_FORUM_URL}{tor.FORUM_ID}">{tor.FORUM_NAME}</a>
+-----заменить------
+
+<a class="gen" href={tor.TOR_FORUM_URL} onclick="javascript:window.location.href='{TR_FORUM_URL}{tor.FORUM_ID}'; return false;">{tor.FORUM_NAME}</a>
+
+-----найти------
+
+<a class="{tor.DL_CLASS}<!-- IF AJAX_TOPICS --> folded2<!-- ENDIF --> tLink" <!-- IF AJAX_TOPICS -->onclick="ajax.view_post({tor.POST_ID}, this); return false;"<!-- ENDIF --> href="{TOPIC_URL}{tor.TOPIC_ID}"><!-- IF tor.TOR_FROZEN -->{tor.TOPIC_TITLE}<!-- ELSE -->{tor.TOR_TYPE}<b>{tor.TOPIC_TITLE}</b><!-- ENDIF --></a>
+-----заменить------
+
+<a class="{tor.DL_CLASS}<!-- IF AJAX_TOPICS --> folded2 tLink<!-- ENDIF -->" <!-- IF AJAX_TOPICS -->onclick="ajax.view_post({tor.POST_ID}, this); return false;"<!-- ENDIF --> href="{tor.TOR_TOPIC_URL}"><!-- IF tor.TOR_FROZEN -->{tor.TOPIC_TITLE}<!-- ELSE -->{tor.TOR_TYPE}<b>{tor.TOPIC_TITLE}</b><!-- ENDIF --></a>
+
+####[SAVE_FILE]####
+
+####[ОТКРЫТЬ]-----templates/default/search_results.tpl
+-----найти-----
+
+		<a href="{FORUM_URL}{t.FORUM_ID}" class="med normal"><i>{t.FORUM_NAME}</i></a>
+
+-----заменить------
+
+		<a href="{t.S_FORUM_URL}" class="med normal"><i>{t.FORUM_NAME}</i></a>
+
+-----найти------
+
+		<a href="{TOPIC_URL}{t.TOPIC_ID}" class="med">{t.TOPIC_TITLE}</a>
+
+-----заменить------
+
+		<a href="{t.S_TOPIC_URL}" class="med">{t.TOPIC_TITLE}</a>
+
+-----найти------
+
+				<a class="small" href="{POST_URL}{t.p.POST_ID}#{t.p.POST_ID}" title="{L_POST_LINK}">{t.p.POST_DATE}</a>
+
+-----заменить------
+
+				<a class="small" href="{t.p.S_TOPIC_URL}{t.p.POST_ID}#{t.p.POST_ID}" title="{L_POST_LINK}">{t.p.POST_DATE}</a>
+
+-----найти------
+
+<a href="{FORUM_URL}{t.FORUM_ID}" class="gen">{t.FORUM_NAME}</a>
+
+-----заменить------
+
+<a href="{t.S_FORUM_URL}" class="gen">{t.FORUM_NAME}</a>
+
+-----найти------
+
+<a href="{TOPIC_URL}{t.HREF_TOPIC_ID}{NEWEST_URL}">{ICON_NEWEST_REPLY}</a>
+
+-----заменить------
+
+<a href="{t.HREF_TOPIC_ID}{NEWEST_URL}">{ICON_NEWEST_REPLY}</a>
+
+-----найти------
+
+<a href="{TOPIC_URL}{t.TOPIC_ID}" class="topictitle"><span id="tid_{t.TOPIC_ID}">{t.TOPIC_TITLE}</span></a>
+
+-----заменить------
+
+<a href="{t.S_TOPIC_URL}" class="topictitle"><span id="tid_{t.TOPIC_ID}">{t.TOPIC_TITLE}</span></a>
+
+-----найти------
+
+<a href="{POST_URL}{t.LAST_POST_ID}#{t.LAST_POST_ID}">{ICON_LATEST_REPLY}</a>
+
+-----заменить------
+
+<a href="{t.S_TOPIC_URL}{t.LAST_POST_ID}#{t.LAST_POST_ID}">{ICON_LATEST_REPLY}</a>
+
+####[SAVE_FILE]####
+
+#########[END]#########
