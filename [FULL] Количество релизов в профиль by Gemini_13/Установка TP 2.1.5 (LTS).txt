@@ -38,7 +38,7 @@ function releases_profile()
     global $lang, $user;
 
     if (!$user_id = intval($this->request['user_id']) or !$profiledata = get_userdata($user_id)) {
-        $this->ajax_die("invalid user_id: $user_id");
+        $this->ajax_die($lang['NO_USER_ID_SPECIFIED']);
     }
     if (!$mode = (string)$this->request['mode']) {
         $this->ajax_die('invalid mode (empty)');
@@ -46,9 +46,7 @@ function releases_profile()
 
     switch ($mode) {
         case 'get_releases_profile':
-            $total_releases = '0';
-            $total_releases_size = '0';
-            $total_releases_completed = '0';
+            $total_releases_size = $total_releases = $total_releases_completed = 0;
 
             $sql = "
                     SELECT COUNT(tor.poster_id), SUM(tor.size), tor.poster_id, SUM(tor.complete_count)
@@ -67,9 +65,9 @@ function releases_profile()
             }
 
             $this->response['releases_profile_html'] = '[
-                    ' . $lang['RELEASES'] . ' <span class="seed bold">' . $total_releases . '</span> |
-                    ' . $lang['CONTENT'] . ' <span class="seed bold">' . $total_releases_size . '</span> |
-                    ' . $lang['DOWNLOAD_NUMBER'] . ' <span class="seed bold">' . declension($total_releases_completed, 'times') . '</span> ]';
+                ' . $lang['RELEASES'] . ' <span class="seed bold">' . $total_releases . '</span> |
+                ' . $lang['CONTENT'] . ' <span class="seed bold">' . $total_releases_size . '</span> |
+                ' . $lang['DOWNLOAD_NUMBER'] . ' <span class="seed bold">' . declension($total_releases_completed, 'times') . '</span> ]';
             break;
 
         default:
