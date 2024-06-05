@@ -68,8 +68,7 @@ function releases_profile()
             $this->response['releases_profile_html'] = '[
                     ' . $lang['RELEASES'] . ' <span class="seed bold">' . $total_releases . '</span> |
                     ' . $lang['CONTENT'] . ' <span class="seed bold">' . $total_releases_size . '</span> |
-                    ' . $lang['DOWNLOAD_NUMBER'] . ' <span class="seed bold">' . declension($total_releases_completed, 'times') . '</span> ]
-                ';
+                    ' . $lang['DOWNLOAD_NUMBER'] . ' <span class="seed bold">' . declension($total_releases_completed, 'times') . '</span> ]';
             break;
 
         default:
