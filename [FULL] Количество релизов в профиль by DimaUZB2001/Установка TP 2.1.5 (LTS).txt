@@ -1,0 +1,140 @@
+-------------------------------------------
+Количество релизов в профиль
+-------------------------------------------
+Автор: Неизвестен
+Автор адаптации под SVN: V@NO
+Автор адаптации под v2.1.5: DimaUZB2001
+-------------------------------------------
+
+Открыть ajax.php и найти
+-------------------------------------
+
+'manage_group'      => array('user'),
+
+-------------------------------------
+-----------------После вставить------
+-------------------------------------
+
+'releases_profile'  => array('user'),
+
+-------------------------------------
+-----------------Найти---------------
+-------------------------------------
+
+function sitemap()
+{
+	require(AJAX_DIR .'sitemap.php');
+}
+
+-------------------------------------
+---------После вставить--------------
+-------------------------------------
+
+// Total releases in profile
+function releases_profile()
+{
+    global $lang, $user;
+
+    if (!$user_id = intval($this->request['user_id']) or !$profiledata = get_userdata($user_id)) {
+        $this->ajax_die("invalid user_id: $user_id");
+    }
+    if (!$mode = (string)$this->request['mode']) {
+        $this->ajax_die('invalid mode (empty)');
+    }
+
+    switch ($mode) {
+        case 'get_releases_profile':
+            $total_releases = '0';
+            $total_releases_size = '0';
+            $total_releases_completed = '0';
+
+            $sql = "
+                    SELECT COUNT(tor.poster_id), SUM(tor.size), tor.poster_id, SUM(tor.complete_count)
+                    FROM            " . BB_BT_TORRENTS . " tor
+                        LEFT JOIN    " . BB_USERS . " u ON(u.user_id = tor.poster_id)
+                        LEFT JOIN    " . BB_BT_USERS . " ut ON(ut.user_id = tor.poster_id)
+                    WHERE u.user_id = $user_id
+                    GROUP BY tor.poster_id
+                    ORDER BY SUM(tor.complete_count) DESC
+                ";
+
+            if ($row = DB()->fetch_row($sql)) {
+                $total_releases = $row['COUNT(tor.poster_id)'];
+                $total_releases_size = humn_size($row['SUM(tor.size)']);
+                $total_releases_completed = $row['SUM(tor.complete_count)'];
+            }
+
+            $this->response['releases_profile_html'] = '[
+                    ' . $lang['RELEASES'] . ' <span class="seed bold">' . $total_releases . '</span> |
+                    ' . $lang['CONTENT'] . ' <span class="seed bold">' . $total_releases_size . '</span> |
+                    ' . $lang['DOWNLOAD_NUMBER'] . ' <span class="seed bold">' . declension($total_releases_completed, 'times') . '</span> ]
+                ';
+            break;
+
+        default:
+            $this->ajax_die("invalid mode: $mode");
+    }
+}
+
+-------------------------------------
+Открыть library/language/ru/main.php
+-------------------------------------
+---------Самый внизу вставить--------
+-------------------------------------
+
+// Total releases in profile
+$lang['RELEASES'] = 'Релизов:';
+$lang['CONTENT'] = 'Объемом:';
+$lang['DOWNLOAD_NUMB'] = 'Скачаны:';
+$lang['RELEASER_STAT'] = 'Статистика релизера:';
+
+---------------------------------------
+Открыть styles/templates/default/usercp_viewprofile.tpl
+---------------------------------------
+----------------Найти------------------
+---------------------------------------
+
+ajax.callback.group_membership = function(data) {
+	$('#gr-mem-list').html(data.group_list_html);
+}
+</script>
+<!-- ENDIF / IS_AM -->
+
+----------------------------------------
+------------------После вставить--------
+----------------------------------------
+
+<!-- IF LOGGED_IN -->
+<script type="text/javascript">
+ajax.releases_profile = function(mode) {
+	$('#releases_profile').html('<i class="loading-1">{L_LOADING}</i>');
+	ajax.exec({
+		action  : 'releases_profile',
+		mode    : mode,
+		user_id : {PROFILE_USER_ID}
+	});
+}
+ajax.callback.releases_profile = function(data) {
+	$('#releases_profile').html(data.releases_profile_html);
+}
+</script>
+<!-- ENDIF -->
+
+----------------------------------------
+------------------Найти-----------------
+----------------------------------------
+
+<tr>
+	<th>{L_AGE}:</th>
+	<td><b>{AGE}</b></td>
+</tr>
+<!-- ENDIF -->
+
+----------------------------------------
+------------------После вставить--------
+----------------------------------------
+
+<tr>
+	<th>{L_RELEASER_STAT}</th>
+	<td id="releases_profile">[ <a href="#" class="med" onclick="ajax.releases_profile('get_releases_profile'); return false;">{L_RELEASER_STAT_SHOW}</a> ]</td>
+</tr>
