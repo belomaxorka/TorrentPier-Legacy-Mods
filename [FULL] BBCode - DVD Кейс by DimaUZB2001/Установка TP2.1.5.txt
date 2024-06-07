@@ -2,7 +2,7 @@
 ---------------------------------------------
 BBCode - DVD Case
 Автор: DimaUZB2001
-Версия: v1.0.0
+Версия: v1.1.0
 ---------------------------------------------
 ---------------------------------------------
 Открыть library/includes/bbcode.php и найти
@@ -14,10 +14,10 @@ BBCode - DVD Case
 Перед вставить
 ---------------------------------------------
 
-// DVDCase
+// BBCode: DVDCase
 $bbcode_tpl['case'] = <<<HTML
-	<div class="dvd_container">
-	<img style="background: url('\\2') center no-repeat; float: right; width: 287px; height: 424px;" />
+	<div class="dvd_container" style="float: $1 !important;">
+		<img style="background: url('\\2') center no-repeat; background-size: cover; width: 287px; height: 424px;" alt="" />
 		<div class="dvd_case"></div>
 	</div>
 HTML;
@@ -32,15 +32,18 @@ HTML;
 После вставить
 ---------------------------------------------
 
+// BBCode: DVDCase
 "#\[case=(left|right)\]($img_exp)\[/case\]\s*#i"         => $tpl['case'],
 
 ---------------------------------------------
 Открыть main.css и внизу вставить
 ---------------------------------------------
 
+/**
+ * BBCode: DVDCase
+ */
 .dvd_container {
 	width: 340px;
-	float: right;
 }
 
 .dvd_container img {
@@ -61,7 +64,7 @@ HTML;
 Открыть styles/templates/default/posting_editor.tpl и найти
 ---------------------------------------------
 
-<input type="button" value="Img" name="codeImg" title="{L_IMG_TITLE}" style="width: 40px;" />
+<input type="button" value="{L_SPOILER}" name="codeSpoiler" title="{L_SPOILER}" style="width: 65px;" />
 
 ---------------------------------------------
 После вставить
@@ -73,7 +76,7 @@ HTML;
 Найти
 --------------------------------------------
 
-bbcode.addTag("codeAlign", function(e) { var v=e.value; e.selectedIndex=0; return "align="+v }, "/align");
+bbcode.addTag("codeSpoiler", "spoiler", null, "",  ctrl);
 
 --------------------------------------------
 После вставить
