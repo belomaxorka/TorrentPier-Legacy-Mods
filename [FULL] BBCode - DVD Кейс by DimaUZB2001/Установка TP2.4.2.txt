@@ -64,7 +64,7 @@ HTML;
 Открыть styles/templates/default/posting_editor.tpl и найти
 ---------------------------------------------
 
-<input type="button" value="Img" name="codeImg" title="{L_IMG_TITLE}" />
+<input type="button" value="{L_SPOILER}" name="codeSpoiler" title="{L_SPOILER}" />
 
 ---------------------------------------------
 После вставить
@@ -76,7 +76,7 @@ HTML;
 Найти
 --------------------------------------------
 
-bbcode.addTag("codeIndent", "indent", null, "", ctrl);
+bbcode.addTag("codeSpoiler", "spoiler", null, "", ctrl);
 
 --------------------------------------------
 После вставить
