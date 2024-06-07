@@ -79,4 +79,4 @@ bbcode.addTag("codeAlign", function(e) { var v=e.value; e.selectedIndex=0; retur
 После вставить
 --------------------------------------------
 
-bbcode.addTag("codeCase", "case=right", "/case", "",);
+bbcode.addTag("codeCase", "case=right", "/case", "", ctrl);
