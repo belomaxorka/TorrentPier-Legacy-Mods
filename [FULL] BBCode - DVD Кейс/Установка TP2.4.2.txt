@@ -1,0 +1,81 @@
+---------------------------------------------
+---------------------------------------------
+BBCode - DVD Case
+Автор DimaUZB2001
+---------------------------------------------
+---------------------------------------------
+Открыть library/includes/bbcode.php и найти
+---------------------------------------------
+
+// Image
+
+---------------------------------------------
+Перед ставтить
+---------------------------------------------
+
+// DVDCase
+$bbcode_tpl['case'] = <<<HTML
+    <div class="dvd_container">
+	<img style="background: url('\\2') center no-repeat; float: right;width: 287px;
+    height: 424px;" />
+		<div class="dvd_case"></div>
+	</div>
+HTML;
+
+---------------------------------------------
+Открыть src/Legacy/BBCode.php и найти
+---------------------------------------------
+
+"#\[img=(left|right|center)\]($img_exp)\[/img\]\s*#isu" => $tpl['img_aligned'],
+
+---------------------------------------------
+После ставить
+---------------------------------------------
+
+"#\[case=(left|right)\]($img_exp)\[/case\]\s*#i" => $tpl['case'],
+
+---------------------------------------------
+Открыть globals.css и самый внизу ставить
+---------------------------------------------
+
+.dvd_container {
+    width: 340px;
+    float: right;
+}
+
+.dvd_container img {
+    position: absolute;
+    margin: 11px 0 0 47px;
+    border-radius: 8px;
+}
+
+.dvd_case {
+    background: url(/styles/images/case.png);
+    position: relative;
+    z-index: 5;
+    width: 350px;
+    height: 456px;
+}
+---------------------------------------------
+Открыть styles/templates/default/posting_editor.tpl и найти
+---------------------------------------------
+
+<input type="button" value="Img" name="codeImg" title="{L_IMG_TITLE}" />
+
+---------------------------------------------
+После ставить
+---------------------------------------------
+
+<input type="button" value="Case" name="codeCase" title="Обложка DVD" />
+
+--------------------------------------------
+Найти
+--------------------------------------------
+
+bbcode.addTag("codeIndent", "indent", null, "", ctrl);
+
+--------------------------------------------
+После ставить
+--------------------------------------------
+
+bbcode.addTag("codeCase", "case=right", "/case", "",);
