@@ -1,7 +1,7 @@
 -------------------------------------------
 Количество релизов в профиль
 -------------------------------------------
-Версия: v1.1.1
+Версия: v1.2.0
 -------------------------------------------
 Автор: Gemini_13
 Автор адаптации под v2.1.5: DimaUZB2001
@@ -50,19 +50,20 @@ function releases_profile()
 			$total_releases_size = $total_releases = $total_releases_completed = 0;
 
 			$sql = "
-				SELECT COUNT(tor.poster_id), SUM(tor.size), tor.poster_id, SUM(tor.complete_count)
+				SELECT COUNT(tor.poster_id), SUM(tor.size), tor.poster_id, SUM(ad.download_count)
 				FROM            " . BB_BT_TORRENTS . " tor
 					LEFT JOIN    " . BB_USERS . " u ON(u.user_id = tor.poster_id)
+					LEFT JOIN    " . BB_ATTACHMENTS_DESC . " ad ON(ad.attach_id = tor.attach_id)
 					LEFT JOIN    " . BB_BT_USERS . " ut ON(ut.user_id = tor.poster_id)
 				WHERE u.user_id = $user_id
 				GROUP BY tor.poster_id
-				ORDER BY SUM(tor.complete_count) DESC
+				ORDER BY SUM(ad.download_count) DESC
 			";
 
 			if ($row = DB()->fetch_row($sql)) {
 				$total_releases = $row['COUNT(tor.poster_id)'];
 				$total_releases_size = humn_size($row['SUM(tor.size)']);
-				$total_releases_completed = $row['SUM(tor.complete_count)'];
+				$total_releases_completed = $row['SUM(ad.download_count)'];
 			}
 
 			$this->response['releases_profile_html'] = '[
