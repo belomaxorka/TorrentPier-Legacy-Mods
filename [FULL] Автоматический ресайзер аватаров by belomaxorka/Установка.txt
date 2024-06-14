@@ -1,6 +1,6 @@
 -------------- Автоматический ресайзер аватаров --------------
 Автор: belomaxorka
-Версия: v1.0.0
+Версия: v1.0.1
 Описание: При загрузке аватарки большего размера чем 100x100 (по умолчанию)
 данный мод автоматически изменяет размер изображения под 100x100
 --------------------------------------------------------------
@@ -23,6 +23,7 @@ if (($this->cfg['max_width'] && $width > $this->cfg['max_width']) || ($this->cfg
 	for ($i = 0, $max_try = 3; $i <= $max_try; $i++) {
 		try {
 			$image = new \abeautifulsite\SimpleImage($this->file['tmp_name'], $width, $height);
+			$image->quality = 100; // Качество изображения (%)
 			$image->auto_orient();
 			$image->resize($this->cfg['max_width'], $this->cfg['max_height']);
 			$image->save($this->file['tmp_name']);
