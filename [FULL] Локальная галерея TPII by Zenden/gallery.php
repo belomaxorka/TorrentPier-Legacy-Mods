@@ -12,6 +12,7 @@ $user->session_start(array('req_login' => true));
 $start = intval(request_var('start', 0));
 $imgfile = $i = $imgs_count = $user_dir_size = 0;
 $errors = $imgs_all = $imgs_tags_img = $imgs_tags_thumb = $imgs_tags_spoiler = array();
+$make_thumb = false;
 
 if (!empty($_FILES['imgfile']['name']) && $bb_cfg['imgs']['up_allowed']) {
 	if (count($_FILES['imgfile']['name']) > $bb_cfg['imgs']['limit_imgs']) {
@@ -32,19 +33,18 @@ if (!empty($_FILES['imgfile']['name']) && $bb_cfg['imgs']['up_allowed']) {
 		if ($upload->init($bb_cfg['imgs'], $img) and $upload->store('imgfile', $userdata)) {
 			$path = get_imgfile_path($userdata['user_id'], $upload->file_ext_id, $userdata['user_id'] . $upload->file['name'] . $upload->file['size']);
 			$thumb = get_imgfile_path($userdata['user_id'], $upload->file_ext_id, $userdata['user_id'] . $upload->file['name'] . $upload->file['size'], true);
+			$make_thumb = $upload->thumb($path, isset($_POST['thumb']));
 
 			$template->assign_block_vars('upload', array(
 				'ID' => $i,
 				'IMG' => $path,
-				'THUMB' => (isset($_POST['thumb'])) ? $thumb : false,
+				'THUMB' => $make_thumb ? $thumb : false,
 			));
 
 			$imgs_all[] = FULL_URL . $path;
 			$imgs_tags_img[] = '[img]' . FULL_URL . $path . '[/img]';
 			$imgs_tags_thumb[] = '[url=' . FULL_URL . $path . '][img]' . FULL_URL . $thumb . '[/img][/url]';
-			$imgs_tags_spoiler[] = isset($_POST['thumb']) ? '[url=' . FULL_URL . $path . '][img]' . FULL_URL . $thumb . '[/img][/url]' : '[img]' . FULL_URL . $path . '[/img]';
-
-			$upload->thumb($path, isset($_POST['thumb']));
+			$imgs_tags_spoiler[] = $make_thumb ? '[url=' . FULL_URL . $path . '][img]' . FULL_URL . $thumb . '[/img][/url]' : '[img]' . FULL_URL . $path . '[/img]';
 		} else {
 			$errors = array_merge($errors, $upload->errors);
 		}
@@ -97,10 +97,10 @@ $template->assign_vars(array(
 	'ERROR_MESSAGE' => ($errors) ? join('<br />', array_unique($errors)) : '',
 	'IMG_MAX_SIZE' => humn_size($bb_cfg['imgs']['max_size']),
 	'IMG_ALLOWED_EXT' => implode(', ', $bb_cfg['imgs']['allowed_ext']),
-	'IMGS_ALL_TAGS' => ($i > 1) ? true : false,
+	'IMGS_ALL_TAGS' => $i > 1,
 	'IMGS_ALL' => implode(' ', $imgs_all),
 	'IMGS_TAGS_IMG' => implode(' ', $imgs_tags_img),
-	'IMGS_TAGS_THUMB' => isset($_POST['thumb']) ? implode(' ', $imgs_tags_thumb) : false,
+	'IMGS_TAGS_THUMB' => $make_thumb ? implode(' ', $imgs_tags_thumb) : false,
 	'IMGS_TAGS_SPOILER' => implode(' ', $imgs_tags_spoiler),
 	'COUNT_IMGS' => $imgs_count,
 ));

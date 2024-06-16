@@ -2,7 +2,7 @@
 icq: 590-700-200
 Описание: Локальная галерея
 Если вам понравился мод можете отблагодарить автора яндекс деньги 410011534461433
-Версия: v1.5.2
+Версия: v1.5.3
 
 ------------------------------ [ Открыть config.php и в самом низу вставить ] ------------------------------
 // Галерея
@@ -152,6 +152,9 @@ function thumb($path, $with_thumb)
 
 	if ($with_thumb) {
 		$resize = imagesy($img) / imagesx($img);
+		if ((imagesy($img) <= $this->cfg['thumb_height']) || $resize == 1) {
+			return false;
+		}
 		$new_width = $this->cfg['thumb_height'] / $resize;
 		$out_img = get_imgfile_path($userdata['user_id'], $this->file_ext_id, $userdata['user_id'] . $this->file['name'] . $this->file['size'], true);
 		$img_create = imagecreatetruecolor($new_width, $this->cfg['thumb_height']);
@@ -178,6 +181,7 @@ function thumb($path, $with_thumb)
 	}
 
 	imagedestroy($img);
+	return true;
 }
 ------------------------------ [ Открыть function_admin.php и найти ] ------------------------------
 function topic_delete ($mode_or_topic_id, $forum_id = null, $prune_time = 0, $prune_all = false)
