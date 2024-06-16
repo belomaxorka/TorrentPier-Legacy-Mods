@@ -53,8 +53,11 @@ if (!empty($_FILES['imgfile']['name']) && $bb_cfg['imgs']['up_allowed']) {
 
 if (isset($_GET['dir'])) {
 	if ($_GET['dir'] == $userdata['user_id']) {
-		$dir = array_slice(scandir($bb_cfg['imgs']['upload_path'] . '/' . $userdata['user_id']), 2);
-		$dir_page = array_slice($dir, $start, $bb_cfg['imgs']['imgs_page']);
+		$dir = $dir_page = array();
+		if (is_dir($bb_cfg['imgs']['upload_path'] . '/' . $userdata['user_id'])) {
+			$dir = array_slice(scandir($bb_cfg['imgs']['upload_path'] . '/' . $userdata['user_id']), 2);
+			$dir_page = array_slice($dir, $start, $bb_cfg['imgs']['imgs_page']);
+		}
 
 		if ($user_dir = @opendir(BB_ROOT . $bb_cfg['imgs']['upload_path'] . '/' . $userdata['user_id'])) {
 			while ($dir_size = @readdir($user_dir)) {

@@ -2,10 +2,10 @@
 icq: 590-700-200
 Описание: Локальная галерея
 Если вам понравился мод можете отблагодарить автора яндекс деньги 410011534461433
-Версия: v1.5.1
+Версия: v1.5.2
 
 ------------------------------ [ Открыть config.php и в самом низу вставить ] ------------------------------
-// Gallery
+// Галерея
 $bb_cfg['imgs'] = array(
 	'allowed_ext' 	=> array('gif','jpg','jpeg','png'),	// разрешенные форматы файлов
 	'max_size'    	=> 5*1024*1024,						// максимальный размер изображения в байтах
@@ -39,6 +39,7 @@ $lang['DIR_SIZE'] = 'Размер директории';
 ------------------------------ [ Открыть ajax.php и найти ] ------------------------------
 'post_mod_comment'  => array('mod'),
 ------------------------------ [ После вставить ] ------------------------------
+// Галерея
 'del_imgs'			=> array('mod'),
 ------------------------------ [ Далее найти ] ------------------------------
 function sitemap()
@@ -46,6 +47,7 @@ function sitemap()
 	require(AJAX_DIR .'sitemap.php');
 }
 ------------------------------ [ После вставить ] ------------------------------
+// Галерея
 function del_imgs()
 {
 	global $lang;
@@ -91,6 +93,7 @@ function del_imgs()
 	$this->response['gen_tags'] = $html;
 }
 ------------------------------ [ Открыть functions.php и в самом низу вставить ] ------------------------------
+// Галерея
 function get_imgfile_path ($id, $ext_id, $name, $thumb = false)
 {
 	global $bb_cfg;
@@ -108,10 +111,12 @@ else if ($mode == 'attach')
 ------------------------------ [ После вставить ] ------------------------------
 else if ($mode == 'imgfile')
 {
+	// Галерея
 	$file_path = get_imgfile_path($params['user_id'], $this->file_ext_id, $params['user_id'].$this->file['name'].$this->file['size']);
 	return $this->_move($file_path);
 }
 ------------------------------ [ Далее в самом низу перед последней фигурной скобкой вставить ] ------------------------------
+// Галерея
 function thumb($path, $with_thumb)
 {
 	global $bb_cfg, $userdata;
@@ -179,6 +184,7 @@ function topic_delete ($mode_or_topic_id, $forum_id = null, $prune_time = 0, $pr
 {
 	global $lang, $log_action;
 ------------------------------ [ Заменить на ] ------------------------------
+// Галерея
 function topic_delete ($mode_or_topic_id, $forum_id = null, $prune_time = 0, $prune_all = false)
 {
 	global $bb_cfg, $lang, $log_action;
@@ -186,6 +192,7 @@ function topic_delete ($mode_or_topic_id, $forum_id = null, $prune_time = 0, $pr
 // Get topics count
 $row = DB()->fetch_row("SELECT COUNT(*) AS topics_count FROM $tmp_delete_topics");
 ------------------------------ [ Вставить ниже ] ------------------------------
+// Галерея
 if ($bb_cfg['imgs']['delete_img']) {
 	$data = DB()->fetch_row("
 			SELECT ph.post_html
@@ -210,6 +217,7 @@ if ($bb_cfg['imgs']['delete_img']) {
 	}
 }
 ------------------------------ [ Если установлен мод - https://torrentpier.me/threads/thumbnails.287/ ] ------------------------------
+// Галерея
 if ($bb_cfg['imgs']['delete_img']) {
 	$data = DB()->fetch_row("
 			SELECT ph.post_html
@@ -246,6 +254,7 @@ function post_delete ($mode_or_post_id, $user_id = null, $exclude_first = true)
 {
 	global $log_action;
 ------------------------------ [ Заменить на ] ------------------------------
+// Галерея
 function post_delete ($mode_or_post_id, $user_id = null, $exclude_first = true)
 {
 	global $log_action, $bb_cfg;
@@ -253,6 +262,7 @@ function post_delete ($mode_or_post_id, $user_id = null, $exclude_first = true)
 // Deleted posts count
 $row = DB()->fetch_row("SELECT COUNT(*) AS posts_count FROM $tmp_delete_posts");
 ------------------------------ [ Вставить ниже ] ------------------------------
+// Галерея
 if ($bb_cfg['imgs']['delete_img']) {
 	$data = DB()->fetch_row("
 			SELECT ph.post_html
@@ -276,6 +286,7 @@ if ($bb_cfg['imgs']['delete_img']) {
 	}
 }
 ------------------------------ [ Если установлен мод - https://torrentpier.me/threads/thumbnails.287/ ] ------------------------------
+// Галерея
 if ($bb_cfg['imgs']['delete_img']) {
 	$data = DB()->fetch_row("
 			SELECT ph.post_html
