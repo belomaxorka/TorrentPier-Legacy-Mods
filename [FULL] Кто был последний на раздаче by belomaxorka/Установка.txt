@@ -1,0 +1,67 @@
+------------------- Кто был последний на раздаче -------------------
+Автор: kovalensky
+Версия: v1.0.0
+--------------------------------------------------------------------
+
+======= Выполнить SQL запрос =======
+ALTER TABLE `bb_bt_torrents` ADD COLUMN `last_seeder_id` mediumint(8) NOT NULL DEFAULT '0';
+ALTER TABLE `buf_last_seeder` ADD COLUMN `user_id` mediumint(8) NOT NULL DEFAULT '0';
+====================================
+
+======= Открыть library/attach_mod/displaying_torrent.php и найти =======
+$last_seen_time = ($tor_info['seeder_last_seen']) ? delta_time($tor_info['seeder_last_seen']) : $lang['NEVER'];
+=========================================================================
+
+======= Ниже вставить =======
+$last_seeder_username = (!empty($tor_info['last_seeder_id']) && $last_seeder = get_userdata($tor_info['last_seeder_id'])) ? ' -> <b>' . profile_url(array('username' => $last_seeder['username'], 'user_id' => $last_seeder['user_id'], 'user_rank' => $last_seeder['user_rank'])) . '</b>' : (($tor_info['last_seeder_id'] == GUEST_UID) ? ' -> ' . $lang['GUEST'] : '');
+=============================
+
+======= Далее найти =======
+'SEEDER_LAST_SEEN' => sprintf($lang['SEEDER_LAST_SEEN'], $last_seen_time),
+===========================
+
+======= Ниже вставить =======
+'SEEDER_USERNAME'  => $last_seeder_username,
+=============================
+
+======= Открыть library/includes/cron/jobs/tr_cleanup_and_dlstat.php и найти =======
+(topic_id, seeder_last_seen)
+====================================================================================
+
+======= Заменить на =======
+(topic_id, user_id, seeder_last_seen)
+===========================
+
+======= Далее найти =======
+topic_id, ". TIMENOW ."
+===========================
+
+======= Заменить на =======
+topic_id, user_id, ". TIMENOW ."
+===========================
+
+======= Далее найти =======
+GROUP BY topic_id
+===========================
+
+======= Заменить на =======
+GROUP BY topic_id, user_id
+ORDER BY update_time DESC
+===========================
+
+======= Открыть library/includes/cron/jobs/tr_update_seeder_last_seen.php и найти =======
+tor.seeder_last_seen = b.seeder_last_seen
+=========================================================================================
+
+======= Заменить на =======
+tor.seeder_last_seen = b.seeder_last_seen,
+tor.last_seeder_id = b.user_id
+===========================
+
+======= Открыть styles/templates/default/viewtopic_torrent.tpl и найти (3 РАЗА) =======
+<p class="mrg_10">{SEEDER_LAST_SEEN}</p>
+=======================================================================================
+
+======= Заменить на (3 РАЗА) =======
+<p class="mrg_10">{SEEDER_LAST_SEEN} {SEEDER_USERNAME}</p>
+===========================
