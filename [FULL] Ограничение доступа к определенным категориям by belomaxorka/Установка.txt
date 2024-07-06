@@ -1,0 +1,77 @@
+================ Ограничение доступа к определенным категориям ================
+Автор: belomaxorka
+Версия: v1.0.0
+===============================================================================
+
+================ Открыть index.php и найти ================
+$join_t_type = ($only_new == ONLY_NEW_TOPICS) ? 'INNER JOIN' : 'LEFT JOIN';
+===========================================================
+
+================ Ниже вставить ================
+// Ограничение доступа к определенным категориям
+$get_restricted_cat = get_restricted_cat();
+===============================================
+
+================ Далее найти ================
+LEFT JOIN    ". BB_USERS      ." u ON(u.user_id = p.poster_id)
+=============================================
+
+================ Ниже вставить ================
+WHERE c.cat_id NOT IN (" . implode(',', $get_restricted_cat) . ")
+===============================================
+
+================ Открыть library/config.php и вставить ================
+// Ограничение доступа к определенным категориям
+$bb_cfg['category_restrictions'] = array(
+#   'user_id' => array('cat_id_1', 'cat_id_2')
+	2 => array(1, 2, 3, 4)
+);
+=======================================================================
+
+================ Открыть library/functions.php и вставить ================
+// Ограничение доступа к определенным категориям
+function get_restricted_cat()
+{
+	global $userdata, $bb_cfg;
+
+	if (!$cats_restricted = CACHE('bb_cache')->get('cat_restricted_users_' . $userdata['user_id'])) {
+		$cats_restricted = array();
+		if (isset($bb_cfg['category_restrictions'][$userdata['user_id']])) {
+			$cats_restricted = (array)$bb_cfg['category_restrictions'][$userdata['user_id']];
+			CACHE('bb_cache')->set('cat_restricted_users_' . $userdata['user_id'], $cats_restricted, 180);
+		}
+	}
+
+	return $cats_restricted;
+}
+==========================================================================
+
+================ Открыть viewforum.php и найти ================
+if (!$forum_id OR !$forum_data = @$forums['forum'][$forum_id])
+{
+	bb_die($lang['FORUM_NOT_EXIST']);
+}
+===============================================================
+
+================ Ниже вставить ================
+// Ограничение доступа к определенным категориям
+if (in_array($forum_data['cat_id'], get_restricted_cat())) {
+	bb_die($lang['FORUM_NOT_EXIST']);
+}
+===============================================
+
+================ Открыть viewtopic.php и найти ================
+if (!$t_data = DB()->fetch_row($sql))
+{
+	meta_refresh('index.php' , 10);
+	bb_die($lang['TOPIC_POST_NOT_EXIST']);
+}
+===============================================================
+
+================ Ниже вставить ================
+// Ограничение доступа к определенным категориям
+if (in_array($t_data['cat_id'], get_restricted_cat())) {
+	meta_refresh('index.php', 10);
+	bb_die($lang['TOPIC_POST_NOT_EXIST']);
+}
+===============================================
