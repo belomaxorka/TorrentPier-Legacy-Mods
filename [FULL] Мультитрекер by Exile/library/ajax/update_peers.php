@@ -6,7 +6,6 @@ global $cfg_ann, $lang;
 
 // Авто-обновление списка хостов
 if (USE_AUTO_TRACKERS_UPDATE) {
-	$cfg_ann = array(); // Очищаем список хостов
 	$sources_array = array(AUTO_UPDATE_SOURCE, AUTO_UPDATE_SOURCE_MIRROR_1, AUTO_UPDATE_SOURCE_MIRROR_2);
 	foreach ($sources_array as $source) {
 		// Пропускаем пустые зеркала
@@ -22,6 +21,7 @@ if (USE_AUTO_TRACKERS_UPDATE) {
 		if ($get_hosts !== false) {
 			@unlink(HOSTS_FILE_PATH);
 			if ((bool)file_put_contents(HOSTS_FILE_PATH, $get_hosts)) {
+				$cfg_ann = array(); // Очищаем список хостов
 				unset($get_hosts);
 				break;
 			}
@@ -32,8 +32,12 @@ if (USE_AUTO_TRACKERS_UPDATE) {
 	if (file_exists(HOSTS_FILE_PATH)) {
 		$file_contents = file(HOSTS_FILE_PATH, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 		// Формируем новый массив $cfg_ann
-		$cfg_ann = array_map('trim', $file_contents);
-		unset($file_contents);
+		$list_temp = array_map('trim', $file_contents);
+		if (!empty($list_temp)) {
+			$cfg_ann = array(); // Очищаем список хостов
+			$cfg_ann = $list_temp;
+		}
+		unset($file_contents, $list_temp);
 	}
 }
 
