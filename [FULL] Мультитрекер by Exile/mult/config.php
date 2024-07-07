@@ -1,6 +1,12 @@
 <?php
 
 // Настройки
+define('USE_AUTO_TRACKERS_UPDATE', true); // Использовать авто-обновление списка хостов
+define('HOSTS_FILE_PATH', __DIR__ . '/trackers.txt'); // Файл в который сохранять актуальные хосты
+define('AUTO_UPDATE_SOURCE', 'https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt'); // Основной источник
+define('AUTO_UPDATE_SOURCE_MIRROR_1', 'https://ngosang.github.io/trackerslist/trackers_all.txt'); // Поставьте значение null, если нет зеркал
+define('AUTO_UPDATE_SOURCE_MIRROR_2', 'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all.txt'); // Поставьте значение null, если нет зеркал
+
 define('LIMIT_MAX_TRACKERS', null); // Ограничить число опрашиваемых хостов из массива $cfg_ann (Указать число сколько опрашивать | null - выключить лимит)
 define('ANNOUNCER_TIMEOUT_CONNECT', 5); // Максимальное время на подключение к хосту (В секундах)
 define('SHOW_DEAD_ANNOUNCERS', false); // Показывать список мертвых / недоступных хостов
