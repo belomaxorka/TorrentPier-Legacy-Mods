@@ -25,10 +25,10 @@ if (!IS_GUEST) {
 		$viewing_users = array();
 	}
 	if (!isset($viewing_users[$userdata['user_id']])) {
-		$viewing_users[$userdata['user_id']] = [
+		$viewing_users[$userdata['user_id']] = array(
 			'user_rank' => $userdata['user_rank'],
 			'username' => $userdata['username']
-		];
+		);
 		CACHE('bb_cache')->set('viewing_users_' . $topic_id, $viewing_users, 300);
 	}
 
