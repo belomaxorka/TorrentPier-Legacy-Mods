@@ -1,0 +1,223 @@
+------------------- Спасибо -------------------
+Автор: kovalensky
+Версия: v1.0.0
+-----------------------------------------------
+
+======= Выполнить SQL запрос =======
+DROP TABLE IF EXISTS `bb_thx`;
+CREATE TABLE IF NOT EXISTS `bb_thx` (
+  `topic_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `user_id` mediumint(8) NOT NULL DEFAULT '0',
+  `to_user_id` mediumint(8) NOT NULL DEFAULT '0',
+  `time` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`topic_id`, `user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+====================================
+
+======= Открыть ajax.php и найти =======
+'view_post'         => array('guest'),
+========================================
+
+======= Ниже вставить =======
+// Спасибо
+'thx'               => array('guest'),
+=============================
+
+======= Далее найти =======
+function sitemap()
+{
+	require(AJAX_DIR .'sitemap.php');
+}
+===========================
+
+======= Ниже вставить =======
+// Спасибо
+function thx()
+{
+	require(AJAX_DIR .'thanks.php');
+}
+=============================
+
+======= Открыть library/config.php и вставить =======
+// Спасибо
+$bb_cfg['tor_thank'] = true;
+$bb_cfg['tor_thanks_list_guests'] = true; // Отображать список поблагодаривших для гостей
+=====================================================
+
+======= Открыть library/includes/init_bb.php и найти =======
+define('BB_WORDS',                'bb_words');
+============================================================
+
+======= Ниже вставить =======
+// Спасибо
+define('BB_THX',                  'bb_thx');
+=============================
+
+======= Открыть library/includes/ucp/viewprofile.php и найти =======
+$signature = ($bb_cfg['allow_sig'] && $profiledata['user_sig']) ? $profiledata['user_sig'] : '';
+====================================================================
+
+======= Ниже вставить =======
+// Спасибо
+$thanks = '';
+if ($bb_cfg['tor_thank']) {
+	$thanked_by_me = declension((int)DB()->fetch_row('SELECT COUNT(user_id) as thanked FROM ' . BB_THX . " WHERE user_id = " . $profiledata['user_id'])['thanked'], 'times');
+	$thanked_me = declension((int)DB()->fetch_row('SELECT COUNT(to_user_id) as thanked FROM ' . BB_THX . " WHERE to_user_id = " . $profiledata['user_id'])['thanked'], 'times');
+	$thanks = "$thanked_by_me&nbsp;/&nbsp;$thanked_me";
+	unset($thanked_by_me, $thanked_me);
+}
+=============================
+
+======= Далее найти =======
+'L_VIEWING_PROFILE'    => sprintf($lang['VIEWING_USER_PROFILE'], $profiledata['username']),
+===========================
+
+======= Выше вставить =======
+// Спасибо
+'THANKS'               => $thanks,
+=============================
+
+======= Открыть library/language/ru/main.php и вставить =======
+// Спасибо
+$lang['THANK_TOPIC'] = 'Сказать "Спасибо"';
+$lang['THANKS_GRATITUDE'] = 'Спасибо за благодарность!';
+$lang['LAST_LIKES'] = 'Последние поблагодарившие';
+$lang['LIKE_OWN_POST'] = 'Вы не можете оставить спасибо в своей же теме';
+$lang['NO_LIKES'] = 'Никто ещё не сказал спасибо...';
+$lang['LIKE_ALREADY'] = 'Вы уже оставляли спасибо в этой теме';
+$lang['PROFILE_THANKS'] = 'Поблагодарил / Поблагодарили';
+===============================================================
+
+======= Открыть styles/js/bbcode.js и найти =======
+var name = $.trim(this.title) || ''+bbl['spoiler_head']+'';
+===================================================
+
+======= Ниже вставить =======
+var no_sp_open = ($.trim($sp_body.data('no-sp-open')) === "true") ? ' ignore-sp-open' : '';
+=============================
+
+======= Далее найти =======
+var $sp_head = $('<div class="sp-head folded clickable">'+ name +'</div>');
+===========================
+
+======= Заменить на =======
+var $sp_head = $('<div class="sp-head folded clickable' + no_sp_open + '">'+ name +'</div>');
+===========================
+
+======= Открыть styles/templates/default/usercp_viewprofile.tpl и найти =======
+<tr id="bt_user_ratio" <!-- IF TRAF_STATS -->style="display: none;"<!-- ENDIF -->>
+===============================================================================
+
+======= Выше вставить =======
+<!-- IF THANKS -->
+<tr>
+	<th>{L_PROFILE_THANKS}:</th>
+	<td><b>{THANKS}</b></td>
+</tr>
+<!-- ENDIF -->
+=============================
+
+======= Открыть styles/templates/default/viewtopic.tpl и найти =======
+$(document).ready(function(){ $('div.sp-head').click(); });
+======================================================================
+
+======= Заменить на =======
+$(document).ready(function () {
+	$('div.sp-head').not('.ignore-sp-open').click();
+});
+===========================
+
+======= Открыть styles/templates/default/viewtopic_attach.tpl и найти =======
+<div class="spacer_12"></div>
+<!-- ENDIF -->
+<!-- END tor_reged -->
+=============================================================================
+
+======= Выше вставить =======
+<!-- IF $bb_cfg['tor_thank'] -->
+<style type="text/css">
+	#thx-block {
+		width: 95%;
+		margin: 12px auto 0;
+	}
+	#thx-block .sp-wrap {
+		width: 100% !important;
+	}
+	#thx-btn-div {
+		text-align: center;
+		margin: 0 0 12px;
+	}
+	#thx-list a {
+		text-decoration: none;
+	}
+	#thx-list b {
+		font-size: 11px;
+		color: #2E2E2E;
+		white-space: nowrap;
+	}
+	#thx-list i {
+		font-weight: normal;
+		color: #000000;
+	}
+	#thx-list u {
+		display: none;
+	}
+</style>
+<script type="text/javascript">
+	$(function () {
+		$thx_head = $('#thx-block').find('.sp-head');
+		$thx_btn = $('#thx-btn');
+		close_thx_list();
+		$thx_btn.one('click', function () {
+			ajax.thx('add');
+			$(this).prop({disabled: true});
+		});
+		$thx_head.one('click', function () {
+			ajax.thx('get');
+		});
+	});
+	ajax.thx = function (mode) {
+		ajax.exec({
+			action: 'thx',
+			mode: mode,
+			topic_id: {TOPIC_ID},
+			to_user_id: {postrow.POSTER_ID},
+		});
+	}
+	ajax.callback.thx = function (data) {
+		if (data.mode === 'add') {
+			$thx_btn.hide().after('<h2 style="color: green;">{$lang['THANKS_GRATITUDE']}<h2>');
+			open_thx_list();
+		} else {
+			$('#thx-list').html(data.html);
+		}
+	}
+	function thx_is_visible() {
+		return $('#thx-list').is(':visible');
+	}
+	function open_thx_list() {
+		ajax.thx('get');
+		if (!thx_is_visible()) {
+			$thx_head.click();
+		}
+	}
+	function close_thx_list() {
+		if (thx_is_visible()) {
+			$thx_head.click();
+		}
+	}
+</script>
+<div id="thx-block">
+	<!-- IF not IS_GUEST -->
+	<div id="thx-btn-div">
+		<input id="thx-btn" type="button" class="bold" style="width: 200px;" value='{L_THANK_TOPIC}'>
+	</div>
+	<!-- ENDIF -->
+	<!-- IF not IS_GUEST or $bb_cfg['tor_thanks_list_guests'] -->
+	<div class="sp-wrap">
+		<div id="thx-list" class="sp-body" data-no-sp-open="true" title="{L_LAST_LIKES}"></div>
+	</div>
+	<!-- ENDIF -->
+</div>
+<!-- ENDIF -->
+=============================
