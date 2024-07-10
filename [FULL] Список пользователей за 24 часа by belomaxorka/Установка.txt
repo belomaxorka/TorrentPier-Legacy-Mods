@@ -16,7 +16,7 @@ case 'users_today':
 	$users = array();
 	foreach ($get_users as $user) {
 		if (IS_ADMIN || $user['user_id'] == $userdata['user_id'] || !bf($user['user_opt'], 'user_opt', 'user_viewonline')) {
-			$users[] = profile_url($user);
+			$users[] = (count($users) >= $max_users) ? $user['user_id'] : profile_url($user);
 		}
 	}
 
