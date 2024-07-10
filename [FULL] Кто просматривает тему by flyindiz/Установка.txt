@@ -1,17 +1,13 @@
 ######################################
 ## Кто просматривает тему           ##
-## Автор: flyindiz                  ##
+##----------------------------------##
+## Автор идеи: flyindiz             ##
 ## Улучшения: belomaxorka           ##
-## Версия: v1.1.1                   ##
-##                                  ##
+## Версия: v2.0.0                   ##
+##----------------------------------##
 ## Сложность установки: лёгкая      ##
 ## Время установки: 2 минуты        ##
 ######################################
-
-------------- [ SQL ] -------------
-ALTER TABLE `bb_users` ADD `curpage_topic` mediumint(8) NOT NULL default '0';
-ALTER TABLE `bb_users` ADD `curpage_topic_time` int(11) NOT NULL default '0';
------------------------------------
 
 ------------- [ Открыть viewtopic.php и найти ] -------------
 //
@@ -20,42 +16,52 @@ ALTER TABLE `bb_users` ADD `curpage_topic_time` int(11) NOT NULL default '0';
 -------------------------------------------------------------
 
 ------------- [ Выше вставить ] -------------
+//
 // Кто просматривает тему
-if ($userdata['user_id'] != GUEST_UID)
-{
-	$sql = "SELECT username, user_id, user_rank, curpage_topic_time
-		FROM " . BB_USERS . "
-		WHERE curpage_topic = $topic_id
-		AND (curpage_topic_time >= " . (TIMENOW - 300) . ") LIMIT 1";
-
-	if (!$viewing_users = DB()->fetch_rowset($sql))
-	{
-		DB()->query("UPDATE " . BB_USERS . " SET curpage_topic = $topic_id, curpage_topic_time = " . TIMENOW . " WHERE user_id = {$userdata['user_id']} LIMIT 1");
-		$viewing_users = DB()->fetch_rowset($sql);
+//
+if (!IS_GUEST) {
+	$max_users = 150;
+	if (!$viewing_users = CACHE('bb_cache')->get('viewing_users_' . $topic_id)) {
+		$viewing_users = array();
+	}
+	if (!isset($viewing_users[$userdata['user_id']])) {
+		$viewing_users[$userdata['user_id']] = [
+			'user_rank' => $userdata['user_rank'],
+			'username' => $userdata['username']
+		];
+		CACHE('bb_cache')->set('viewing_users_' . $topic_id, $viewing_users, 300);
 	}
 
 	$looking_list = array();
-	foreach ($viewing_users as $row)
-	{
-		$looking_list[] = profile_url($row);
+	foreach ($viewing_users as $key => $value) {
+		$looking_list[] = (count($looking_list) >= $max_users) ? $key : profile_url(array('user_id' => $key, 'username' => $value['username'], 'user_rank' => $value['user_rank']));
 	}
 
+	$output_list = $lang['WHOIS_LOOKING'] . '&nbsp;(' . count($looking_list) . ')' . ':&nbsp;' . implode(", ", array_slice($looking_list, 0, $max_users));
+	if (count($looking_list) > $max_users) {
+		$output_list .= ', ...';
+	}
 	$template->assign_vars(array(
-		'LOOKING_LIST' => !empty($looking_list) ? ($lang['WHOIS_LOOKING'] . '&nbsp;' . implode(", ", $looking_list)) : false,
+		'LOOKING_LIST' => !empty($looking_list) ? $output_list : false,
 	));
 
-	unset($viewing_users, $looking_list);
+	unset($viewing_users, $looking_list, $output_list, $max_users);
 }
 ---------------------------------------------
 
 ------------- [ Открыть library/language/ru/main.php и в самый конец добавить ] -------------
 // Кто просматривает тему
-$lang['WHOIS_LOOKING'] = 'Кто просматривает тему:';
+$lang['WHOIS_LOOKING'] = 'Кто просматривает тему';
 ---------------------------------------------------------------------------------------------
 
 ------------- [ Открыть library/language/en/main.php и в самый конец добавить ] -------------
 // Кто просматривает тему
-$lang['WHOIS_LOOKING'] = 'Now viewing this topic:';
+$lang['WHOIS_LOOKING'] = 'Now viewing this topic';
+---------------------------------------------------------------------------------------------
+
+------------- [ Открыть library/language/uk/main.php и в самый конец добавить ] -------------
+// Кто просматривает тему
+$lang['WHOIS_LOOKING'] = 'Хто переглядає тему';
 ---------------------------------------------------------------------------------------------
 
 ------------- [ Открыть viewtopic.tpl и найти ] -------------
