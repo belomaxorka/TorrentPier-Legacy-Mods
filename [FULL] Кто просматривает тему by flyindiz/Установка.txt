@@ -3,7 +3,7 @@
 ##----------------------------------##
 ## Автор идеи: flyindiz             ##
 ## Улучшения: belomaxorka           ##
-## Версия: v2.0.0                   ##
+## Версия: v2.1.0                   ##
 ##----------------------------------##
 ## Сложность установки: лёгкая      ##
 ## Время установки: 2 минуты        ##
@@ -21,23 +21,42 @@
 //
 if (!IS_GUEST) {
 	$max_users = 150;
+	$cache_lifetime = 300;
 	if (!$viewing_users = CACHE('bb_cache')->get('viewing_users_' . $topic_id)) {
 		$viewing_users = array();
 	}
-	if (!isset($viewing_users[$userdata['user_id']])) {
+
+	// Удаляем устаревшие записи из кэша
+	foreach ($viewing_users as $user) {
+		$timestamp = $user['time'];
+		if ((TIMENOW - $timestamp) >= $cache_lifetime) {
+			unset($viewing_users[$user['user_id']]);
+			if (!empty($viewing_users)) {
+				CACHE('bb_cache')->set('viewing_users_' . $topic_id, $viewing_users, $cache_lifetime);
+			} else {
+				CACHE('bb_cache')->rm('viewing_users_' . $topic_id);
+			}
+		}
+	}
+
+	// Добавляем новые записи в кэш
+	if (!IS_GUEST && !isset($viewing_users[$userdata['user_id']])) {
 		$viewing_users[$userdata['user_id']] = array(
+			'time' => TIMENOW,
+			'user_id' => $userdata['user_id'],
 			'user_rank' => $userdata['user_rank'],
 			'username' => $userdata['username']
 		);
-		CACHE('bb_cache')->set('viewing_users_' . $topic_id, $viewing_users, 300);
+		CACHE('bb_cache')->set('viewing_users_' . $topic_id, $viewing_users, $cache_lifetime);
 	}
 
+	// Формируем вывод
 	$looking_list = array();
 	foreach ($viewing_users as $key => $value) {
-		$looking_list[] = (count($looking_list) >= $max_users) ? $key : profile_url(array('user_id' => $key, 'username' => $value['username'], 'user_rank' => $value['user_rank']));
+		$looking_list[] = (count($looking_list) >= $max_users) ? $value['user_id'] : profile_url(array('user_id' => $value['user_id'], 'username' => $value['username'], 'user_rank' => $value['user_rank']));
 	}
 
-	$output_list = $lang['WHOIS_LOOKING'] . '&nbsp;(' . count($looking_list) . ')' . ':&nbsp;' . implode(", ", array_slice($looking_list, 0, $max_users));
+	$output_list = $lang['WHOIS_LOOKING'] . '&nbsp;(' . count($looking_list) . ')' . ':&nbsp;' . implode(", ", array_slice(array_reverse($looking_list), 0, $max_users));
 	if (count($looking_list) > $max_users) {
 		$output_list .= ', ...';
 	}
@@ -45,7 +64,7 @@ if (!IS_GUEST) {
 		'LOOKING_LIST' => !empty($looking_list) ? $output_list : false,
 	));
 
-	unset($viewing_users, $looking_list, $output_list, $max_users);
+	unset($viewing_users, $looking_list, $output_list, $max_users, $cache_lifetime);
 }
 ---------------------------------------------
 
