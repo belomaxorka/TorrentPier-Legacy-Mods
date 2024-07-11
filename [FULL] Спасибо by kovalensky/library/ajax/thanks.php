@@ -60,16 +60,14 @@ switch ($mode) {
 		DB()->query("
 			DELETE FROM " . BB_THX . "
 			WHERE user_id IN (
-				SELECT user_id
-				FROM (
+				SELECT user_id FROM (
 					SELECT user_id
 					FROM " . BB_THX . "
 					WHERE topic_id = $topic_id
 					ORDER BY time ASC
 					LIMIT 1
 				) AS subquery
-			)
-			AND (SELECT COUNT(*) FROM " . BB_THX . " WHERE topic_id = $topic_id) > $max_users;
+			) AND (SELECT COUNT(*) FROM " . BB_THX . " WHERE topic_id = $topic_id) > $max_users;
 		");
 		break;
 	case 'get':
@@ -80,10 +78,10 @@ switch ($mode) {
 
 		$user_list = array();
 		$sql = DB()->fetch_rowset("
-				SELECT u.username, u.user_rank, u.user_id, thx.*
-				FROM " . BB_THX . " thx, " . BB_USERS . " u
-				WHERE thx.topic_id = $topic_id
-					AND thx.user_id = u.user_id
+			SELECT u.username, u.user_rank, u.user_id, thx.*
+			FROM " . BB_THX . " thx, " . BB_USERS . " u
+			WHERE thx.topic_id = $topic_id
+				AND thx.user_id = u.user_id
 		");
 		foreach ($sql as $row) {
 			$user_list[] = "<b>" . profile_url($row) . " <i>(" . bb_date($row['time']) . ")</i></b>";

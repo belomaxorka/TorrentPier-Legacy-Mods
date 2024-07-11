@@ -122,6 +122,7 @@ $(document).ready(function () {
 <script type="text/javascript">
 	$(function () {
 		$thx_head = $('#thx-block').find('.sp-head');
+		$thx_head.append('<span id="thx-count-likes"></span>');
 		$thx_btn = $('#thx-btn');
 		close_thx_list();
 		$thx_btn.one('click', function () {
@@ -146,7 +147,7 @@ $(document).ready(function () {
 			open_thx_list();
 		} else {
 			if (data.count_likes) {
-				thx_head.append(data.count_likes);
+				$thx_head.find("span#thx-count-likes").html(data.count_likes);
 			}
 			$('#thx-list').html(data.html);
 		}
