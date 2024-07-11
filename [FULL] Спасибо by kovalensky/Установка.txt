@@ -53,30 +53,6 @@ define('BB_WORDS',                'bb_words');
 define('BB_THX',                  'bb_thx');
 =============================
 
-======= Открыть library/includes/ucp/viewprofile.php и найти =======
-$signature = ($bb_cfg['allow_sig'] && $profiledata['user_sig']) ? $profiledata['user_sig'] : '';
-====================================================================
-
-======= Ниже вставить =======
-// Спасибо
-$thanks = '';
-if ($bb_cfg['tor_thank']) {
-	$thanked_by_me = declension((int)DB()->fetch_row('SELECT COUNT(user_id) as thanked FROM ' . BB_THX . " WHERE user_id = " . $profiledata['user_id'])['thanked'], 'times');
-	$thanked_me = declension((int)DB()->fetch_row('SELECT COUNT(to_user_id) as thanked FROM ' . BB_THX . " WHERE to_user_id = " . $profiledata['user_id'])['thanked'], 'times');
-	$thanks = "$thanked_by_me&nbsp;/&nbsp;$thanked_me";
-	unset($thanked_by_me, $thanked_me);
-}
-=============================
-
-======= Далее найти =======
-'L_VIEWING_PROFILE'    => sprintf($lang['VIEWING_USER_PROFILE'], $profiledata['username']),
-===========================
-
-======= Выше вставить =======
-// Спасибо
-'THANKS'               => $thanks,
-=============================
-
 ======= Открыть library/language/ru/main.php и вставить =======
 // Спасибо
 $lang['THANK_TOPIC'] = 'Сказать "Спасибо"';
@@ -103,19 +79,6 @@ var $sp_head = $('<div class="sp-head folded clickable">'+ name +'</div>');
 ======= Заменить на =======
 var $sp_head = $('<div class="sp-head folded clickable' + no_sp_open + '">'+ name +'</div>');
 ===========================
-
-======= Открыть styles/templates/default/usercp_viewprofile.tpl и найти =======
-<tr id="bt_user_ratio" <!-- IF TRAF_STATS -->style="display: none;"<!-- ENDIF -->>
-===============================================================================
-
-======= Выше вставить =======
-<!-- IF THANKS -->
-<tr>
-	<th>{L_PROFILE_THANKS}:</th>
-	<td><b>{THANKS}</b></td>
-</tr>
-<!-- ENDIF -->
-=============================
 
 ======= Открыть styles/templates/default/viewtopic.tpl и найти =======
 $(document).ready(function(){ $('div.sp-head').click(); });
