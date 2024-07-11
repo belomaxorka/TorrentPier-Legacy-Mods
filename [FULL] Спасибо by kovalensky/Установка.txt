@@ -1,6 +1,6 @@
 ------------------- Спасибо -------------------
 Автор: kovalensky
-Версия: v1.0.0
+Версия: v1.1.0
 -----------------------------------------------
 
 ======= Выполнить SQL запрос =======
@@ -147,20 +147,13 @@ $(document).ready(function () {
 		text-align: center;
 		margin: 0 0 12px;
 	}
-	#thx-list a {
-		text-decoration: none;
-	}
 	#thx-list b {
 		font-size: 11px;
-		color: #2E2E2E;
 		white-space: nowrap;
 	}
 	#thx-list i {
 		font-weight: normal;
 		color: #000000;
-	}
-	#thx-list u {
-		display: none;
 	}
 </style>
 <script type="text/javascript">
@@ -189,6 +182,9 @@ $(document).ready(function () {
 			$thx_btn.hide().after('<h2 style="color: green;">{$lang['THANKS_GRATITUDE']}<h2>');
 			open_thx_list();
 		} else {
+			if (data.count_likes) {
+				thx_head.append(data.count_likes);
+			}
 			$('#thx-list').html(data.html);
 		}
 	}
