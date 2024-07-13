@@ -1,7 +1,7 @@
 ------------------ Закладки ------------------
 Автор: drew
 Обновления: belomaxorka
-Версия: v1.2.5
+Версия: v1.2.6
 ----------------------------------------------
 
 ------------------ SQL ------------------
@@ -67,6 +67,26 @@ if (!IS_GUEST) {
 		));
 	}
 }
+---------------------------------------------------
+
+------------------ Открыть library/includes/functions_admin.php и найти ------------------
+// Delete torrents
+DB()->query("
+	DELETE tor, tr, dl
+	FROM      ". $tmp_delete_topics ." del
+	LEFT JOIN ". BB_BT_TORRENTS  ." tor USING(topic_id)
+	LEFT JOIN ". BB_BT_TRACKER   ." tr  USING(topic_id)
+	LEFT JOIN ". BB_BT_DLSTATUS  ." dl  USING(topic_id)
+");
+------------------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+// Закладки [Удаление закладок]
+DB()->query("
+	DELETE book
+		FROM " . $tmp_delete_topics . " del
+		LEFT JOIN " . BB_BOOK . " book ON(book.topic_id = del.topic_id)
+");
 ---------------------------------------------------
 
 ------------------ Открыть page_header.tpl (В вашем шаблоне) и найти ------------------
