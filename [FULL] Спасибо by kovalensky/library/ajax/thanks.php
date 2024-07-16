@@ -15,7 +15,7 @@ global $bb_cfg, $lang, $userdata;
 
 // ----------------- Настройки ----------------- //
 // Максимальное количество поблагодаривших, при преодолении лимита, будет удаляться по одному пользователю с конца
-$max_users = 60;
+$max_users = $bb_cfg['tor_thank_limit_per_topic'];
 // --------------------------------------------- //
 
 if (!$bb_cfg['tor_thank']) {
@@ -57,18 +57,10 @@ switch ($mode) {
 		DB()->query("INSERT IGNORE INTO " . BB_THX . " ($columns) VALUES ($values)");
 
 		// Проверка на лимит
-		DB()->query("
-			DELETE FROM " . BB_THX . "
-			WHERE user_id IN (
-				SELECT user_id FROM (
-					SELECT user_id
-					FROM " . BB_THX . "
-					WHERE topic_id = $topic_id
-					ORDER BY time ASC
-					LIMIT 1
-				) AS subquery
-			) AND (SELECT COUNT(*) FROM " . BB_THX . " WHERE topic_id = $topic_id) > $max_users;
-		");
+		$thanks_count = DB()->fetch_row("SELECT COUNT(*) as thx FROM " . BB_THX . " WHERE topic_id = $topic_id")['thx'];
+		if ($thanks_count > $max_users) {
+			DB()->query("DELETE FROM " . BB_THX . " WHERE topic_id = $topic_id ORDER BY time ASC LIMIT 1");
+		}
 		break;
 	case 'get':
 		// Проверка на возможность просмотра списка
