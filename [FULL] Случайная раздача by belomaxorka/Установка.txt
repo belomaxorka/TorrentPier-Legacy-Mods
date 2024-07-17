@@ -1,5 +1,5 @@
 Автор: belomaxorka
-Версия: v1.0.2
+Версия: v1.0.3
 
 Данный мод включён по умолчанию в v2.4.1 и выше.
 
@@ -25,9 +25,17 @@ if (isset($_GET['random_release']))
 =====================================
 
 =========== открыть tracker.tpl (в вашем шаблоне) и найти ===========
-<h1 class="pagetitle">{PAGE_TITLE}</h1>
+<div class="nav">
+	<p class="floatL"><a href="{U_INDEX}">{T_INDEX}</a></p>
+	<!-- IF MATCHES --><p class="floatR">{MATCHES} {SERACH_MAX}</p><!-- ENDIF -->
+	<div class="clear"></div>
+</div>
 =====================================================================
 
 =========== заменить на ===========
-<h1 class="pagetitle">{PAGE_TITLE}&nbsp;&middot;&nbsp;<a href="{U_TRACKER}?random_release=1">Случайная раздача</a></h1>
+<div class="nav">
+	<p class="floatL"><a href="{U_INDEX}">{T_INDEX}</a></p>
+	<p class="floatR"><a href="{U_TRACKER}?random_release=1">Случайная раздача</a><!-- IF MATCHES -->&nbsp;&middot;&nbsp;{MATCHES}&nbsp;{SERACH_MAX}<!-- ENDIF --></p>
+	<div class="clear"></div>
+</div>
 ===================================
