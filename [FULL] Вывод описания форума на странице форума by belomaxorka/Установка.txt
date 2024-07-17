@@ -1,6 +1,6 @@
 Описание: Мод выводит описание форума на странице самого форума, под названием форума. Мод присутствует начиная с версии v2.3.0.4-beta.
 Автор: belomaxorka
-Версия: v1.0.1
+Версия: v1.1.0
 
 =========== Открыть viewforum.php и найти ===========
 'FORUM_NAME' => htmlCHR($forum_data['forum_name']),
@@ -9,8 +9,6 @@
 =========== Открыть viewforum.tpl (внутри вашего шаблона) и найти ===========
 <h1 class="maintitle"><a href="{U_VIEW_FORUM}">{FORUM_NAME}</a></h1>
 =========== Заменить на ===========
-<h1 class="maintitle">
-	<a href="{U_VIEW_FORUM}">{FORUM_NAME}</a>
-	<!-- IF FORUM_DESC --><br><span style="font-size: 18px !important;">{FORUM_DESC}</span><!-- ENDIF -->
-</h1>
+<h1 class="maintitle" style="margin-bottom: 0 !important;"><a href="{U_VIEW_FORUM}">{FORUM_NAME}</a></h1>
+<p class="maintitle" style="font-size: 17px !important;">{FORUM_DESC}</p>
 =========== Сохранить все файлы ===========
