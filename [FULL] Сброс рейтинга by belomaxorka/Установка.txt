@@ -1,0 +1,148 @@
+--------------- Сброс рейтинга ---------------
+Версия: v1.0.0
+Автор: belomaxorka
+----------------------------------------------
+
+--------------- [ SQL ] ---------------
+ALTER TABLE `bb_bt_users` ADD COLUMN `ratio_nulled` tinyint(1) NOT NULL DEFAULT '0';
+---------------------------------------
+
+--------------- [ Открыть library/ajax/index_data.php и найти ] ---------------
+switch($mode)
+{
+-------------------------------------------------------------------------------
+
+--------------- [ Вставить ниже ] ---------------
+// Обнуление рейтинга
+case 'null_ratio':
+	if (!$bb_cfg['ratio_null_enabled']) {
+		$this->ajax_die($lang['MODULE_OFF']);
+	}
+	if (empty($this->request['confirmed'])) {
+		$this->prompt_for_confirm($lang['BT_NULL_RATIO_ALERT']);
+	}
+
+	$user_id = (int)$this->request['user_id'];
+	if (!IS_ADMIN && $user_id != $userdata['user_id']) {
+		$this->ajax_die($lang['NOT_AUTHORISED']);
+	}
+
+	$btu = get_bt_userdata($user_id);
+	$ratio_nulled = (bool)$btu['ratio_nulled'];
+	$user_ratio = get_bt_ratio($btu);
+
+	if (($user_ratio === null) && !IS_ADMIN) {
+		$this->ajax_die($lang['BT_NULL_RATIO_NONE']);
+	}
+	if ($ratio_nulled && !IS_ADMIN) {
+		$this->ajax_die($lang['BT_NULL_RATIO_AGAIN']);
+	}
+	if (($user_ratio >= $bb_cfg['ratio_to_null']) && !IS_ADMIN) {
+		$this->ajax_die(sprintf($lang['BT_NULL_RATIO_NOT_NEEDED'], $bb_cfg['ratio_to_null']));
+	}
+
+	DB()->query("UPDATE " . BB_BT_USERS . " SET u_up_total = 0, u_down_total = 0, u_up_release = 0, u_up_bonus = 0, ratio_nulled = 1 WHERE user_id = " . $user_id);
+	CACHE('bb_cache')->rm('btu_' . $user_id);
+	$this->ajax_die($lang['BT_NULL_RATIO_SUCCESS']);
+break;
+-------------------------------------------------
+
+--------------- [ Открыть library/config.php и вставить ] ---------------
+// Обнуление рейтинга
+// Для $bb_cfg['ratio_to_null'] можете использовать своё значение
+$bb_cfg['ratio_null_enabled'] = true;
+$bb_cfg['ratio_to_null'] = $bb_cfg['bt_min_ratio_allow_dl_tor'];
+-------------------------------------------------------------------------
+
+--------------- [ Открыть library/includes/ucp/viewprofile.php и найти ] ---------------
+else if ($signature)
+{
+	$signature = bbcode2html($signature);
+}
+----------------------------------------------------------------------------------------
+
+--------------- [ Вставить ниже ] ---------------
+// Обнуление рейтинга
+if ($bb_cfg['ratio_null_enabled']) {
+	$btu = get_bt_userdata($profiledata['user_id']);
+	$template->assign_vars(array('NULLED_RATIO' => (bool)$btu['ratio_nulled']));
+}
+-------------------------------------------------
+
+--------------- [ Открыть library/language/en/main.php и вставить ] ---------------
+// Обнуление рейтинга
+$lang['BT_NULL_RATIO'] = 'Reset rating';
+$lang['BT_NULL_RATIO_NONE'] = 'You don\'t have a rating';
+$lang['BT_NULL_RATIO_ALERT'] = "Attention!\n\nAre you sure you want to reset your rating?";
+$lang['BT_NULL_RATIO_AGAIN'] = 'You have already reset your rating!';
+$lang['BT_NULL_RATIO_NOT_NEEDED'] = 'You have a good rating. Reset is possible only with a rating less than %s';
+$lang['BT_NULL_RATIO_SUCCESS'] = 'The rating has been reset successfully!';
+-----------------------------------------------------------------------------------
+
+--------------- [ Открыть library/language/ru/main.php и вставить ] ---------------
+// Обнуление рейтинга
+$lang['BT_NULL_RATIO'] = 'Сбросить рейтинг';
+$lang['BT_NULL_RATIO_NONE'] = 'У вас нет рейтинга';
+$lang['BT_NULL_RATIO_ALERT'] = "Внимание!\n\nВы уверены что хотите сбросить рейтинг?";
+$lang['BT_NULL_RATIO_AGAIN'] = 'Вы уже делали сброс рейтинга!';
+$lang['BT_NULL_RATIO_NOT_NEEDED'] = 'У вас хороший рейтинг. Сброс возможен только при рейтинге меньше чем %s';
+$lang['BT_NULL_RATIO_SUCCESS'] = 'Рейтинг успешно сброшен!';
+-----------------------------------------------------------------------------------
+
+--------------- [ Открыть library/language/uk/main.php и вставить ] ---------------
+// Обнуление рейтинга
+$lang['BT_NULL_RATIO'] = 'Скинути рейтинг';
+$lang['BT_NULL_RATIO_NONE'] = 'У вас немає рейтингу';
+$lang['BT_NULL_RATIO_ALERT'] = "Увага!\n\nВи впевнені, що хочете скинути рейтинг?";
+$lang['BT_NULL_RATIO_AGAIN'] = 'Ви вже робили скидання рейтингу!';
+$lang['BT_NULL_RATIO_NOT_NEEDED'] = 'У вас добрий рейтинг. Скидання можливе лише за рейтингу менше ніж %s';
+$lang['BT_NULL_RATIO_SUCCESS'] = 'Рейтинг успішно скинутий!';
+-----------------------------------------------------------------------------------
+
+--------------- [ Открыть styles/templates/default/usercp_viewprofile.tpl и найти ] ---------------
+<!-- IF TRAF_STATS -->
+<script type="text/javascript">
+---------------------------------------------------------------------------------------------------
+
+--------------- [ Заменить на ] ---------------
+<!-- IF TRAF_STATS || $bb_cfg['ratio_null_enabled'] -->
+<script type="text/javascript">
+-----------------------------------------------
+
+--------------- [ Далее найти ] ---------------
+ajax.callback.index_data = function(data) {
+	$('#traf-stats-tbl').html(data.html);
+	$('#bt_user_ratio').html(data.user_ratio);
+	$('#traf-stats-span').hide();
+	$('#traf-stats-tbl').show();
+	$('#bt_user_ratio').show();
+};
+-----------------------------------------------
+
+--------------- [ Заменить на ] ---------------
+ajax.callback.index_data = function (data) {
+	if (data.mode == 'get_traf_stats') {
+		$('#traf-stats-tbl').html(data.html);
+		$('#bt_user_ratio').html(data.user_ratio);
+		$('#traf-stats-span').hide();
+		$('#traf-stats-tbl').show();
+		$('#bt_user_ratio').show();
+	}
+};
+-----------------------------------------------
+
+--------------- [ Далее найти ] ---------------
+	<a href="#" onclick="ajax.exec({ action: 'gen_passkey', user_id  : {PROFILE_USER_ID} }); return false;">{L_BT_GEN_PASSKEY}</a>
+</span> ]
+<!-- ENDIF -->
+-----------------------------------------------
+
+--------------- [ Вставить ниже ] ---------------
+<!-- IF PROFILE_USER || IS_ADMIN -->
+<!-- IF $bb_cfg['ratio_null_enabled'] -->
+<!-- IF not NULLED_RATIO or IS_ADMIN -->
+[ <a class="med" href="#" onclick="ajax.index_data('null_ratio'); return false;">{L_BT_NULL_RATIO}</a> ]
+<!-- ENDIF -->
+<!-- ENDIF -->
+<!-- ENDIF -->
+-------------------------------------------------
