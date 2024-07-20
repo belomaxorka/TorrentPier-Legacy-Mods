@@ -16,6 +16,42 @@ CREATE TABLE IF NOT EXISTS `bb_book` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 -----------------------------------------
 
+------------------ Открыть library/language/en/main.php и вставить ------------------
+// Закладки
+$lang['BOOKMARKS'] = 'Bookmarks';
+$lang['BOOKMARKS_ADD'] = 'Add to bookmarks';
+$lang['BOOKMARKS_ADD_SUCCESS'] = 'Bookmark added successfully';
+$lang['BOOKMARKS_REMOVE'] = 'Remove from bookmarks';
+$lang['BOOKMARKS_REMOVE_SUCCESS'] = 'Bookmark deleted successfully';
+$lang['BOOKMARKS_NONE'] = 'Sorry, you don\'t have any bookmarks saved';
+$lang['BOOKMARKS_ALREADY'] = 'You have already bookmarked this topic';
+$lang['BOOKMARKS_LIMIT_REACHED'] = 'You have too many bookmarks...';
+-------------------------------------------------------------------------------------
+
+------------------ Открыть library/language/ru/main.php и вставить ------------------
+// Закладки
+$lang['BOOKMARKS'] = 'Закладки';
+$lang['BOOKMARKS_ADD'] = 'Добавить в закладки';
+$lang['BOOKMARKS_ADD_SUCCESS'] = 'Закладка успешно добавлена';
+$lang['BOOKMARKS_REMOVE'] = 'Удалить из закладок';
+$lang['BOOKMARKS_REMOVE_SUCCESS'] = 'Закладка успешно удалена';
+$lang['BOOKMARKS_NONE'] = 'Извините, у вас нет сохраненных закладок';
+$lang['BOOKMARKS_ALREADY'] = 'Вы уже добавили данную тему в закладки';
+$lang['BOOKMARKS_LIMIT_REACHED'] = 'У вас слишком много закладок...';
+-------------------------------------------------------------------------------------
+
+------------------ Открыть library/language/uk/main.php и вставить ------------------
+// Закладки
+$lang['BOOKMARKS'] = 'Закладки';
+$lang['BOOKMARKS_ADD'] = 'Додати в закладки';
+$lang['BOOKMARKS_ADD_SUCCESS'] = 'Закладка успішно додана';
+$lang['BOOKMARKS_REMOVE'] = 'Видалити із закладок';
+$lang['BOOKMARKS_REMOVE_SUCCESS'] = 'Закладка успішно видалена';
+$lang['BOOKMARKS_NONE'] = 'Вибачте, у вас немає збережених закладок';
+$lang['BOOKMARKS_ALREADY'] = 'Ви вже додали цю тему до закладок';
+$lang['BOOKMARKS_LIMIT_REACHED'] = 'У вас занадто багато закладок...';
+-------------------------------------------------------------------------------------
+
 ------------------ Открыть library\includes\page_header.php и найти ------------------
 'U_TRACKER'          => "tracker.php",
 --------------------------------------------------------------------------------------
