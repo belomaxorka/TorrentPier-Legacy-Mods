@@ -1,7 +1,7 @@
 ------------------ Закладки ------------------
 Автор: drew
 Обновления: belomaxorka
-Версия: v1.2.6
+Версия: v1.3.0
 ----------------------------------------------
 
 ------------------ SQL ------------------
@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS `bb_book` (
   `user_id` mediumint(9) NOT NULL DEFAULT '0',
   `topic_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `forum_id` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `time` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`book_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 -----------------------------------------
@@ -55,15 +56,17 @@ function book()
 -------------------------------------------------------------------
 
 ------------------ Выше вставить ------------------
+//
 // Закладки
+//
 if (!IS_GUEST) {
 	if (!DB()->fetch_row('SELECT book_id FROM ' . BB_BOOK . " WHERE topic_id = $topic_id AND user_id = " . $userdata['user_id'])) {
 		$template->assign_vars(array(
-			'U_BOOK' => '<span class="bold a-like" onclick="ajax.book();">Добавить в закладки</span>',
+			'U_BOOK' => '<a class="small" href="#" onclick="ajax.book(); return false;">' . $lang['BOOKMARKS_ADD'] . '</a>',
 		));
 	} else {
 		$template->assign_vars(array(
-			'U_BOOK' => '<span class="bold a-like" onclick="ajax.exec({ action:\'book\', mode:\'delete\', tid:' . $topic_id . ', ids: \'0\' });">Удалить закладку</span>',
+			'U_BOOK' => '<a class="small" href="#" onclick="ajax.exec({ action:\'book\', mode:\'delete\', tid:' . $topic_id . ', ids: \'0\' }); return false;">' . $lang['BOOKMARKS_REMOVE'] . '</a>',
 		));
 	}
 }
@@ -94,7 +97,7 @@ DB()->query("
 ---------------------------------------------------------------------------------------
 
 ------------------ Выше вставить ------------------
-<a href="book.php"><b>Закладки</b></a> &#0183;
+<a href="{U_BOOK_URL}"><b>{L_BOOKMARKS}</b></a> &#0183;
 ---------------------------------------------------
 
 ------------------ Открыть viewtopic.tpl (В вашем шаблоне) и найти ------------------
@@ -113,10 +116,6 @@ DB()->query("
 	};
 	ajax.callback.book = function (data) {
 		$('#book').html(data.ok);
-		$('#book2').html(data.ok);
-
-		if (data.info) alert(data.info);
-		if (data.url) document.location.href = data.url;
 	};
 </script>
 <span id="book">{U_BOOK}</span> &nbsp;<span style="color:#CDCDCD;">|</span>&nbsp;
