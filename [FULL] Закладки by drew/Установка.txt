@@ -43,6 +43,29 @@ define('BB_BOOK',                 'bb_book');
 ---------------------------------------------------
 
 ------------------ Далее найти ------------------
+function prompt_for_confirm($confirm_msg)
+{
+	if (empty($confirm_msg)) $this->ajax_die('false');
+
+	$this->response['prompt_confirm'] = 1;
+	$this->response['confirm_msg'] = strip_tags(br2nl($confirm_msg));
+	$this->send();
+}
+-------------------------------------------------
+
+------------------ Заменить на ------------------
+function prompt_for_confirm($confirm_msg = '')
+{
+	global $lang;
+	if (empty($confirm_msg)) $confirm_msg = $lang['QUESTION'];
+
+	$this->response['prompt_confirm'] = 1;
+	$this->response['confirm_msg'] = strip_tags(br2nl($confirm_msg));
+	$this->send();
+}
+-------------------------------------------------
+
+------------------ Далее найти ------------------
 function sitemap()
 {
 	require(AJAX_DIR .'sitemap.php');
