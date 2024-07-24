@@ -1,0 +1,59 @@
+--------------- BBCode: Фильм по ID ---------------
+Версия: v1.0.0
+Автор: belomaxorka
+---------------------------------------------------
+
+--------------- [ Открыть styles\templates\default\posting_editor.tpl и найти ] ---------------
+<div class="buttons floatR">
+-----------------------------------------------------------------------------------------------
+
+--------------- [ Вставить выше ] ---------------
+<label>Вставить фильм:&nbsp;
+	<select name="codeMovie" class="text_size">
+		<option value="kinopoisk" selected>Выбор источника</option>
+		<option value="kinopoisk">&nbsp;КиноПоиск ID</option>
+		<option value="imdb">&nbsp;IMDb ID</option>
+		<option value="tmdb">&nbsp;TMDB ID</option>
+	</select>
+</label>
+-------------------------------------------------
+
+--------------- [ Далее найти ] ---------------
+bbcode.addTag("codeAlign", function (e) {
+	var v = e.value;
+	e.selectedIndex = 0;
+	return "align=" + v
+}, "/align");
+-----------------------------------------------
+
+--------------- [ Ниже вставить ] ---------------
+bbcode.addTag("codeMovie", function (e) {
+	var v = e.value;
+	e.selectedIndex = 0;
+	return "movie=" + v
+}, "/movie");
+-------------------------------------------------
+
+--------------- [ Открыть src\Legacy\BBCode.php и найти ] ---------------
+---------------- [ Для LTS library/includes/bbcode.php ] ----------------
+// HR
+	$bbcode_tpl['hr'] = <<<HTML
+	<span class="post-hr">-</span>
+HTML;
+-------------------------------------------------------------------------
+
+--------------- [ Ниже вставить ] ---------------
+// Movie
+	$bbcode_tpl['movie'] = <<<HTML
+	<div style="width: 720px; height: auto;" data-kinobox="auto" data-\\1="\\2"></div>
+	<script src="https://kinobox.tv/kinobox.min.js"></script>
+HTML;
+-------------------------------------------------
+
+--------------- [ Далее найти ] ---------------
+"#\[qpost=([0-9]*)\]#isu" => '<u class="q-post">$1</u>',
+-----------------------------------------------
+
+--------------- [ Ниже вставить ] ---------------
+"#\[movie=(kinopoisk|imdb|tmdb)\](.+?)\[/movie\]\s*#isu" => $tpl['movie'],
+-------------------------------------------------
