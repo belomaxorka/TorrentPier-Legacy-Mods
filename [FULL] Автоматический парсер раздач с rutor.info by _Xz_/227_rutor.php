@@ -22,7 +22,7 @@ if($sql)
 {
 	$snoopy = new Snoopy;
 	$snoopy->host = $url;
-	$snoopy->agent = "opera";
+	$snoopy->agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36";
 	$snoopy->rawheaders["Pragma"] = "no-cache";
 
 	for($i=0; $i <= count($sql); $i++)

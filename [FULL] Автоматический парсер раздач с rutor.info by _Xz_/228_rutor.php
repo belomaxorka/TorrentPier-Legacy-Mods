@@ -20,7 +20,7 @@ if($sql)
 	}
 }
 
-$sql = DB()->fetch_rowset("SELECT f.forum, f.user_id, r.* FROM rutor_releases r, rutor_categories f WHERE r.time = 0 AND f.categorie = r.categorie AND f.active = 1 GROUP BY r.id ORDER BY RAND() DESC LIMIT 5");
+$sql = DB()->fetch_rowset("SELECT f.forum, f.user_id, r.* FROM rutor_releases r, rutor_categories f WHERE r.time = 0 AND f.categorie = r.categorie AND f.active = 1 GROUP BY r.id ORDER BY r.id DESC LIMIT 30");
 
 //$sql = DB()->fetch_rowset("SELECT f.forum, f.user_id, r.* FROM rutor_releases r, rutor_categories f WHERE r.time = 0 AND f.categorie = r.categorie AND f.active = 1 ORDER BY r.id DESC LIMIT 5");
 
@@ -28,7 +28,7 @@ if($sql)
 {
 	$snoopy = new Snoopy;
 	$snoopy->host = "rutor.info";
-	$snoopy->agent = "opera";
+	$snoopy->agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36";
 	$snoopy->rawheaders["Pragma"] = "no-cache";
 
 	for($i=0; $i < count($sql); $i++)
@@ -45,13 +45,12 @@ if($sql)
 		if ($message)
 		{
             unset($snoopy->results);
-
-            preg_match_all ("#<img src=\"http://s.rutor.info/t/down.png\"> .*? ([\s\S]*?).torrent</a>#", $content, $source, PREG_SET_ORDER);
+			
+			preg_match_all ("#<img src=\"http://cdnbunny.org/t/down.png\"> .*? ([\s\S]*?).torrent</a>#", $content, $source, PREG_SET_ORDER);
             $tor_name = $source[0][1];
 
-            //$snoopy->fetch("http://new-rutor.org/parse/d.rutor.org/download/". $sql[$i]['id']);
-			$snoopy->fetch("http://d.rutor.info/download/". $sql[$i]['id']);
-			//$snoopy->fetch("http://tracker.rutor.org/d.rutor.org/download/". $sql[$i]['id']);
+            $snoopy->fetch("http://d.rutor.info/download/". $sql[$i]['id']);
+
 			$torrent = $snoopy->results;
 			$tor     = bdecode($torrent);
 
@@ -139,7 +138,7 @@ function submit_torrent($subject, $message, $forum_id, $torfile, $time, $user_id
     $user_ip = '7f000001';
     if(!$user_id) $user_id = BOT_UID;
 
-	$subject = preg_replace("/(FREEISLAND|HQCLUB|HQ-ViDEO|HELLYWOOD|ExKinoRay|NewStudio|LostFilm|RiperAM|Generalfilm|Files-x|NovaLan|Scarabey|New-Team|HD-NET|MediaClub|Baibako|CINEMANIA|Rulya74|RG WazZzuP|Ash61|egoleshik|Т-Хzona|TORRENT - BAGIRA|F-Torrents|2LT_FS|Bagira|Pshichko66|Занавес|msltel|Leo.pard|Точка Zрения|BenderBEST|PskovLine|HDReactor|Temperest|Element-Team|BT-Club|Filmoff CLUB|HD Club|HDCLUB|potroks|fox-torrents|HYPERHD|GORESEWAGE|NoLimits-Team|New Team|FireBit-Films|NNNB|New-team|Youtracker|marcury|Neofilm|Filmrus|Deadmauvlad|Torrent-Xzona|Brazzass|Кинорадиомагия|Assassin&#039;s Creed|GOLDBOY|ClubTorrent|AndreSweet|TORRENT-45|0ptimus|Torrange|Sanjar &amp; NeoJet|Leonardo|BTT-TEAM и Anything-group|BTT-TEAM|Anything-group|Gersuzu|Xixidok|PEERATES|ivandubskoj|R. G. Jolly Roger|Fredd Kruger|Киномагия|RG MixTorrent|RusTorents|Тorrent-Хzona|R.G. Mega Best|Gold Cartoon KINOREAKTOR (Sheikn)|ImperiaFilm|RG Jolly Roger|Sheikn|R.G. Mobile-Men|KinoRay &amp; Sheikn|HitWay|mcdangerous|Тorren|Stranik 2.0|Romych|R.G. AVI|Lebanon|Big111|Dizell|СИНЕМА-ГРУПП|PlanetaUA|RG Superdetki|potrokis|olegek70|bAGrat|Alekxandr48|Mao Dzedyn|Fartuna|R.G.Mega Best|DenisNN|Киномагии|UAGet|Victorious|Gold Cartoon KINOREAKTOR|KINOREAKTOR|KinoFiles|HQRips|F-Torrent|A.Star|Beeboop|Azazel|Leon-masl|Vikosol|RG Orient Extreme|R.G.TorrBy|ale x2008|Deadmauvlad|semiramida1970|Zelesk|CineLab SoundMix|Сотник|ALGORITM|E76|datynet|Дяди Лёши| leon030982|GORESEWAGE|Hot-Film|КинозалSAT|ENGINEER|CinemaClub|Zlofenix|pro100shara|FreeRutor|FreeHD|гаврила|vadi|SuperMin|GREEN TEA|Kerob|AGR - Generalfilm|R.G. DHT-Music|Витек 78|Twi7ter|KinoGadget|BitTracker|KURD28|Gears Media|KINONAVSE100|Just TeMa)/si","ТВОЙ_ТРЕКЕР.РУ",$subject);
+	$subject = preg_replace("/(R.G. DHT-Music|Витек 78|KinoGadget|BitTracker|KURD28|KINONAVSE100|Just TeMa)/si","KORSARS",$subject);
 
     DB()->sql_query("INSERT INTO ". BB_TOPICS ."
 		(topic_title, topic_poster, topic_time, forum_id, topic_attachment, topic_dl_type, topic_last_post_time)
@@ -186,14 +185,15 @@ function submit_torrent($subject, $message, $forum_id, $torfile, $time, $user_id
 
 	if ($bb_cfg['last_added'])
 	{
-		$row = DB()->fetch_row("SELECT post_text FROM ". BB_POSTS_TEXT ." WHERE post_id = $post_id");			
-	        preg_match_all('/\[gposter=right\](.*?)\[\/gposter\]/i', $row['post_text'], $poster7, PREG_SET_ORDER);
-	        preg_match_all('/\[gposter=left\](.*?)\[\/gposter\]/i', $row['post_text'], $poster6, PREG_SET_ORDER);
-	        preg_match_all('/\[gposter\](.*?)\[\/gposter\]/i', $row['post_text'], $poster5, PREG_SET_ORDER);
-	        preg_match_all('/\[poster\](.*?)\[\/poster\]/i', $row['post_text'], $poster4, PREG_SET_ORDER);
-	        preg_match_all('/\[img=right\](.*?)\[\/img\]/i', $row['post_text'], $poster3, PREG_SET_ORDER);
-	        preg_match_all('/\[img=left\](.*?)\[\/img\]/i', $row['post_text'], $poster2, PREG_SET_ORDER);
-	        preg_match_all('/\[img\](.*?)\[\/img\]/i', $row['post_text'], $poster1, PREG_SET_ORDER);
+		$row = DB()->fetch_row("SELECT post_text FROM ". BB_POSTS_TEXT ." WHERE post_id = $post_id");					
+	    preg_match_all('/\[gposter=right\](.*?)\[\/gposter\]/i', $row['post_text'], $poster7, PREG_SET_ORDER);
+	    preg_match_all('/\[gposter=left\](.*?)\[\/gposter\]/i', $row['post_text'], $poster6, PREG_SET_ORDER);
+	    preg_match_all('/\[gposter\](.*?)\[\/gposter\]/i', $row['post_text'], $poster5, PREG_SET_ORDER);
+	    preg_match_all('/\[poster\](.*?)\[\/poster\]/i', $row['post_text'], $poster4, PREG_SET_ORDER);
+	    preg_match_all('/\[img=right\](.*?)\[\/img\]/i', $row['post_text'], $poster3, PREG_SET_ORDER);
+	    preg_match_all('/\[img=left\](.*?)\[\/img\]/i', $row['post_text'], $poster2, PREG_SET_ORDER);
+	    preg_match_all('/\[img\](.*?)\[\/img\]/i', $row['post_text'], $poster1, PREG_SET_ORDER);
+
 	    $url = '';
 	    if (isset($poster7[0][1])) $url = $poster7[0][1];
 	    elseif (isset($poster6[0][1])) $url = $poster6[0][1];
