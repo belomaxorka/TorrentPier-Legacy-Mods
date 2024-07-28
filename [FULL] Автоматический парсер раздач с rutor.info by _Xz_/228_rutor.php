@@ -44,7 +44,6 @@ if ($sql) {
 			$tor_name = $source[0][1];
 
 			$snoopy->fetch("http://d.rutor.info/download/" . $sql[$i]['id']);
-
 			$torrent = $snoopy->results;
 			$tor = bdecode($torrent);
 
