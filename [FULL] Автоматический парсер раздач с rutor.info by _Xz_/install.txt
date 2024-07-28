@@ -1,0 +1,86 @@
+Запрос:
+
+CREATE TABLE IF NOT EXISTS `rutor_categories` (
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `categorie` varchar(255) NOT NULL,
+  `forum` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `all_categorie` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `rutor_releases` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `categorie` varchar(255) NOT NULL,
+  `time` varchar(11) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+В ajax.php:
+
+'rutor'       		=> array('admin'),
+
+
+	function rutor ()
+	{
+		global $lang, $bb_cfg;
+
+		$mode = (string) $this->request['mode'];
+
+		if($mode == 'categorie_del')
+        {
+            $categorie  = (string) urldecode($this->request['categorie']);
+
+            DB()->query("DELETE FROM rutor_categories WHERE categorie = '$categorie'");
+        }
+        elseif($mode == 'change_user_id')
+        {
+	        $new_user = (string) $this->request['user'];
+	        $url      = (string) $this->request['url'];
+
+			if(!$url || !$new_user) bb_die('false id');
+			if(($new_user != BOT_UID) && !$new = get_userdata($new_user)) bb_die($lang['NO_USER_ID_SPECIFIED']);
+            if($new) $new_user = $new['user_id'];
+
+	        DB()->query("UPDATE rutor_categories SET user_id = $new_user WHERE categorie = '$url'");
+
+	        $this->response['user'] = ($new) ? profile_url($new) : 'Bot';
+			$this->response['url']  = md5($url);
+			$this->response['mode'] = $mode;
+        }
+        elseif($mode == 'all_categorie')
+        {
+	        $categorie  = (string) urldecode($this->request['categorie']);
+            if(!$categorie) bb_die('false id');
+
+            $row = DB()->fetch_row("SELECT * FROM rutor_categories WHERE categorie = '$categorie' LIMIT 1");
+            if(!$row) bb_die('Такой записи нет в базе');
+
+	        $all_categorie = (int) !$row['all_categorie'];
+
+	        DB()->query("UPDATE rutor_categories SET all_categorie = $all_categorie WHERE categorie = '$categorie'");
+        }
+        elseif($mode == 'active')
+        {
+	        $categorie  = (string) urldecode($this->request['categorie']);
+            if(!$categorie) bb_die('false id');
+
+            $row = DB()->fetch_row("SELECT * FROM rutor_categories WHERE categorie = '$categorie' LIMIT 1");
+            if(!$row) bb_die('Такой записи нет в базе');
+
+	        $active = (int) !$row['active'];
+
+	        DB()->query("UPDATE rutor_categories SET active = $active WHERE categorie = '$categorie'");
+        }
+	}
+	
+Крон:
+
+wget -O /dev/null http://................../227_rutor.php - новые релизы
+
+wget -O /dev/null http://................../228_rutor.php - копируем релизы
+
+файлы в корень
+
+интервал на усмотрение, слишком часто не стоит выставлять, быстро словите бан, оптимально настроить часа через 4-5
