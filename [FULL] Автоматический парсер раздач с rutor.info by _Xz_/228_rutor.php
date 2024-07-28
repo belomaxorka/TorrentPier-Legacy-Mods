@@ -220,8 +220,6 @@ function insert_video_player(&$text)
 	// вставка плеера
 	if (!empty($has_imdb) || !empty($has_kp)) {
 		$text .= '[br][hr]';
-		var_dump($has_imdb);
-		var_dump($has_kp);
 		if (is_numeric($has_kp)) {
 			// данные с кп приоритетнее
 			$text .= '[movie=kinopoisk]' . $has_kp . '[/movie]';
