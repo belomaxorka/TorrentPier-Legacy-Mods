@@ -8,6 +8,10 @@ require(INC_DIR . 'functions_torrent.php');
 require(INC_DIR . 'bbcode.php');
 require(INC_DIR . 'functions_post.php');
 
+// -------------- Настройки --------------
+$use_video_player = true; // Вставлять видео-плеер с фильмов, в тех раздачах, где есть КП ID или IMDB ID (Нужен мод: https://torrentpier.com/resources/bbcode-film-po-id.302/)
+// ---------------------------------------
+
 $attach_dir = get_attachments_dir();
 
 $ids = array();
@@ -81,6 +85,8 @@ if ($sql) {
 echo 'усЁ';
 function rutor($text)
 {
+	global $use_video_player;
+
 	preg_match_all("#<tr><td style=\"vertical-align:top;\"></td><td>([\s\S]*?)</td></tr>#si", $text, $source, PREG_SET_ORDER);
 	$text = $source[0][1];
 
@@ -110,7 +116,9 @@ function rutor($text)
 		$text = preg_replace('/<span style="font-family:([^<]*?);">([^<]*?)<(?=\/)\/span>/', '[font="$1"]$2[/font]', $text);
 	}
 
-	insert_video_player($text);
+	if ($use_video_player) {
+		insert_video_player($text);
+	}
 
 	$text = strip_tags(html_entity_decode($text));
 
