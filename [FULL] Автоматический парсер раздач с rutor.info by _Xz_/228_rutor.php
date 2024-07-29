@@ -215,7 +215,7 @@ function insert_video_player(&$text)
 	preg_match("/imdb\.com\/title\/tt(\d+)/", $text, $has_imdb);
 	$has_imdb = isset($has_imdb[1]) ? $has_imdb[1] : false; // В посте есть баннер imdb! Ура, победа!
 	// kp
-	preg_match("/kinopoisk\.ru\/(?:film|series)\/(\d+)/", $text, $has_kp);
+	preg_match("/kinopoisk\.ru\/(?:film|series|level\/\d+\/film)\/(\d+)/", $text, $has_kp);
 	$has_kp = isset($has_kp[1]) ? $has_kp[1] : false; // В посте есть баннер kp! Ура, победа!
 	// вставка плеера
 	if (!empty($has_imdb) || !empty($has_kp)) {
@@ -224,7 +224,7 @@ function insert_video_player(&$text)
 			// данные с кп приоритетнее
 			$text .= '[movie=kinopoisk]' . $has_kp . '[/movie]';
 		} elseif (is_numeric($has_imdb)) {
-			$text .= '[movie=imdb]' . $has_imdb . '[/movie]';
+			$text .= '[movie=imdb]tt' . $has_imdb . '[/movie]';
 		}
 		$text .= '[hr][br]';
 	}
