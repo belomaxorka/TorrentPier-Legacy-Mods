@@ -37,3 +37,85 @@ $page_cfg['allow_robots'] = (bool)$t_data['topic_allow_robots'];
 </tr>
 <!-- ENDIF -->
 -------------------------------------------------
+
+--------------- [ Открыть posting.php и найти ] ---------------
+// Notify
+if ($submit || $refresh) {
+---------------------------------------------------------------
+
+--------------- [ Заменить на ] ---------------
+// Notify & Allow robots indexing
+$robots_indexing = isset($post_info['topic_allow_robots']) ? $post_info['topic_allow_robots'] : true;
+if ($submit || $refresh) {
+-------------------------------------------------
+
+--------------- [ Далее найти ] ---------------
+$notify_user = (int)!empty($_POST['notify']);
+-----------------------------------------------
+
+--------------- [ Выше вставить ] ---------------
+if (IS_AM) {
+	$robots_indexing = !empty($_POST['robots']);
+}
+-------------------------------------------------
+
+--------------- [ Далее найти ] ---------------
+submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_id, $post_id, $topic_type, DB()->escape($username), DB()->escape($subject), DB()->escape($message), $update_post_time, $poster_rg_id, $attach_rg_sig);
+-----------------------------------------------
+
+--------------- [ Заменить на ] ---------------
+submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_id, $post_id, $topic_type, DB()->escape($username), DB()->escape($subject), DB()->escape($message), $update_post_time, $poster_rg_id, $attach_rg_sig, (int)$robots_indexing);
+-----------------------------------------------
+
+--------------- [ Далее найти ] ---------------
+if ($mode == 'newtopic' || ($mode == 'editpost' && $post_data['first_post'])) {
+-----------------------------------------------
+
+--------------- [ Ниже вставить ] ---------------
+// Allow robots indexing
+if (IS_AM) {
+	$template->assign_var('SHOW_ROBOTS_CHECKBOX');
+}
+-------------------------------------------------
+
+--------------- [ Далее найти ] ---------------
+'S_NOTIFY_CHECKED' => ($notify_user) ? 'checked' : '',
+-----------------------------------------------
+
+--------------- [ Ниже вставить ] ---------------
+'S_ROBOTS_CHECKED' => ($robots_indexing) ? 'checked' : '',
+-------------------------------------------------
+
+--------------- [ Открыть src/Legacy/Post.php и найти ] ---------------
+---------- [ Для LTS - library/includes/functions_post.php ] ----------
+function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_id, &$post_id, &$topic_type, $post_username, $post_subject, $post_message, $update_post_time, $poster_rg_id, $attach_rg_sig)
+-----------------------------------------------------------------------
+
+--------------- [ Заменить на ] ---------------
+function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_id, &$post_id, &$topic_type, $post_username, $post_subject, $post_message, $update_post_time, $poster_rg_id, $attach_rg_sig, $robots_indexing)
+-----------------------------------------------
+
+--------------- [ Далее найти ] ---------------
+" . BB_TOPICS . " (topic_title, topic_poster, topic_time, forum_id, topic_status, topic_type, topic_dl_type)
+-----------------------------------------------
+
+--------------- [ Заменить на ] ---------------
+" . BB_TOPICS . " (topic_title, topic_poster, topic_time, forum_id, topic_status, topic_type, topic_dl_type, topic_allow_robots)
+-----------------------------------------------
+
+--------------- [ Далее найти ] ---------------
+('$post_subject', " . $userdata['user_id'] . ", $current_time, $forum_id, " . TOPIC_UNLOCKED . ", $topic_type, $topic_dl_type)
+-----------------------------------------------
+
+--------------- [ Заменить на ] ---------------
+('$post_subject', " . $userdata['user_id'] . ", $current_time, $forum_id, " . TOPIC_UNLOCKED . ", $topic_type, $topic_dl_type, $robots_indexing)
+-----------------------------------------------
+
+--------------- [ Далее найти ] ---------------
+topic_dl_type = $topic_dl_type
+-----------------------------------------------
+
+--------------- [ Заменить на ] ---------------
+topic_dl_type = $topic_dl_type,
+topic_allow_robots = $robots_indexing
+-----------------------------------------------
