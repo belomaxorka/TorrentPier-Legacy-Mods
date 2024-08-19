@@ -6,6 +6,10 @@
 https://torrentpier.com/resources/uluchshenie-indeksacii-stranic.304/
 ----------------------------------------------------------------------
 
+--------------- [ SQL ] ---------------
+ALTER TABLE `bb_topics` ADD COLUMN `topic_allow_robots` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';
+---------------------------------------
+
 --------------- [ Открыть library/language/en/main.php и вставить ] ---------------
 $lang['ALLOW_ROBOTS_INDEXING'] = 'Allow robots indexing this topic';
 -----------------------------------------------------------------------------------
