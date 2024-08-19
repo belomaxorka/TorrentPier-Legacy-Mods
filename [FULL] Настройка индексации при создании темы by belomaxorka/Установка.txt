@@ -2,6 +2,9 @@
 Версия: v1.0.0
 Автор: belomaxorka
 ----------------------------------------------------------------------
+Дополнительно необходим данный мод:
+https://torrentpier.com/resources/uluchshenie-indeksacii-stranic.304/
+----------------------------------------------------------------------
 
 --------------- [ Открыть library/language/en/main.php и вставить ] ---------------
 $lang['ALLOW_ROBOTS_INDEXING'] = 'Allow robots indexing this topic';
