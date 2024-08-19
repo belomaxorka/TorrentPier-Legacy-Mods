@@ -1,0 +1,39 @@
+--------------- Настройка индексации при создании темы ---------------
+Версия: v1.0.0
+Автор: belomaxorka
+----------------------------------------------------------------------
+
+--------------- [ Открыть library/language/en/main.php и вставить ] ---------------
+$lang['ALLOW_ROBOTS_INDEXING'] = 'Allow robots indexing this topic';
+-----------------------------------------------------------------------------------
+
+--------------- [ Открыть library/language/ru/main.php и вставить ] ---------------
+$lang['ALLOW_ROBOTS_INDEXING'] = 'Разрешить индексацию роботами этой темы';
+-----------------------------------------------------------------------------------
+
+--------------- [ Открыть viewtopic.php и найти ] ---------------
+if ($t_data['allow_porno_topic'] && bf($userdata['user_opt'], 'user_opt', 'user_porn_forums')) {
+-----------------------------------------------------------------
+
+--------------- [ Выше вставить ] ---------------
+// Allow robots indexing
+$page_cfg['allow_robots'] = (bool)$t_data['topic_allow_robots'];
+-------------------------------------------------
+
+--------------- [ Открыть styles/templates/default/posting.tpl и найти ] ---------------
+<!-- IF SHOW_NOTIFY_CHECKBOX -->
+<tr>
+	<td><input type="checkbox" id="notify" name="notify" {S_NOTIFY_CHECKED} /></td>
+	<td><label for="notify">{L_NOTIFY}</label></td>
+</tr>
+<!-- ENDIF -->
+----------------------------------------------------------------------------------------
+
+--------------- [ Ниже вставить ] ---------------
+<!-- IF SHOW_ROBOTS_CHECKBOX -->
+<tr>
+	<td><input type="checkbox" id="robots" name="robots" {S_ROBOTS_CHECKED} /></td>
+	<td><label for="robots">{L_ALLOW_ROBOTS_INDEXING}</label></td>
+</tr>
+<!-- ENDIF -->
+-------------------------------------------------
