@@ -1,0 +1,36 @@
+------------------- Вывод релиз группы на странице форума -------------------
+Автор: belomaxorka
+Версия: v1.0.0
+-----------------------------------------------------------------------------
+
+======= Открыть styles/templates/default/viewforum.tpl и найти =======
+<a id="tt-{t.TOPIC_ID}" href="{TOPIC_URL}{t.HREF_TOPIC_ID}" class="topictitle tt-text">{t.TOPIC_TITLE}</a>
+======================================================================
+
+======= Заменить на =======
+<a id="tt-{t.TOPIC_ID}" href="{TOPIC_URL}{t.HREF_TOPIC_ID}" class="topictitle tt-text">{t.TOPIC_TITLE}<!-- IF t.RG_NAME -->&nbsp;<i style="color: darkred;">({t.RG_NAME})</i><!-- ENDIF --></a>
+===========================
+
+======= Открыть viewforum.php и найти =======
+t.*, t.topic_poster AS first_user_id, u1.user_rank as first_user_rank,
+=============================================
+
+======= Заменить на =======
+t.*, g.group_name, t.topic_poster AS first_user_id, u1.user_rank as first_user_rank,
+===========================
+
+======= Далее найти =======
+LEFT JOIN " . BB_USERS . " u2 ON(p2.poster_id = u2.user_id)
+===========================
+
+======= Ниже вставить =======
+LEFT JOIN " . BB_GROUPS . " g ON(p2.poster_rg_id = g.group_id)
+=============================
+
+======= Далее найти =======
+'TOPIC_TITLE' => $wordCensor->censorString($topic['topic_title']),
+===========================
+
+======= Ниже вставить =======
+'RG_NAME' => !empty($topic['group_name']) ? htmlCHR($topic['group_name']) : '',
+=============================
