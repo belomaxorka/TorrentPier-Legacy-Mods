@@ -1,11 +1,27 @@
 ------------------- Вывод релиз группы на странице форума -------------------
 Автор: belomaxorka
-Версия: v1.0.0
+Версия: v1.0.1
 -----------------------------------------------------------------------------
 
 ======= Открыть styles/templates/default/viewforum.tpl и найти =======
-<a id="tt-{t.TOPIC_ID}" href="{TOPIC_URL}{t.HREF_TOPIC_ID}" class="topictitle tt-text">{t.TOPIC_TITLE}</a>
+<a id="tt-{t.TOPIC_ID}" href="{TOPIC_URL}{t.HREF_TOPIC_ID}" class="gen tt-text">{t.TOPIC_TITLE}</a>
 ======================================================================
+
+======= Заменить на =======
+<a id="tt-{t.TOPIC_ID}" href="{TOPIC_URL}{t.HREF_TOPIC_ID}" class="gen tt-text">{t.TOPIC_TITLE}<!-- IF t.RG_NAME -->&nbsp;<i style="color: darkred;">({t.RG_NAME})</i><!-- ENDIF --></a>
+===========================
+
+======= Далее найти =======
+{t.TOR_TYPE}<a id="tt-{t.TOPIC_ID}" href="{TOPIC_URL}{t.HREF_TOPIC_ID}" class="torTopic tt-text"><b>{t.TOPIC_TITLE}</b></a>
+===========================
+
+======= Заменить на =======
+{t.TOR_TYPE}<a id="tt-{t.TOPIC_ID}" href="{TOPIC_URL}{t.HREF_TOPIC_ID}" class="torTopic tt-text"><b>{t.TOPIC_TITLE}</b><!-- IF t.RG_NAME -->&nbsp;<i style="color: darkred;">({t.RG_NAME})</i><!-- ENDIF --></a>
+===========================
+
+======= Далее найти =======
+<a id="tt-{t.TOPIC_ID}" href="{TOPIC_URL}{t.HREF_TOPIC_ID}" class="topictitle tt-text">{t.TOPIC_TITLE}</a>
+===========================
 
 ======= Заменить на =======
 <a id="tt-{t.TOPIC_ID}" href="{TOPIC_URL}{t.HREF_TOPIC_ID}" class="topictitle tt-text">{t.TOPIC_TITLE}<!-- IF t.RG_NAME -->&nbsp;<i style="color: darkred;">({t.RG_NAME})</i><!-- ENDIF --></a>
