@@ -40,7 +40,7 @@ LEFT JOIN " . BB_USERS . " u2 ON(p2.poster_id = u2.user_id)
 ===========================
 
 ======= Ниже вставить =======
-LEFT JOIN " . BB_GROUPS . " g ON(p2.poster_rg_id = g.group_id)
+LEFT JOIN " . BB_GROUPS . " g ON(p1.poster_rg_id = g.group_id)
 =============================
 
 ======= Далее найти =======
