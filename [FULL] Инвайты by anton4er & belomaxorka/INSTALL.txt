@@ -338,12 +338,14 @@ function validate_invite_code($invite_code, $check_activ_and_taken = true)
 function get_groupname($select_name, $selected_group, $groupid)
 {
 	global $lang;
-	$groupname = '';
-	$select_ary = array();
+
 	$sql = "SELECT group_id, group_name
 		FROM " . BB_GROUPS . "
 		WHERE group_single_user = 0
 		ORDER BY group_name";
+
+	$groupname = '';
+	$select_ary = array();
 	$select_ary[$lang['ENY_USER']] = '0';
 	foreach (DB()->fetch_rowset($sql) as $row) {
 		if (isset($select_ary[$row['group_name']])) {
@@ -351,11 +353,13 @@ function get_groupname($select_name, $selected_group, $groupid)
 			$$cnt = @$$cnt + 1;
 			$row['group_name'] = $row['group_name'] . ' [' . (int)$$cnt . ']';
 		}
+
 		$select_ary[$row['group_name']] = $row['group_id'];
 		if ($groupid == $row['group_id']) {
 			$groupname = $row['group_name'];
 		}
 	}
+
 	if (defined('IN_ADMIN')) {
 		return ($select_ary) ? build_select($select_name, $select_ary, $selected_group) : '';
 	} else {
