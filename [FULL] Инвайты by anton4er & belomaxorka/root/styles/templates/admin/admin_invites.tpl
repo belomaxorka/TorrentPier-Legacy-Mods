@@ -5,24 +5,24 @@
 <!-- IF $bb_cfg['new_user_reg_only_by_invite'] -->
 <form method="post" action="{S_RULES_ACTION}">
 <table class="forumline">
-	<tr>
-	  <td class="catTitle" colspan="6">{L_INVITE_RULES}</td>
-	</tr>
-	<tr>
-	  <th>&nbsp;{L_INVITE_MIN_RATIO}&nbsp;</th>
-	  <th>&nbsp;{L_INVITE_MIN_EXP}&nbsp;</th>
-	  <th>&nbsp;{L_INVITE_ALLOWED_GROUP}&nbsp;</th>
-	  <th colspan="3">&nbsp;{L_INVITE_NUMBERS_IN_WEEK}&nbsp;</th>
-	</tr>
-	<tr>
-	  <td class="row1" align="center"><input type="text" size="10" name="add_rule_user_rating" class="post" /></td>
-	  <td class="row2" align="center"><input type="text" size="10" name="add_rule_user_age" class="post" /></td>
-	  <td class="row1" align="center">{S_ADD_GROUP_SELECT}</td>
-	  <td class="row2" colspan="3" align="center"><input type="text" size="10" name="add_rule_invites_count" class="post" /></td>
-	</tr>
-	<tr align="right">
-	  <td class="catBottom" colspan="6"><input type="submit" name="add_rule" class="liteoption" value="{L_INVITE_ADD_RULE}" /></td>
-  </tr>
+<tr>
+	<td class="catTitle" colspan="6">{L_INVITE_RULES}</td>
+</tr>
+<tr>
+	<th>&nbsp;{L_INVITE_MIN_RATIO}&nbsp;</th>
+	<th>&nbsp;{L_INVITE_MIN_EXP}&nbsp;</th>
+	<th>&nbsp;{L_INVITE_ALLOWED_GROUP}&nbsp;</th>
+	<th colspan="3">&nbsp;{L_INVITE_NUMBERS_IN_WEEK}&nbsp;</th>
+</tr>
+<tr>
+	<td class="row1" align="center"><input type="text" size="10" name="add_rule_user_rating" class="post" /></td>
+	<td class="row2" align="center"><input type="text" size="10" name="add_rule_user_age" class="post" /></td>
+	<td class="row1" align="center">{S_ADD_GROUP_SELECT}</td>
+	<td class="row2" colspan="3" align="center"><input type="text" size="10" name="add_rule_invites_count" class="post" /></td>
+</tr>
+<tr align="right">
+	<td class="catBottom" colspan="6"><input type="submit" name="add_rule" class="liteoption" value="{L_INVITE_ADD_RULE}" /></td>
+</tr>
 </table>
 
 <br>
@@ -53,7 +53,7 @@
 </table>
 </form>
 <!-- ELSE -->
-<div class='cat_title'>{L_REG_INVITES_DISABLE}</div>
+<div class="cat_title">{L_REG_INVITES_DISABLE}</div>
 <table class="forumline">
 <tr>
 	<td colspan="6" class="row1" align="center">{L_REG_INVITES_DISABLE_MSG}</td>
