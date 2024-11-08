@@ -60,7 +60,7 @@
 </div>
 <table class="forumline">
 	<tr>
-	  <td colsapn="6" class="row1" align="center">{L_REG_INVITES_DISABLE_MSG}</td>
+	  <td colspan="6" class="row1" align="center">{L_REG_INVITES_DISABLE_MSG}</td>
 	</tr>
 </table>
 
