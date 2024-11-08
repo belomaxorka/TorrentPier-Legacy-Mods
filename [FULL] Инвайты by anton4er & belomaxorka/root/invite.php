@@ -96,7 +96,7 @@ else {
 if (isset($_GET['mode']) && $_GET['mode'] == 'getinvite') {
 	$sql = 'SELECT COUNT(`invite_id`) AS `invites_count_week` FROM ' . BB_INVITES . ' WHERE `user_id`=' . $userdata['user_id'] . ' AND `generation_date`>=' . $date_start . ' AND `generation_date`<=' . $date_end;
 	if (!($result = DB()->sql_query($sql))) {
-		bb_die('Could not get a list of invites' . __LINE__ . ',' . __FILE__ . $sql);
+		bb_die('Could not get a list of invites: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
 	}
 
 	$row = DB()->sql_fetchrowset($result);
