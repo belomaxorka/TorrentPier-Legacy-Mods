@@ -1,0 +1,534 @@
+#########################################################
+#	  Module invitation, installation guide		#
+#-------------------------------------------------------#
+#      Модуль приглашения, инструкция по установке.	#
+#########################################################
+# Author at original mod:	Unknown			#
+# Author adaptat:		anton4er		#
+# Email:			anton4er58@gmail.com	#
+#-------------------------------------------------------#
+# Автор оригинального мода:     Неизвестен		#
+# Автор адаптации: 		anton4er		#
+# Email:	       		anton4er58@gmail.com	#
+#-------------------------------------------------------#
+#-------------[ Локализация | Localisation ]------------#
+#-------------------------------------------------------#
+#		[ru] локализация anton4er		#
+#		[ru] localisation by anton4er		#
+#-------------------------------------------------------#
+# 		[en] локализация tmk			#
+#		[en] localisation by tmk		#
+#-------------------------------------------------------#
+#		[uk] локализация Отсутствует		#
+#########################################################
+
+#-------------------------------------------------------#
+#----------------[УСТАНОВКА | INSTALL]------------------#
+#-------------------------------------------------------#
+#----------------[СКОПИРОВАТЬ | COPY ]------------------#
+#-------------------------------------------------------#
+
+/root/library/includes/cron/jobs/prune_inactive_invites.php  -->  /library/includes/cron/jobs/prune_inactive_invites.php
+/root/admin/admin_invites.php    	                     -->  /admin/admin_invites.php
+/root/styles/templates/admin/admin_invites.tpl               -->  /styles/templates/admin/admin_invites.tpl
+/root/styles/templates/default/invite.tpl                    -->  /styles/templates/default/invite.tpl
+/root/invite.php  	                                     -->  /invite.php
+
+#-------------------------------------------------------#
+#--------------[SQL ЗАПРОС | SQL QUERY ]----------------#
+#-------------------------------------------------------#
+CREATE TABLE `bb_invite_rules` (
+	`rule_id` INT(4) unsigned NOT NULL auto_increment,
+	`user_rating` INT(4) unsigned NOT NULL default 0,
+	`user_age` INT(4) unsigned NOT NULL default 0,
+	`invites_count` INT(4) unsigned NOT NULL default 0,
+	`user_group` INT(4) unsigned NOT NULL default 0,
+	PRIMARY KEY (`rule_id`)
+);
+CREATE TABLE `bb_invites` (
+	`invite_id` INT(8) unsigned NOT NULL auto_increment,
+	`user_id` MEDIUMINT(8) NOT NULL default 0,
+	`new_user_id` MEDIUMINT(8) NOT NULL default 0,
+	`invite_code` VARCHAR(16) NOT NULL default '',
+	`active` ENUM('1','0') default '1',
+	`generation_date` INT(10) NOT NULL default '0',
+	`activation_date` INT(10) NOT NULL default '0',
+	PRIMARY KEY (`invite_id`)
+);
+INSERT INTO `bb_config` VALUES ('new_user_reg_only_by_invite', '0');
+INSERT INTO `bb_cron` VALUES (22, 1, 'Prune inactive invites', 'prune_inactive_invites.php', 'daily', NULL, '05:00:00', 255, '0', '0', NULL, 1, '', 0, 0, 0);
+
+#-------------------------------------------------------#
+#--------------------[ ФАЙЛ | FILE ]--------------------#
+#-------------------------------------------------------#
+#	      /library/includes/init_bb.php		#
+#-------------------------------------------------------#
+#-------------------[ НАЙТИ | FIND ]--------------------#
+#-------------------------------------------------------#
+
+define('BB_WORDS',                'bb_words');
+
+#-------------------------------------------------------#
+#------------[ ПОСЛЕ ДОБАВИТЬ | AFTER ADD ]-------------#
+#-------------------------------------------------------#
+
+// Mod invitation
+define('BB_INVITES',              'bb_invites');
+define('BB_INVITE_RULES',         'bb_invite_rules');
+// END Mod invitation
+
+#-------------------------------------------------------#
+#--------------------[ ФАЙЛ | FILE ]--------------------#
+#-------------------------------------------------------#
+#	    /library/includes/page_header.php		#
+#-------------------------------------------------------#
+#-------------------[ НАЙТИ | FIND ]--------------------#
+#-------------------------------------------------------#
+
+	'U_TRACKER'          => "tracker.php",
+
+#-------------------------------------------------------#
+#------------[ ПОСЛЕ ДОБАВИТЬ | AFTER ADD ]-------------#
+#-------------------------------------------------------#
+
+	'U_INVITE'           => "invite.php", // Mod invitation
+
+#-------------------------------------------------------#
+#--------------------[ ФАЙЛ | FILE ]--------------------#
+#-------------------------------------------------------#
+#	/styles/templates/default/page_header.tpl	#
+#-------------------------------------------------------#
+#-------------------[ НАЙТИ | FIND ]--------------------#
+#-------------------------------------------------------#
+
+<a href="{U_MEMBERLIST}"><b>{L_MEMBERLIST}</b></a><span style="color:#CDCDCD;">|</span>
+
+#-------------------------------------------------------#
+#------------[ ПОСЛЕ ДОБАВИТЬ | AFTER ADD ]-------------#
+#-------------------------------------------------------#
+
+<a href="{U_INVITE}"><b>{L_GET_INVITE}</b></a><span style="color:#CDCDCD;">|</span>
+
+#-------------------------------------------------------#
+#--------------------[ ФАЙЛ | FILE ]--------------------#
+#-------------------------------------------------------#
+#     /styles/templates/default/usercp_register.tpl	#
+#-------------------------------------------------------#
+#-------------------[ НАЙТИ | FIND ]--------------------#
+#-------------------------------------------------------#
+
+<tr>
+	<td class="prof-title">{L_CONFIRM_PASSWORD}: * <!-- IF EDIT_PROFILE --><br /><h6>{L_PASSWORD_CONFIRM_IF_CHANGED}</h6><!-- ENDIF --></td>
+	<td>
+		<input id="pass_confirm" onBlur="ajax.exec({ action: 'user_register', mode: 'check_pass', pass: $('#pass').val(), pass_confirm: $('#pass_confirm').val() }); return false;" type="<!-- IF SHOW_PASS -->text<!-- ELSE -->password<!-- ENDIF -->" name="cfm_pass" size="35" maxlength="32" value="" />
+		<span id="check_pass"></span>
+	</td>
+</tr>
+
+#-------------------------------------------------------#
+#------------[ ПОСЛЕ ДОБАВИТЬ | AFTER ADD ]-------------#
+#-------------------------------------------------------#
+
+<!-- IF $bb_cfg['new_user_reg_only_by_invite'] -->
+<!-- IF EDIT_PROFILE -->
+<!-- ELSE -->
+<tr>
+	<td class="prof-title">{L_INVITE_FNAME}<br /><small>{L_INVITE_FDESC}</small></td>
+	<td><input type="text" name="invite_code" size="35" value="{INVITE_CODE}" /></td>
+</tr>
+<!-- ENDIF -->
+<!-- ENDIF -->
+
+#-------------------------------------------------------#
+#--------------------[ ФАЙЛ | FILE ]--------------------#
+#-------------------------------------------------------# 
+#		  /admin/admin_board.php		#
+#-------------------------------------------------------#
+#-------------------[ НАЙТИ | FIND ]--------------------#
+#-------------------------------------------------------#
+
+			'TOR_STATS'               => $new['tor_stats'],
+
+#-------------------------------------------------------#
+#------------[ ПЕРЕД ДОБАВИТЬ | BEFORE ADD]-------------#
+#-------------------------------------------------------#
+
+		    'INVITE_ENABLED' => $new['new_user_reg_only_by_invite'],
+
+#-------------------------------------------------------#
+#--------------------[ ФАЙЛ | FILE ]--------------------#
+#-------------------------------------------------------# 
+#	 /styles/templates/admin/admin_board.tpl	#
+#-------------------------------------------------------#
+#-------------------[ НАЙТИ | FIND ]--------------------#
+#-------------------------------------------------------#
+
+<tr>
+	<td><h4>{L_CALLSEED}</h4></td>
+	<td>
+		<label><input type="radio" name="callseed" value="1" <!-- IF CALLSEED -->checked="checked"<!-- ENDIF --> />{L_ENABLED}</label>&nbsp;&nbsp;
+		<label><input type="radio" name="callseed" value="0" <!-- IF not CALLSEED -->checked="checked"<!-- ENDIF --> />{L_DISABLED}</label>
+	</td>
+</tr>
+
+#-------------------------------------------------------#
+#------------[ ПОСЛЕ ДОБАВИТЬ | AFTER ADD ]-------------#
+#-------------------------------------------------------#
+
+<!-- invite_enabled -->
+<tr>
+	<td><h4>{L_INVITE_ENABLED}</h4></td>
+	<td>
+		<label><input type="radio" name="new_user_reg_only_by_invite" value="1" <!-- IF INVITE_ENABLED -->checked="checked"<!-- ENDIF --> />{L_ENABLED}</label>&nbsp;&nbsp;
+		<label><input type="radio" name="new_user_reg_only_by_invite" value="0" <!-- IF not INVITE_ENABLED -->checked="checked"<!-- ENDIF --> />{L_DISABLED}</label>
+	</td>
+</tr>
+<!-- invite_enabled [END] -->
+
+#-------------------------------------------------------#
+#--------------------[ ФАЙЛ | FILE ]--------------------#
+#-------------------------------------------------------# 
+#	    /library/includes/ucp/register.php		#
+#-------------------------------------------------------#
+#-------------------[ НАЙТИ | FIND ]--------------------#
+#-------------------------------------------------------#
+
+		// field => can_edit
+		$profile_fields = array(
+			'username'         => true,
+			'user_password'    => true,
+			'user_email'       => true,
+
+#-------------------------------------------------------#
+#------------[ ПОСЛЕ ДОБАВИТЬ | AFTER ADD ]-------------#
+#-------------------------------------------------------#
+
+			'invite_code'      => true,// Mod invitation
+
+#-------------------------------------------------------#
+#-------------------[ НАЙТИ | FIND ]--------------------#
+#-------------------------------------------------------#
+
+		$pr_data = array(
+			'user_id'          => GUEST_UID,
+			'username'         => '',
+			'user_password'    => '',
+			'user_email'       => '',
+
+#-------------------------------------------------------#
+#------------[ ПОСЛЕ ДОБАВИТЬ | AFTER ADD ]-------------#
+#-------------------------------------------------------#
+
+			'invite_code'      => '',// Mod invitation
+
+#-------------------------------------------------------#
+#-------------------[ НАЙТИ | FIND ]--------------------#
+#-------------------------------------------------------#
+
+	/**
+	*  Пароль (edit, reg)
+	*/
+	case 'user_password':
+
+#-------------------------------------------------------#
+#-----------[ ПЕРЕД ДОБАВИТЬ | BEFORE ADD ]-------------#
+#-------------------------------------------------------#
+
+	/**
+	*  Инвайт (reg)
+	*/
+	case 'invite_code':
+		if($bb_cfg['new_user_reg_only_by_invite']){
+			$invite_code = !empty($_POST['invite_code']) ? clean_username($_POST['invite_code']) : $pr_data['invite_code'];
+			if ($submit)
+			{
+				$err = validate_invite_code($invite_code);
+				if (!$errors AND $err && $mode == 'register')
+				{
+					$errors[] = $err;
+				}
+				if($invite_code != $pr_data['invite_code'] || $mode == 'register')
+				{
+					$pr_data['invite_code'] = $invite_code;
+				}
+			}
+			$tp_data['CAN_EDIT_INVITE_CODE'] = $can_edit;
+			$tp_data['INVITE_CODE'] = $pr_data['invite_code'];
+		}
+		break;
+	
+
+#-------------------------------------------------------#
+#-------------------[ НАЙТИ | FIND ]--------------------#
+#-------------------------------------------------------#
+
+		$sql_args = DB()->build_array('INSERT', $db_data);
+
+		DB()->query("INSERT INTO ". BB_USERS . $sql_args);
+		$new_user_id = DB()->sql_nextid();
+
+#-------------------------------------------------------#
+#------------[ ПОСЛЕ ДОБАВИТЬ | AFTER ADD ]-------------#
+#-------------------------------------------------------#
+
+		// Mod invitation
+		if($bb_cfg['new_user_reg_only_by_invite']){
+			if ($invite_code != '') {
+				$sql = "UPDATE ". BB_INVITES ." SET `active`='0', `new_user_id`=".$new_user_id.", `activation_date`=".time()." WHERE `invite_code`='".$invite_code."'";
+				if (!($upd_querry = DB()->sql_query($sql))) bb_die('Could not activate invite'. __LINE__ .','. __FILE__ .$sql);
+				DB()->sql_freeresult($upd_querry);
+			}
+		}
+		//END Mod invitation
+
+#-------------------------------------------------------#
+#--------------------[ ФАЙЛ | FILE ]--------------------#
+#-------------------------------------------------------# 
+#	/library/includes/functions_validate.php	#
+#-------------------------------------------------------#
+#-------------------[ НАЙТИ | FIND ]--------------------#
+#-------------------------------------------------------#
+
+// Check to see if email address is banned or already present in the DB
+
+#-------------------------------------------------------#
+#-----------[ ПЕРЕД ДОБАВИТЬ | BEFORE ADD ]-------------#
+#-------------------------------------------------------#
+
+// Function validate invite code Mod invitation
+function validate_invite_code ($invite_code, $check_activ_and_taken = true)
+{
+	global $lang;
+
+	$invite_code = str_compact($invite_code);
+	$invite_code = clean_username($invite_code);
+	if($invite_code != ''){
+		if ($check_activ_and_taken)
+		{
+			$invite_code_sql = DB()->escape($invite_code);
+			$sql = "SELECT `invite_id` FROM ". BB_INVITES ." WHERE `invite_code` = '$invite_code_sql' AND `active` = '1'";
+			if (!($result = DB()->sql_query($sql))){
+			return bb_die('Error checking code, invite'. __LINE__ .','. __FILE__ .$sql);
+			}else{
+				$num_row = DB()->num_rows($result);
+				DB()->sql_freeresult($result);
+				if ($num_row == 0) {
+					return $lang['INVITE_TAKEN'];
+				}
+			}
+		}
+	}else{
+	return $lang['INVITE_EMPTY'];
+	}
+	return false;
+}
+// END Function validate invite code Mod invitation
+
+#-------------------------------------------------------#
+#--------------------[ ФАЙЛ | FILE ]--------------------#
+#-------------------------------------------------------#
+#	   /library/includes/functions_group.php	#
+#-------------------------------------------------------#
+#----------[ ДОБАВИТЬ В КОНЕЦ ФАЙЛА | APPEND ]----------#
+#-------------------------------------------------------#
+
+// Function get_groupname for Mod invitation
+function get_groupname ($select_name, $selected_group, $groupid)
+{
+global $lang;
+$groupname = '';
+	$select_ary = array();
+	$sql = "SELECT group_id, group_name
+		FROM ". BB_GROUPS ."
+		WHERE group_single_user = 0
+		ORDER BY group_name";
+	$select_ary[$lang['ENY_USER']] = '0';
+	foreach (DB()->fetch_rowset($sql) as $row)
+	{
+		if (isset($select_ary[$row['group_name']]))
+		{
+			$cnt = md5($row['group_name']) .'_cnt';
+			$$cnt = @$$cnt + 1;
+			$row['group_name'] = $row['group_name'] . ' ['. (int) $$cnt .']';
+		}
+		$select_ary[$row['group_name']] = $row['group_id'];
+			if ($groupid == $row['group_id']) 
+			{
+				$groupname = $row['group_name'];
+			}
+			
+	}
+	if(defined('IN_ADMIN')){
+	return ($select_ary) ? build_select($select_name, $select_ary, $selected_group) : '';
+	}
+	else
+	{
+	return $groupname;
+	}
+}
+//END Function get_groupname fo Mod invitation
+
+#-------------------------------------------------------#
+#--------------------[ ФАЙЛ | FILE ]--------------------#
+#-------------------------------------------------------# 
+#	       /library/language/ru/main.php		#
+#-------------------------------------------------------#
+#----------[ ДОБАВИТЬ В КОНЕЦ ФАЙЛА | APPEND ]----------#
+#-------------------------------------------------------#
+
+//Invites
+$lang['INVITE_FNAME'] = 'Инвайт код: *';
+$lang['INVITE_FDESC'] = 'Внимание!<br />На данный момент регистрация разрешена только по инвайтам.<br />Если вы не введете код инвайта, вы не сможете зарегистрироваться.';
+$lang['INVITES'] = 'Панель управления инвайтами';
+$lang['GET_INVITE'] = 'Выдать инвайт';
+$lang['ALL_TIME_GETED_INVITE'] = 'За всё время вами выдано инвайтов:';
+$lang['LAST_WEEK_GETED_INVITE'] = 'За последнюю неделю вами выдано инвайтов:';
+$lang['ALLOW_GET_INVITE'] = 'На данный момент вы можете выдать инвайтов:';
+$lang['REG_INVITES_DISABLE'] = 'Регистрация по инвайтам отключена';
+$lang['REG_INVITES_DISABLE_MSG'] = 'Чтобы включить, необходимо в <b>config.php</b> поменять значение переменной <b>$bb_cfg[\'new_user_reg_only_by_invite\']</b> с <b>false</b> на <b>true</b>';
+$lang['DENNY_GET_INVITE_MSG'] = 'Извините, но на данный момент вы не можете выдавать инвайты.';
+$lang['DENNY_GET_INVITE_MSG_1'] = 'Это может быть связано с тем, что:<br /><ul><li>вы уже выдали разрешенное вам максимальное кол-во инвайтов в неделю;</li><li>ваш рейтинг не позволяет выдавать вам инвайты;</li><li>кол-во прошедших месяцев со дня вашей регистрации не позволяет вам выдавать инвайты.</li></ul>';
+$lang['INVITE_YOU_CURRENT_RATIO'] = 'Ваш текущий рейтинг:';
+$lang['INVITE_TIME_REG_MOUNTH'] = 'Кол-во месяцев, прошедших со дня вашей регистрации:';
+$lang['INVITE_CURRENT_RULES'] = 'Текущие правила для получения инвайтов:';
+$lang['INVITE_RULES'] = 'Правила для инвайтов';
+$lang['INVITE_ADD_RULE'] = 'Добавить правило';
+$lang['EDIT_INVITE_RULES'] = 'Редактировать правила для инвайтов';
+$lang['INVITE_MIN_RATIO'] = 'Минимальный рейтинг';
+$lang['INVITE_MIN_EXP'] = 'Минимальный стаж в месяцах';
+$lang['INVITE_ALLOWED_GROUP'] = 'Группа которой разрешено выдавать ивайт';
+$lang['ENY_USER'] = 'Пользователи';
+$lang['INVITE_NUMBERS_IN_WEEK'] = 'Кол-во инвайтов в неделю';
+$lang['YOUR_INVITES'] ='Ваши инвайты';
+$lang['INVITE_HISTORY'] = 'История выдачи инвайтов';
+$lang['INVITE_GET_DATE'] = 'Дата выдачи';
+$lang['INVITE_CODE'] = 'Код инвайта';
+$lang['INVITE_ACTIVE'] = 'Активный';
+$lang['INVITE_INVITED_USER'] = 'Привлеченный пользователь';
+$lang['INVITE_GETED_USER'] = 'Пользователь, выдавший инвайт';
+$lang['INVITE_ACTIVATION_DATE'] = 'Дата активации';
+$lang['INVITE_NOT_GETED'] = 'Инвайтов не выдавалось';
+$lang['CAN_GET_INVITE'] = 'Инвайт не может быть выдан<br /><br />';
+$lang['INVITE_GET_SUCCESSFULLY'] = 'Инвайт успешно выдан<br /><br />';
+$lang['GO_TO_INVITE_LIST'] ='Нажмите %sздесь%s, чтобы перейти к списку инвайтов';
+$lang['INVITE_ACTIV_YES'] = 'Да';
+$lang['INVITE_ACTIV_NO'] = 'Нет';
+$lang['INVITE_TAKEN'] = 'Такого кода инвайта не существует или он уже активирован';
+$lang['INVITE_EMPTY'] = 'Вы не указали код инвайта';
+$lang['REFEREND_BY'] = "Вас пригласил";
+//Invites Admin
+$lang['INVITE_ENABLED'] = 'Включить регистрацию только по инвайтам';
+$lang['INVITE_ADMIN_HIST'] = 'История инвайтов';
+$lang['INVITE_ADMIN_RULES'] = 'Правила инвайтов';
+
+#-------------------------------------------------------#
+#--------------------[ ФАЙЛ | FILE ]--------------------#
+#-------------------------------------------------------# 
+#	       /library/language/en/main.php		#
+#-------------------------------------------------------#
+#----------[ ДОБАВИТЬ В КОНЕЦ ФАЙЛА | APPEND ]----------#
+#-------------------------------------------------------#
+
+//Invites
+$lang['INVITE_FNAME'] = 'Invite code: *';
+$lang['INVITE_FDESC'] = 'Attention!<br />At the moment, registration is allowed only for an invite.<br />If you do not enter an invite code, you can not register.';
+$lang['INVITES'] = 'Invites control panel';
+$lang['GET_INVITE'] = 'Get invite';
+$lang['ALL_TIME_GETED_INVITE'] = 'Total invites issued by you:';
+$lang['LAST_WEEK_GETED_INVITE'] = 'Invites issued at last week:';
+$lang['ALLOW_GET_INVITE'] = 'Invites available at this moment:';
+$lang['REG_INVITES_DISABLE'] = 'Registration by invites disabled';
+$lang['REG_INVITES_DISABLE_MSG'] = 'To turn it on you should change <b>$bb_cfg[\'new_user_reg_only_by_invite\']</b> value to <b>true</b> in <b>config.php</b> file.';
+$lang['DENNY_GET_INVITE_MSG'] = 'Sorry, but you can\'t get invite at this moment.';
+$lang['DENNY_GET_INVITE_MSG_1'] = 'The reason may be:<br /><ul><li>you trying to exceed per week invites limit;</li><li>your ratio too low;</li><li>your tracker experience too low.</li></ul>';
+$lang['INVITE_YOU_CURRENT_RATIO'] = 'Your current ratio:';
+$lang['INVITE_TIME_REG_MOUNTH'] = 'Tracker experience (months):';
+$lang['INVITE_CURRENT_RULES'] = 'Actual rules for invites issue:';
+$lang['INVITE_RULES'] = 'Invites rules';
+$lang['INVITE_ADD_RULE'] = 'Add rule';
+$lang['EDIT_INVITE_RULES'] = 'Edit invites rules';
+$lang['INVITE_MIN_RATIO'] = 'Minimal ratio';
+$lang['INVITE_MIN_EXP'] = 'Minimal experience';
+$lang['INVITE_ALLOWED_GROUP'] = 'Inviting allowed group';
+$lang['ENY_USER'] = 'Users';
+$lang['INVITE_NUMBERS_IN_WEEK'] = 'Invites per week';
+$lang['YOUR_INVITES'] ='Your invites';
+$lang['INVITE_HISTORY'] = 'Invites issue history';
+$lang['INVITE_GET_DATE'] = 'Issue date';
+$lang['INVITE_CODE'] = 'Invite code';
+$lang['INVITE_ACTIVE'] = 'Active';
+$lang['INVITE_INVITED_USER'] = 'Invited user';
+$lang['INVITE_GETED_USER'] = 'Inviter';
+$lang['INVITE_ACTIVATION_DATE'] = 'Activation date';
+$lang['INVITE_NOT_GETED'] = 'No one invite has been issued';
+$lang['CAN_GET_INVITE'] = 'Invite can\'t be issued<br /><br />';
+$lang['INVITE_GET_SUCCESSFULLY'] = 'Invite successfully issued<br /><br />';
+$lang['GO_TO_INVITE_LIST'] ='Click %shere%s, to access invites-list';
+$lang['INVITE_ACTIV_YES'] = 'Yes';
+$lang['INVITE_ACTIV_NO'] = 'No';
+$lang['INVITE_TAKEN'] = 'Incorrect invite';
+$lang['INVITE_EMPTY'] = 'Please, enter invite code';
+$lang['REFEREND_BY'] = "Referend by";
+//Invites Admin
+$lang['INVITE_ENABLED'] = 'Enable registration by invites only';
+$lang['INVITE_ADMIN_HIST'] = 'Invites history';
+$lang['INVITE_ADMIN_RULES'] = 'Invites rules';
+
+#########################################################
+# Примечание: Украинская локализация отсутствует.	#
+#-------------------------------------------------------#
+#--------------------[ ФАЙЛ | FILE ]--------------------#
+#-------------------------------------------------------# 
+#	       /library/language/uk/main.php		#
+#-------------------------------------------------------#
+#----------[ ДОБАВИТЬ В КОНЕЦ ФАЙЛА | APPEND ]----------#
+#-------------------------------------------------------#
+
+//Invites
+$lang['INVITE_FNAME'] = 'Invite code: *';
+$lang['INVITE_FDESC'] = 'Attention!<br />At the moment, registration is allowed only for an invite.<br />If you do not enter an invite code, you can not register.';
+$lang['INVITES'] = 'Invites control panel';
+$lang['GET_INVITE'] = 'Get invite';
+$lang['ALL_TIME_GETED_INVITE'] = 'Total invites issued by you:';
+$lang['LAST_WEEK_GETED_INVITE'] = 'Invites issued at last week:';
+$lang['ALLOW_GET_INVITE'] = 'Invites available at this moment:';
+$lang['REG_INVITES_DISABLE'] = 'Registration by invites disabled';
+$lang['REG_INVITES_DISABLE_MSG'] = 'To turn it on you should change <b>$bb_cfg[\'new_user_reg_only_by_invite\']</b> value to <b>true</b> in <b>config.php</b> file.';
+$lang['DENNY_GET_INVITE_MSG'] = 'Sorry, but you can\'t get invite at this moment.';
+$lang['DENNY_GET_INVITE_MSG_1'] = 'The reason may be:<br /><ul><li>you trying to exceed per week invites limit;</li><li>your ratio too low;</li><li>your tracker experience too low.</li></ul>';
+$lang['INVITE_YOU_CURRENT_RATIO'] = 'Your current ratio:';
+$lang['INVITE_TIME_REG_MOUNTH'] = 'Tracker experience (months):';
+$lang['INVITE_CURRENT_RULES'] = 'Actual rules for invites issue:';
+$lang['INVITE_RULES'] = 'Invites rules';
+$lang['INVITE_ADD_RULE'] = 'Add rule';
+$lang['EDIT_INVITE_RULES'] = 'Edit invites rules';
+$lang['INVITE_MIN_RATIO'] = 'Minimal ratio';
+$lang['INVITE_MIN_EXP'] = 'Minimal experience';
+$lang['INVITE_ALLOWED_GROUP'] = 'Inviting allowed group';
+$lang['ENY_USER'] = 'Users';
+$lang['INVITE_NUMBERS_IN_WEEK'] = 'Invites per week';
+$lang['YOUR_INVITES'] ='Your invites';
+$lang['INVITE_HISTORY'] = 'Invites issue history';
+$lang['INVITE_GET_DATE'] = 'Issue date';
+$lang['INVITE_CODE'] = 'Invite code';
+$lang['INVITE_ACTIVE'] = 'Active';
+$lang['INVITE_INVITED_USER'] = 'Invited user';
+$lang['INVITE_GETED_USER'] = 'Inviter';
+$lang['INVITE_ACTIVATION_DATE'] = 'Activation date';
+$lang['INVITE_NOT_GETED'] = 'No one invite has been issued';
+$lang['CAN_GET_INVITE'] = 'Invite can\'t be issued<br /><br />';
+$lang['INVITE_GET_SUCCESSFULLY'] = 'Invite successfully issued<br /><br />';
+$lang['GO_TO_INVITE_LIST'] ='Click %shere%s, to access invites-list';
+$lang['INVITE_ACTIV_YES'] = 'Yes';
+$lang['INVITE_ACTIV_NO'] = 'No';
+$lang['INVITE_TAKEN'] = 'Incorrect invite';
+$lang['INVITE_EMPTY'] = 'Please, enter invite code';
+$lang['REFEREND_BY'] = "Referend by";
+//Invites Admin
+$lang['INVITE_ENABLED'] = 'Enable registration by invites only';
+$lang['INVITE_ADMIN_HIST'] = 'Invites history';
+$lang['INVITE_ADMIN_RULES'] = 'Invites rules';
+
+#-------------------------------------------------------#
+#------------------------[ EoM ]------------------------#
+#-------------------------------------------------------#
