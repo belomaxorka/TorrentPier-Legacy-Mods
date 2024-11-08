@@ -1,10 +1,10 @@
-<span class="maintitle">{L_INVITES}</span>
+<h1 class="pagetitle">{L_INVITES}</h1>
 
 <p class="nav"><a href="{U_INDEX}">{T_INDEX}</a></p>
 <br />
 
 <!-- IF CAN_INVITE -->
-<font color="#FF6666"><b>{L_DENNY_GET_INVITE_MSG}</b></font><br />
+<b style="color: #FF6666;">{L_DENNY_GET_INVITE_MSG}</b><br />
 {L_DENNY_GET_INVITE_MSG_1}
 <br />
 {L_INVITE_YOU_CURRENT_RATIO}&nbsp;<b>{USER_RATING}</b>
@@ -37,7 +37,7 @@
 </div>
 <br />
 <!-- ELSE -->
-<form action="invite.php?mode=getinvite" method="post">
+<form action="{U_INVITE}?mode=getinvite" method="post">
 	<input type="submit" value="{L_GET_INVITE}">
 </form>
 <br />
@@ -48,7 +48,7 @@
 <!-- ENDIF -->
 <!-- IF REFEREND -->
 <div class="category">
-<div class="cat_title" style="border:1px">
+<div class="cat_title" style="border: 1px;">
 <center>
 {L_REFEREND_BY}
 </center>
@@ -90,7 +90,7 @@
 	<th class="thHead">{L_INVITE_ACTIVATION_DATE}</th>
 </tr>
 <!-- BEGIN invite_row -->
-	<tr">
+	<tr>
 	  <td class="row1" align="center">{invite_row.GENERATION_DATE}</td>
 	  <td class="row2" align="center">{invite_row.INVITE_CODE}</td>
 	  <td class="row1" align="center">{invite_row.ACTIVE}</td>
@@ -100,7 +100,7 @@
 <!-- END invite_row -->
 <!-- ELSE -->
 <tr>
-	<td colspan="5" class="row1" align="center">{L_INVITE_NOT_GETED}</th>
+	<td colspan="5" class="row1" align="center">{L_INVITE_NOT_GETED}</td>
 </tr>
 <!-- ENDIF -->
 </table>
