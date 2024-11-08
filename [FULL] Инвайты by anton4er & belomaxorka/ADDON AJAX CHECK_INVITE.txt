@@ -25,7 +25,7 @@ $this->response['mode'] = $mode;
 
 // invite check
 case 'check_invite':
-	$invite_code = (string)$this->request['invite_code'];
+	$invite_code = trim((string)$this->request['invite_code']);
 	if (empty($invite_code)) {
 		$html = '<img src="./styles/images/bad.gif"> <span class="leechmed bold">' . $lang['AJAX_INVITE_FIELD_BLANK'] . '</span>';
 	} else if ($err = validate_invite_code($invite_code)) {
@@ -49,7 +49,7 @@ $lang['REFEREND_BY'] = "Вас пригласил";
 #-----[ ПОСЛЕ, ВСТАВИТЬ ]----------------------
 #
 
-$lang['AJAX_INVITE_FIELD_BLANK'] = 'Поле "Код инвайта" не может быть пустым.';
+$lang['AJAX_INVITE_FIELD_BLANK'] = 'Поле "Инвайт код" не может быть пустым.';
 
 #
 #-----[ ФАЙЛ ]---------------------------------
