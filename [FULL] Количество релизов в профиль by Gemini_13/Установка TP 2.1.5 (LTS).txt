@@ -1,7 +1,7 @@
 -------------------------------------------
 Количество релизов в профиль
 -------------------------------------------
-Версия: v1.2.3
+Версия: v1.2.4
 -------------------------------------------
 Автор: Gemini_13
 Автор адаптации под v2.1.5: DimaUZB2001
@@ -105,7 +105,7 @@ ajax.callback.group_membership = function(data) {
 ------------------После вставить--------
 ----------------------------------------
 
-<!-- IF LOGGED_IN and SHOW_BT_USERDATA -->
+<!-- IF LOGGED_IN -->
 <script type="text/javascript">
 	ajax.releases_profile = function (mode) {
 		$('#releases_profile').html('<i class="loading-1">{L_LOADING}</i>');
@@ -135,9 +135,7 @@ ajax.callback.group_membership = function(data) {
 ------------------После вставить--------
 ----------------------------------------
 
-<!-- IF SHOW_BT_USERDATA -->
 <tr>
 	<th>{L_RELEASER_STAT}</th>
 	<td id="releases_profile">[ <a href="#" class="med" onclick="ajax.releases_profile('get_releases_profile'); return false;">{L_RELEASER_STAT_SHOW}</a> ]</td>
 </tr>
-<!-- ENDIF -->
