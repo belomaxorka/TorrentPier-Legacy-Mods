@@ -243,7 +243,7 @@ define('BB_INVITE_RULES',         'bb_invite_rules');
 	*/
 	case 'invite_code':
 		if ($bb_cfg['new_user_reg_only_by_invite']) {
-			$invite_code = !empty($_POST['invite_code']) ? clean_username($_POST['invite_code']) : $pr_data['invite_code'];
+			$invite_code = !empty($_POST['invite_code']) ? trim($_POST['invite_code']) : $pr_data['invite_code'];
 			if ($submit) {
 				$err = validate_invite_code($invite_code);
 				if (!$errors and $err && $mode == 'register') {
@@ -300,8 +300,7 @@ function validate_invite_code($invite_code, $check_activ_and_taken = true)
 {
 	global $lang;
 
-	$invite_code = str_compact($invite_code);
-	$invite_code = clean_username($invite_code);
+	$invite_code = trim($invite_code);
 	if ($invite_code != '') {
 		if ($check_activ_and_taken) {
 			$invite_code_sql = DB()->escape($invite_code);
