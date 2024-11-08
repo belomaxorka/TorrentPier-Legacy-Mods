@@ -6,8 +6,11 @@ define('BB_ROOT', './');
 require(BB_ROOT . 'common.php');
 require(INC_DIR . 'functions_group.php');
 
+if ($bb_cfg['new_user_reg_only_by_invite']) {
+	redirect('index.php');
+}
+
 $user->session_start(array('req_login' => true));
-$template->assign_vars(array('PAGE_TITLE' => $lang['INVITES']));
 
 if (!$btu = get_bt_userdata($userdata['user_id'])) {
 	require_once(INC_DIR . 'functions_torrent.php');
@@ -24,7 +27,7 @@ if ($user_rating == null) {
 
 $regdate = $userdata['user_regdate'];
 $user_age = max(0, (date('Y') * 12) + date('n') - (date('Y', $regdate) * 12) - date('n', $regdate));
-$date_end = time();
+$date_end = TIMENOW;
 $date_start = $date_end - 604800;
 
 // User group
@@ -125,8 +128,8 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'getinvite') {
 
 	if ($num_row > 0) {
 		if ($invites_count_week < $row[0]['invites_count']) {
-			$invite_code = substr(md5(time()), rand(1, 14), 16);
-			$sql = "INSERT INTO " . BB_INVITES . " (`invite_id`,`user_id`,`new_user_id`,`invite_code`,`active`,`generation_date`,`activation_date`) VALUES(null," . (int)$userdata['user_id'] . ",0,'" . $invite_code . "','1'," . time() . ",0)";
+			$invite_code = substr(md5(TIMENOW), rand(1, 14), 16);
+			$sql = "INSERT INTO " . BB_INVITES . " (`invite_id`,`user_id`,`new_user_id`,`invite_code`,`active`,`generation_date`,`activation_date`) VALUES(null," . (int)$userdata['user_id'] . ", 0, '" . $invite_code . "', '1', " . TIMENOW . ", 0)";
 
 			if (!DB()->sql_query($sql)) {
 				$message = $lang['CAN_GET_INVITE'] . '' . sprintf($lang['GO_TO_INVITE_LIST'], '<a href="invite.php">', '</a>');
@@ -246,6 +249,7 @@ if ($num_row > 0) {
 }
 
 $template->assign_vars(array(
+	'PAGE_TITLE' => $lang['INVITES'],
 	'USER_RATING' => $user_rating,
 	'USER_AGE' => $user_age,
 	'USER_GROUP' => $user_group[0],
