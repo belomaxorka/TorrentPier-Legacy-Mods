@@ -84,10 +84,9 @@ if (count($groups) > 0) {
 			$l_group_name = $groups[$i]['group_name'];
 			$user_group_name = $l_group_name;
 			$template->assign_block_vars('groups', array(
-					'U_GROUP_NAME' => $u_group_name,
-					'L_GROUP_NAME' => $l_group_name,
-				)
-			);
+				'U_GROUP_NAME' => $u_group_name,
+				'L_GROUP_NAME' => $l_group_name,
+			));
 		}  // end if ($is_ok)
 	}  // end for ($i=0; $i < count($groups); $i++)
 }  // end if (count($groups) > 0)
