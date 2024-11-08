@@ -113,7 +113,7 @@ define('BB_INVITE_RULES',         'bb_invite_rules');
 #------------[ ПОСЛЕ ДОБАВИТЬ | AFTER ADD ]-------------#
 #-------------------------------------------------------#
 
-<!-- IF LOGGED_IN --><a href="{U_INVITE}"><b>{L_GET_INVITE}</b></a><!-- ENDIF -->
+<!-- IF LOGGED_IN and $bb_cfg['new_user_reg_only_by_invite'] --><a href="{U_INVITE}"><b>{L_GET_INVITE}</b></a><!-- ENDIF -->
 
 #-------------------------------------------------------#
 #--------------------[ ФАЙЛ | FILE ]--------------------#
