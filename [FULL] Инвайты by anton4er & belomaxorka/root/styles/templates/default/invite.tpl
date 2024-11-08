@@ -13,7 +13,7 @@
 
 <br />
 <div class="category">
-<div class="cat_title" style="border: 1px;">
+<div class="cat_title">
 <center>
 {L_INVITE_CURRENT_RULES}
 </center>
@@ -48,7 +48,7 @@
 <!-- ENDIF -->
 <!-- IF REFEREND -->
 <div class="category">
-<div class="cat_title" style="border: 1px;">
+<div class="cat_title">
 <center>
 {L_REFEREND_BY}
 </center>
@@ -75,7 +75,7 @@
 <!-- ELSE -->
 <!-- ENDIF -->
 <div class="category">
-<div class="cat_title" style="border: 1px;">
+<div class="cat_title">
 <center>
 {L_YOUR_INVITES}
 </center>
@@ -106,14 +106,12 @@
 </table>
 </div>
 
-<br />
+<!--bottom_info-->
 <div class="bottom_info">
-	<p style="float: left">{L_ONLINE_EXPLAIN}</p>
+	<div class="spacer_8"></div>
 	<div id="timezone">
-		<p>{LAST_VISIT_DATE}</p>
 		<p>{CURRENT_TIME}</p>
 		<p>{S_TIMEZONE}</p>
 	</div>
 	<div class="clear"></div>
 </div><!--/bottom_info-->
-<br />
