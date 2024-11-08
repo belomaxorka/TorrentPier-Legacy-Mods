@@ -256,7 +256,6 @@ define('BB_INVITE_RULES',         'bb_invite_rules');
 		}
 		break;
 
-
 #-------------------------------------------------------#
 #-------------------[ НАЙТИ | FIND ]--------------------#
 #-------------------------------------------------------#
@@ -271,14 +270,14 @@ define('BB_INVITE_RULES',         'bb_invite_rules');
 #-------------------------------------------------------#
 
 		// Mod invitation
-		if($bb_cfg['new_user_reg_only_by_invite']){
+		if ($bb_cfg['new_user_reg_only_by_invite']) {
 			if ($invite_code != '') {
-				$sql = "UPDATE ". BB_INVITES ." SET `active`='0', `new_user_id`=".$new_user_id.", `activation_date`=".time()." WHERE `invite_code`='".$invite_code."'";
-				if (!($upd_querry = DB()->sql_query($sql))) bb_die('Could not activate invite'. __LINE__ .','. __FILE__ .$sql);
+				$sql = "UPDATE " . BB_INVITES . " SET `active`='0', `new_user_id`=" . $new_user_id . ", `activation_date`=" . time() . " WHERE `invite_code`='" . $invite_code . "'";
+				if (!($upd_querry = DB()->sql_query($sql))) bb_die('Could not activate invite' . __LINE__ . ',' . __FILE__ . $sql);
 				DB()->sql_freeresult($upd_querry);
 			}
 		}
-		//END Mod invitation
+		// END Mod invitation
 
 #-------------------------------------------------------#
 #--------------------[ ФАЙЛ | FILE ]--------------------#
@@ -295,20 +294,19 @@ define('BB_INVITE_RULES',         'bb_invite_rules');
 #-------------------------------------------------------#
 
 // Function validate invite code Mod invitation
-function validate_invite_code ($invite_code, $check_activ_and_taken = true)
+function validate_invite_code($invite_code, $check_activ_and_taken = true)
 {
 	global $lang;
 
 	$invite_code = str_compact($invite_code);
 	$invite_code = clean_username($invite_code);
-	if($invite_code != ''){
-		if ($check_activ_and_taken)
-		{
+	if ($invite_code != '') {
+		if ($check_activ_and_taken) {
 			$invite_code_sql = DB()->escape($invite_code);
-			$sql = "SELECT `invite_id` FROM ". BB_INVITES ." WHERE `invite_code` = '$invite_code_sql' AND `active` = '1'";
-			if (!($result = DB()->sql_query($sql))){
-			return bb_die('Error checking code, invite'. __LINE__ .','. __FILE__ .$sql);
-			}else{
+			$sql = "SELECT `invite_id` FROM " . BB_INVITES . " WHERE `invite_code` = '$invite_code_sql' AND `active` = '1'";
+			if (!($result = DB()->sql_query($sql))) {
+				return bb_die('Error checking code, invite' . __LINE__ . ',' . __FILE__ . $sql);
+			} else {
 				$num_row = DB()->num_rows($result);
 				DB()->sql_freeresult($result);
 				if ($num_row == 0) {
@@ -316,8 +314,8 @@ function validate_invite_code ($invite_code, $check_activ_and_taken = true)
 				}
 			}
 		}
-	}else{
-	return $lang['INVITE_EMPTY'];
+	} else {
+		return $lang['INVITE_EMPTY'];
 	}
 	return false;
 }
@@ -332,40 +330,34 @@ function validate_invite_code ($invite_code, $check_activ_and_taken = true)
 #-------------------------------------------------------#
 
 // Function get_groupname for Mod invitation
-function get_groupname ($select_name, $selected_group, $groupid)
+function get_groupname($select_name, $selected_group, $groupid)
 {
-global $lang;
-$groupname = '';
+	global $lang;
+	$groupname = '';
 	$select_ary = array();
 	$sql = "SELECT group_id, group_name
-		FROM ". BB_GROUPS ."
+		FROM " . BB_GROUPS . "
 		WHERE group_single_user = 0
 		ORDER BY group_name";
 	$select_ary[$lang['ENY_USER']] = '0';
-	foreach (DB()->fetch_rowset($sql) as $row)
-	{
-		if (isset($select_ary[$row['group_name']]))
-		{
-			$cnt = md5($row['group_name']) .'_cnt';
+	foreach (DB()->fetch_rowset($sql) as $row) {
+		if (isset($select_ary[$row['group_name']])) {
+			$cnt = md5($row['group_name']) . '_cnt';
 			$$cnt = @$$cnt + 1;
-			$row['group_name'] = $row['group_name'] . ' ['. (int) $$cnt .']';
+			$row['group_name'] = $row['group_name'] . ' [' . (int)$$cnt . ']';
 		}
 		$select_ary[$row['group_name']] = $row['group_id'];
-			if ($groupid == $row['group_id'])
-			{
-				$groupname = $row['group_name'];
-			}
-
+		if ($groupid == $row['group_id']) {
+			$groupname = $row['group_name'];
+		}
 	}
-	if(defined('IN_ADMIN')){
-	return ($select_ary) ? build_select($select_name, $select_ary, $selected_group) : '';
-	}
-	else
-	{
-	return $groupname;
+	if (defined('IN_ADMIN')) {
+		return ($select_ary) ? build_select($select_name, $select_ary, $selected_group) : '';
+	} else {
+		return $groupname;
 	}
 }
-//END Function get_groupname fo Mod invitation
+// END Function get_groupname fo Mod invitation
 
 #-------------------------------------------------------#
 #--------------------[ ФАЙЛ | FILE ]--------------------#
