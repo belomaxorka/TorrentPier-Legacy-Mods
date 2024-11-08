@@ -157,7 +157,7 @@ define('BB_INVITE_RULES',         'bb_invite_rules');
 #------------[ ПЕРЕД ДОБАВИТЬ | BEFORE ADD]-------------#
 #-------------------------------------------------------#
 
-		    'INVITE_ENABLED'          => $new['new_user_reg_only_by_invite'],
+			'INVITE_ENABLED'          => $new['new_user_reg_only_by_invite'],
 
 #-------------------------------------------------------#
 #--------------------[ ФАЙЛ | FILE ]--------------------#
