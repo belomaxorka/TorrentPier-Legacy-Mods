@@ -276,7 +276,9 @@ define('BB_INVITE_RULES',         'bb_invite_rules');
 			if ($invite_code != '') {
 				$invite_code_sql = DB()->escape($invite_code);
 				$sql = "UPDATE " . BB_INVITES . " SET `active`= '0', `new_user_id`= " . $new_user_id . ", `activation_date`= " . TIMENOW . " WHERE `invite_code`= '$invite_code_sql'";
-				if (!($upd_querry = DB()->sql_query($sql))) bb_die('Could not activate invite' . __LINE__ . ',' . __FILE__ . $sql);
+				if (!($upd_querry = DB()->sql_query($sql))) {
+					bb_die('Could not activate invite: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
+				}
 				DB()->sql_freeresult($upd_querry);
 				unset($invite_code_sql);
 			}
