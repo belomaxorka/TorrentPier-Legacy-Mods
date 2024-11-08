@@ -7,6 +7,7 @@ if (!empty($setmodules)) {
 	return;
 }
 
+$mode = '';
 if (isset($_POST['mode']) || isset($_GET['mode'])) {
 	$mode = (isset($_POST['mode'])) ? $_POST['mode'] : $_GET['mode'];
 }
@@ -31,7 +32,7 @@ if (isset($_POST['change_rule'])) {
 
 	$sql = 'SELECT * FROM ' . BB_INVITE_RULES . ' ORDER BY rule_id';
 	if (!($result = DB()->sql_query($sql))) {
-		bb_die('Could not get a list of rules for the Invite' . __LINE__ . ',' . __FILE__ . $sql);
+		bb_die('Could not get a list of rules for the Invite: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
 	}
 
 	$num_rows = DB()->num_rows($result);
@@ -50,7 +51,7 @@ if (isset($_POST['change_rule'])) {
 
 				$sql = 'UPDATE ' . BB_INVITE_RULES . ' SET ' . attach_mod_sql_build_array('UPDATE', $sql_ary) . ' WHERE `rule_id` = ' . (int)$rule_row[$i]['rule_id'];
 				if (!DB()->sql_query($sql)) {
-					bb_die('Could not save data' . __LINE__ . ',' . __FILE__ . $sql);
+					bb_die('Could not save data: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
 				}
 			}
 		}
@@ -62,7 +63,7 @@ if (isset($_POST['change_rule'])) {
 	if ($rule_id_sql != '') {
 		$sql = 'DELETE FROM ' . BB_INVITE_RULES . ' WHERE rule_id IN (' . $rule_id_sql . ')';
 		if (!$result = DB()->sql_query($sql)) {
-			bb_die('Could not delete rule' . __LINE__ . ',' . __FILE__ . $sql);
+			bb_die('Could not delete rule: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
 		}
 	}
 }
@@ -70,7 +71,7 @@ if (isset($_POST['change_rule'])) {
 if (isset($_POST['add_rule'])) {
 	$rule_user_rating = get_var('add_rule_user_rating', '');
 	$rule_user_age = get_var('add_rule_user_age', '');
-	$rule_user_group = $_POST['add_rule_user_group']; //get_var('add_rule_user_group', '');
+	$rule_user_group = $_POST['add_rule_user_group'];
 	$rule_invites_count = get_var('add_rule_invites_count', '');
 	$sql_ary = array(
 		'user_rating' => (int)$rule_user_rating,
@@ -81,7 +82,7 @@ if (isset($_POST['add_rule'])) {
 
 	$sql = 'INSERT INTO ' . BB_INVITE_RULES . ' ' . attach_mod_sql_build_array('INSERT', $sql_ary);
 	if (!DB()->sql_query($sql)) {
-		bb_die('Could not add rule' . __LINE__ . ',' . __FILE__ . $sql);
+		bb_die('Could not add rule: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
 	}
 }
 
@@ -96,7 +97,7 @@ switch ($mode) {
 
 		$sql = 'SELECT * FROM ' . BB_INVITE_RULES . ' ORDER BY `invites_count`';
 		if (!($result = DB()->sql_query($sql))) {
-			bb_die('Could not get a list of rules for the Invite' . __LINE__ . ',' . __FILE__ . $sql);
+			bb_die('Could not get a list of rules for the Invite: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
 		}
 
 		$rule_row = DB()->sql_fetchrowset($result);
@@ -126,7 +127,7 @@ switch ($mode) {
 
 		$sql = 'SELECT * FROM ' . BB_INVITES . ' ORDER BY `generation_date` DESC';
 		if (!($result = DB()->sql_query($sql))) {
-			bb_die('Could not get a list of invites' . __LINE__ . ',' . __FILE__ . $sql);
+			bb_die('Could not get a list of invites: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
 		}
 
 		$invite_row = DB()->sql_fetchrowset($result);
@@ -148,6 +149,9 @@ switch ($mode) {
 			}
 		}
 		break;
+
+	default:
+		bb_die('[Invites] Invalid mode: ' . $mode);
 }
 
 print_page('admin_invites.tpl', 'admin');
