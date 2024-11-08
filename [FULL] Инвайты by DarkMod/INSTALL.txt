@@ -367,7 +367,7 @@ function get_groupname($select_name, $selected_group, $groupid)
 #----------[ ДОБАВИТЬ В КОНЕЦ ФАЙЛА | APPEND ]----------#
 #-------------------------------------------------------#
 
-//Invites
+// Invites
 $lang['INVITE_FNAME'] = 'Инвайт код: *';
 $lang['INVITE_FDESC'] = 'Внимание!<br />На данный момент регистрация разрешена только по инвайтам.<br />Если вы не введете код инвайта, вы не сможете зарегистрироваться.';
 $lang['INVITES'] = 'Панель управления инвайтами';
@@ -390,7 +390,7 @@ $lang['INVITE_MIN_EXP'] = 'Минимальный стаж в месяцах';
 $lang['INVITE_ALLOWED_GROUP'] = 'Группа которой разрешено выдавать ивайт';
 $lang['ENY_USER'] = 'Пользователи';
 $lang['INVITE_NUMBERS_IN_WEEK'] = 'Кол-во инвайтов в неделю';
-$lang['YOUR_INVITES'] ='Ваши инвайты';
+$lang['YOUR_INVITES'] = 'Ваши инвайты';
 $lang['INVITE_HISTORY'] = 'История выдачи инвайтов';
 $lang['INVITE_GET_DATE'] = 'Дата выдачи';
 $lang['INVITE_CODE'] = 'Код инвайта';
@@ -401,13 +401,13 @@ $lang['INVITE_ACTIVATION_DATE'] = 'Дата активации';
 $lang['INVITE_NOT_GETED'] = 'Инвайтов не выдавалось';
 $lang['CAN_GET_INVITE'] = 'Инвайт не может быть выдан<br /><br />';
 $lang['INVITE_GET_SUCCESSFULLY'] = 'Инвайт успешно выдан<br /><br />';
-$lang['GO_TO_INVITE_LIST'] ='Нажмите %sздесь%s, чтобы перейти к списку инвайтов';
+$lang['GO_TO_INVITE_LIST'] = 'Нажмите %sздесь%s, чтобы перейти к списку инвайтов';
 $lang['INVITE_ACTIV_YES'] = 'Да';
 $lang['INVITE_ACTIV_NO'] = 'Нет';
 $lang['INVITE_TAKEN'] = 'Такого кода инвайта не существует или он уже активирован';
 $lang['INVITE_EMPTY'] = 'Вы не указали код инвайта';
 $lang['REFEREND_BY'] = "Вас пригласил";
-//Invites Admin
+// Invites Admin
 $lang['INVITE_ENABLED'] = 'Включить регистрацию только по инвайтам';
 $lang['INVITE_ADMIN_HIST'] = 'История инвайтов';
 $lang['INVITE_ADMIN_RULES'] = 'Правила инвайтов';
@@ -420,7 +420,7 @@ $lang['INVITE_ADMIN_RULES'] = 'Правила инвайтов';
 #----------[ ДОБАВИТЬ В КОНЕЦ ФАЙЛА | APPEND ]----------#
 #-------------------------------------------------------#
 
-//Invites
+// Invites
 $lang['INVITE_FNAME'] = 'Invite code: *';
 $lang['INVITE_FDESC'] = 'Attention!<br />At the moment, registration is allowed only for an invite.<br />If you do not enter an invite code, you can not register.';
 $lang['INVITES'] = 'Invites control panel';
@@ -443,7 +443,7 @@ $lang['INVITE_MIN_EXP'] = 'Minimal experience';
 $lang['INVITE_ALLOWED_GROUP'] = 'Inviting allowed group';
 $lang['ENY_USER'] = 'Users';
 $lang['INVITE_NUMBERS_IN_WEEK'] = 'Invites per week';
-$lang['YOUR_INVITES'] ='Your invites';
+$lang['YOUR_INVITES'] = 'Your invites';
 $lang['INVITE_HISTORY'] = 'Invites issue history';
 $lang['INVITE_GET_DATE'] = 'Issue date';
 $lang['INVITE_CODE'] = 'Invite code';
@@ -454,13 +454,13 @@ $lang['INVITE_ACTIVATION_DATE'] = 'Activation date';
 $lang['INVITE_NOT_GETED'] = 'No one invite has been issued';
 $lang['CAN_GET_INVITE'] = 'Invite can\'t be issued<br /><br />';
 $lang['INVITE_GET_SUCCESSFULLY'] = 'Invite successfully issued<br /><br />';
-$lang['GO_TO_INVITE_LIST'] ='Click %shere%s, to access invites-list';
+$lang['GO_TO_INVITE_LIST'] = 'Click %shere%s, to access invites-list';
 $lang['INVITE_ACTIV_YES'] = 'Yes';
 $lang['INVITE_ACTIV_NO'] = 'No';
 $lang['INVITE_TAKEN'] = 'Incorrect invite';
 $lang['INVITE_EMPTY'] = 'Please, enter invite code';
 $lang['REFEREND_BY'] = "Referend by";
-//Invites Admin
+// Invites Admin
 $lang['INVITE_ENABLED'] = 'Enable registration by invites only';
 $lang['INVITE_ADMIN_HIST'] = 'Invites history';
 $lang['INVITE_ADMIN_RULES'] = 'Invites rules';
@@ -475,7 +475,7 @@ $lang['INVITE_ADMIN_RULES'] = 'Invites rules';
 #----------[ ДОБАВИТЬ В КОНЕЦ ФАЙЛА | APPEND ]----------#
 #-------------------------------------------------------#
 
-//Invites
+// Invites
 $lang['INVITE_FNAME'] = 'Invite code: *';
 $lang['INVITE_FDESC'] = 'Attention!<br />At the moment, registration is allowed only for an invite.<br />If you do not enter an invite code, you can not register.';
 $lang['INVITES'] = 'Invites control panel';
@@ -498,7 +498,7 @@ $lang['INVITE_MIN_EXP'] = 'Minimal experience';
 $lang['INVITE_ALLOWED_GROUP'] = 'Inviting allowed group';
 $lang['ENY_USER'] = 'Users';
 $lang['INVITE_NUMBERS_IN_WEEK'] = 'Invites per week';
-$lang['YOUR_INVITES'] ='Your invites';
+$lang['YOUR_INVITES'] = 'Your invites';
 $lang['INVITE_HISTORY'] = 'Invites issue history';
 $lang['INVITE_GET_DATE'] = 'Issue date';
 $lang['INVITE_CODE'] = 'Invite code';
@@ -509,13 +509,13 @@ $lang['INVITE_ACTIVATION_DATE'] = 'Activation date';
 $lang['INVITE_NOT_GETED'] = 'No one invite has been issued';
 $lang['CAN_GET_INVITE'] = 'Invite can\'t be issued<br /><br />';
 $lang['INVITE_GET_SUCCESSFULLY'] = 'Invite successfully issued<br /><br />';
-$lang['GO_TO_INVITE_LIST'] ='Click %shere%s, to access invites-list';
+$lang['GO_TO_INVITE_LIST'] = 'Click %shere%s, to access invites-list';
 $lang['INVITE_ACTIV_YES'] = 'Yes';
 $lang['INVITE_ACTIV_NO'] = 'No';
 $lang['INVITE_TAKEN'] = 'Incorrect invite';
 $lang['INVITE_EMPTY'] = 'Please, enter invite code';
 $lang['REFEREND_BY'] = "Referend by";
-//Invites Admin
+// Invites Admin
 $lang['INVITE_ENABLED'] = 'Enable registration by invites only';
 $lang['INVITE_ADMIN_HIST'] = 'Invites history';
 $lang['INVITE_ADMIN_RULES'] = 'Invites rules';
