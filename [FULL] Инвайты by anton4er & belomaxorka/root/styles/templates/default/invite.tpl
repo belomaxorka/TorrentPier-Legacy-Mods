@@ -13,7 +13,7 @@
 
 <br />
 <div class="category">
-<div class="cat_title" style="color:#FFF; border:1px">
+<div class="cat_title" style="border: 1px;">
 <center>
 {L_INVITE_CURRENT_RULES}
 </center>
@@ -48,7 +48,7 @@
 <!-- ENDIF -->
 <!-- IF REFEREND -->
 <div class="category">
-<div class="cat_title" style=" border:1px">
+<div class="cat_title" style="border:1px">
 <center>
 {L_REFEREND_BY}
 </center>
@@ -75,7 +75,7 @@
 <!-- ELSE -->
 <!-- ENDIF -->
 <div class="category">
-<div class="cat_title" style=" border:1px">
+<div class="cat_title" style="border: 1px;">
 <center>
 {L_YOUR_INVITES}
 </center>
