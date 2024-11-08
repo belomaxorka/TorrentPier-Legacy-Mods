@@ -21,7 +21,7 @@
 	<td class="row2" colspan="3" align="center"><input type="text" size="10" name="add_rule_invites_count" class="post" /></td>
 </tr>
 <tr align="right">
-	<td class="catBottom" colspan="6"><input type="submit" name="add_rule" class="liteoption" value="{L_INVITE_ADD_RULE}" /></td>
+	<td class="catBottom" colspan="6"><input type="submit" name="add_rule" class="liteoption" value="{L_INVITE_ADD_RULE}" />&nbsp;&nbsp;<input type="reset" value="{L_RESET}" class="liteoption" /></td>
 </tr>
 </table>
 
@@ -48,7 +48,7 @@
 </tr>
 <!-- END rule_row -->
 <tr align="right">
-	<td class="catBottom" colspan="5"><input type="submit" name="change_rule" class="liteoption" value="{L_SAVE}" /></td>
+	<td class="catBottom" colspan="5"><input type="submit" name="change_rule" class="liteoption" value="{L_SAVE}" />&nbsp;&nbsp;<input type="reset" value="{L_RESET}" class="liteoption" /></td>
 </tr>
 </table>
 </form>
