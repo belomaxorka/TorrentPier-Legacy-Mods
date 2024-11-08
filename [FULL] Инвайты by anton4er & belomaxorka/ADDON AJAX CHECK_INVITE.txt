@@ -1,13 +1,14 @@
 ###############################################
 # Addon AJAX check
 ###############################################
-Устанавливать только после установки Самого мода
+
+!!! Устанавливать только после установки Самого мода !!!
 
 #
 #-----[ ФАЙЛ ]---------------------------------
 #
-Открыть /library/ajax/user_register.php
 
+Открыть /library/ajax/user_register.php
 
 #
 #-----[ НАЙТИ ]--------------------------------
@@ -22,22 +23,20 @@ $this->response['mode'] = $mode;
 #-----[ ПЕРЕД, ВСТАВИТЬ ]----------------------
 #
 
-//invite check
-    case 'check_invite':
-        $invite_code = (string) $this->request['invite_code'];
-        if (empty($invite_code))
-        {
-            $html = '<img src="./styles/images/bad.gif"> <span class="leechmed bold">'. $lang['AJAX_INVITE_FIELD_BLANK'] .'</span>';
-        }
-        else if($err = validate_invite_code($invite_code))
-        {
-            $html = '<img src="./styles/images/bad.gif"> <span class="leechmed bold">'. $err .'</span>';
-        }
-        break;
+// invite check
+case 'check_invite':
+	$invite_code = (string)$this->request['invite_code'];
+	if (empty($invite_code)) {
+		$html = '<img src="./styles/images/bad.gif"> <span class="leechmed bold">' . $lang['AJAX_INVITE_FIELD_BLANK'] . '</span>';
+	} else if ($err = validate_invite_code($invite_code)) {
+		$html = '<img src="./styles/images/bad.gif"> <span class="leechmed bold">' . $err . '</span>';
+	}
+	break;
 
 #
 #-----[ ФАЙЛ ]---------------------------------
 #
+
 Открыть /library/language/ru/main.php
 
 #
@@ -50,11 +49,12 @@ $lang['REFEREND_BY'] = "Вас пригласил";
 #-----[ ПОСЛЕ, ВСТАВИТЬ ]----------------------
 #
 
-$lang['AJAX_INVITE_FIELD_BLANK'] = 'Поле "" не может быть пустым.';
+$lang['AJAX_INVITE_FIELD_BLANK'] = 'Поле "Код инвайта" не может быть пустым.';
 
 #
 #-----[ ФАЙЛ ]---------------------------------
 #
+
 Открыть /library/language/en/main.php
 
 #
@@ -67,11 +67,12 @@ $lang['REFEREND_BY'] = "Referend by";
 #-----[ ПОСЛЕ, ВСТАВИТЬ ]----------------------
 #
 
-$lang['AJAX_INVITE_FIELD_BLANK'] = 'Field "invitation code" can not be blank.';
+$lang['AJAX_INVITE_FIELD_BLANK'] = 'Field "Invite code" can not be blank.';
 
 #
 #-----[ ФАЙЛ ]---------------------------------
 #
+
 Открыть /styles/templates/default/usercp_register.tpl
 
 #
