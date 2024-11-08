@@ -211,6 +211,5 @@ if ($num_rule_row > 0) {
 		);
 	}
 }
-print_page('invite.tpl');
 
-?>
+print_page('invite.tpl');
