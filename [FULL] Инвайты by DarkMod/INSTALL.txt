@@ -111,7 +111,7 @@ define('BB_INVITE_RULES',         'bb_invite_rules');
 #------------[ ПОСЛЕ ДОБАВИТЬ | AFTER ADD ]-------------#
 #-------------------------------------------------------#
 
-<a href="{U_INVITE}"><b>{L_GET_INVITE}</b></a><span style="color:#CDCDCD;">|</span>
+<!-- IF LOGGED_IN --><a href="{U_INVITE}"><b>{L_GET_INVITE}</b></a><!-- ENDIF -->
 
 #-------------------------------------------------------#
 #--------------------[ ФАЙЛ | FILE ]--------------------#
@@ -157,7 +157,7 @@ define('BB_INVITE_RULES',         'bb_invite_rules');
 #------------[ ПЕРЕД ДОБАВИТЬ | BEFORE ADD]-------------#
 #-------------------------------------------------------#
 
-		    'INVITE_ENABLED' => $new['new_user_reg_only_by_invite'],
+		    'INVITE_ENABLED'          => $new['new_user_reg_only_by_invite'],
 
 #-------------------------------------------------------#
 #--------------------[ ФАЙЛ | FILE ]--------------------#
