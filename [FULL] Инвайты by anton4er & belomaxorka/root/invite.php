@@ -6,7 +6,7 @@ define('BB_ROOT', './');
 require(BB_ROOT . 'common.php');
 require(INC_DIR . 'functions_group.php');
 
-if ($bb_cfg['new_user_reg_only_by_invite']) {
+if (!$bb_cfg['new_user_reg_only_by_invite']) {
 	redirect('index.php');
 }
 
