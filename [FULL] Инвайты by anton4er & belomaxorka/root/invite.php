@@ -51,7 +51,7 @@ $sql = '
 		g.group_name,
 		g.group_id';
 if (!($result = DB()->sql_query($sql))) {
-	bb_die('Could not read groups' . __LINE__ . ',' . __FILE__ . $sql);
+	bb_die('Could not read groups: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
 }
 
 while ($group = DB()->sql_fetchrow($result)) {
@@ -69,8 +69,10 @@ if (count($groups) > 0) {
 			$is_ok = true;
 		} else {
 			$group_id = $groups[$i]['group_id'];
-			$sql = 'SELECT * FROM ' . BB_USER_GROUP . ' WHERE group_id=' . $group_id . ' AND user_id=' . $userdata['user_id'] . ' AND user_pending=0';
-			if (!($result = DB()->sql_query($sql))) bb_die('Could not obtain viewer group list' . __LINE__ . ',' . __FILE__ . $sql);
+			$sql = 'SELECT * FROM ' . BB_USER_GROUP . ' WHERE group_id = ' . $group_id . ' AND user_id = ' . $userdata['user_id'] . ' AND user_pending = 0';
+			if (!($result = DB()->sql_query($sql))) {
+				bb_die('Could not obtain viewer group list: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
+			}
 			$is_ok = ($group = DB()->sql_fetchrow($result));
 		}
 		// end if ($view_list[$i]['group_type'] == GROUP_HIDDEN)
@@ -78,7 +80,7 @@ if (count($groups) > 0) {
 		// groupe visible : afficher
 		if ($is_ok) {
 			$user_group[$i + 1] = $groups[$i]['group_id'];
-			$u_group_name = 'groupcp.php?g=' . $groups[$i]['group_id'];
+			$u_group_name = GROUP_URL . $groups[$i]['group_id'];
 			$l_group_name = $groups[$i]['group_name'];
 			$user_group_name = $l_group_name;
 			$template->assign_block_vars('groups', array(
@@ -94,7 +96,7 @@ else {
 }
 
 if (isset($_GET['mode']) && $_GET['mode'] == 'getinvite') {
-	$sql = 'SELECT COUNT(`invite_id`) AS `invites_count_week` FROM ' . BB_INVITES . ' WHERE `user_id`=' . $userdata['user_id'] . ' AND `generation_date`>=' . $date_start . ' AND `generation_date`<=' . $date_end;
+	$sql = 'SELECT COUNT(`invite_id`) AS `invites_count_week` FROM ' . BB_INVITES . ' WHERE `user_id` = ' . $userdata['user_id'] . ' AND `generation_date` >= ' . $date_start . ' AND `generation_date` <= ' . $date_end;
 	if (!($result = DB()->sql_query($sql))) {
 		bb_die('Could not get a list of invites: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
 	}
@@ -109,9 +111,9 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'getinvite') {
 		$invites_count_week = 0;
 	}
 
-	$sql = 'SELECT `invites_count` FROM ' . BB_INVITE_RULES . ' WHERE `user_rating`<=' . $user_rating . ' AND `user_age`<=' . $user_age . ' AND (';
+	$sql = 'SELECT `invites_count` FROM ' . BB_INVITE_RULES . ' WHERE `user_rating` <= ' . $user_rating . ' AND `user_age` <= ' . $user_age . ' AND (';
 	for ($i = 0; $i < count($user_group); $i++) {
-		$sql = $sql . '`user_group`=' . $user_group[$i];
+		$sql = $sql . '`user_group` = ' . $user_group[$i];
 		if ($i < count($user_group) - 1) {
 			$sql = $sql . ' OR ';
 		}
@@ -119,7 +121,7 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'getinvite') {
 
 	$sql = $sql . ') ORDER BY `invites_count` DESC LIMIT 1';
 	if (!($result = DB()->sql_query($sql))) {
-		bb_die('Could not get a list of rules for the invite' . __LINE__ . ',' . __FILE__ . $sql);
+		bb_die('Could not get a list of rules for the invite: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
 	}
 
 	$row = DB()->sql_fetchrowset($result);
@@ -129,7 +131,7 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'getinvite') {
 	if ($num_row > 0) {
 		if ($invites_count_week < $row[0]['invites_count']) {
 			$invite_code = substr(md5(TIMENOW), rand(1, 14), 16);
-			$sql = "INSERT INTO " . BB_INVITES . " (`invite_id`,`user_id`,`new_user_id`,`invite_code`,`active`,`generation_date`,`activation_date`) VALUES(null," . (int)$userdata['user_id'] . ", 0, '" . $invite_code . "', '1', " . TIMENOW . ", 0)";
+			$sql = "INSERT INTO " . BB_INVITES . " (`user_id`, `new_user_id`, `invite_code`, `active`, `generation_date`, `activation_date`) VALUES(" . (int)$userdata['user_id'] . ", 0, '" . $invite_code . "', '1', " . TIMENOW . ", 0)";
 
 			if (!DB()->sql_query($sql)) {
 				$message = $lang['CAN_GET_INVITE'] . '' . sprintf($lang['GO_TO_INVITE_LIST'], '<a href="invite.php">', '</a>');
@@ -139,14 +141,14 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'getinvite') {
 			bb_die($message);
 		}
 	} else {
-		$message = $lang['CAN_GET_INVITE'] . '' . sprintf($lang['GO_TO_INVITE_LIST'], '<a href="invite.php">', '</a>');
+		$message = $lang['CAN_GET_INVITE'] . sprintf($lang['GO_TO_INVITE_LIST'], '<a href="invite.php">', '</a>');
 		bb_die($message);
 	}
 }
 
-$referend_by_sql = 'SELECT * FROM ' . BB_INVITES . ' WHERE `new_user_id` =' . $userdata['user_id'];
+$referend_by_sql = 'SELECT * FROM ' . BB_INVITES . ' WHERE `new_user_id` = ' . $userdata['user_id'];
 if (!($referend_by_result = DB()->sql_query($referend_by_sql))) {
-	bb_die('Could not get a data of invites' . __LINE__ . ',' . __FILE__ . $referend_by_sql);
+	bb_die('Could not get a data of invites: ' . __LINE__ . ',' . __FILE__ . ',' . $referend_by_sql);
 }
 
 $referend_by_row = DB()->sql_fetchrow($referend_by_result);
@@ -165,9 +167,9 @@ if ($num_referend_by_row !== 0) {
 	$template->assign_vars(array('REFEREND' => false));
 }
 
-$sql = 'SELECT * FROM ' . BB_INVITES . ' WHERE `user_id`=' . $userdata['user_id'] . ' ORDER BY `generation_date` DESC';
+$sql = 'SELECT * FROM ' . BB_INVITES . ' WHERE `user_id` = ' . $userdata['user_id'] . ' ORDER BY `generation_date` DESC';
 if (!($result = DB()->sql_query($sql))) {
-	bb_die('Could not get a list of invites' . __LINE__ . ',' . __FILE__ . $sql);
+	bb_die('Could not get a list of invites: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
 }
 
 $invite_row = DB()->sql_fetchrowset($result);
@@ -190,9 +192,9 @@ if ($num_invite_row > 0) {
 	$template->assign_vars(array('INVITES_PRESENT' => false));
 }
 
-$sql = 'SELECT COUNT(`invite_id`) AS `invites_count_all` FROM ' . BB_INVITES . ' WHERE `user_id`=' . $userdata['user_id'];
+$sql = 'SELECT COUNT(`invite_id`) AS `invites_count_all` FROM ' . BB_INVITES . ' WHERE `user_id` = ' . $userdata['user_id'];
 if (!($result = DB()->sql_query($sql))) {
-	bb_die('Could not get a list of invites' . __LINE__ . ',' . __FILE__ . $sql);
+	bb_die('Could not get a list of invites: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
 }
 
 $row = DB()->sql_fetchrowset($result);
@@ -205,9 +207,9 @@ if ($num_row > 0) {
 	$invites_count_all = 0;
 }
 
-$sql = 'SELECT COUNT(`invite_id`) AS `invites_count_week` FROM ' . BB_INVITES . ' WHERE `user_id`=' . $userdata['user_id'] . ' AND `generation_date`>=' . $date_start . ' AND `generation_date`<=' . $date_end;
+$sql = 'SELECT COUNT(`invite_id`) AS `invites_count_week` FROM ' . BB_INVITES . ' WHERE `user_id` = ' . $userdata['user_id'] . ' AND `generation_date` >= ' . $date_start . ' AND `generation_date` <= ' . $date_end;
 if (!($result = DB()->sql_query($sql))) {
-	bb_die('Could not get a list of invites' . __LINE__ . ',' . __FILE__ . $sql);
+	bb_die('Could not get a list of invites: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
 }
 
 $row = DB()->sql_fetchrowset($result);
@@ -220,16 +222,16 @@ if ($num_row > 0) {
 	$invites_count_week = 0;
 }
 
-$sql = 'SELECT `invites_count` FROM ' . BB_INVITE_RULES . ' WHERE `user_rating`<=' . $user_rating . ' AND `user_age`<=' . $user_age . ' AND (';
+$sql = 'SELECT `invites_count` FROM ' . BB_INVITE_RULES . ' WHERE `user_rating` <= ' . $user_rating . ' AND `user_age` <= ' . $user_age . ' AND (';
 for ($i = 0; $i < count($user_group); $i++) {
-	$sql = $sql . '`user_group`=' . $user_group[$i];
+	$sql = $sql . '`user_group` = ' . $user_group[$i];
 	if ($i < count($user_group) - 1) {
 		$sql = $sql . ' OR ';
 	}
 }
 $sql = $sql . ') ORDER BY `invites_count` DESC';
 if (!($result = DB()->sql_query($sql))) {
-	bb_die('Could not get a list of rules for the invite' . __LINE__ . ',' . __FILE__ . $sql);
+	bb_die('Could not get a list of rules for the invite: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
 }
 
 $row = DB()->sql_fetchrowset($result);
@@ -260,7 +262,7 @@ $template->assign_vars(array(
 
 $sql = 'SELECT * FROM ' . BB_INVITE_RULES . ' ORDER BY `invites_count`';
 if (!($result = DB()->sql_query($sql))) {
-	bb_die('Could not get a list of rules for the invite' . __LINE__ . ',' . __FILE__ . $sql);
+	bb_die('Could not get a list of rules for the invite: ' . __LINE__ . ',' . __FILE__ . ',' . $sql);
 }
 
 $rule_row = DB()->sql_fetchrowset($result);
