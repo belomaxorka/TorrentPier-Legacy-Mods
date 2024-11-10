@@ -70,7 +70,7 @@ function releases_profile()
 				$total_releases = $row['COUNT(tor.poster_id)'];
 				$total_releases_size = $row['SUM(tor.size)'];
 				$total_releases_completed = $row['SUM(ad.download_count)'];
-				$total_releases_completed_full = $row['SUM(tor.complete_count)'];
+				$total_releases_completed_full = $show_completed_count ? $row['SUM(tor.complete_count)'] : $total_releases_completed;
 			}
 
 			$this->response['releases_profile_html'] = '[
