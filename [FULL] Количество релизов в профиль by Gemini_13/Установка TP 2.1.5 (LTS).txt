@@ -45,6 +45,12 @@ function releases_profile()
 		$this->ajax_die('invalid mode (empty)');
 	}
 
+	if (isset($bb_cfg['show_completed_count'])) {
+		$show_completed_count = ($bb_cfg['show_completed_count'] || $bb_cfg['ocelot']['enabled']);
+	} else {
+		$show_completed_count = true;
+	}
+
 	switch ($mode) {
 		case 'get_releases_profile':
 			$total_releases_size = $total_releases = $total_releases_completed = $total_releases_completed_full = 0;
