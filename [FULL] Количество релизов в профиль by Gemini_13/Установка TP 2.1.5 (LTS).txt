@@ -1,7 +1,7 @@
 -------------------------------------------
 Количество релизов в профиль
 -------------------------------------------
-Версия: v1.2.4
+Версия: v1.2.5
 -------------------------------------------
 Автор: Gemini_13
 Автор адаптации под v2.1.5: DimaUZB2001
@@ -35,7 +35,7 @@ function sitemap()
 // Количество релизов в профиль
 function releases_profile()
 {
-	global $lang;
+	global $lang, $bb_cfg;
 
 	if (!$user_id = intval($this->request['user_id']) or !$profiledata = get_userdata($user_id)) {
 		$this->ajax_die($lang['NO_USER_ID_SPECIFIED']);
