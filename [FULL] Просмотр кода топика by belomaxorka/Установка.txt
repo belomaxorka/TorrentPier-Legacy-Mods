@@ -127,6 +127,6 @@ $template->assign_vars(array(
 		);
 	};
 </script>
-<a href="#" class="txtb" onclick="ajax.view_post('{postrow.POST_ID}'); return false;">{CODE_IMG}</a>
+<a href="#" class="txtb" onclick="ajax.view_post('{postrow.POST_ID}'); return false;">{CODE_IMG}</a>{POST_BTN_SPACER}
 <!-- ENDIF -->
 ---------------------------------------------------
