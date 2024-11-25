@@ -18,6 +18,7 @@
 SET GLOBAL sql_mode = '';
 SET SESSION sql_mode = '';
 INSERT INTO `bb_config` VALUES ('last_added', '1');
+INSERT INTO `bb_config` VALUES ('last_added_for_guests', '1');
 INSERT INTO `bb_config` VALUES ('new_poster', '0');
 INSERT INTO `bb_config` VALUES ('limit_poster', '30');
 INSERT INTO `bb_config` VALUES ('last_added_excluded', '');
@@ -74,6 +75,7 @@ if ($bb_cfg['last_added'] && ($config_name == 'last_added_excluded' || $config_n
 
 // Постеры раздач
 'LAST_ADDED_ON'           => $new['last_added'],
+'LAST_ADDED_GUESTS'       => $new['last_added_for_guests'],
 'NEW_POSTER'              => $new['new_poster'],
 'LIMIT_POSTER'            => $new['limit_poster'],
 'LAST_ADDED_EXCLUDED'     => $new['last_added_excluded'],
@@ -250,7 +252,7 @@ if ($bb_cfg['last_added'] && $user->opt_js['poster'] && !IS_GUEST)
 	}
 
 	$template->assign_vars(array(
-		'LENTA' => ($last_added) ? true : false,
+		'LENTA' => (bool)$last_added,
 	));
 
 	if ($last_added)
@@ -375,6 +377,13 @@ styles/templates/admin/admin_board.tpl
 	<td>
 		<label><input type="radio" name="last_added" value="1" <!-- IF LAST_ADDED_ON -->checked="checked"<!-- ENDIF --> />{L_YES}</label>&nbsp;&nbsp;
 		<label><input type="radio" name="last_added" value="0" <!-- IF not LAST_ADDED_ON -->checked="checked"<!-- ENDIF --> />{L_NO}</label>
+	</td>
+</tr>
+<tr>
+	<td><h4>Отображать ленту новинок для гостей</h4></td>
+	<td>
+		<label><input type="radio" name="last_added_for_guests" value="1" <!-- IF LAST_ADDED_GUESTS -->checked="checked"<!-- ENDIF --> />{L_YES}</label>&nbsp;&nbsp;
+		<label><input type="radio" name="last_added_for_guests" value="0" <!-- IF not LAST_ADDED_GUESTS -->checked="checked"<!-- ENDIF --> />{L_NO}</label>
 	</td>
 </tr>
 <tr>
