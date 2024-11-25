@@ -231,7 +231,7 @@ if (IS_AM)
 #
 
 // Постеры раздач
-if ($bb_cfg['last_added'] && $user->opt_js['poster'] && (IS_GUEST && $bb_cfg['last_added_for_guests']))
+if ($bb_cfg['last_added'] && $user->opt_js['poster'] && !IS_GUEST)
 {
 	if (!$last_added = CACHE('lenta')->get("last_added$hide_poster_opt"))
 	{
