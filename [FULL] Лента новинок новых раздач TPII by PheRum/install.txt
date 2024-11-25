@@ -250,7 +250,7 @@ if ($bb_cfg['last_added'] && $user->opt_js['poster'] && !IS_GUEST)
 	}
 
 	$template->assign_vars(array(
-		'LENTA' => ($last_added) ? true : false,
+		'LENTA' => (bool)$last_added,
 	));
 
 	if ($last_added)
