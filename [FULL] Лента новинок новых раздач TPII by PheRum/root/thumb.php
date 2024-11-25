@@ -1,6 +1,5 @@
 <?php
 
-define('IN_PHPBB', true);
 define('BB_SCRIPT', 'thumb');
 define('BB_ROOT', './');
 require(BB_ROOT . 'common.php');
