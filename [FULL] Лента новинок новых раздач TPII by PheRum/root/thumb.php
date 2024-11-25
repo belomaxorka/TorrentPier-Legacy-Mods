@@ -53,9 +53,7 @@ $filetype = substr(strrchr($url, '.'), 1);
 $filename = substr($url, strrpos($url, '/'));
 
 // Генерируем путь до файла
-if (!is_dir($folder)) {
-	bb_mkdir($folder);
-}
+if (!is_dir($folder)) bb_mkdir($folder);
 $thumb_file = $folder . $filename;
 
 // Проверяем на наличие и выводим
