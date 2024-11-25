@@ -8,7 +8,7 @@ require(BB_ROOT . 'common.php');
 $user->session_start(array('req_login' => true));
 
 // Получаем id раздачи (темы)
-$topic_id = (int)request_var('t', '0');
+$topic_id = isset($_GET[POST_TOPIC_URL]) ? (int)$_GET[POST_TOPIC_URL] : 0;
 if (!$topic_id) {
 	bb_die('INVALID_TOPIC_ID');
 }
@@ -53,8 +53,10 @@ $filetype = substr(strrchr($url, '.'), 1);
 $filename = substr($url, strrpos($url, '/'));
 
 // Генерируем путь до файла
+if (!is_dir($folder)) {
+	bb_mkdir($folder);
+}
 $thumb_file = $folder . $filename;
-if (!is_dir($folder)) bb_mkdir($folder);
 
 // Проверяем на наличие и выводим
 if (@fopen($thumb_file, "r")) {
