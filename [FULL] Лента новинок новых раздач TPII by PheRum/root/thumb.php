@@ -5,7 +5,7 @@ define('BB_ROOT', './');
 require(BB_ROOT . 'common.php');
 
 // Start session management
-$user->session_start(array('req_login' => true));
+$user->session_start(array('req_login' => !$bb_cfg['last_added_for_guests']));
 
 // Получаем id раздачи (темы)
 $topic_id = isset($_GET[POST_TOPIC_URL]) ? (int)$_GET[POST_TOPIC_URL] : 0;
