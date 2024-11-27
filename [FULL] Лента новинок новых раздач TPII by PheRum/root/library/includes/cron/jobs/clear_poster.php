@@ -2,7 +2,7 @@
 
 if (!defined('BB_ROOT')) die(basename(__FILE__));
 
-$clear_dir = BB_ROOT . 'thumbnail'; // Директория в которой хранятся миниатюры
+$clear_dir = BB_ROOT . 'data/thumbnails'; // Директория в которой хранятся миниатюры
 
 $dir = opendir($clear_dir);
 while (($file = readdir($dir))) {
