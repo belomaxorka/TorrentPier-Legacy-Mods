@@ -212,7 +212,7 @@ elseif (isset($_POST['tokens']) && $_POST['tokens'] >= 1) {
 <tr>
 	<th>Жетонов:</th>
 	<td id="user_tokens">
-		<span class="editable bold">{TOKENS}</span>
+		<span class="editable bold">{USER_TOKENS}</span>
 	</td>
 </tr>
 ---------------------------------------------------
