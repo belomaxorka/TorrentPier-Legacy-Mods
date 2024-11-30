@@ -16,8 +16,8 @@ ALTER TABLE `bb_users` ADD `username_change_counter` smallint NOT NULL DEFAULT '
 // Смена ника за сид-бонусы
 $bb_cfg['seed_bonus_change_name'] = array(
 	'enabled' => false,
-	'points' => 1000,
-	''
+	'points' => 1000, // сколько нужно сид-бонусов для смены ника
+	'max_change_count' => 3, // сколько раз пользователь может менять ник (включительно)
 );
 =====================================================
 
