@@ -23,7 +23,16 @@ $bb_cfg['seed_bonus_change_name'] = array(
 );
 =====================================================
 
-======= Открыть library/language/en/main.php и вставить в конце =======
+======= Открыть library/language/en/main.php и найти =======
+'adm_user_unban'   => 'User:<br /> <b>unban</b>',
+============================================================
+
+======= Заменить на =======
+'adm_user_unban'   => 'User:<br /> <b>unban</b>',
+'adm_user_change_name' => 'User:<br /> <b>changed nickname (for seedbonus)</b>',
+===========================
+
+======= Далее вставить в конце =======
 // Смена ника за сид-бонусы
 $lang['SEED_BONUS_CHANGE'] = 'Change nickname for seedbonus';
 $lang['SEED_BONUS_CHANGE_DESC'] = 'The maximum number of <b>%s</b>, you have <b>%s</b> left.';
@@ -32,6 +41,7 @@ $lang['SEED_BONUS_CHANGE_NICK_SUCCESS'] = 'Congratulations!<br>Your nickname has
 $lang['SEED_BONUS_CHANGE_NICK_LIMIT'] = 'You can no longer change your nickname! The maximum quantity (<b>%s</b>) has been reached.';
 $lang['SEED_BONUS_CHANGE_NICK_MOD'] = 'Sorry, but moderators cannot change their nickname!';
 $lang['SEED_BONUS_CHANGE_NICK_SAME'] = 'Your current nickname and the new one are identical!';
+$lang['SEED_BONUS_CHANGE_NICK_LOG'] = 'From <b>%s</b> to <b>%s</b>. (Registration nickname: <b>%s</b> | used_id: <b>%s</b>)';
 =======================================================================
 
 ======= Открыть library/language/ru/main.php и найти =======
