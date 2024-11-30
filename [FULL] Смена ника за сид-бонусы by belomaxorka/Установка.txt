@@ -43,7 +43,7 @@ else
 	));
 ==============================================================
 
-======= Ниже вставить =======
+======= Выше вставить =======
 // Смена ника за сид-бонусы
 elseif (!empty($_POST['change_nickname']) && $bb_cfg['seed_bonus_change_name']['enabled'] && !$bb_cfg['allow_namechange']) {
 	// Проверка на модератора
@@ -97,4 +97,19 @@ elseif (!empty($_POST['change_nickname']) && $bb_cfg['seed_bonus_change_name']['
 	$message .= '<br /><br /><a href="'. BONUS_URL .'">'. $lang['BONUS_RETURN'] .'</a><br /><br /><a href="'. PROFILE_URL . $userdata['user_id'] .'">'. $lang['RETURN_PROFILE'] .'</a><br /><br />'. sprintf($lang['CLICK_RETURN_INDEX'],  '<a href="index.php">', '</a>');
 	bb_die($message);
 }
+=============================
+
+======= Открыть usercp_bonus.tpl (В вашем шаблоне) и найти =======
+<!-- END bonus_upload -->
+==================================================================
+
+======= Ниже вставить =======
+<tr class="row3 med">
+	<td class="bold tCenter">{L_DESCRIPTION}</td>
+	<td class="bold tCenter" colspan="2">{L_PRICE}</td>
+</tr>
+<tr class="row1 med">
+	<td class="tLeft"><b>{L_SEED_BONUS_CHANGE}:</b><br><input type="text" name="change_nickname" maxlength="6" value="100" style="width: 120px;"></td>
+	<td align="center" colspan="2">{L_SEED_BONUS_CHANGE_DESC}</td>
+</tr>
 =============================
