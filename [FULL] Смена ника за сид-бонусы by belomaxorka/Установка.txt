@@ -107,13 +107,15 @@ $template->assign_vars(array(
 
 ======= Выше вставить =======
 // Смена ника за сид-бонусы
-$price_change_nick = $bb_cfg['seed_bonus_change_name']['points'];
-$class_change_nick = ($user_points >= $price_change_nick) ? 'seed' : 'leech';
-$template->assign_vars(array(
-	'SEED_BONUS_CHANGE_PRICE' => sprintf($lang['BONUS_UPLOAD_PRICE'], $class_change_nick, sprintf('%.2f', $bb_cfg['seed_bonus_change_name']['points'])),
-	'SEED_BONUS_CHANGE_DESC' => sprintf($lang['SEED_BONUS_CHANGE_DESC'], $bb_cfg['seed_bonus_change_name']['max_change_count'], ($bb_cfg['seed_bonus_change_name']['max_change_count'] - $userdata['username_change_counter'])),
-));
-unset($price_change_nick, $class_change_nick);
+if ($bb_cfg['seed_bonus_change_name']['enabled'] && !$bb_cfg['allow_namechange']) {
+	$price_change_nick = $bb_cfg['seed_bonus_change_name']['points'];
+	$class_change_nick = ($user_points >= $price_change_nick) ? 'seed' : 'leech';
+	$template->assign_vars(array(
+		'SEED_BONUS_CHANGE_PRICE' => sprintf($lang['BONUS_UPLOAD_PRICE'], $class_change_nick, sprintf('%.2f', $bb_cfg['seed_bonus_change_name']['points'])),
+		'SEED_BONUS_CHANGE_DESC' => sprintf($lang['SEED_BONUS_CHANGE_DESC'], $bb_cfg['seed_bonus_change_name']['max_change_count'], ($bb_cfg['seed_bonus_change_name']['max_change_count'] - $userdata['username_change_counter'])),
+	));
+	unset($price_change_nick, $class_change_nick);
+}
 =============================
 
 ======= Открыть usercp_bonus.tpl (В вашем шаблоне) и найти =======
