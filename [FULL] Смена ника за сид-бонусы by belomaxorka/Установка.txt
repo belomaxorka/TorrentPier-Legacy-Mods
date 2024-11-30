@@ -72,6 +72,13 @@ elseif (isset($_POST['change_nickname_confirm']) && !empty($_POST['change_nickna
 	$new_username = clean_username($_POST['change_nickname']);
 	$prev_username = $userdata['username'];
 
+	// Проверка текущего ника
+	if ($new_username == $prev_username) {
+		$message = $lang['SEED_BONUS_CHANGE_NICK_SUCCESS'];
+		$message .= '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
+		bb_die($message);
+	}
+
 	// Проверка ника
 	require(INC_DIR . 'functions_validate.php');
 	if ($err = validate_username($new_username)) {
