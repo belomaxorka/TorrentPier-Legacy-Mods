@@ -80,7 +80,15 @@ elseif (!empty($_POST['change_nickname']) && $bb_cfg['seed_bonus_change_name']['
 			username = '". DB()->escape_string($new_username) ."',
 			user_points = user_points - $points
 		WHERE
-			user_id = $user_id LIMIT 1");
+			user_id = $user_id LIMIT 1
+	");
+
+	// Сохранение ника регистрации
+	if ($userdata['username_change_counter'] == 1) {
+		DB()->query("UPDATE ". BB_USERS ."
+        	SET username_old = '". DB()->escape_string($prev_username) ."'
+        	WHERE user_id = $user_id LIMIT 1");
+	}
 
 	cache_rm_user_sessions($user_id);
 	meta_refresh(BONUS_URL, 10);
