@@ -56,6 +56,13 @@ elseif (!empty($_POST['change_nickname']) && $bb_cfg['seed_bonus_change_name']['
 		bb_die(sprintf($lang['SEED_BONUS_CHANGE_NICK_LIMIT'], $bb_cfg['seed_bonus_change_name']['max_change_count']));
 	}
 
+	// Проверка на доступное количество бонусов
+	if ($userdata['user_points'] < $points) {
+		meta_refresh('index.php', 10);
+		$message = $lang['BONUS_NOT_SUCCES'] .'<br /><br /><a href="'. BONUS_URL .'">'. $lang['BONUS_RETURN'] .'</a><br /><br /><a href="'. PROFILE_URL . $userdata['user_id'] .'">'. $lang['RETURN_PROFILE'] .'</a><br /><br />'. sprintf($lang['CLICK_RETURN_INDEX'],  '<a href="index.php">', '</a>');
+		bb_die($message);
+	}
+
 	$new_username = clean_username($_POST['change_nickname']);
 	$prev_username = $userdata['username'];
 
