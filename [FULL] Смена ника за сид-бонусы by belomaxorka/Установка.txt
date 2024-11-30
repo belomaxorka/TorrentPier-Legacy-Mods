@@ -63,8 +63,24 @@ elseif (!empty($_POST['change_nickname']) && $bb_cfg['seed_bonus_change_name']['
 		bb_die($message);
 	}
 
+	$points = $bb_cfg['seed_bonus_change_name']['points'];
 	$new_username = clean_username($_POST['change_nickname']);
 	$prev_username = $userdata['username'];
+
+	// Проверка ника
+	require(INC_DIR .'functions_validate.php');
+	if ($err = validate_username($new_username)) {
+		bb_die($err);
+	}
+
+	// Смена ника
+	DB()->query("UPDATE ". BB_USERS ."
+		SET
+			username_change_counter = username_change_counter + 1,
+			username = '". DB()->escape_string($new_username) ."',
+			user_points = user_points - $points
+		WHERE
+			user_id = $user_id LIMIT 1");
 
 	cache_rm_user_sessions($user_id);
 	meta_refresh(BONUS_URL, 10);
