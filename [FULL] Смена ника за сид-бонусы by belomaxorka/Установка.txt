@@ -130,6 +130,10 @@ if ($bb_cfg['seed_bonus_change_name']['enabled'] && !$bb_cfg['allow_namechange']
 
 ======= Ниже вставить =======
 <!-- IF SEED_BONUS_CHANGE_PRICE -->
+<tr class="row3 med">
+	<td class="bold tCenter">{L_DESCRIPTION}</td>
+	<td class="bold tCenter" colspan="2">{L_PRICE}</td>
+</tr>
 <tr class="row1 med">
 	<td class="tLeft"><b>{L_SEED_BONUS_CHANGE}:</b><br/>{SEED_BONUS_CHANGE_DESC}<br/>
 		<label>
