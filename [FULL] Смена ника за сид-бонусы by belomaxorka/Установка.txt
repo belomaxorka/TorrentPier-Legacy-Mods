@@ -66,37 +66,11 @@ elseif (!empty($_POST['change_nickname']) && $bb_cfg['seed_bonus_change_name']['
 	$new_username = clean_username($_POST['change_nickname']);
 	$prev_username = $userdata['username'];
 
-	if (strlen($tokens) > 6)
-	{
-		meta_refresh('index.php', 5);
-		$message = $lang['WRONG_INPUT'] . '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
-		bb_die($message);
-	}
+	cache_rm_user_sessions($user_id);
+	meta_refresh(BONUS_URL, 10);
 
-	if (strlen($userdata['user_tokens'] + $tokens) > 12)
-	{
-		meta_refresh('index.php', 5);
-		$message = 'У вас итак много жетонов' . '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
-		bb_die($message);
-	}
-
-	if ($userdata['user_points'] < $tokens_formula) {
-		meta_refresh('index.php', 5);
-		$message = $lang['BONUS_NOT_SUCCES'] . '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
-		bb_die($message);
-	} else {
-		DB()->query("UPDATE " . BB_USERS . "
-			SET user_points  = user_points - " . $tokens_formula . ",
-				user_tokens  = user_tokens + $tokens
-			WHERE user_id  = " . $user_id
-		);
-
-		cache_rm_user_sessions($user_id);
-		meta_refresh(BONUS_URL, 5);
-
-		$message = sprintf($lang['BONUS_SUCCES'], $tokens . '&nbsp;' . $lang['BJ']['TOKENS']);
-		$message .= '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
-		bb_die($message);
-	}
+	$message = sprintf($lang['SEED_BONUS_CHANGE_NICK_SUCCESS'], $prev_username, $new_username);
+	$message .= '<br /><br /><a href="'. BONUS_URL .'">'. $lang['BONUS_RETURN'] .'</a><br /><br /><a href="'. PROFILE_URL . $userdata['user_id'] .'">'. $lang['RETURN_PROFILE'] .'</a><br /><br />'. sprintf($lang['CLICK_RETURN_INDEX'],  '<a href="index.php">', '</a>');
+	bb_die($message);
 }
 =============================
