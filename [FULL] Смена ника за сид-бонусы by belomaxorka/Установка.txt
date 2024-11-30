@@ -46,56 +46,62 @@ else
 
 ======= Выше вставить =======
 // Смена ника за сид-бонусы
-elseif (!empty($_POST['change_nickname']) && $bb_cfg['seed_bonus_change_name']['enabled'] && !$bb_cfg['allow_namechange']) {
+elseif (isset($_POST['change_nickname_confirm']) && !empty($_POST['change_nickname']) && $bb_cfg['seed_bonus_change_name']['enabled'] && !$bb_cfg['allow_namechange']) {
 	// Проверка на модератора
 	if (IS_MOD && !$bb_cfg['seed_bonus_change_name']['mod_can_change']) {
-		bb_die($lang['SEED_BONUS_CHANGE_NICK_MOD']);
+		$message = $lang['SEED_BONUS_CHANGE_NICK_MOD'];
+		$message .= '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
+		bb_die($message);
 	}
 
 	// Проверка на допустимое количество раз
 	if ($userdata['username_change_counter'] >= $bb_cfg['seed_bonus_change_name']['max_change_count']) {
-		bb_die(sprintf($lang['SEED_BONUS_CHANGE_NICK_LIMIT'], $bb_cfg['seed_bonus_change_name']['max_change_count']));
-	}
-
-	// Проверка на доступное количество бонусов
-	if ($userdata['user_points'] < $points) {
-		meta_refresh('index.php', 10);
-		$message = $lang['BONUS_NOT_SUCCES'] .'<br /><br /><a href="'. BONUS_URL .'">'. $lang['BONUS_RETURN'] .'</a><br /><br /><a href="'. PROFILE_URL . $userdata['user_id'] .'">'. $lang['RETURN_PROFILE'] .'</a><br /><br />'. sprintf($lang['CLICK_RETURN_INDEX'],  '<a href="index.php">', '</a>');
+		$message = sprintf($lang['SEED_BONUS_CHANGE_NICK_LIMIT'], $bb_cfg['seed_bonus_change_name']['max_change_count']);
+		$message .= '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
 		bb_die($message);
 	}
 
+	// Проверка на доступное количество бонусов
 	$points = $bb_cfg['seed_bonus_change_name']['points'];
+	if ($user_points < $points) {
+		meta_refresh('index.php', 10);
+		$message = $lang['BONUS_NOT_SUCCES'] . '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
+		bb_die($message);
+	}
+
 	$new_username = clean_username($_POST['change_nickname']);
 	$prev_username = $userdata['username'];
 
 	// Проверка ника
-	require(INC_DIR .'functions_validate.php');
+	require(INC_DIR . 'functions_validate.php');
 	if ($err = validate_username($new_username)) {
-		bb_die($err);
+		$message = $err;
+		$message .= '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
+		bb_die($message);
+	}
+
+	// Сохранение ника регистрации
+	if ($userdata['username_change_counter'] == 0) {
+		DB()->query("UPDATE " . BB_USERS . "
+        	SET username_old = '" . DB()->escape_string($prev_username) . "'
+        	WHERE user_id = $user_id LIMIT 1");
 	}
 
 	// Смена ника
-	DB()->query("UPDATE ". BB_USERS ."
+	DB()->query("UPDATE " . BB_USERS . "
 		SET
 			username_change_counter = username_change_counter + 1,
-			username = '". DB()->escape_string($new_username) ."',
+			username = '" . DB()->escape_string($new_username) . "',
 			user_points = user_points - $points
 		WHERE
 			user_id = $user_id LIMIT 1
 	");
 
-	// Сохранение ника регистрации
-	if ($userdata['username_change_counter'] == 1) {
-		DB()->query("UPDATE ". BB_USERS ."
-        	SET username_old = '". DB()->escape_string($prev_username) ."'
-        	WHERE user_id = $user_id LIMIT 1");
-	}
-
 	cache_rm_user_sessions($user_id);
 	meta_refresh(BONUS_URL, 10);
 
 	$message = sprintf($lang['SEED_BONUS_CHANGE_NICK_SUCCESS'], $prev_username, $new_username);
-	$message .= '<br /><br /><a href="'. BONUS_URL .'">'. $lang['BONUS_RETURN'] .'</a><br /><br /><a href="'. PROFILE_URL . $userdata['user_id'] .'">'. $lang['RETURN_PROFILE'] .'</a><br /><br />'. sprintf($lang['CLICK_RETURN_INDEX'],  '<a href="index.php">', '</a>');
+	$message .= '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
 	bb_die($message);
 }
 =============================
@@ -123,6 +129,7 @@ if ($bb_cfg['seed_bonus_change_name']['enabled'] && !$bb_cfg['allow_namechange']
 ==================================================================
 
 ======= Ниже вставить =======
+<!-- IF SEED_BONUS_CHANGE_PRICE -->
 <tr class="row1 med">
 	<td class="tLeft"><b>{L_SEED_BONUS_CHANGE}:</b><br/>{SEED_BONUS_CHANGE_DESC}<br/>
 		<label>
@@ -133,4 +140,5 @@ if ($bb_cfg['seed_bonus_change_name']['enabled'] && !$bb_cfg['allow_namechange']
 	</td>
 	<td align="center" colspan="2">{SEED_BONUS_CHANGE_PRICE}</td>
 </tr>
+<!-- ENDIF -->
 =============================
