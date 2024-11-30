@@ -90,7 +90,6 @@ elseif (!empty($_POST['change_nickname']) && $bb_cfg['seed_bonus_change_name']['
         	WHERE user_id = $user_id LIMIT 1");
 	}
 
-	// Очистка кэша
 	cache_rm_user_sessions($user_id);
 	meta_refresh(BONUS_URL, 10);
 
