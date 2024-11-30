@@ -27,6 +27,7 @@ $bb_cfg['seed_bonus_change_name'] = array(
 // Смена ника за сид-бонусы
 $lang['SEED_BONUS_CHANGE'] = 'Смена ника за сидбонус';
 $lang['SEED_BONUS_CHANGE_DESC'] = 'Максимальное количество %s, у вас осталось %s';
+$lang['SEED_BONUS_CHANGE_DESC_2'] = 'Укажите желаемый никнейм';
 $lang['SEED_BONUS_CHANGE_NICK_SUCCESS'] = 'Поздравляем!<br>Ваш ник был успешно изменен с %s на %s';
 $lang['SEED_BONUS_CHANGE_NICK_LIMIT'] = 'Вы больше не можете изменить ник! Максимальное количество %s было достигнуто';
 $lang['SEED_BONUS_CHANGE_NICK_MOD'] = 'Извините, но модераторам смена ника недоступна!';
@@ -109,7 +110,7 @@ elseif (!empty($_POST['change_nickname']) && $bb_cfg['seed_bonus_change_name']['
 	<td class="bold tCenter" colspan="2">{L_PRICE}</td>
 </tr>
 <tr class="row1 med">
-	<td class="tLeft"><b>{L_SEED_BONUS_CHANGE}:</b><br><input type="text" name="change_nickname" maxlength="6" value="100" style="width: 120px;"></td>
+	<td class="tLeft"><b>{L_SEED_BONUS_CHANGE}:</b><br><input type="text" name="change_nickname" size="35" maxlength="32" value="" placeholder="{L_SEED_BONUS_CHANGE_DESC_2}" /></td>
 	<td align="center" colspan="2">{L_SEED_BONUS_CHANGE_DESC}</td>
 </tr>
 =============================
