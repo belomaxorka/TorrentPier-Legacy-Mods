@@ -128,6 +128,10 @@ elseif (isset($_POST['change_nickname_confirm']) && !empty($_POST['change_nickna
 	cache_rm_user_sessions($user_id);
 	meta_refresh(BONUS_URL, 10);
 
+	$log_action->admin('adm_user_change_name', array(
+		'log_msg' => sprintf($lang['SEED_BONUS_CHANGE_NICK_LOG'], $prev_username, $new_username, $userdata['username_old'], $user_id),
+	));
+
 	$message = sprintf($lang['SEED_BONUS_CHANGE_NICK_SUCCESS'], $prev_username, $new_username);
 	$message .= '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
 	bb_die($message);
