@@ -23,6 +23,17 @@ $bb_cfg['seed_bonus_change_name'] = array(
 );
 =====================================================
 
+======= Открыть library/language/en/main.php и вставить в конце =======
+// Смена ника за сид-бонусы
+$lang['SEED_BONUS_CHANGE'] = 'Change nickname for seedbonus';
+$lang['SEED_BONUS_CHANGE_DESC'] = 'The maximum number of <b>%s</b>, you have <b>%s</b> left.';
+$lang['SEED_BONUS_CHANGE_DESC_2'] = 'Enter your desired nickname';
+$lang['SEED_BONUS_CHANGE_NICK_SUCCESS'] = 'Congratulations!<br>Your nickname has been successfully changed from <b>%s</b> to <b>%s</b>.';
+$lang['SEED_BONUS_CHANGE_NICK_LIMIT'] = 'You can no longer change your nickname! The maximum quantity (<b>%s</b>) has been reached.';
+$lang['SEED_BONUS_CHANGE_NICK_MOD'] = 'Sorry, but moderators cannot change their nickname!';
+$lang['SEED_BONUS_CHANGE_NICK_SAME'] = 'Your current nickname and the new one are identical!';
+=======================================================================
+
 ======= Открыть library/language/ru/main.php и вставить в конце =======
 // Смена ника за сид-бонусы
 $lang['SEED_BONUS_CHANGE'] = 'Смена ника за сидбонус';
