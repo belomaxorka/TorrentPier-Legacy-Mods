@@ -1,6 +1,6 @@
 ------------------- Расширенное логирование действий -------------------
 Автор: belomaxorka
-Версия: v1.1.0
+Версия: v1.0.0
 ----------------------------------------------------------------
 
 ======= Открыть admin/admin_log.php и найти =======
@@ -52,8 +52,23 @@ case $log_type['mod_topic_renamed']:
 =============================
 
 ======= Открыть modcp.php и найти =======
-$msg = ($pin) ? $lang['POST_PINNED'] : $lang['POST_UNPINNED'];
+$msg = ($set_download) ? $lang['TOPICS_DOWN_SETS'] : $lang['TOPICS_DOWN_UNSETS'];
 =========================================
+
+======= Выше вставить =======
+// Log action
+$type = ($set_download) ? 'mod_topic_set_downloaded' : 'mod_topic_unset_downloaded';
+
+$log_action->mod($type, array(
+	'forum_id'        => $forum_id,
+	'topic_id'        => $topic_id,
+	'topic_title'     => get_topic_title($topic_id),
+));
+=============================
+
+======= Далее найти =======
+$msg = ($pin) ? $lang['POST_PINNED'] : $lang['POST_UNPINNED'];
+===========================
 
 ======= Выше вставить =======
 // Log action
