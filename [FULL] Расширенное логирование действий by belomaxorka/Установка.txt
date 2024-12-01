@@ -96,3 +96,34 @@ foreach ($log_topics as $topic_id => $topic_title) {
 'mod_topic_unset_downloaded' => 15,
 'mod_topic_renamed'  => 16,
 =============================
+
+======= Открыть library/ajax/mod_action.php и найти =======
+global $userdata, $bb_cfg, $lang, $datastore;
+===========================================================
+
+======= Ниже вставить =======
+global $log_action;
+=============================
+
+======= Далее найти =======
+$new_title   = clean_title($topic_title);
+===========================
+
+======= Ниже вставить =======
+$old_title   = get_topic_title($topic_id);
+=============================
+
+======= Далее найти =======
+$this->response['topic_id'] = $topic_id;
+$this->response['topic_title'] = $new_title;
+===========================
+
+======= Выше вставить =======
+// Log action
+$log_action->mod('mod_topic_renamed', array(
+	'forum_id'        => $t_data['forum_id'],
+	'topic_id'        => $topic_id,
+	'topic_title'     => $old_title,
+	'topic_title_new' => $new_title,
+));
+=============================
