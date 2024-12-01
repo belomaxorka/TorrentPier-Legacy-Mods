@@ -1,6 +1,11 @@
 ------------------- Расширенное логирование действий -------------------
 Автор: belomaxorka
 Версия: v1.0.0
+Описание: Добавляет в лог действий новые действия.
+Список новых действий:
+- Закрепление / открепление темы
+- Переименование темы
+- Перемещение темы
 ----------------------------------------------------------------
 
 ======= Открыть admin/admin_log.php и найти =======
@@ -103,15 +108,15 @@ foreach ($log_topics as $topic_id => $topic_title)
 =============================
 
 ======= Открыть library/includes/functions.php и найти =======
-'adm_user_unban'     => 11,
+'adm_user_unban'     => 9,
 ==============================================================
 
 ======= Ниже вставить =======
-'mod_post_pin'       => 12,
-'mod_post_unpin'     => 13,
-'mod_topic_set_downloaded' => 14,
-'mod_topic_unset_downloaded' => 15,
-'mod_topic_renamed'  => 16,
+'mod_post_pin'       => 10,
+'mod_post_unpin'     => 11,
+'mod_topic_set_downloaded' => 12,
+'mod_topic_unset_downloaded' => 13,
+'mod_topic_renamed'  => 14,
 =============================
 
 ======= Открыть library/ajax/mod_action.php и найти =======
