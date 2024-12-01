@@ -15,172 +15,26 @@ case $log_type['mod_topic_unset_downloaded']:
 case $log_type['mod_topic_renamed']:
 =============================
 
-======= Заменить на =======
-'adm_user_unban'   => 'User:<br /> <b>unban</b>',
-'adm_user_change_name' => 'User:<br /> <b>changed nickname (for seedbonus)</b>',
-===========================
-
-======= Далее вставить в конце =======
-// Смена ника за сид-бонусы
-$lang['SEED_BONUS_CHANGE'] = 'Change nickname for seedbonus';
-$lang['SEED_BONUS_CHANGE_DESC'] = 'The maximum number of <b>%s</b>, you have <b>%s</b> left.';
-$lang['SEED_BONUS_CHANGE_DESC_2'] = 'Enter your desired nickname';
-$lang['SEED_BONUS_CHANGE_NICK_SUCCESS'] = 'Congratulations!<br>Your nickname has been successfully changed from <b>%s</b> to <b>%s</b>.';
-$lang['SEED_BONUS_CHANGE_NICK_LIMIT'] = 'You can no longer change your nickname! The maximum quantity (<b>%s</b>) has been reached.';
-$lang['SEED_BONUS_CHANGE_NICK_MOD'] = 'Sorry, but moderators cannot change their nickname!';
-$lang['SEED_BONUS_CHANGE_NICK_SAME'] = 'Your current nickname and the new one are identical!';
-$lang['SEED_BONUS_CHANGE_NICK_LOG'] = 'From <b>%s</b> to <b>%s</b>. (Registration nickname: <b>%s</b> | used_id: <b>%s</b>)';
-=======================================================================
-
-======= Открыть library/language/ru/main.php и найти =======
-'adm_user_unban'   => 'Юзер:<br /> <b>разбанен</b>'
+======= Открыть library/language/en/main.php и найти =======
+'mod_topic_split'  => 'Topic:<br /> <b>split</b>',
 ============================================================
 
-======= Заменить на =======
-'adm_user_unban'   => 'Юзер:<br /> <b>разбанен</b>',
-'adm_user_change_name' => 'Юзер:<br /> <b>изменил ник (за сидбонусы)</b>',
-===========================
-
-======= Далее вставить в конце =======
-// Смена ника за сид-бонусы
-$lang['SEED_BONUS_CHANGE'] = 'Смена ника за сидбонус';
-$lang['SEED_BONUS_CHANGE_DESC'] = 'Максимальное количество <b>%s</b>, у вас осталось <b>%s</b>.';
-$lang['SEED_BONUS_CHANGE_DESC_2'] = 'Укажите желаемый никнейм';
-$lang['SEED_BONUS_CHANGE_NICK_SUCCESS'] = 'Поздравляем!<br>Ваш ник был успешно изменен с <b>%s</b> на <b>%s</b>.';
-$lang['SEED_BONUS_CHANGE_NICK_LIMIT'] = 'Вы больше не можете изменить ник! Максимальное количество (<b>%s</b>) было достигнуто.';
-$lang['SEED_BONUS_CHANGE_NICK_MOD'] = 'Извините, но модераторам смена ника недоступна!';
-$lang['SEED_BONUS_CHANGE_NICK_SAME'] = 'Ваш текущий ник и новый идентичны!';
-$lang['SEED_BONUS_CHANGE_NICK_LOG'] = 'С <b>%s</b> на <b>%s</b>. (Ник регистрации: <b>%s</b> | used_id: <b>%s</b>)';
-=======================================================================
-
-======= Открыть library/includes/functions.php и найти =======
-'adm_user_unban'     => 9,
-==============================================================
-
-======= Ниже вставить (ВНИМАНИЕ: нужно указать обязательно свободное число, желательно по порядку) =======
-'adm_user_change_name' => 'тут напишите любое свободное число',
-==========================================================================================================
-
-======= Открыть library/includes/ucp/bonus.php и найти =======
-else
-{
-	$template->assign_vars(array(
-		'U_USER_PROFILE'  => PROFILE_URL . $user_id,
-		'S_MODE_ACTION'	  => BONUS_URL,
-		'PAGE_TITLE'	  => $lang['EXCHANGE_BONUS'],
-		'MY_BONUS'        => sprintf($lang['MY_BONUS'], $user_points),
-	));
-==============================================================
-
-======= Выше вставить =======
-// Смена ника за сид-бонусы
-elseif (isset($_POST['change_nickname_confirm']) && !empty($_POST['change_nickname']) && $bb_cfg['seed_bonus_change_name']['enabled'] && !$bb_cfg['allow_namechange']) {
-	// Проверка на модератора
-	if (IS_MOD && !$bb_cfg['seed_bonus_change_name']['mod_can_change']) {
-		$message = $lang['SEED_BONUS_CHANGE_NICK_MOD'];
-		$message .= '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
-		bb_die($message);
-	}
-
-	// Проверка на допустимое количество раз
-	if ($userdata['username_change_counter'] >= $bb_cfg['seed_bonus_change_name']['max_change_count']) {
-		$message = sprintf($lang['SEED_BONUS_CHANGE_NICK_LIMIT'], $bb_cfg['seed_bonus_change_name']['max_change_count']);
-		$message .= '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
-		bb_die($message);
-	}
-
-	// Проверка на доступное количество бонусов
-	$points = $bb_cfg['seed_bonus_change_name']['points'];
-	if ($user_points < $points) {
-		meta_refresh('index.php', 10);
-		$message = $lang['BONUS_NOT_SUCCES'] . '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
-		bb_die($message);
-	}
-
-	$new_username = clean_username($_POST['change_nickname']);
-	$prev_username = $userdata['username'];
-
-	// Проверка текущего ника
-	if ($new_username == $prev_username) {
-		$message = $lang['SEED_BONUS_CHANGE_NICK_SAME'];
-		$message .= '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
-		bb_die($message);
-	}
-
-	// Проверка ника
-	require(INC_DIR . 'functions_validate.php');
-	if ($err = validate_username($new_username)) {
-		$message = $err;
-		$message .= '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
-		bb_die($message);
-	}
-
-	// Сохранение ника регистрации
-	if ($userdata['username_change_counter'] == 0) {
-		DB()->query("UPDATE " . BB_USERS . "
-        	SET username_old = '" . DB()->escape_string($prev_username) . "'
-        	WHERE user_id = $user_id LIMIT 1");
-	}
-
-	// Смена ника
-	DB()->query("UPDATE " . BB_USERS . "
-		SET
-			username_change_counter = username_change_counter + 1,
-			username = '" . DB()->escape_string($new_username) . "',
-			user_points = user_points - $points
-		WHERE
-			user_id = $user_id LIMIT 1");
-
-	cache_rm_user_sessions($user_id);
-	meta_refresh(BONUS_URL, 10);
-
-	$log_action->admin('adm_user_change_name', array(
-		'log_msg' => sprintf($lang['SEED_BONUS_CHANGE_NICK_LOG'], $prev_username, $new_username, $userdata['username_old'], $user_id),
-	));
-
-	$message = sprintf($lang['SEED_BONUS_CHANGE_NICK_SUCCESS'], $prev_username, $new_username);
-	$message .= '<br /><br /><a href="' . BONUS_URL . '">' . $lang['BONUS_RETURN'] . '</a><br /><br /><a href="' . PROFILE_URL . $userdata['user_id'] . '">' . $lang['RETURN_PROFILE'] . '</a><br /><br />' . sprintf($lang['CLICK_RETURN_INDEX'], '<a href="index.php">', '</a>');
-	bb_die($message);
-}
+======= Ниже вставить =======
+'mod_post_pin' => 'Post:<br /> <b>pinned</b>',
+'mod_post_unpin' => 'Post:<br /> <b>unpinned</b>',
+'mod_topic_set_downloaded' => 'Topic:<br /> <b>set downloaded</b>',
+'mod_topic_unset_downloaded' => 'Topic:<br /> <b>unset downloaded</b>',
+'mod_topic_renamed' => 'Topic:<br /> <b>renamed</b>',
 =============================
 
-======= Далее найти =======
-$template->assign_vars(array(
-	'U_USER_PROFILE' => PROFILE_URL . $user_id,
-===========================
-
-======= Выше вставить =======
-// Смена ника за сид-бонусы
-if ($bb_cfg['seed_bonus_change_name']['enabled'] && !$bb_cfg['allow_namechange']) {
-	$price_change_nick = $bb_cfg['seed_bonus_change_name']['points'];
-	$class_change_nick = ($user_points >= $price_change_nick) ? 'seed' : 'leech';
-	$template->assign_vars(array(
-		'SEED_BONUS_CHANGE_PRICE' => sprintf($lang['BONUS_UPLOAD_PRICE'], $class_change_nick, sprintf('%.2f', $bb_cfg['seed_bonus_change_name']['points'])),
-		'SEED_BONUS_CHANGE_DESC' => sprintf($lang['SEED_BONUS_CHANGE_DESC'], $bb_cfg['seed_bonus_change_name']['max_change_count'], ($bb_cfg['seed_bonus_change_name']['max_change_count'] - $userdata['username_change_counter'])),
-	));
-	unset($price_change_nick, $class_change_nick);
-}
-=============================
-
-======= Открыть usercp_bonus.tpl (В вашем шаблоне) и найти =======
-<!-- END bonus_upload -->
-==================================================================
+======= Открыть library/language/ru/main.php и найти =======
+'mod_topic_split'  => 'Топик:<br /> <b>разделен</b>',
+============================================================
 
 ======= Ниже вставить =======
-<!-- IF SEED_BONUS_CHANGE_PRICE -->
-<tr class="row3 med">
-	<td class="bold tCenter">{L_DESCRIPTION}</td>
-	<td class="bold tCenter" colspan="2">{L_PRICE}</td>
-</tr>
-<tr class="row1 med">
-	<td class="tLeft"><b>{L_SEED_BONUS_CHANGE}:</b><br/>{SEED_BONUS_CHANGE_DESC}<br/>
-		<label>
-			<input type="text" name="change_nickname" size="35" maxlength="32" value="" placeholder="{L_SEED_BONUS_CHANGE_DESC_2}"/>
-		</label>&nbsp;&middot;&nbsp;
-		<input id="change_nickname_confirm" type="checkbox" name="change_nickname_confirm">
-		<label for="change_nickname_confirm">{L_CONFIRM}</label>
-	</td>
-	<td align="center" colspan="2">{SEED_BONUS_CHANGE_PRICE}</td>
-</tr>
-<!-- ENDIF -->
+'mod_post_pin' => 'Post:<br /> <b>pinned</b>',
+'mod_post_unpin' => 'Post:<br /> <b>unpinned</b>',
+'mod_topic_set_downloaded' => 'Topic:<br /> <b>set downloaded</b>',
+'mod_topic_unset_downloaded' => 'Topic:<br /> <b>unset downloaded</b>',
+'mod_topic_renamed' => 'Topic:<br /> <b>renamed</b>',
 =============================
