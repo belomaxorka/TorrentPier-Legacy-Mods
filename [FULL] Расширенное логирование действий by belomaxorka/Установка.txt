@@ -38,3 +38,37 @@ case $log_type['mod_topic_renamed']:
 'mod_topic_unset_downloaded' => 'Топик:<br /> <b>скачивание запрещено</b>',
 'mod_topic_renamed' => 'Топик:<br /> <b>переименован</b>',
 =============================
+
+======= Открыть modcp.php и найти =======
+$msg = ($pin) ? $lang['POST_PINNED'] : $lang['POST_UNPINNED'];
+=========================================
+
+======= Выше вставить =======
+// Log action
+$type = ($pin) ? 'mod_post_pin' : 'mod_post_unpin';
+
+foreach ($log_topics as $topic_id => $topic_title) {
+	$log_action->mod($type, array(
+		'forum_id' => $forum_id,
+		'topic_id' => $topic_id,
+		'topic_title' => $topic_title,
+	));
+}
+=============================
+
+======= Далее найти (ещё раз) =======
+$msg = ($pin) ? $lang['POST_PINNED'] : $lang['POST_UNPINNED'];
+=====================================
+
+======= Выше вставить =======
+// Log action
+$type = ($pin) ? 'mod_post_pin' : 'mod_post_unpin';
+
+foreach ($log_topics as $topic_id => $topic_title) {
+	$log_action->mod($type, array(
+		'forum_id' => $forum_id,
+		'topic_id' => $topic_id,
+		'topic_title' => $topic_title,
+	));
+}
+=============================
