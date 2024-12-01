@@ -57,6 +57,7 @@ case $log_type['mod_topic_renamed']:
 'mod_post_unpin' => 'Пост:<br /> <b>відкріплений</b>',
 'mod_topic_set_downloaded' => 'Топік:<br /> <b>скачування дозволено</b>',
 'mod_topic_unset_downloaded' => 'Топік:<br /> <b>скачування заборонено</b>',
+'mod_topic_change_tor_status' => 'Топік:<br /> <b>змінено статус торрента</b>',
 'mod_topic_renamed' => 'Топік:<br /> <b>перейменовано</b>',
 =============================
 
