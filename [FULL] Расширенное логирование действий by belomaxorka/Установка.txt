@@ -23,8 +23,16 @@ case $log_type['mod_topic_renamed']:
 =============================
 
 ======= Открыть library/language/en/main.php и найти =======
-'mod_topic_split'  => 'Topic:<br /> <b>split</b>',
+$lang['UNEXECUTED_RELEASE'] = 'Do you have a shapeless release before creating a new fix his unformed!';
 ============================================================
+
+======= Ниже вставить =======
+$lang['TOR_STATUS_LOG_ACTION'] = 'New status: %s.<br>Previous status: %s.';
+=============================
+
+======= Далее найти =======
+'mod_topic_split'  => 'Topic:<br /> <b>split</b>',
+===========================
 
 ======= Ниже вставить =======
 'mod_post_pin' => 'Post:<br /> <b>pinned</b>',
