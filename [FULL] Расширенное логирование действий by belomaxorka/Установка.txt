@@ -10,6 +10,9 @@ case $log_type['mod_post_delete']:
 ======= Ниже вставить =======
 case $log_type['mod_post_pin']:
 case $log_type['mod_post_unpin']:
+case $log_type['mod_topic_set_downloaded']:
+case $log_type['mod_topic_unset_downloaded']:
+case $log_type['mod_topic_renamed']:
 =============================
 
 ======= Заменить на =======
