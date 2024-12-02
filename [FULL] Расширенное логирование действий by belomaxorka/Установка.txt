@@ -44,6 +44,8 @@ $lang['TOR_STATUS_LOG_ACTION'] = 'New status: %s.<br>Previous status: %s.';
 'mod_topic_set_downloaded' => 'Topic:<br /> <b>set downloaded</b>',
 'mod_topic_unset_downloaded' => 'Topic:<br /> <b>unset downloaded</b>',
 'mod_topic_change_tor_status' => 'Topic:<br /> <b>changed torrent status</b>',
+'mod_topic_change_tor_type' => 'Topic:<br /> <b>changed torrent type</b>',
+'mod_topic_tor_unregister' => 'Topic:<br /> <b>torrent unregistered</b>',
 'mod_topic_renamed' => 'Topic:<br /> <b>renamed</b>',
 =============================
 
@@ -65,6 +67,8 @@ $lang['TOR_STATUS_LOG_ACTION'] = 'Новый статус: %s.<br>Предыду
 'mod_topic_set_downloaded' => 'Топик:<br /> <b>скачивание разрешено</b>',
 'mod_topic_unset_downloaded' => 'Топик:<br /> <b>скачивание запрещено</b>',
 'mod_topic_change_tor_status' => 'Топик:<br /> <b>изменен статус раздачи</b>',
+'mod_topic_change_tor_type' => 'Топик:<br /> <b>изменен тип торрента</b>',
+'mod_topic_tor_unregister' => 'Топик:<br /> <b>торрент разрегистрирован</b>',
 'mod_topic_renamed' => 'Топик:<br /> <b>переименован</b>',
 =============================
 
@@ -86,6 +90,8 @@ $lang['TOR_STATUS_LOG_ACTION'] = 'Новий статус: %s.<br>Поперед
 'mod_topic_set_downloaded' => 'Топік:<br /> <b>скачування дозволено</b>',
 'mod_topic_unset_downloaded' => 'Топік:<br /> <b>скачування заборонено</b>',
 'mod_topic_change_tor_status' => 'Топік:<br /> <b>змінено статус роздачі</b>',
+'mod_topic_change_tor_type' => 'Топік:<br /> <b>змінено тип торрента</b>',
+'mod_topic_tor_unregister' => 'Топік:<br /> <b>торрент разреєстрован</b>',
 'mod_topic_renamed' => 'Топік:<br /> <b>перейменовано</b>',
 =============================
 
