@@ -161,6 +161,16 @@ foreach ($log_topics as $topic_id => $topic_title)
 'mod_topic_tor_unregister' => 17,
 =============================
 
+======= Открыть library/includes/functions_torrent.php и найти =======
+a.post_id, d.physical_filename, d.extension, d.tracker_status,
+t.topic_first_post_id,
+======================================================================
+
+======= Заменить на =======
+a.post_id, d.physical_filename, d.extension, d.tracker_status,
+t.topic_first_post_id, t.topic_title,
+===========================
+
 ======= Открыть library/ajax/mod_action.php и найти =======
 global $userdata, $bb_cfg, $lang, $datastore;
 ===========================================================
