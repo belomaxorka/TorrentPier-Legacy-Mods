@@ -171,6 +171,37 @@ a.post_id, d.physical_filename, d.extension, d.tracker_status,
 t.topic_first_post_id, t.topic_title,
 ===========================
 
+======= Далее найти =======
+function tracker_unregister ($attach_id, $mode = '')
+{
+	global $lang, $bb_cfg;
+===========================
+
+======= Ниже вставить =======
+global $log_action;
+=============================
+
+======= Далее найти =======
+$post_id = $topic_id = $forum_id = $info_hash = null;
+===========================
+
+======= Заменить на =======
+$post_id = $topic_id = $topic_title = $forum_id = $info_hash = null;
+===========================
+
+======= Далее найти =======
+// Get torrent info
+if ($torrent = get_torrent_info($attach_id))
+{
+	$post_id  = $torrent['post_id'];
+	$topic_id = $torrent['topic_id'];
+	$forum_id = $torrent['forum_id'];
+===========================
+
+======= Ниже вставить =======
+$topic_title = $torrent['topic_title'];
+=============================
+
 ======= Открыть library/ajax/mod_action.php и найти =======
 global $userdata, $bb_cfg, $lang, $datastore;
 ===========================================================
