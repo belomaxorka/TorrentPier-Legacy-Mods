@@ -202,6 +202,25 @@ if ($torrent = get_torrent_info($attach_id))
 $topic_title = $torrent['topic_title'];
 =============================
 
+======= Далее найти =======
+// Remove peers from tracker
+$sql = "DELETE FROM ". BB_BT_TRACKER ." WHERE topic_id = $topic_id";
+
+if (!DB()->sql_query($sql))
+{
+	bb_die('Could not delete peers');
+}
+===========================
+
+======= Ниже вставить =======
+// Log action
+$log_action->mod('mod_topic_tor_unregister', array(
+	'forum_id'    => $forum_id,
+	'topic_id'    => $topic_id,
+	'topic_title' => $topic_title,
+));
+=============================
+
 ======= Открыть library/ajax/mod_action.php и найти =======
 global $userdata, $bb_cfg, $lang, $datastore;
 ===========================================================
