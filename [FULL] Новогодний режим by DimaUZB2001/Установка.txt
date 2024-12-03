@@ -3,7 +3,8 @@
 Версия: v1.0.0
 --------------------------------------------------------
 
-======= Открыть admin/admin_log.php и найти =======
+======= Открыть library/config.php и вставить в конце =======
+// Новогодний режим
 $bb_cfg['new_year'] = array(
 	// Снег на сайте
 	'snowfall' => array(
@@ -13,15 +14,4 @@ $bb_cfg['new_year'] = array(
 	// Новогодняя шапка около аватара
 	'santa_hat_avatar' => true,
 );
-===================================================
-
-======= Ниже вставить =======
-case $log_type['mod_post_pin']:
-case $log_type['mod_post_unpin']:
-case $log_type['mod_topic_set_downloaded']:
-case $log_type['mod_topic_unset_downloaded']:
-case $log_type['mod_topic_change_tor_status']:
-case $log_type['mod_topic_change_tor_type']:
-case $log_type['mod_topic_tor_unregister']:
-case $log_type['mod_topic_renamed']:
-=============================
+=============================================================
