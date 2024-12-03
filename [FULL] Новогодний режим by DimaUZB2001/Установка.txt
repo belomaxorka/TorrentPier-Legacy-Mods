@@ -1,0 +1,19 @@
+------------------- Новогодний режим -------------------
+Автор: belomaxorka
+Версия: v1.0.0
+--------------------------------------------------------
+
+======= Открыть admin/admin_log.php и найти =======
+case $log_type['mod_post_delete']:
+===================================================
+
+======= Ниже вставить =======
+case $log_type['mod_post_pin']:
+case $log_type['mod_post_unpin']:
+case $log_type['mod_topic_set_downloaded']:
+case $log_type['mod_topic_unset_downloaded']:
+case $log_type['mod_topic_change_tor_status']:
+case $log_type['mod_topic_change_tor_type']:
+case $log_type['mod_topic_tor_unregister']:
+case $log_type['mod_topic_renamed']:
+=============================
