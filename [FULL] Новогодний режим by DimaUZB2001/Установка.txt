@@ -5,7 +5,6 @@
 
 ======= Открыть admin/admin_log.php и найти =======
 $bb_cfg['new_year'] = array(
-	'enabled' => true,
 	// Снег на сайте
 	'snowfall' => array(
 		'enabled' => true,
