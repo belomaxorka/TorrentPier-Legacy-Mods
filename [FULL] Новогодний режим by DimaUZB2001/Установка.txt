@@ -9,7 +9,7 @@ $bb_cfg['new_year'] = array(
 	// Снег на сайте
 	'snowfall' => array(
 		'enabled' => true,
-		'mode' => 'whole' // whole - снег идет на всей странице, header - снег только внутри шапки
+		'mode' => 'whole' // 'whole' - снег идет на всей странице, 'header' - снег только внутри шапки
 	),
 	// Новогодняя шапка около аватара
 	'santa_hat_avatar' => true,
