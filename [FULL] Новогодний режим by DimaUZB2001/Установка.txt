@@ -20,3 +20,17 @@ $bb_cfg['new_year'] = array(
 	'santa_hat_avatar' => true,
 );
 =============================================================
+
+<!-- IF $bb_cfg['new_year']['snowfall']['enabled'] -->
+<script type="text/javascript" src="{SITE_URL}styles/js/snowfall.jquery.min.js"></script>
+<script type="text/javascript">
+	$(<!-- IF $bb_cfg['new_year']['snowfall']['mode'] == "header" -->'#page_header'<!-- ELSEIF $bb_cfg['new_year']['snowfall']['mode'] == "whole" -->document<!-- ENDIF -->).snowfall({
+		round: true,
+		shadow: {$bb_cfg['new_year']['snowfall']['shadow']},
+		flakeCount: {$bb_cfg['new_year']['snowfall']['flake_count']},
+		maxSpeed: {$bb_cfg['new_year']['snowfall']['max_speed']},
+		minSize: {$bb_cfg['new_year']['snowfall']['min_size']},
+		maxSize: {$bb_cfg['new_year']['snowfall']['max_size']},
+	});
+</script>
+<!-- ENDIF -->
