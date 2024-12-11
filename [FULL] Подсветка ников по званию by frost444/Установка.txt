@@ -6,8 +6,17 @@
 Версия: v1.0.0
 ----------------------------------------------------------------
 
-======= Открыть library/config.php и вставить =======
+======= Открыть admin/admin_ranks.php и найти =======
+'STYLE' => !empty($rank_info['rank_style']) ? $rank_info['rank_style'] : '',
 =====================================================
 
 ======= Заменить на =======
+'STYLE' => !empty($rank_info['rank_style']) ? $rank_info['rank_style'] : $lang['STYLE_RANK_COLOR_NONE'],
 ===========================
+
+======= Открыть styles/templates/admin/admin_ranks.tpl и найти =======
+<tr>
+	<td width="40%"><h4>{L_STYLE_COLOR}</h4><br /><h6>{L_STYLE_COLOR_FAQ}</h6></td>
+	<td><input class="post" type="text" name="style" size="60" maxlength="40" value="{STYLE}" /></td>
+</tr>
+======================================================================
