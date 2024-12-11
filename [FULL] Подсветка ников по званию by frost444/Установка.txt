@@ -44,3 +44,31 @@
 ======= Заменить на =======
 <td><div style="color: {ranks.STYLE};">{ranks.RANK}</div></td>
 ===========================
+
+======= Далее найти =======
+<tr>
+	<th>{L_RANK_TITLE}</th>
+	<th>{L_RANK_IMAGE}</th>
+===========================
+
+======= Ниже вставить =======
+<th>{L_STYLE_RANK_COLOR}</th>
+=============================
+
+======= Далее найти =======
+<tr class="{ranks.ROW_CLASS} tCenter">
+	<td><div class="{ranks.STYLE}">{ranks.RANK}</div></td>
+	<td>{ranks.IMAGE_DISPLAY}</td>
+===========================
+
+======= Ниже вставить =======
+<td style="background-color: {ranks.STYLE};">{ranks.STYLE}</td>
+=============================
+
+======= Далее найти =======
+<td class="catBottom" colspan="4">
+===========================
+
+======= Заменить на =======
+<td class="catBottom" colspan="5">
+===========================
