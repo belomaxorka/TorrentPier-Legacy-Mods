@@ -26,13 +26,13 @@
 ======================================================================
 
 ======= Заменить на =======
-<script type="text/javascript" src="{#BB_ROOT}styles/js/color/jscolor.js"></script>
+<script type="text/javascript" src="{#BB_ROOT}styles/js/jscolor.min.js"></script>
 <tr>
 	<td width="40%"><h4>{L_STYLE_COLOR}</h4><br />
 		<h6>{L_STYLE_COLOR_FAQ}</h6>
 	</td>
 	<td>
-		<input class="post color {hash:true}" type="text" name="style" size="60" maxlength="40" value="{STYLE}" />
+		<input class="post" type="text" name="style" size="60" maxlength="40" value="{STYLE}" />
 	</td>
 </tr>
 ===========================
