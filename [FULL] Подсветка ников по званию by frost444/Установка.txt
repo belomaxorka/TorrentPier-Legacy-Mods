@@ -11,7 +11,7 @@
 =====================================================
 
 ======= Заменить на =======
-'STYLE' => !empty($rank_info['rank_style']) ? $rank_info['rank_style'] : $lang['STYLE_RANK_COLOR_NONE'],
+'STYLE' => !empty($rank_info['rank_style']) ? $rank_info['rank_style'] : '#000',
 ===========================
 
 ======= Открыть styles/templates/admin/admin_ranks.tpl и найти =======
