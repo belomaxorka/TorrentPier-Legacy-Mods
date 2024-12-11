@@ -40,3 +40,7 @@
 ======= Далее найти =======
 <td><div class="{ranks.STYLE}">{ranks.RANK}</div></td>
 ===========================
+
+======= Заменить на =======
+<td><div style="color: {ranks.STYLE};">{ranks.RANK}</div></td>
+===========================
