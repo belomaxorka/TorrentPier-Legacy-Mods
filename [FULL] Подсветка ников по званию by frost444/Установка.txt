@@ -55,6 +55,14 @@ VALUES ('" . DB()->escape($rank_title) . "', $special_rank, $min_posts, '" . DB(
 'COLOR' => !empty($rank_rows[$i]['rank_color']) ? $rank_rows[$i]['rank_color'] : '',
 =============================
 
+======= Открыть library/includes/datastore/build_ranks.php и найти =======
+$sql = "SELECT rank_id, rank_title, rank_image, rank_style FROM ". BB_RANKS;
+==========================================================================
+
+======= Заменить на =======
+$sql = "SELECT rank_id, rank_title, rank_image, rank_style, rank_color FROM ". BB_RANKS;
+===========================
+
 ======= Открыть styles/templates/admin/admin_ranks.tpl и найти =======
 <tr>
 	<td width="40%"><h4>{L_STYLE_COLOR}</h4><br />
@@ -108,4 +116,8 @@ VALUES ('" . DB()->escape($rank_title) . "', $special_rank, $min_posts, '" . DB(
 
 ======= Заменить на =======
 <td class="catBottom" colspan="5">
+===========================
+
+===========================
+= Очистить кэщ, datastore =
 ===========================
