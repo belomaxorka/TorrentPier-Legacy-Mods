@@ -89,6 +89,7 @@ $profile = '<span title="'. $title .'" '. $color .' class="'. $style .'">'. $use
 // Подсветка ников по званию
 $lang['STYLE_RANK_COLOR_NONE'] = 'Цвет не указан';
 $lang['STYLE_RANK_COLOR'] = 'Цвет ника';
+$lang['STYLE_RANK_COLOR_FAQ'] = '';
 =======================================================================
 
 ======= Открыть styles/templates/admin/admin_ranks.tpl и найти =======
@@ -106,7 +107,7 @@ $lang['STYLE_RANK_COLOR'] = 'Цвет ника';
 <script type="text/javascript" src="{#BB_ROOT}styles/js/jscolor.min.js"></script>
 <tr>
 	<td width="40%"><h4>{L_STYLE_RANK_COLOR}</h4><br />
-		<h6>{L_STYLE_COLOR_FAQ}</h6>
+		<h6>{L_STYLE_RANK_COLOR_FAQ}</h6>
 	</td>
 	<td>
 		<input data-jscolor="{}" class="post" type="text" name="color" maxlength="7" value="{COLOR}" /><br />
