@@ -14,6 +14,39 @@
 'COLOR' => !empty($rank_info['rank_color']) ? $rank_info['rank_color'] : '',
 =============================
 
+======= Далее найти =======
+$rank_style = (isset($_POST['style'])) ? trim($_POST['style']) : '';
+===========================
+
+======= Ниже вставить =======
+$rank_color = (isset($_POST['color'])) ? trim($_POST['color']) : '';
+=============================
+
+======= Далее найти =======
+rank_style = '" . DB()->escape($rank_style) . "'
+===========================
+
+======= Заменить на =======
+rank_style = '" . DB()->escape($rank_style) . "',
+rank_color = '" . DB()->escape($rank_color) . "'
+===========================
+
+======= Далее найти =======
+$sql = "INSERT INTO " . BB_RANKS . " (rank_title, rank_special, rank_min, rank_image, rank_style)
+===========================
+
+======= Заменить на =======
+$sql = "INSERT INTO " . BB_RANKS . " (rank_title, rank_special, rank_min, rank_image, rank_style, rank_color)
+===========================
+
+======= Далее найти =======
+VALUES ('" . DB()->escape($rank_title) . "', $special_rank, $min_posts, '" . DB()->escape($rank_image) . "', '" . DB()->escape($rank_style) . "')";
+===========================
+
+======= Заменить на =======
+VALUES ('" . DB()->escape($rank_title) . "', $special_rank, $min_posts, '" . DB()->escape($rank_image) . "', '" . DB()->escape($rank_style) . "', '" . DB()->escape($rank_color) . "')";
+===========================
+
 ======= Открыть styles/templates/admin/admin_ranks.tpl и найти =======
 <tr>
 	<td width="40%"><h4>{L_STYLE_COLOR}</h4><br />
