@@ -85,6 +85,12 @@ $color = !empty($color) ? 'style="color: '. $color .' !important;"' : '';
 $profile = '<span title="'. $title .'" '. $color .' class="'. $style .'">'. $username .'</span>';
 ===========================
 
+======= Открыть library/language/ru/main.php и вставить в конце =======
+// Подсветка ников по званию
+$lang['STYLE_RANK_COLOR_NONE'] = 'Цвет не указан';
+$lang['STYLE_RANK_COLOR'] = 'Цвет ника';
+=======================================================================
+
 ======= Открыть styles/templates/admin/admin_ranks.tpl и найти =======
 <tr>
 	<td width="40%"><h4>{L_STYLE_COLOR}</h4><br />
@@ -99,7 +105,7 @@ $profile = '<span title="'. $title .'" '. $color .' class="'. $style .'">'. $use
 ======= Ниже вставить =======
 <script type="text/javascript" src="{#BB_ROOT}styles/js/jscolor.min.js"></script>
 <tr>
-	<td width="40%"><h4>{L_STYLE_COLOR}</h4><br />
+	<td width="40%"><h4>{L_STYLE_RANK_COLOR}</h4><br />
 		<h6>{L_STYLE_COLOR_FAQ}</h6>
 	</td>
 	<td>
