@@ -73,7 +73,7 @@ VALUES ('" . DB()->escape($rank_title) . "', $special_rank, $min_posts, '" . DB(
 		<h6>{L_STYLE_COLOR_FAQ}</h6>
 	</td>
 	<td>
-		<input data-jscolor="{}" class="post" type="text" name="color" size="60" maxlength="7" value="{COLOR}" />
+		<input data-jscolor="{}" class="post" type="text" name="color" maxlength="7" value="{COLOR}" />
 	</td>
 </tr>
 =============================
