@@ -6,6 +6,10 @@
 Версия: v1.0.0
 ----------------------------------------------------------------
 
+======= SQL =======
+ALTER TABLE `bb_ranks` ADD COLUMN `rank_color` VARCHAR(7) NOT NULL DEFAULT '';
+===================
+
 ======= Открыть admin/admin_ranks.php и найти =======
 'STYLE' => !empty($rank_info['rank_style']) ? $rank_info['rank_style'] : '',
 =====================================================
