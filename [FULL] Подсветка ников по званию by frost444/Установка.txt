@@ -54,7 +54,7 @@
 ===========================
 
 ======= Ниже вставить =======
-<td style="background-color: {ranks.COLOR};">{ranks.COLOR}</td>
+<td title="{ranks.COLOR}" style="background-color: {ranks.COLOR};">{ranks.COLOR}</td>
 =============================
 
 ======= Далее найти =======
