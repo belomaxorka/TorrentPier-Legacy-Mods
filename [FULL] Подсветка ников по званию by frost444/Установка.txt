@@ -103,7 +103,8 @@ $profile = '<span title="'. $title .'" '. $color .' class="'. $style .'">'. $use
 		<h6>{L_STYLE_COLOR_FAQ}</h6>
 	</td>
 	<td>
-		<input data-jscolor="{}" class="post" type="text" name="color" maxlength="7" value="{COLOR}" />
+		<input data-jscolor="{}" class="post" type="text" name="color" maxlength="7" value="{COLOR}" /><br />
+		<button type="button" onclick="$('input[data-jscolor]').val('');">{L_CLEAR}</button>
 	</td>
 </tr>
 =============================
