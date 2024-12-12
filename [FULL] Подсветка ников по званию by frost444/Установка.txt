@@ -48,11 +48,11 @@ VALUES ('". DB()->escape($rank_title) ."', $special_rank, $min_posts, '". DB()->
 ===========================
 
 ======= Далее найти =======
-'STYLE' => $rank_rows[$i]['rank_style'],
+'STYLE' 		=> $rank_rows[$i]['rank_style'],
 ===========================
 
 ======= Ниже вставить =======
-'COLOR' => !empty($rank_rows[$i]['rank_color']) ? $rank_rows[$i]['rank_color'] : '',
+'COLOR'         => !empty($rank_rows[$i]['rank_color']) ? $rank_rows[$i]['rank_color'] : '',
 =============================
 
 ======= Открыть library/includes/datastore/build_ranks.php и найти =======
@@ -72,7 +72,12 @@ $color = $ranks[$user_rank]['rank_color'];
 =============================
 
 ======= Далее найти =======
-$profile = '<span title="' . $title . '" class="' . $style . '">' . $username . '</span>';
+$profile = '<span title="'. $title .'" class="'. $style .'">'. $username .'</span>';
+===========================
+
+======= Заменить на =======
+$color = !empty($color) ? 'style="color: '. $color .' !important;"' : '';
+$profile = '<span title="'. $title .'" '. $color .' class="'. $style .'">'. $username .'</span>';
 ===========================
 
 ======= Открыть styles/templates/admin/admin_ranks.tpl и найти =======
