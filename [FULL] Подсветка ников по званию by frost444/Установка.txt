@@ -23,12 +23,12 @@ $rank_color = (isset($_POST['color'])) ? trim($_POST['color']) : '';
 =============================
 
 ======= Далее найти =======
-rank_style = '" . DB()->escape($rank_style) . "'
+rank_style = '". DB()->escape($rank_style) ."'
 ===========================
 
 ======= Заменить на =======
-rank_style = '" . DB()->escape($rank_style) . "',
-rank_color = '" . DB()->escape($rank_color) . "'
+rank_style = '". DB()->escape($rank_style) ."',
+rank_color = '". DB()->escape($rank_color) ."'
 ===========================
 
 ======= Далее найти =======
@@ -40,11 +40,11 @@ $sql = "INSERT INTO " . BB_RANKS . " (rank_title, rank_special, rank_min, rank_i
 ===========================
 
 ======= Далее найти =======
-VALUES ('" . DB()->escape($rank_title) . "', $special_rank, $min_posts, '" . DB()->escape($rank_image) . "', '" . DB()->escape($rank_style) . "')";
+VALUES ('". DB()->escape($rank_title) ."', $special_rank, $min_posts, '". DB()->escape($rank_image) ."', '". DB()->escape($rank_style) ."')";
 ===========================
 
 ======= Заменить на =======
-VALUES ('" . DB()->escape($rank_title) . "', $special_rank, $min_posts, '" . DB()->escape($rank_image) . "', '" . DB()->escape($rank_style) . "', '" . DB()->escape($rank_color) . "')";
+VALUES ('". DB()->escape($rank_title) ."', $special_rank, $min_posts, '". DB()->escape($rank_image) ."', '". DB()->escape($rank_style) ."', '". DB()->escape($rank_color) ."')";
 ===========================
 
 ======= Далее найти =======
@@ -61,6 +61,18 @@ $sql = "SELECT rank_id, rank_title, rank_image, rank_style FROM ". BB_RANKS;
 
 ======= Заменить на =======
 $sql = "SELECT rank_id, rank_title, rank_image, rank_style, rank_color FROM ". BB_RANKS;
+===========================
+
+======= Открыть library/includes/functions.php и найти =======
+$style = $ranks[$user_rank]['rank_style'];
+==============================================================
+
+======= Ниже вставить =======
+$color = $ranks[$user_rank]['rank_color'];
+=============================
+
+======= Далее найти =======
+$profile = '<span title="' . $title . '" class="' . $style . '">' . $username . '</span>';
 ===========================
 
 ======= Открыть styles/templates/admin/admin_ranks.tpl и найти =======
