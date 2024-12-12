@@ -10,9 +10,9 @@
 'STYLE' => !empty($rank_info['rank_style']) ? $rank_info['rank_style'] : '',
 =====================================================
 
-======= Заменить на =======
-'STYLE' => !empty($rank_info['rank_style']) ? $rank_info['rank_style'] : '#000',
-===========================
+======= Ниже вставить =======
+'COLOR' => !empty($rank_info['rank_color']) ? $rank_info['rank_color'] : '#000',
+=============================
 
 ======= Открыть styles/templates/admin/admin_ranks.tpl и найти =======
 <tr>
@@ -25,25 +25,25 @@
 </tr>
 ======================================================================
 
-======= Заменить на =======
+======= Ниже вставить =======
 <script type="text/javascript" src="{#BB_ROOT}styles/js/jscolor.min.js"></script>
 <tr>
 	<td width="40%"><h4>{L_STYLE_COLOR}</h4><br />
 		<h6>{L_STYLE_COLOR_FAQ}</h6>
 	</td>
 	<td>
-		<input data-jscolor="{}" class="post" type="text" name="style" size="60" maxlength="40" value="{STYLE}" />
+		<input data-jscolor="{}" class="post" type="text" name="color" size="60" maxlength="40" value="{COLOR}" />
 	</td>
 </tr>
-===========================
+=============================
 
 ======= Далее найти =======
 <td><div class="{ranks.STYLE}">{ranks.RANK}</div></td>
 ===========================
 
-======= Заменить на =======
+======= Ниже вставить =======
 <td><div style="color: {ranks.STYLE};">{ranks.RANK}</div></td>
-===========================
+=============================
 
 ======= Далее найти =======
 <tr>
@@ -62,7 +62,7 @@
 ===========================
 
 ======= Ниже вставить =======
-<td style="background-color: {ranks.STYLE};">{ranks.STYLE}</td>
+<td style="background-color: {ranks.COLOR};">{ranks.COLOR}</td>
 =============================
 
 ======= Далее найти =======
