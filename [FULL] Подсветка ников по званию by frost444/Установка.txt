@@ -11,7 +11,7 @@
 =====================================================
 
 ======= Ниже вставить =======
-'COLOR' => !empty($rank_info['rank_color']) ? $rank_info['rank_color'] : '#000',
+'COLOR' => !empty($rank_info['rank_color']) ? $rank_info['rank_color'] : '',
 =============================
 
 ======= Открыть styles/templates/admin/admin_ranks.tpl и найти =======
@@ -54,7 +54,11 @@
 ===========================
 
 ======= Ниже вставить =======
+<!-- IF ranks.COLOR -->
 <td title="{ranks.COLOR}" style="background-color: {ranks.COLOR};">{ranks.COLOR}</td>
+<!-- ELSE -->
+<td>{L_STYLE_COLOR_NONE}</td>
+<!-- ENDIF -->
 =============================
 
 ======= Далее найти =======
