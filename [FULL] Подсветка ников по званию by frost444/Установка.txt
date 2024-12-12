@@ -114,7 +114,7 @@ $lang['STYLE_RANK_COLOR_FAQ'] = 'Тут вы можете указать цве�
 		<h6>{L_STYLE_RANK_COLOR_FAQ}</h6>
 	</td>
 	<td>
-		<input data-jscolor="{}" class="post" type="text" name="color" maxlength="7" value="{COLOR}" /><br />
+		<input data-jscolor="{required:false}" class="post" type="text" name="color" maxlength="7" value="{COLOR}" /><br />
 		<button type="button" onclick="$('input[data-jscolor]').val('');">{L_CLEAR}</button>
 	</td>
 </tr>
