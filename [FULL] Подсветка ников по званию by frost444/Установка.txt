@@ -57,7 +57,7 @@
 <!-- IF ranks.COLOR -->
 <td title="{ranks.COLOR}" style="background-color: {ranks.COLOR};">{ranks.COLOR}</td>
 <!-- ELSE -->
-<td>{L_STYLE_COLOR_NONE}</td>
+<td>{L_STYLE_RANK_COLOR_NONE}</td>
 <!-- ENDIF -->
 =============================
 
