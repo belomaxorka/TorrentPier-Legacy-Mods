@@ -47,6 +47,14 @@ VALUES ('" . DB()->escape($rank_title) . "', $special_rank, $min_posts, '" . DB(
 VALUES ('" . DB()->escape($rank_title) . "', $special_rank, $min_posts, '" . DB()->escape($rank_image) . "', '" . DB()->escape($rank_style) . "', '" . DB()->escape($rank_color) . "')";
 ===========================
 
+======= Далее найти =======
+'STYLE' => $rank_rows[$i]['rank_style'],
+===========================
+
+======= Ниже вставить =======
+'COLOR' => !empty($rank_rows[$i]['rank_color']) ? $rank_rows[$i]['rank_color'] : '',
+=============================
+
 ======= Открыть styles/templates/admin/admin_ranks.tpl и найти =======
 <tr>
 	<td width="40%"><h4>{L_STYLE_COLOR}</h4><br />
