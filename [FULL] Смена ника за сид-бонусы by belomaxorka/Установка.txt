@@ -1,7 +1,7 @@
 ------------------- Смена ника за сид-бонусы -------------------
 Автор: belomaxorka
 Автор идеи: veliant9 (https://torrentpier.com/members/veliant9.6106/)
-Версия: v1.1.0
+Версия: v1.1.1
 Описание: Добавляет возможность пользователю изменить свой ник за сид-бонусы.
 Смена возможна ограниченное количество раз (указывается в настройках). Мод работает только в том случае,
 если в настройках форума отключена возможность смены ника пользователями ($bb_cfg['allow_namechange']).
@@ -9,7 +9,7 @@
 ----------------------------------------------------------------
 
 ======= SQL =======
-ALTER TABLE `bb_users` ADD `username_old` varchar(25) DEFAULT NULL;
+ALTER TABLE `bb_users` ADD `username_old` varchar(25) NOT NULL DEFAULT '';
 ALTER TABLE `bb_users` ADD `username_change_counter` smallint NOT NULL DEFAULT '0';
 ===================
 
