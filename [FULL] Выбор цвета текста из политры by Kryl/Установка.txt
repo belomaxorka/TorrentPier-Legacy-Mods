@@ -1,0 +1,37 @@
+------------------- Выбор цвета текста из политры -------------------
+Автор: Kryl
+Версия: v2.0.0
+---------------------------------------------------------------------
+
+======= Открыть posting_editor.tpl (в вашем шаблоне) и найти =======
+<select name="codeColor" class="text_color">
+... ... ...
+</select>
+====================================================================
+
+======= Заменить на =======
+<script type="text/javascript" src="{SITE_URL}styles/js/jscolor.min.js"></script>
+<script type="text/javascript">
+	function updateColor(picker) {
+		let color = [picker.toString()].join('\n');
+		$('option#color_new').html(color);
+		$('option#color_new').val(color);
+	}
+
+	jscolor.presets.default = {
+		position: 'right',
+		palette: [
+			'#000', '#8B0000FF', '#A52A2AFF', '#996600',
+			'#FF0000FF', '#993399', '#008000FF', '#006400FF',
+			'#808080FF', '#808000FF', '#0000FFFF', '#00008BFF',
+			'#4B0082FF', '#006699'
+		]
+	};
+
+	jscolor.trigger('input');
+</script>
+<select name="codeColor" data-jscolor="{onInput: 'updateColor(this)', alpha: 1.0, position: 'right', value: '#000'}">
+	<option style="color: black; background: #fff;" value="black">{L_QR_COLOR_SEL}:</option>
+	<option style="color: black; background: #fff;" id="color_new"></option>
+</select>
+===========================
