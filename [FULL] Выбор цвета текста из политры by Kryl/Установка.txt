@@ -31,7 +31,7 @@
 
 	jscolor.trigger('input');
 </script>
-<select name="codeColor" data-jscolor="{onInput: 'updateColor(this)', alpha: 1.0, position: 'right', value: '#000'}">
+<select name="codeColor" data-jscolor="{onInput: 'updateColor(this)', alpha: 1.0, position: 'right', value: '#FFF'}">
 	<option style="color: black; background: #fff;" value="black">{L_QR_COLOR_SEL}:</option>
 	<option style="color: black; background: #fff;" id="color_new"></option>
 </select>
