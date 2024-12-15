@@ -108,7 +108,7 @@ $lang['STYLE_RANK_COLOR_FAQ'] = 'Тут вы можете указать цве�
 ======================================================================
 
 ======= Ниже вставить =======
-<script type="text/javascript" src="{#BB_ROOT}styles/js/jscolor.min.js"></script>
+<script type="text/javascript" src="{SITE_URL}styles/js/jscolor.min.js"></script>
 <tr>
 	<td width="40%"><h4>{L_STYLE_RANK_COLOR}</h4><br />
 		<h6>{L_STYLE_RANK_COLOR_FAQ}</h6>
