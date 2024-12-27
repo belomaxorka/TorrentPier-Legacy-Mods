@@ -141,3 +141,22 @@ if ($bb_cfg['progress_profile_filling']['enabled']) {
 $lang['PROFILE_FILL_PERCENTAGE'] = 'Прогресс заполнения профиля';
 $lang['PROFILE_FILL_DESC'] = '(при заполнении профиля на 100 процентов, вы получите БОНУС в размере %s сидбонусов!)';
 =======================================================================
+
+======= Открыть usercp_viewprofile.tpl (В вашем шаблоне) и найти =======
+<!-- IF $bb_cfg['progress_profile_filling']['enabled'] -->
+<style>
+	#profile_progress {
+		margin-top: 5px;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+	}
+</style>
+<hr/>
+<div class="mrg_6">
+	<p>{L_PROFILE_FILL_PERCENTAGE}: <b>{PROFILE_PROGRESS_PERCENTAGE}%</b></p>
+	<progress title="{PROFILE_PROGRESS_PERCENTAGE}%" id="profile_progress" value="{PROFILE_PROGRESS_CUR_VALUE}" max="{PROFILE_PROGRESS_MAX_VALUE}">{PROFILE_PROGRESS_PERCENTAGE}%</progress>
+	<div class="signature">{PROFILE_FILL_DESC}</div>
+</div>
+<!-- ENDIF -->
+========================================================================
