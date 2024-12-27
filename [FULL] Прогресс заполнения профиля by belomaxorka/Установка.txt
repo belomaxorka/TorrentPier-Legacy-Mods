@@ -1,0 +1,30 @@
+-------------- Прогресс заполнения профиля --------------
+Автор: belomaxorka
+Версия: v1.0.0
+---------------------------------------------------------
+
+======= [SQL] =======
+ALTER TABLE `bb_users` ADD COLUMN `user_profile_progress_cur` tinyint(3) NOT NULL DEFAULT '0';
+ALTER TABLE `bb_users` ADD COLUMN `user_profile_progress_max` tinyint(3) NOT NULL DEFAULT '0';
+=====================
+
+======= Открыть library/config.php и вставить =======
+// Прогресс заполнения профиля
+$bb_cfg['progress_profile_filling'] = array(
+	'enabled' => true,
+	// Список полей на основе которых будет
+	// формироваться прогресс заполнения профиля
+	'profile_fields' => array(
+		'user_gender',
+		'user_website',
+		'user_from',
+		'user_sig',
+		'user_occ',
+		'user_interests',
+		'avatar_ext_id',
+	),
+	// Сколько сидбонусов начислять за 100% заполнение профиля
+	// (0 - чтобы отключить)
+	'seed_points' => 100,
+);
+=====================================================
