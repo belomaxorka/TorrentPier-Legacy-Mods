@@ -28,3 +28,86 @@ $bb_cfg['progress_profile_filling'] = array(
 	'seed_points' => 100,
 );
 =====================================================
+
+======= Открыть library/includes/ucp/register.php и найти =======
+'tpl_name'         => true,
+=================================================================
+
+======= Ниже вставить =======
+// Прогресс заполнения профиля
+'user_points' => $bb_cfg['progress_profile_filling']['enabled'],
+'user_profile_progress_max' => $bb_cfg['progress_profile_filling']['enabled'],
+'user_profile_progress_cur' => $bb_cfg['progress_profile_filling']['enabled'],
+=============================
+
+======= Далее найти =======
+$tp_data['TEMPLATES_SELECT'] = templates_select($pr_data['tpl_name'], 'tpl_name');
+break;
+===========================
+
+======= Ниже вставить =======
+/**
+ * Прогресс заполнения профиля
+ */
+case 'user_points':
+case 'user_profile_progress_max':
+case 'user_profile_progress_cur':
+	break;
+=============================
+
+======= Далее найти =======
+// submit
+if ($submit && !$errors)
+{
+===========================
+
+======= Ниже вставить =======
+// Прогресс заполнения профиля
+if ($bb_cfg['progress_profile_filling']['enabled'] && $mode != 'register') {
+	$max_progress_fields = array();
+	foreach ($pr_data as $key => $value) {
+		if (!in_array($key, $bb_cfg['progress_profile_filling']['profile_fields'])) {
+			continue;
+		}
+
+		$max_progress_fields[] = $key;
+	}
+
+	foreach ($db_data as $key => $value) {
+		if (!in_array($key, $bb_cfg['progress_profile_filling']['profile_fields'])) {
+			continue;
+		}
+
+		if ($pr_data['user_profile_progress_max'] > 0) {
+			if ($pr_data['user_profile_progress_cur'] >= $pr_data['user_profile_progress_max']) {
+				continue;
+			}
+		}
+
+		if (!empty($value) || $value || $value == 1) {
+			$db_data['user_profile_progress_cur'] = $pr_data['user_profile_progress_cur'];
+			$pr_data['user_profile_progress_cur'] += 1;
+			$db_data['user_profile_progress_cur'] += 1;
+		}
+
+		// Начисляем бонусы
+		if ($pr_data['user_profile_progress_max'] > 0) {
+			if ($pr_data['user_profile_progress_cur'] == $pr_data['user_profile_progress_max']) {
+				if ($bb_cfg['progress_profile_filling']['seed_points'] > 0) {
+					$db_data['user_points'] = $pr_data['user_points'];
+					$pr_data['user_points'] += $bb_cfg['progress_profile_filling']['seed_points'];
+					$db_data['user_points'] += $bb_cfg['progress_profile_filling']['seed_points'];
+					cache_rm_user_sessions($pr_data['user_id']);
+				}
+			}
+		}
+	}
+
+	if (empty($pr_data['user_profile_progress_max'])) {
+		$count_max_fields = count($max_progress_fields);
+		$pr_data['user_profile_progress_max'] = $count_max_fields;
+		$db_data['user_profile_progress_max'] = $count_max_fields;
+		unset($count_max_fields);
+	}
+}
+=============================
