@@ -8,7 +8,7 @@ ALTER TABLE `bb_users` ADD COLUMN `user_profile_progress_cur` tinyint(3) NOT NUL
 ALTER TABLE `bb_users` ADD COLUMN `user_profile_progress_max` tinyint(3) NOT NULL DEFAULT '0';
 =====================
 
-======= Открыть library/config.php и вставить =======
+======= Открыть library/config.php и вставить в конце =======
 // Прогресс заполнения профиля
 $bb_cfg['progress_profile_filling'] = array(
 	'enabled' => true,
@@ -27,7 +27,7 @@ $bb_cfg['progress_profile_filling'] = array(
 	// (0 - чтобы отключить)
 	'seed_points' => 100,
 );
-=====================================================
+=============================================================
 
 ======= Открыть library/includes/ucp/register.php и найти =======
 'tpl_name'         => true,
@@ -111,3 +111,33 @@ if ($bb_cfg['progress_profile_filling']['enabled'] && $mode != 'register') {
 	}
 }
 =============================
+
+======= Открыть library/includes/ucp/viewprofile.php и найти =======
+	$signature = bbcode2html($signature);
+}
+====================================================================
+
+======= Ниже вставить =======
+// Прогресс заполнения профиля
+if ($bb_cfg['progress_profile_filling']['enabled']) {
+	$max_progress = $profiledata['user_profile_progress_max'];
+	$current_progress = $profiledata['user_profile_progress_cur'];
+	if ($current_progress != 0) {
+		$percentage_progress = ($current_progress / $max_progress) * 100;
+	} else {
+		$percentage_progress = 0;
+	}
+	$template->assign_vars(array(
+		'PROFILE_PROGRESS_CUR_VALUE' => $current_progress,
+		'PROFILE_PROGRESS_MAX_VALUE' => $max_progress,
+		'PROFILE_PROGRESS_PERCENTAGE' => ceil($percentage_progress),
+		'PROFILE_FILL_DESC' => sprintf($lang['PROFILE_FILL_DESC'], $bb_cfg['progress_profile_filling']['seed_points']),
+	));
+}
+=============================
+
+======= Открыть library/language/ru/main.php и вставить в конце =======
+// Прогресс заполнения профиля
+$lang['PROFILE_FILL_PERCENTAGE'] = 'Прогресс заполнения профиля';
+$lang['PROFILE_FILL_DESC'] = '(при заполнении профиля на 100 процентов, вы получите БОНУС в размере %s сидбонусов!)';
+=======================================================================
