@@ -1,11 +1,12 @@
 -------------- Прогресс заполнения профиля --------------
 Автор: belomaxorka
-Версия: v1.0.1
+Версия: v1.1.0
 ---------------------------------------------------------
 
 ======= [SQL] =======
 ALTER TABLE `bb_users` ADD COLUMN `user_profile_progress_cur` tinyint(3) NOT NULL DEFAULT '0';
 ALTER TABLE `bb_users` ADD COLUMN `user_profile_progress_max` tinyint(3) NOT NULL DEFAULT '0';
+ALTER TABLE `bb_users` ADD COLUMN `user_profile_progress_filled` text NOT NULL DEFAULT '';
 =====================
 
 ======= Открыть library/config.php и вставить в конце =======
