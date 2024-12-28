@@ -88,9 +88,19 @@ if ($bb_cfg['progress_profile_filling']['enabled'] && $mode != 'register') {
 		}
 
 		if (!empty($value) || $value || $value == 1) {
+			$db_data['user_profile_progress_filled'] = json_decode($pr_data['user_profile_progress_filled'], true);
+			if (!empty($pr_data['user_profile_progress_filled'])) {
+				if (in_array($key, $db_data['user_profile_progress_filled'])) {
+					continue;
+				}
+			} else {
+				$db_data['user_profile_progress_filled'] = array();
+			}
+
 			$db_data['user_profile_progress_cur'] = $pr_data['user_profile_progress_cur'];
 			$pr_data['user_profile_progress_cur'] += 1;
 			$db_data['user_profile_progress_cur'] += 1;
+			$db_data['user_profile_progress_filled'][] = $key;
 		}
 
 		// Начисляем бонусы
@@ -104,6 +114,10 @@ if ($bb_cfg['progress_profile_filling']['enabled'] && $mode != 'register') {
 				}
 			}
 		}
+	}
+
+	if (!empty($db_data['user_profile_progress_filled'])) {
+		$db_data['user_profile_progress_filled'] = json_encode($db_data['user_profile_progress_filled']);
 	}
 
 	if (empty($pr_data['user_profile_progress_max'])) {
