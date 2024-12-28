@@ -39,6 +39,7 @@ $bb_cfg['progress_profile_filling'] = array(
 'user_points' => $bb_cfg['progress_profile_filling']['enabled'],
 'user_profile_progress_max' => $bb_cfg['progress_profile_filling']['enabled'],
 'user_profile_progress_cur' => $bb_cfg['progress_profile_filling']['enabled'],
+'user_profile_progress_filled' => $bb_cfg['progress_profile_filling']['enabled'],
 =============================
 
 ======= Далее найти =======
@@ -53,6 +54,7 @@ break;
 case 'user_points':
 case 'user_profile_progress_max':
 case 'user_profile_progress_cur':
+case 'user_profile_progress_filled':
 	break;
 =============================
 
