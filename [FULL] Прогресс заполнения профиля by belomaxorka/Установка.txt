@@ -89,7 +89,7 @@ if ($bb_cfg['progress_profile_filling']['enabled'] && $mode != 'register') {
 
 		if (!empty($value) || $value || $value == 1) {
 			$db_data['user_profile_progress_filled'] = json_decode($pr_data['user_profile_progress_filled'], true);
-			if (!empty($db_data['user_profile_progress_filled'])) {
+			if (is_array($db_data['user_profile_progress_filled']) && !empty($db_data['user_profile_progress_filled'])) {
 				if (in_array($key, $db_data['user_profile_progress_filled'])) {
 					continue;
 				}
