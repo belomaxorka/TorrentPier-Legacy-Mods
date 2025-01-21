@@ -18,17 +18,30 @@ function recaptcha_v2_get($settings)
 function recaptcha_v2_check($settings)
 {
 	$resp = null;
+	$newLib = false;
 
-	require_once(CLASS_DIR . 'recaptcha.php');
-	$reCaptcha = new ReCaptcha($settings['secret_key']);
+	if (defined('CLASS_DIR')) {
+		require_once(CLASS_DIR . 'recaptcha.php');
+		$reCaptcha = new ReCaptcha($settings['secret_key']);
+	} elseif (class_exists('\ReCaptcha\ReCaptcha')) {
+		$reCaptcha = new \ReCaptcha\ReCaptcha($settings['secret_key']);
+		$newLib = true;
+	}
 
 	$g_resp = request_var('g-recaptcha-response', '');
-	if ($g_resp) {
-		$resp = $reCaptcha->verifyResponse($_SERVER["REMOTE_ADDR"], $g_resp);
-	}
-	if ($resp != null && $resp->success) {
-		return true;
+	if ($newLib) {
+		$resp = $reCaptcha->verify($g_resp, $_SERVER['REMOTE_ADDR']);
+		if ($resp->isSuccess()) {
+			return true;
+		} else {
+			return false;
+		}
 	} else {
-		return false;
+		$resp = $reCaptcha->verifyResponse($_SERVER["REMOTE_ADDR"], $g_resp);
+		if ($resp != null && $resp->success) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

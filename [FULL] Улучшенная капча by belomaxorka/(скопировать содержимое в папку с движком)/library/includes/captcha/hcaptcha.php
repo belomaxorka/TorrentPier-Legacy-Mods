@@ -11,7 +11,7 @@ function hcaptcha_check($settings)
 {
 	$data = array(
 		'secret' => $settings['secret_key'],
-		'response' => $_POST['h-captcha-response']
+		'response' => isset($_POST['h-captcha-response']) ? $_POST['h-captcha-response'] : null,
 	);
 
 	$verify = curl_init();
