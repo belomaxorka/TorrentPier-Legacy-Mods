@@ -113,3 +113,61 @@ function bb_captcha($mode)
 	return false;
 }
 =============================================
+
+======= Заменить на [для v2.2.0 и выше] =======
+/**
+ * Улучшенная капча
+ *
+ * @param $mode
+ * @return bool|string
+ */
+function bb_captcha($mode)
+{
+	global $bb_cfg;
+
+	// Разрешенные методы капчи
+	$allowedCaptchaMethods = array(
+		'recaptcha_v2',
+		'recaptcha_v3',
+		'hcaptcha',
+		'yandex_captcha',
+		'cloudflare_turnstile',
+	);
+
+	// Проверка выбранного метода капчи
+	$captchaMethod = $bb_cfg['captcha']['captcha_method'];
+	if (!in_array($captchaMethod, $allowedCaptchaMethods)) {
+		bb_die("Капча ($captchaMethod) не поддерживается!");
+	}
+
+	// Проверка настроек выбранной капчи
+	$settings = isset($bb_cfg['captcha'][$captchaMethod]) ? $bb_cfg['captcha'][$captchaMethod] : [];
+	if (empty($settings)) {
+		bb_die("Не найдены настройки для этой капчи ($captchaMethod)");
+	}
+	foreach ($settings as $key => $setting) {
+		if (empty($setting)) {
+			bb_die("Капча ($captchaMethod) не настроена ($key)");
+		}
+	}
+
+	// Подключение файла капчи
+	if (is_file(INC_DIR . '/captcha/' . $captchaMethod . '.php')) {
+		require_once(INC_DIR . '/captcha/' . $captchaMethod . '.php');
+	} else {
+		bb_die(sprintf("Не найден файл для работы с капчей (%s)", (INC_DIR . '/captcha/' . $captchaMethod . '.php')));
+	}
+
+	// Проверка
+	switch ($mode) {
+		case 'check':
+		case 'get':
+			$captchaMethod = $captchaMethod . '_' . $mode;
+			return $captchaMethod($settings); // function
+		default:
+			bb_die("Invalid mode: $mode");
+	}
+
+	return false;
+}
+===============================================
