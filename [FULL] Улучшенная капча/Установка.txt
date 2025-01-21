@@ -8,3 +8,49 @@
 - Yandex Smart Captcha
 - Cloudflare Turnstile
 -------------------------------------------------------
+
+======= Открыть library/config.php и найти =======
+$bb_cfg['captcha'] = array(
+	...
+);
+===================================================
+
+======= Заменить на =======
+$bb_cfg['captcha'] = array(
+	'disabled' => false, // отключить капчу
+	'captcha_method' => 'recaptcha_v3', // доступные: recaptcha_v2, recaptcha_v3, hcaptcha, yandex_captcha, cloudflare_turnstile
+	'recaptcha_v2' => array(
+		// Получить ключи можно в админ-панели reCAPTCHA: https://www.google.com/recaptcha/admin
+		'public_key' => '', // ключ сайта
+		'secret_key' => '', // секретный ключ
+		'theme' => 'light', // выбор темы (доступны: light, dark)
+	),
+	'recaptcha_v3' => array(
+		// Получить ключи можно в админ-панели reCAPTCHA: https://www.google.com/recaptcha/admin
+		'site_key' => '', // ключ сайта
+		'secret_key' => '', // секретный ключ
+	),
+	'hcaptcha' => array(
+		// Получить ключи можно в админ-панели: https://dashboard.hcaptcha.com/overview
+		'site_key' => '', // ключ сайта
+		'secret_key' => '', // секретный ключ
+	),
+	'yandex_captcha' => array(
+		// https://yandex.cloud/ru/docs/smartcaptcha/quickstart
+		'server_key' => '', // token (приватный ключ)
+		'client_key' => '', // клиентский ключ (публичный)
+	),
+	'cloudflare_turnstile' => array(
+		// https://www.cloudflare.com/application-services/products/turnstile
+		'site_key' => '', // ключ сайта
+		'secret_key' => '', // секретный ключ
+	),
+);
+===========================
+
+======= Открыть library/includes/functions.php и найти =======
+function bb_captcha ($mode, $callback = '')
+{
+	...
+}
+==============================================================
