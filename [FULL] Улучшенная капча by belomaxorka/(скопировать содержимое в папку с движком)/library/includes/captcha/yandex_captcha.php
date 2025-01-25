@@ -4,7 +4,7 @@ function yandex_captcha_get($settings)
 {
 	return "
 		<script src='https://smartcaptcha.yandexcloud.net/captcha.js' defer></script>
-		<div id='captcha-container' class='smart-captcha' data-sitekey='{$settings['client_key']}' data-hl='ru'></div>";
+		<div id='captcha-container' style='width: 402px;' class='smart-captcha' data-sitekey='{$settings['client_key']}' data-hl='ru'></div>";
 }
 
 function yandex_captcha_check($settings)
