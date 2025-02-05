@@ -56,3 +56,11 @@ $images['icon_plus'] = $_main . 'icon_plus_1.gif';
 ======= Заменить на =======
 <h4 class="forumlink"><a href="{FORUM_URL}{c.f.FORUM_ID}">{c.f.FORUM_NAME}</a><!-- IF c.f.CREATE_NEW_TOPIC -->&nbsp;{c.f.CREATE_NEW_TOPIC}<!-- ENDIF --></h4>
 ===========================
+
+======= Далее найти =======
+<span class="sf_title{c.f.sf.SF_NEW}"><a href="{U_SEARCH}?{#POST_FORUM_URL#}={c.f.sf.SF_ID}&amp;new=1&amp;dm=1&amp;s=0&amp;o=1" class="dot-sf">&#9658;</a><a href="{FORUM_URL}{c.f.sf.SF_ID}" class="dot-sf">{c.f.sf.SF_NAME}</a></span><span class="sf_separator"></span>
+===========================
+
+======= Заменить на =======
+<span class="sf_title{c.f.sf.SF_NEW}"><a href="{U_SEARCH}?{#POST_FORUM_URL#}={c.f.sf.SF_ID}&amp;new=1&amp;dm=1&amp;s=0&amp;o=1" class="dot-sf">&#9658;</a><a href="{FORUM_URL}{c.f.sf.SF_ID}" class="dot-sf">{c.f.sf.SF_NAME}</a><!-- IF c.f.sf.CREATE_NEW_TOPIC -->&nbsp;{c.f.sf.CREATE_NEW_TOPIC}<!-- ENDIF --></span><span class="sf_separator"></span>
+===========================
