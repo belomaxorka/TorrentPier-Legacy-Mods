@@ -39,3 +39,20 @@ unset($is_auth, $post_new);
 // Быстрое создание раздачи & топика
 'CREATE_NEW_TOPIC' => $create_new_topic,
 ===========================
+
+======= Открыть styles/templates/default/tpl_config.php и найти =======
+$images['icon_newest_reply'] = $_main . 'icon_newest_reply.gif';
+=======================================================================
+
+======= Ниже вставить =======
+// Быстрое создание раздачи & топика
+$images['icon_plus'] = $_main . 'icon_plus_1.gif';
+=============================
+
+======= Открыть styles/templates/default/index.tpl и найти =======
+<h4 class="forumlink"><a href="{FORUM_URL}{c.f.FORUM_ID}">{c.f.FORUM_NAME}</a></h4>
+==================================================================
+
+======= Заменить на =======
+<h4 class="forumlink"><a href="{FORUM_URL}{c.f.FORUM_ID}">{c.f.FORUM_NAME}</a><!-- IF c.f.CREATE_NEW_TOPIC -->&nbsp;{c.f.CREATE_NEW_TOPIC}<!-- ENDIF --></h4>
+===========================
