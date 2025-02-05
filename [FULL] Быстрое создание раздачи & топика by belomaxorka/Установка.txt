@@ -1,0 +1,40 @@
+-------------- Быстрое создание раздачи & топика --------------
+Автор: belomaxorka
+Версия: v1.0.0
+---------------------------------------------------------------
+
+======= Открыть index.php и найти =======
+if ($f['forum_status'] == FORUM_LOCKED) {
+	$folder_image = $is_sf ? $images['icon_minipost'] : $images['forum_locked'];
+}
+=========================================
+
+======= Ниже вставить =======
+// Быстрое создание раздачи & топика
+$create_new_topic = false;
+$is_auth = auth(AUTH_ALL, $fid, $userdata);
+if ($is_auth['auth_post']) {
+	$create_new_topic = "<a href='" . POSTING_URL . "?mode=newtopic&" . POST_FORUM_URL . "=$fid'><img title='" . $lang['POST_NEW_TOPIC'] . "' alt='" . $lang['POST_NEW_TOPIC'] . "' src='" . $images['icon_plus'] . "'></a>";
+}
+unset($is_auth);
+=============================
+
+======= Далее найти =======
+'SF_NEW' => $new ? ' new' : ''
+===========================
+
+======= Заменить на =======
+'SF_NEW' => $new ? ' new' : '',
+// Быстрое создание раздачи & топика
+'CREATE_NEW_TOPIC' => $create_new_topic,
+===========================
+
+======= Далее найти =======
+'FORUM_FOLDER_ALT' => $new ? $lang['NEW'] : $lang['OLD']
+===========================
+
+======= Заменить на =======
+'FORUM_FOLDER_ALT' => $new ? $lang['NEW'] : $lang['OLD'],
+// Быстрое создание раздачи & топика
+'CREATE_NEW_TOPIC' => $create_new_topic,
+===========================
