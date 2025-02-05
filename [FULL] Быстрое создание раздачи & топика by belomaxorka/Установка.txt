@@ -14,9 +14,10 @@ if ($f['forum_status'] == FORUM_LOCKED) {
 $create_new_topic = false;
 $is_auth = auth(AUTH_ALL, $fid, $userdata);
 if ($is_auth['auth_post']) {
-	$create_new_topic = "<a href='" . POSTING_URL . "?mode=newtopic&" . POST_FORUM_URL . "=$fid'><img title='" . $lang['POST_NEW_TOPIC'] . "' alt='" . $lang['POST_NEW_TOPIC'] . "' src='" . $images['icon_plus'] . "'></a>";
+	$post_new = ($f['allow_reg_tracker']) ? $lang['POST_NEW_RELEASE'] : $lang['POST_NEW_TOPIC'];
+	$create_new_topic = "<a href='" . POSTING_URL . "?mode=newtopic&" . POST_FORUM_URL . "=$fid'><img title='$post_new' alt='$post_new' src='" . $images['icon_plus'] . "'></a>";
 }
-unset($is_auth);
+unset($is_auth, $post_new);
 =============================
 
 ======= Далее найти =======
