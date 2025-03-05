@@ -150,9 +150,9 @@ if (@fopen($thumb_file, "r")) {
 			if (($poster_width > $max_width)) {
 				$thumb = imagecreatetruecolor($thumb_width, $thumb_height);
 
-				if ($filetype == 'gif' || $filetype == 'png') {
+				if ($filetype == 'gif' || $filetype == 'png' || $filetype = 'webp') {
 					imagecolortransparent($thumb, imagecolorallocate($thumb, 0, 0, 0));
-					if ($filetype == 'png') {
+					if ($filetype == 'png' || $filetype = 'webp') {
 						imagealphablending($thumb, false);
 						imagesavealpha($thumb, true);
 					}
