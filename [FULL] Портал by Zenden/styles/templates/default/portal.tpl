@@ -60,7 +60,7 @@
                     };
                 </script>
 				<input type="button" onclick="ajax.exec({ action: 'portal', topic_id: {topics.TOPIC_ID}});" value="Статистика" /><span id="portal_{topics.TOPIC_ID}"></span>
-				{L_TOR_STATUS}: <span title="{topics.TOR_STATUS_TEXT}">{topics.TOR_STATUS_ICON}</span>
+				{L_TOR_STATUS}: <span title="{topics.TOR_STATUS_TEXT}">{topics.TOR_STATUS_ICON}</span><!-- ENDIF -->
 			</td>
 		</tr>
 	</table>
