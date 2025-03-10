@@ -107,7 +107,7 @@ function des_short($title_post, $max_length, $space = ' ')
 		}
 
 ////////////////////////////////////////////////////
-Открыть functions_torrent.php
+Открыть src/Legacy/Torrent.php
 Найти
 		bb_die($lang['BT_UNREGISTERED']);
 	}
