@@ -229,14 +229,14 @@ function des_short($title_post, $max_length, $space = ' ')
 
 Ниже вставить
 <tr>
-	<td>Логотип ссылается на:</td>
+	<td class="prof-title">Логотип ссылается на:</td>
 	<td>
 		<label><input type="radio" name="user_index_portal" value="1" <!-- IF USER_INDEX_PORTAL -->checked="checked"<!-- ENDIF --> />{L_PORTAL}</label>&nbsp;&nbsp;
 		<label><input type="radio" name="user_index_portal" value="0" <!-- IF not USER_INDEX_PORTAL -->checked="checked"<!-- ENDIF --> />Форум
 	</td>
 </tr>
 <tr>
-	<td>Вид портала:</td>
+	<td class="prof-title">Вид портала:</td>
 	<td>
 		<label><input type="radio" name="user_portal" value="1" <!-- IF USER_PORTAL -->checked="checked"<!-- ENDIF --> />Вид №1</label>&nbsp;&nbsp;
 		<label><input type="radio" name="user_portal" value="0" <!-- IF not USER_PORTAL -->checked="checked"<!-- ENDIF --> />Вид №2</label>
