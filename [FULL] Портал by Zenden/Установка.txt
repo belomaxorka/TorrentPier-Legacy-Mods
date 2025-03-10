@@ -1,5 +1,8 @@
 Автор: Zenden
 ICQ: 590-700-200
+-----------------
+Автор адаптации: belomaxorka
+Версия: 1.4.0
 ////////////////////////////////////////////////////
 Открыть config.php
 Найти
@@ -163,7 +166,7 @@ function des_short($title_post, $max_length, $space = ' ')
 	<div class="cat_separator"/></div>
 	<!-- ENDIF / PORTAL -->
 
-Найти 
+Найти
 			<a href="{U_INDEX}"><b>{L_HOME}</b></a><span style="color:#CDCDCD;">|</span>
 Ниже вставить
 			<b>{U_PORTAL}</b><span style="color:#CDCDCD;">|</span>
