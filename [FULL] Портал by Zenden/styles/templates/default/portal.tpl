@@ -41,7 +41,7 @@
 		<tr>
 			<td class="tLeft" colspan="2" height="24">
 				<span>
-					{L_POSTED}: <a href="{PROFILE_URL}{topics.TOPIC_POSTER_ID}" class="topicAuthor"><b>{topics.POSTER}</b></a> 
+					{L_POSTED}: <a href="{PROFILE_URL}{topics.TOPIC_POSTER_ID}" class="topicAuthor"><b>{topics.POSTER}</b></a>
 					{topics.TIME}<br/>
 				</span>
 			</td>
@@ -52,13 +52,15 @@
 	</table>
 	<table width="100%" cellpadding="2" cellspacing="1" border="0">
 		<tr>
-			<td class="tLeft" height="24"><input type="button" onclick="location.href='{topics.U_VIEW_TOPIC}'" value="{L_REPLIES}: {topics.REPLIES}"/><!-- IF topics.PORTAL_POST --> :: <!-- IF topics.TOR_FROZEN --><!-- ELSE --><input type="button" onclick="location.href='{DOWNLOAD_URL}{topics.ATTACH_ID}'" value="{L_DOWNLOAD}: {topics.SIZE}"/><!-- ENDIF --></span>
-				 :: 
-				<script type="text/javascript">
-					ajax.callback.portal = function(data){$('#portal_'+data.topic_id).html(data.html);};
-				</script>
+			<td class="tLeft" height="24"><input type="button" onclick="location.href='{topics.U_VIEW_TOPIC}'" value="{L_REPLIES}: {topics.REPLIES}"/><!-- IF topics.PORTAL_POST --> :: <!-- IF topics.TOR_FROZEN --><!-- ELSE --><input type="button" onclick="location.href='{DOWNLOAD_URL}{topics.ATTACH_ID}'" value="{L_DOWNLOAD}: {topics.SIZE}"/><!-- ENDIF -->
+				 ::
+                <script type="text/javascript">
+                    ajax.callback.portal = function (data) {
+                        $('#portal_' + data.topic_id).html(data.html);
+                    };
+                </script>
 				<input type="button" onclick="ajax.exec({ action: 'portal', topic_id: {topics.TOPIC_ID}});" value="Статистика" /><span id="portal_{topics.TOPIC_ID}"></span>
-				{L_TOR_STATUS}: <span title="{topics.TOR_STATUS_TEXT}">{topics.TOR_STATUS_ICON}</span><!-- ENDIF -->
+				{L_TOR_STATUS}: <span title="{topics.TOR_STATUS_TEXT}">{topics.TOR_STATUS_ICON}</span>
 			</td>
 		</tr>
 	</table>
@@ -68,7 +70,7 @@
 	<!-- BEGIN data -->
 	<tr>
 		<!-- BEGIN topics -->
-		<td widht="33%" class="messageList vTop">
+		<td width="33%" class="messageList vTop">
 			<table class="bCenter w100">
 				<tr>
 					<td>
@@ -83,14 +85,14 @@
 				</tr>
 				<tr>
 					<td>
-						<a href="{topics.TOPIC_ID}" alt="{topics.TOPIC_TITLE}" title="{topics.TOPIC_TITLE}" class="poster"><img src="{topics.POSTER}" style="margin-bottom:8px;margin-right:8px;max-width:200px;max-height:200px;" /></a>
+						<a href="{topics.TOPIC_ID}" title="{topics.TOPIC_TITLE}" class="poster"><img alt="{topics.TOPIC_TITLE}" src="{topics.POSTER}" style="margin-bottom:8px;margin-right:8px;max-width:200px;max-height:200px;" /></a>
 					</td>
 				</tr>
 			</table>
 			<table class="bCenter">
 				<tr>
 					<td valign="bottom">
-						{L_REPLIES}<a href="{topics.TOPIC_ID}"> {topics.TOPIC_REPLIES}</a> :: <!-- IF topics.TOR_FROZEN --><!-- ELSE --><a href="{DOWNLOAD_URL}{topics.ATTACH_ID}"><!-- ENDIF --> {topics.SIZE}</a></span> :: <span class="leechmed">&dArr;{topics.LEECHERS} ({topics.SPEED_DOWN})</span>
+						{L_REPLIES}<a href="{topics.TOPIC_ID}"> {topics.TOPIC_REPLIES}</a> :: <!-- IF topics.TOR_FROZEN --><!-- ELSE --><a href="{DOWNLOAD_URL}{topics.ATTACH_ID}"><!-- ENDIF --> {topics.SIZE}</a> :: <span class="leechmed">&dArr;{topics.LEECHERS} ({topics.SPEED_DOWN})</span>
 						<span class="seedmed">&uArr;{topics.SEEDERS} ({topics.SPEED_UP})</span>
 						<span title="{topics.TOR_STATUS}">{topics.TOR_ICONS}</span>
 					</td>
