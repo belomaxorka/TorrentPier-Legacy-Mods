@@ -66,7 +66,7 @@ function des_short($title_post, $max_length, $space = ' ')
 ////////////////////////////////////////////////////
 Открыть includes/ucp/register.php
 Найти
-				'user_retracker'      => ($reg_mode) ? true  : true,
+				'user_retracker' => $reg_mode ? true : true,
 Ниже вставить
 				'user_index_portal'	  => ($reg_mode) ? false : true,
 				'user_portal'		  => ($reg_mode) ? false : true,
@@ -74,7 +74,7 @@ function des_short($title_post, $max_length, $space = ' ')
 ////////////////////////////////////////////////////
 Открыть includes/page_header.php
 Найти
-	'U_INDEX'            		=> BB_ROOT ."index.php",
+	'U_INDEX' => BB_ROOT . 'index.php',
 Заменить на
 	'U_INDEX'            => !bf($userdata['user_opt'], 'user_opt', 'user_index_portal') ? (BB_ROOT ."index.php") : (BB_ROOT ."portal.php"),
 	'U_PORTAL'			 => !bf($userdata['user_opt'], 'user_opt', 'user_index_portal') ? '<a href="portal.php">'.$lang['PORTAL'].'</a>' : '<a href="index.php">Форум</a>',
@@ -82,9 +82,10 @@ function des_short($title_post, $max_length, $space = ' ')
 //////////////////////////////////////////////////////
 Открыть modcp.php
 Найти
-			if (isset($net_forums[$forum_id]) && $bb_cfg['show_network_news'] && $result)
-			{
-				$datastore->enqueue('network_news');
+			if (isset($net_forums[$forum_id]) && $bb_cfg['show_network_news'] && $result) {
+				$datastore->enqueue([
+					'network_news'
+				]);
 				$datastore->update('network_news');
 			}
 Ниже вставить
@@ -96,8 +97,7 @@ function des_short($title_post, $max_length, $space = ' ')
 /////////////////////////////////////////////////////
 Открыть posting.php
 Найти
-		if ($mode == 'newtopic' || $mode == 'reply')
-		{
+		if ($mode == 'newtopic' || $mode == 'reply') {
 			set_tracks(COOKIE_TOPIC, $tracking_topics, $topic_id);
 		}
 Ниже вставить
