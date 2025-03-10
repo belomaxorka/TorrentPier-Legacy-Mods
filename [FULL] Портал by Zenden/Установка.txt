@@ -173,7 +173,7 @@ function des_short($title_post, $max_length, $space = ' ')
 ////////////////////////////////////////////////////
 Открыть page_footer.tpl
 Найти
-					<?php if (!empty($bb_cfg['sidebar2_static_content_path'])) include($bb_cfg['sidebar2_static_content_path']); ?>
+			<div id="sidebar2-wrap">
 Ниже вставить
 				<!-- IF PORTAL -->
 				<div id="latest_news" class="med">
@@ -205,7 +205,6 @@ function des_short($title_post, $max_length, $space = ' ')
 					</span>
 					<span>
 						<p>Парней: {MALE}</p>
-
 						<p>Девушек: {FEMALE}</p>
 						<p>Не указан: {UNSELECT}</p>
 					</span>
