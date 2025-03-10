@@ -226,6 +226,8 @@ function des_short($title_post, $max_length, $space = ' ')
 	<td><input type="text" name="dateformat" value="{DATE_FORMAT}" maxlength="14" /></td>
 </tr>
 <!-- ENDIF -->
+
+Ниже вставить
 <tr>
 	<td>Логотип ссылается на:</td>
 	<td>
