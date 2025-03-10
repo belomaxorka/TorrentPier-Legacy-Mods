@@ -118,7 +118,7 @@ function des_short($title_post, $max_length, $space = ' ')
 	}
 
 Найти
-		bb_die($mess);
+		bb_die(sprintf($lang['BT_REGISTERED'], DL_URL . $attach_id));
 	}
 Ниже вставить
 	if($bb_cfg['portal']['portal_enabled'])
@@ -127,22 +127,22 @@ function des_short($title_post, $max_length, $space = ' ')
 	}
 
 ////////////////////////////////////////////////////
-Открыть ajax.php
+Открыть src/Ajax.php
 Найти
-'manage_group'      => array('user'),
+'manage_group' => ['user'],
 
 Ниже вставить
 'portal'			=> array('user'),
 
 Найти
-	function sitemap()
+	public function sitemap()
 	{
-		require(AJAX_DIR .'sitemap.php');
+		require AJAX_DIR . '/sitemap.php';
 	}
 Ниже вставить
-	function portal()
-    {
-		require(AJAX_DIR .'portal.php');
+	public function portal()
+	{
+		require AJAX_DIR . '/portal.php';
 	}
 
 ////////////////////////////////////////////////////
