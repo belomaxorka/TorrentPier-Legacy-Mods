@@ -1,0 +1,242 @@
+Автор: Zenden
+ICQ: 590-700-200
+////////////////////////////////////////////////////
+Открыть config.php
+Найти
+'bb_login_err'   => array('filecache',   array()),
+Ниже вставить
+'portal'         => array('filecache',   array()),
+
+Найти
+$page_cfg['show_sidebar1'] = array(
+#	BB_SCRIPT => true
+	'index'  => true,
+Ниже вставить
+'portal' => true,
+
+Найти
+$page_cfg['show_sidebar2'] = array(
+#	BB_SCRIPT => true
+	'index'		=> false,
+Ниже вставить
+'portal' => true,
+
+В самом низу вставить
+$bb_cfg['portal'] = array(
+	'portal_enabled'		=> true,
+	'portal_releas_ignor'	=> ''
+);
+
+////////////////////////////////////////////////////
+Открыть language/ru/main.php
+В самом низу вставить
+$lang['PORTAL'] = 'Портал';
+
+////////////////////////////////////////////////////
+Открыть includes/function.php
+Найти
+	'user_retracker'     => 15, // Добавлять ретрекер к скачиваемым торрентам
+Ниже вставить
+	'user_index_portal'	 => 16, // Главная страница портала
+	'user_portal'		 => 17, // Вид портала
+
+
+В самом низу вставить
+
+function des_short($title_post, $max_length, $space = ' ')
+{
+	if ($max_length && mb_strlen($title_post, 'UTF-8') > $max_length)
+	{
+		$title_post = mb_substr($title_post, 0, $max_length, 'UTF-8');
+		if ($last_space_pos = $max_length - intval(strpos(strrev($title_post), $space)))
+		{
+			if ($last_space_pos > round($max_length * 3/4))
+			{
+				$last_space_pos--;
+				$title_post = mb_substr($title_post, 0, $last_space_pos, 'UTF-8');
+			}
+		}
+		$title_post .= '...';
+		$title_post = preg_replace('!&#?(\w+)?;?(\w{1,5})?\.\.\.$!', '...', $title_post);
+	}
+	return $title_post;
+}
+////////////////////////////////////////////////////
+Открыть includes/ucp/register.php
+Найти
+				'user_retracker'      => ($reg_mode) ? true  : true,
+Ниже вставить
+				'user_index_portal'	  => ($reg_mode) ? false : true,
+				'user_portal'		  => ($reg_mode) ? false : true,
+
+////////////////////////////////////////////////////
+Открыть includes/page_header.php
+Найти
+	'U_INDEX'            		=> BB_ROOT ."index.php",
+Заменить на
+	'U_INDEX'            => !bf($userdata['user_opt'], 'user_opt', 'user_index_portal') ? (BB_ROOT ."index.php") : (BB_ROOT ."portal.php"),
+	'U_PORTAL'			 => !bf($userdata['user_opt'], 'user_opt', 'user_index_portal') ? '<a href="portal.php">'.$lang['PORTAL'].'</a>' : '<a href="index.php">Форум</a>',
+
+//////////////////////////////////////////////////////
+Открыть modcp.php
+Найти
+			if (isset($net_forums[$forum_id]) && $bb_cfg['show_network_news'] && $result)
+			{
+				$datastore->enqueue('network_news');
+				$datastore->update('network_news');
+			}
+Ниже вставить
+			if($bb_cfg['portal']['portal_enabled'])
+			{
+				CACHE('portal')->rm();
+			}
+
+/////////////////////////////////////////////////////
+Открыть posting.php
+Найти
+		if ($mode == 'newtopic' || $mode == 'reply')
+		{
+			set_tracks(COOKIE_TOPIC, $tracking_topics, $topic_id);
+		}
+Ниже вставить
+		if($bb_cfg['portal']['portal_enabled'])
+		{
+			CACHE('portal')->rm();
+		}
+
+////////////////////////////////////////////////////
+Открыть functions_torrent.php
+Найти
+		bb_die($lang['BT_UNREGISTERED']);
+	}
+Ниже вставить
+	if($bb_cfg['portal']['portal_enabled'])
+	{
+		CACHE('portal')->rm();
+	}
+
+Найти
+		bb_die($mess);
+	}
+Ниже вставить
+	if($bb_cfg['portal']['portal_enabled'])
+	{
+		CACHE('portal')->rm();
+	}
+
+////////////////////////////////////////////////////
+Открыть ajax.php
+Найти
+'manage_group'      => array('user'),
+
+Ниже вставить
+'portal'			=> array('user'),
+
+Найти
+	function sitemap()
+	{
+		require(AJAX_DIR .'sitemap.php');
+	}
+Ниже вставить
+	function portal()
+    {
+		require(AJAX_DIR .'portal.php');
+	}
+
+////////////////////////////////////////////////////
+Открыть page_header.tpl
+Найти
+<div id="sidebar1-wrap">
+Ниже вставить
+Внимание!!! {id} это ид ваших категорий
+	<!-- IF PORTAL -->
+	<h3>Категории</h3>
+	<span class="genmed bold" style="line-height: 150%">
+		<ul>
+			<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
+			<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
+			<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
+			<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
+			<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
+		</ul>
+	</span>
+	<div class="cat_separator"/></div>
+	<!-- ENDIF / PORTAL -->
+
+Найти 
+			<a href="{U_INDEX}"><b>{L_HOME}</b></a><span style="color:#CDCDCD;">|</span>
+Ниже вставить
+			<b>{U_PORTAL}</b><span style="color:#CDCDCD;">|</span>
+
+////////////////////////////////////////////////////
+Открыть page_footer.tpl
+Найти
+					<?php if (!empty($bb_cfg['sidebar2_static_content_path'])) include($bb_cfg['sidebar2_static_content_path']); ?>
+Ниже вставить
+				<!-- IF PORTAL -->
+				<div id="latest_news" class="med">
+				<h3>Статистика раздач</h3>
+					<span>
+						<p>Раздач: {RELES}</p>
+					</span>
+					<span>
+						<p>Общий размер: {ALL_SIZE}</p>
+					</span>
+					<span>
+						<p>Пиров: {ALL_PEERS}</p>
+					</span>
+					<span>
+						<p>Сидов: {ALL_SEEDERS}</<p>
+						<p>Личеров: {ALL_LEECHERS}</p>
+						<p>Скорость обмена: {SPEED}</p>
+					</span>
+				</div>
+				<div id="latest_news" class="med">
+				<h3>Статистика форума</h3>
+					<span>
+						<p>{TORRENTS_STAT}</p>
+					<span>
+						<p>Сообщения: {TOTAL_POSTS}</p>
+					</span>
+					<span>
+						<p>Пользователи: {TOTAL_USERS}</p>
+					</span>
+					<span>
+						<p>Парней: {MALE}</p>
+
+						<p>Девушек: {FEMALE}</p>
+						<p>Не указан: {UNSELECT}</p>
+					</span>
+					<span>
+						<p>Новый пользователь: {NEWEST_USER}</p>
+					</span>
+					<span>
+						<p>Рекорд посетителей онлайн: {RECORD_USERS}</p>
+					</span>
+				</div>
+				<!-- ENDIF -->
+
+////////////////////////////////////////////////////
+Октрыть usercp_register.tpl
+Найти
+<!-- IF SHOW_DATEFORMAT -->
+<tr>
+	<td>{L_DATE_FORMAT}:<h6>{L_DATE_FORMAT_EXPLAIN}</h6></td>
+	<td><input type="text" name="dateformat" value="{DATE_FORMAT}" maxlength="14" /></td>
+</tr>
+<!-- ENDIF -->
+<tr>
+	<td>Логотип ссылается на:</td>
+	<td>
+		<label><input type="radio" name="user_index_portal" value="1" <!-- IF USER_INDEX_PORTAL -->checked="checked"<!-- ENDIF --> />{L_PORTAL}</label>&nbsp;&nbsp;
+		<label><input type="radio" name="user_index_portal" value="0" <!-- IF not USER_INDEX_PORTAL -->checked="checked"<!-- ENDIF --> />Форум
+	</td>
+</tr>
+<tr>
+	<td>Вид портала:</td>
+	<td>
+		<label><input type="radio" name="user_portal" value="1" <!-- IF USER_PORTAL -->checked="checked"<!-- ENDIF --> />Вид №1</label>&nbsp;&nbsp;
+		<label><input type="radio" name="user_portal" value="0" <!-- IF not USER_PORTAL -->checked="checked"<!-- ENDIF --> />Вид №2</label>
+	</td>
+</tr>
+////////////////////////////////////////////////////
