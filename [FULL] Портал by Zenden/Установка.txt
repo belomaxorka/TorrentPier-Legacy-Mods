@@ -6,21 +6,21 @@ ICQ: 590-700-200
 ////////////////////////////////////////////////////
 Открыть config.php
 Найти
-'bb_login_err'   => array('filecache',   array()),
+'bb_login_err' => ['filecache'],
 Ниже вставить
-'portal'         => array('filecache',   array()),
+'portal' => ['filecache'],
 
 Найти
-$page_cfg['show_sidebar1'] = array(
-#	BB_SCRIPT => true
-	'index'  => true,
+'show_sidebar1' => [
+	#BB_SCRIPT => true
+	'index' => true,
 Ниже вставить
 'portal' => true,
 
 Найти
-$page_cfg['show_sidebar2'] = array(
-#	BB_SCRIPT => true
-	'index'		=> false,
+'show_sidebar2' => [
+	#BB_SCRIPT => true
+	'index' => true,
 Ниже вставить
 'portal' => true,
 
