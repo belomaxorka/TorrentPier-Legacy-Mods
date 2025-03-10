@@ -38,11 +38,10 @@ $lang['PORTAL'] = 'Портал';
 ////////////////////////////////////////////////////
 Открыть includes/function.php
 Найти
-	'user_retracker'     => 15, // Добавлять ретрекер к скачиваемым торрентам
+	'user_retracker' => 15, // [SETTINGS] Add my retracker into downloaded torrent files
 Ниже вставить
 	'user_index_portal'	 => 16, // Главная страница портала
 	'user_portal'		 => 17, // Вид портала
-
 
 В самом низу вставить
 
