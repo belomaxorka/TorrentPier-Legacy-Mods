@@ -1,11 +1,14 @@
 ------------------ Просмотр кода топика ------------------
 Автор: belomaxorka
-Версия: v1.0.4
+Версия: v1.0.5
 ----------------------------------------------------------
 
 ------------------ Открыть library/config.php и в конце вставить ------------------
 // Просмотр кода топика
-$bb_cfg['show_post_bbcode_button'] = true;
+$bb_cfg['show_post_bbcode_button'] = array(
+	'enabled' => true,
+	'only_for_first_post' => true,
+);
 -----------------------------------------------------------------------------------
 
 ------------------ Открыть library/ajax/view_post.php и найти ------------------
@@ -21,7 +24,7 @@ $topic_id = (int) @$this->request['topic_id'];
 -------------------------------------------------
 
 ------------------ Ниже вставить ------------------
-$return_text = $bb_cfg['show_post_bbcode_button'] && isset($this->request['return_text']) && (bool) $this->request['return_text'];
+$return_text = $bb_cfg['show_post_bbcode_button']['enabled'] && isset($this->request['return_text']) && (bool) $this->request['return_text'];
 ---------------------------------------------------
 
 ------------------ Далее найти ------------------
