@@ -15,10 +15,10 @@
 	</div>
 </div>
 <!-- IF PAGINATION -->
-<div class="PageNav" id="pagination">
+<div class="nav">
 	<p style="float: left">{PAGE_NUMBER}</p>
 	<p style="float: right">{PAGINATION}</p>
-	<br/>
+	<div class="clear"></div>
 </div>
 <!-- ENDIF -->
 <!-- BEGIN no_topics -->
@@ -107,9 +107,9 @@
 	<!-- END data -->
 </table>
 <!-- IF PAGINATION -->
-<div class="PageNav" id="pagination">
+<div class="nav">
 	<p style="float: left">{PAGE_NUMBER}</p>
 	<p style="float: right">{PAGINATION}</p>
-	<br/>
+	<div class="clear"></div>
 </div>
 <!-- ENDIF -->
