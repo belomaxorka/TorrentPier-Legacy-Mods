@@ -153,17 +153,17 @@ function des_short($title_post, $max_length, $space = ' ')
 Внимание!!! {id} это ид ваших категорий
 	<!-- IF PORTAL -->
 	<h3>Категории</h3>
-		<div class="genmed bold" style="line-height: 150%;">
-			<ul>
-				<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
-				<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
-				<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
-				<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
-				<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
-			</ul>
-		</div>
-		<img width="210" class="spacer" src="{SPACER}" alt=""/>
-		<!-- ENDIF / PORTAL -->
+	<div class="genmed bold" style="line-height: 150%;">
+		<ul>
+			<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
+			<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
+			<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
+			<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
+			<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
+		</ul>
+	</div>
+	<img width="210" class="spacer" src="{SPACER}" alt=""/>
+	<!-- ENDIF / PORTAL -->
 
 Найти
 			<a href="{U_INDEX}"><b>{L_HOME}</b></a><span style="color:#CDCDCD;">|</span>
