@@ -109,7 +109,7 @@ $template->assign_vars(array(
 -------------------------------------------------------------------------------------
 
 ------------------ Ниже вставить ------------------
-<!-- IF postrow.IS_FIRST_POST && $bb_cfg['show_post_bbcode_button'] -->
+<!-- IF $bb_cfg['show_post_bbcode_button']['enabled'] --><!-- IF postrow.IS_FIRST_POST || !$bb_cfg['show_post_bbcode_button']['only_for_first_post'] -->
 <script type="text/javascript">
 	var loadedText = {};
 	ajax.view_post = function (post_id) {
@@ -131,5 +131,5 @@ $template->assign_vars(array(
 	};
 </script>
 <a href="#" class="txtb" onclick="ajax.view_post('{postrow.POST_ID}'); return false;">{CODE_IMG}</a>{POST_BTN_SPACER}
-<!-- ENDIF -->
+<!-- ENDIF --><!-- ENDIF -->
 ---------------------------------------------------
