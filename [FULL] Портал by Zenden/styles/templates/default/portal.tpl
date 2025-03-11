@@ -101,7 +101,7 @@
 		</td>
 		<!-- END topics -->
 		<!-- BEGIN not -->
-		<td class="row1 tCenter" width="25%">&nbsp;</td>
+		<td class="tCenter" width="25%">&nbsp;</td>
 		<!-- END not -->
 	</tr>
 	<!-- END data -->
