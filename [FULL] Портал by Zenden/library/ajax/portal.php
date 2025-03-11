@@ -16,7 +16,7 @@ $row = DB()->fetch_row("
 );
 
 $row['seeders'] = isset($row['seeders']) ? $row['seeders'] : 0;
-$row['leechers'] = isset($row['seeders']) ? $row['seeders'] : 0;
+$row['leechers'] = isset($row['leechers']) ? $row['leechers'] : 0;
 $row['speed_up'] = isset($row['speed_up']) ? $row['speed_up'] : 0;
 $row['speed_down'] = isset($row['speed_down']) ? $row['speed_down'] : 0;
 
