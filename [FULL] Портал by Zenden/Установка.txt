@@ -175,47 +175,28 @@ function des_short($title_post, $max_length, $space = ' ')
 Найти
 			<div id="sidebar2-wrap">
 Ниже вставить
-				<!-- IF PORTAL -->
-				<div id="latest_news" class="med">
+			<!-- IF PORTAL -->
+			<div class="med">
 				<h3>Статистика раздач</h3>
-					<span>
-						<p>Раздач: {RELES}</p>
-					</span>
-					<span>
-						<p>Общий размер: {ALL_SIZE}</p>
-					</span>
-					<span>
-						<p>Пиров: {ALL_PEERS}</p>
-					</span>
-					<span>
-						<p>Сидов: {ALL_SEEDERS}</<p>
-						<p>Личеров: {ALL_LEECHERS}</p>
-						<p>Скорость обмена: {SPEED}</p>
-					</span>
-				</div>
-				<div id="latest_news" class="med">
+				<p>Раздач: {RELES}</p>
+				<p>Общий размер: {ALL_SIZE}</p>
+				<p>Пиров: {ALL_PEERS}</p>
+				<p>Сидов: {ALL_SEEDERS}<p>
+				<p>Личеров: {ALL_LEECHERS}</p>
+				<p>Скорость обмена: {SPEED}</p>
+			</div>
+			<div class="med">
 				<h3>Статистика форума</h3>
-					<span>
-						<p>{TORRENTS_STAT}</p>
-					<span>
-						<p>Сообщения: {TOTAL_POSTS}</p>
-					</span>
-					<span>
-						<p>Пользователи: {TOTAL_USERS}</p>
-					</span>
-					<span>
-						<p>Парней: {MALE}</p>
-						<p>Девушек: {FEMALE}</p>
-						<p>Не указан: {UNSELECT}</p>
-					</span>
-					<span>
-						<p>Новый пользователь: {NEWEST_USER}</p>
-					</span>
-					<span>
-						<p>Рекорд посетителей онлайн: {RECORD_USERS}</p>
-					</span>
-				</div>
-				<!-- ENDIF -->
+				<p>{TORRENTS_STAT}</p>
+				<p>Сообщения: {TOTAL_POSTS}</p>
+				<p>Пользователи: {TOTAL_USERS}</p>
+				<p>Парней: {MALE}</p>
+				<p>Девушек: {FEMALE}</p>
+				<p>Не указан: {UNSELECT}</p>
+				<p>Новый пользователь: {NEWEST_USER}</p>
+				<p>Рекорд посетителей онлайн: {RECORD_USERS}</p>
+			</div>
+			<!-- ENDIF -->
 
 ////////////////////////////////////////////////////
 Октрыть usercp_register.tpl
