@@ -118,3 +118,19 @@ if (!empty($_POST['topic_tags_list']) && is_array($_POST['topic_tags_list'])) {
 	$topic_tags = $_POST['topic_tags_list'];
 }
 =============================
+
+======= Далее найти =======
+\TorrentPier\Legacy\Post::submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_id, $post_id, $topic_type, DB()->escape($username), DB()->escape($subject), DB()->escape($message), $update_post_time, $poster_rg_id, $attach_rg_sig, (int)$robots_indexing);
+===========================
+
+======= Заменить на =======
+\TorrentPier\Legacy\Post::submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_id, $post_id, $topic_type, DB()->escape($username), DB()->escape($subject), DB()->escape($message), $update_post_time, $poster_rg_id, $attach_rg_sig, (int)$robots_indexing, $topic_tags);
+===========================
+
+======= Если не удалось найти, то =======
+\TorrentPier\Legacy\Post::submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_id, $post_id, $topic_type, DB()->escape($username), DB()->escape($subject), DB()->escape($message), $update_post_time, $poster_rg_id, $attach_rg_sig);
+=========================================
+
+======= Заменить на =======
+\TorrentPier\Legacy\Post::submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_id, $post_id, $topic_type, DB()->escape($username), DB()->escape($subject), DB()->escape($message), $update_post_time, $poster_rg_id, $attach_rg_sig, $topic_tags);
+===========================
