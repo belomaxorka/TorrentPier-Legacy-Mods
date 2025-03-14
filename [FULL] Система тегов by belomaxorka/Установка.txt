@@ -15,4 +15,16 @@ CREATE TABLE IF NOT EXISTS `bb_tags`
   ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `bb_topic_tags`;
+CREATE TABLE IF NOT EXISTS `bb_topic_tags`
+(
+  `topic_id` MEDIUMINT(8) UNSIGNED NOT NULL,
+  `tag_id`   MEDIUMINT(8) UNSIGNED NOT NULL,
+  PRIMARY KEY (topic_id, tag_id),
+  FOREIGN KEY (topic_id) REFERENCES bb_topics (topic_id) ON DELETE CASCADE,
+  FOREIGN KEY (tag_id) REFERENCES bb_tags (tag_id) ON DELETE CASCADE
+) ENGINE = MyISAM
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
 =====================
