@@ -195,6 +195,19 @@ if ($join_topic_tags) {
 }
 =============================
 
+======= Открыть src/Legacy/Admin/Common.php и найти =======
+// Delete posts, posts_text, attachments (from DB)
+===========================================================
+
+======= Выше вставить =======
+// Delete topic tags
+DB()->query("
+	DELETE tt
+	FROM      " . $tmp_delete_topics . " del
+	LEFT JOIN " . BB_TOPIC_TAGS . " tt  USING(topic_id)
+");
+=============================
+
 ======= Открыть src/Legacy/Datastore/Common.php и найти =======
 'censor' => 'build_censor.php',
 ===============================================================
