@@ -240,7 +240,7 @@ if ($mode == 'newtopic') {
 
 ======= Ниже вставить =======
 // ----------------- Теги -----------------
-if (!empty($topic_tags)) {
+if (!empty($topic_id)) {
 	// Получаем все теги и теги, связанные с темой
 	$tags_list = get_topic_tags($topic_id);
 	$all_tags_list = $tags_list['all_tags']; // Все теги
@@ -253,47 +253,56 @@ if (!empty($topic_tags)) {
 
 	$need_update_datastore = false;
 
-	foreach ($topic_tags as $tag) {
-		$tag = trim($tag); // Удаляем лишние пробелы
+	// Если POST-запрос содержит новые теги
+	if (!empty($topic_tags)) {
+		foreach ($topic_tags as $tag) {
+			$tag = trim($tag); // Удаляем лишние пробелы
 
-		if (ctype_digit($tag) && in_array((int)$tag, $all_tags_id)) {
-			// Если значение является числом и существует в базе данных как tag_id
-			$tag_id = (int)$tag;
-		} else {
-			// Если значение не является tag_id, считаем его tag_name
-			$tag_name = $tag;
-
-			if (isset($all_tags_name_to_id[$tag_name])) {
-				// Если тег уже существует, берем его ID
-				$tag_id = $all_tags_name_to_id[$tag_name];
+			if (ctype_digit($tag) && in_array((int)$tag, $all_tags_id)) {
+				// Если значение является числом и существует в базе данных как tag_id
+				$tag_id = (int)$tag;
 			} else {
-				// Если тега нет, создаем новый
-				DB()->sql_query("INSERT INTO " . BB_TAGS . " (tag_name) VALUES ('" . DB()->escape($tag_name) . "')");
-				$tag_id = DB()->sql_nextid(); // Получаем ID нового тега
-				$all_tags_id[] = $tag_id; // Добавляем новый ID в массив существующих тегов
-				$all_tags_name_to_id[$tag_name] = $tag_id; // Обновляем ассоциативный массив
-				$need_update_datastore = true;
-			}
-		}
+				// Если значение не является tag_id, считаем его tag_name
+				$tag_name = $tag;
 
-		// Проверяем, что тег еще не связан с темой
-		if (!in_array($tag_id, $topic_tags_db_ids)) {
-			// Добавляем связь между темой и тегом
-			DB()->sql_query("INSERT INTO " . BB_TOPIC_TAGS . " (topic_id, tag_id) VALUES ($topic_id, $tag_id)");
+				if (isset($all_tags_name_to_id[$tag_name])) {
+					// Если тег уже существует, берем его ID
+					$tag_id = $all_tags_name_to_id[$tag_name];
+				} else {
+					// Если тега нет, создаем новый
+					DB()->sql_query("INSERT INTO " . BB_TAGS . " (tag_name) VALUES ('" . DB()->escape($tag_name) . "')");
+					$tag_id = DB()->sql_nextid(); // Получаем ID нового тега
+					$all_tags_id[] = $tag_id; // Добавляем новый ID в массив существующих тегов
+					$all_tags_name_to_id[$tag_name] = $tag_id; // Обновляем ассоциативный массив
+					$need_update_datastore = true;
+				}
+			}
+
+			// Проверяем, что тег еще не связан с темой
+			if (!in_array($tag_id, $topic_tags_db_ids)) {
+				// Добавляем связь между темой и тегом
+				DB()->sql_query("INSERT INTO " . BB_TOPIC_TAGS . " (topic_id, tag_id) VALUES ($topic_id, $tag_id)");
+			}
 		}
 	}
 
-	// 2. Удаление тегов, которые были отсоединены
-	foreach ($topic_tags_db_ids as $existing_tag_id) {
-		// Проверяем, есть ли этот тег в POST-запросе
-		if (!in_array((string)$existing_tag_id, $topic_tags) && !in_array($all_tags_list[$existing_tag_id]['tag_name'], $topic_tags)) {
-			// Если тега нет в POST-запросе, удаляем связь
-			DB()->sql_query("DELETE FROM " . BB_TOPIC_TAGS . " WHERE topic_id = $topic_id AND tag_id = $existing_tag_id");
+	// Удаление всех связей, если POST-запрос пустой
+	if (empty($topic_tags)) {
+		// Удаляем все связи между темой и тегами
+		DB()->sql_query("DELETE FROM " . BB_TOPIC_TAGS . " WHERE topic_id = $topic_id");
+	} else {
+		// Удаление отдельных тегов, которые были отсоединены
+		foreach ($topic_tags_db_ids as $existing_tag_id) {
+			// Проверяем, есть ли этот тег в POST-запросе
+			if (!in_array((string)$existing_tag_id, $topic_tags) && !in_array($all_tags_list[$existing_tag_id]['tag_name'], $topic_tags)) {
+				// Если тега нет в POST-запросе, удаляем связь
+				DB()->sql_query("DELETE FROM " . BB_TOPIC_TAGS . " WHERE topic_id = $topic_id AND tag_id = $existing_tag_id");
+			}
 		}
 	}
 
 	// Обновляем кэш тегов, если были созданы новые теги или удалены связи
-	if ($need_update_datastore) {
+	if ($need_update_datastore || empty($topic_tags)) {
 		$datastore->update('tags');
 	}
 
