@@ -288,3 +288,33 @@ if (!empty($topic_tags)) {
 }
 // ----------------------------------------
 =============================
+
+======= Открыть posting.tpl (В вашем шаблоне) и найти =======
+<!-- ELSEIF LOGGED_IN -->
+=============================================================
+
+======= Ниже вставить =======
+<link rel="stylesheet" type="text/css" href="{SITE_URL}styles/js/libs/magicsuggest.css"/>
+<tr class="pad_6">
+	<td class="vTop pad_4" valign="top">
+		<p><b>{L_TAGS}</b></p>
+	</td>
+	<td>
+		<div id="topic_tags_container"></div>
+	</td>
+</tr>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('div#topic_tags_container').magicSuggest({
+			data: {ALL_TAGS_JSON},
+			value: {TOPIC_TAGS_LIST},
+			name: 'topic_tags_list',
+			displayField: 'tag_name',
+			valueField: 'tag_id',
+			placeholder: 'Напишите желаемый тег, или выберите из списка',
+			noSuggestionText: 'Такого тега нету :(',
+		});
+	});
+</script>
+<script src="{SITE_URL}styles/js/libs/magicsuggest.js"></script>
+=============================
