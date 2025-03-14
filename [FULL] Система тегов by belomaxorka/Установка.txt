@@ -215,3 +215,76 @@ public static function submit_post($mode, &$post_data, &$message, &$meta, &$foru
 ======= Заменить на =======
 public static function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_id, &$post_id, &$topic_type, $post_username, $post_subject, $post_message, $update_post_time, $poster_rg_id, $attach_rg_sig, $topic_tags)
 ===========================
+
+======= Далее найти =======
+if ($mode == 'newtopic') {
+	$topic_id = DB()->sql_nextid();
+}
+===========================
+
+======= Ниже вставить =======
+// ----------------- Теги -----------------
+if (!empty($topic_tags)) {
+	// Получаем все теги и теги, связанные с темой
+	$tags_list = get_topic_tags($topic_id);
+	$all_tags_list = $tags_list['all_tags']; // Все теги
+	$topic_tags_db = $tags_list['topic_tags']; // Теги, связанные с темой
+
+	// Создаем массивы для быстрого поиска
+	$all_tags_id = array_column($all_tags_list, 'tag_id'); // Массив всех tag_id
+	$all_tags_name_to_id = array_column($all_tags_list, 'tag_id', 'tag_name'); // Ассоциативный массив tag_name => tag_id
+	$topic_tags_db_ids = array_column($topic_tags_db, 'tag_id'); // Массив tag_id, связанных с темой
+
+	$need_update_datastore = false;
+
+	foreach ($topic_tags as $tag) {
+		$tag = trim($tag); // Удаляем лишние пробелы
+
+		if (ctype_digit($tag) && in_array((int)$tag, $all_tags_id)) {
+			// Если значение является числом и существует в базе данных как tag_id
+			$tag_id = (int)$tag;
+		} else {
+			// Если значение не является tag_id, считаем его tag_name
+			$tag_name = $tag;
+
+			if (isset($all_tags_name_to_id[$tag_name])) {
+				// Если тег уже существует, берем его ID
+				$tag_id = $all_tags_name_to_id[$tag_name];
+			} else {
+				// Если тега нет, создаем новый
+				DB()->sql_query("INSERT INTO " . BB_TAGS . " (tag_name) VALUES ('" . DB()->escape($tag_name) . "')");
+				$tag_id = DB()->sql_nextid(); // Получаем ID нового тега
+				$all_tags_id[] = $tag_id; // Добавляем новый ID в массив существующих тегов
+				$all_tags_name_to_id[$tag_name] = $tag_id; // Обновляем ассоциативный массив
+				$need_update_datastore = true;
+			}
+		}
+
+		// Проверяем, что тег еще не связан с темой
+		if (!in_array($tag_id, $topic_tags_db_ids)) {
+			// Добавляем связь между темой и тегом
+			DB()->sql_query("INSERT INTO " . BB_TOPIC_TAGS . " (topic_id, tag_id) VALUES ($topic_id, $tag_id)");
+		}
+	}
+
+	// 2. Удаление тегов, которые были отсоединены
+	foreach ($topic_tags_db_ids as $existing_tag_id) {
+		// Проверяем, есть ли этот тег в POST-запросе
+		if (!in_array((string)$existing_tag_id, $topic_tags) && !in_array($all_tags_list[$existing_tag_id]['tag_name'], $topic_tags)) {
+			// Если тега нет в POST-запросе, удаляем связь
+			DB()->sql_query("DELETE FROM " . BB_TOPIC_TAGS . " WHERE topic_id = $topic_id AND tag_id = $existing_tag_id");
+		}
+	}
+
+	// Обновляем кэш тегов, если были созданы новые теги или удалены связи
+	if ($need_update_datastore) {
+		$datastore->update('tags');
+	}
+
+	// Очистка кэша темы, если были добавлены новые теги
+	if ($mode == 'editpost') {
+		CACHE('bb_topic_tags')->rm('topic_' . $topic_id);
+	}
+}
+// ----------------------------------------
+=============================
