@@ -320,3 +320,15 @@ if (!empty($topic_tags)) {
 </script>
 <script src="{SITE_URL}styles/js/libs/magicsuggest.js"></script>
 =============================
+
+======= Открыть viewtopic.tpl (В вашем шаблоне) и найти =======
+</div>
+<!-- ENDIF -->
+</h1>
+===============================================================
+
+======= Ниже вставить =======
+<!-- IF TAGS_LIST -->
+<div class="mrg_6"><span>{L_TAGS}: {TAGS_LIST}</span></div>
+<!-- END TAGS_LIST -->
+=============================
