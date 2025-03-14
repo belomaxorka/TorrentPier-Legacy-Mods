@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `bb_topic_tags`
 ==================================================
 
 ======= Ниже вставить =======
+// Теги
 'bb_topic_tags' => ['filecache'],
 =============================
 
@@ -81,6 +82,7 @@ define('BB_SMILIES', 'bb_smilies');
 ============================================================
 
 ======= Ниже вставить =======
+// Теги
 define('BB_TAGS', 'bb_tags');
 define('BB_TOPIC_TAGS', 'bb_topic_tags');
 =============================
@@ -89,3 +91,30 @@ define('BB_TOPIC_TAGS', 'bb_topic_tags');
 // Теги
 $lang['TAGS'] = 'Теги';
 =======================================================================
+
+======= Открыть posting.php и найти =======
+if ($submit || $refresh) {
+===========================================
+
+======= Выше вставить =======
+// ------------------ Теги ------------------
+$get_tags = get_topic_tags($topic_id);
+$all_tags_list = $get_tags['all_tags'];
+
+$topic_tags = [];
+foreach ($get_tags['topic_tags'] as $tag) {
+	$topic_tags[] = $tag;
+}
+// ------------------------------------------
+=============================
+
+======= Далее найти =======
+$notify_user = (int)!empty($_POST['notify']);
+===========================
+
+======= Ниже вставить =======
+// Теги
+if (!empty($_POST['topic_tags_list']) && is_array($_POST['topic_tags_list'])) {
+	$topic_tags = $_POST['topic_tags_list'];
+}
+=============================
