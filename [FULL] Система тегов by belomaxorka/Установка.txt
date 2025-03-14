@@ -116,6 +116,7 @@ $notify_user = (int)!empty($_POST['notify']);
 
 ======= Ниже вставить =======
 // Теги
+$topic_tags = [];
 if (!empty($_POST['topic_tags_list']) && is_array($_POST['topic_tags_list'])) {
 	$topic_tags = $_POST['topic_tags_list'];
 }
