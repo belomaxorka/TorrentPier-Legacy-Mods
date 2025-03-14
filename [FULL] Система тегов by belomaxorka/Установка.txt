@@ -75,3 +75,12 @@ function get_topic_tags($topic_id = null)
 	return ['topic_tags' => $topic_tags, 'all_tags' => $tags];
 }
 =========================================================================
+
+======= Открыть library/includes/init_bb.php и найти =======
+define('BB_SMILIES', 'bb_smilies');
+============================================================
+
+======= Ниже вставить =======
+define('BB_TAGS', 'bb_tags');
+define('BB_TOPIC_TAGS', 'bb_topic_tags');
+=============================
