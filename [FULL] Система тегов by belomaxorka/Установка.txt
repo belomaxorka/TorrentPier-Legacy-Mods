@@ -90,6 +90,8 @@ define('BB_TOPIC_TAGS', 'bb_topic_tags');
 ======= Открыть library/language/ru/main.php и вставить в конце =======
 // Теги
 $lang['TAGS'] = 'Теги';
+$lang['TAGS_PLACEHOLDER'] = 'Выберите тег из списка, или укажите новый';
+$lang['TAGS_NOT_FOUND'] = 'Такой тег не найден...';
 =======================================================================
 
 ======= Открыть posting.php и найти =======
@@ -311,8 +313,8 @@ if (!empty($topic_tags)) {
 			name: 'topic_tags_list',
 			displayField: 'tag_name',
 			valueField: 'tag_id',
-			placeholder: 'Напишите желаемый тег, или выберите из списка',
-			noSuggestionText: 'Такого тега нету :(',
+			placeholder: '{L_TAGS_PLACEHOLDER}',
+			noSuggestionText: '{L_TAGS_NOT_FOUND}',
 		});
 	});
 </script>
