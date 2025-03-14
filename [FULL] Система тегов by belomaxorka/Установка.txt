@@ -84,3 +84,8 @@ define('BB_SMILIES', 'bb_smilies');
 define('BB_TAGS', 'bb_tags');
 define('BB_TOPIC_TAGS', 'bb_topic_tags');
 =============================
+
+======= Открыть library/language/ru/main.php и вставить в конце =======
+// Теги
+$lang['TAGS'] = 'Теги';
+=======================================================================
