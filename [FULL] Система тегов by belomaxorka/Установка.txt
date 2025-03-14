@@ -191,3 +191,27 @@ if ($join_topic_tags) {
 	$SQL['WHERE'][] = "t.topic_id = tt.topic_id AND tt.tag_id = $tag_id";
 }
 =============================
+
+======= Открыть src/Legacy/Datastore/Common.php и найти =======
+'censor' => 'build_censor.php',
+===============================================================
+
+======= Ниже вставить =======
+'tags' => 'build_tags.php',
+=============================
+
+======= Открыть src/Legacy/Post.php и найти =======
+public static function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_id, &$post_id, &$topic_type, $post_username, $post_subject, $post_message, $update_post_time, $poster_rg_id, $attach_rg_sig, $robots_indexing)
+===================================================
+
+======= Заменить на =======
+public static function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_id, &$post_id, &$topic_type, $post_username, $post_subject, $post_message, $update_post_time, $poster_rg_id, $attach_rg_sig, $robots_indexing, $topic_tags)
+===========================
+
+======= Если не удалось найти, то =======
+public static function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_id, &$post_id, &$topic_type, $post_username, $post_subject, $post_message, $update_post_time, $poster_rg_id, $attach_rg_sig)
+=========================================
+
+======= Заменить на =======
+public static function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_id, &$post_id, &$topic_type, $post_username, $post_subject, $post_message, $update_post_time, $poster_rg_id, $attach_rg_sig, $topic_tags)
+===========================
