@@ -347,3 +347,23 @@ $datastore->enqueue([
     'tags'
 ]);
 ===========================
+
+======= Далее найти =======
+//
+// Send vars to template
+//
+===========================
+
+======= Выше вставить =======
+// ------------------ Теги ------------------
+$topic_tags = [];
+
+foreach (get_topic_tags($topic_id)['topic_tags'] as $tag) {
+	$topic_tags[] = '<a href="search.php?' . POST_TOPIC_URL . '=' . $topic_id . '&tag_id=' . $tag['tag_id'] . '">' . $tag['tag_name'] . '</a>';
+}
+
+$template->assign_vars([
+	'TAGS_LIST' => !empty($topic_tags) ? implode(', ', $topic_tags) : '',
+]);
+// ------------------------------------------
+=============================
