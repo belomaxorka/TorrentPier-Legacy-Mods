@@ -332,3 +332,18 @@ if (!empty($topic_tags)) {
 <div class="mrg_6"><span>{L_TAGS}: {TAGS_LIST}</span></div>
 <!-- END TAGS_LIST -->
 =============================
+
+======= Открыть viewtopic.php и найти =======
+$datastore->enqueue([
+    'ranks',
+    'cat_forums'
+]);
+==============================================
+
+======= Заменить на =======
+$datastore->enqueue([
+    'ranks',
+    'cat_forums',
+    'tags'
+]);
+===========================
