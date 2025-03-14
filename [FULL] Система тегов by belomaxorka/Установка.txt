@@ -36,3 +36,42 @@ CREATE TABLE IF NOT EXISTS `bb_topic_tags`
 ======= Ниже вставить =======
 'bb_topic_tags' => ['filecache'],
 =============================
+
+======= Открыть library/includes/functions.php и вставить в конце =======
+/**
+ * Get topic tags
+ *
+ * @param string|int $topic_id
+ * @return array
+ */
+function get_topic_tags($topic_id = null)
+{
+	global $datastore;
+
+	if (!$tags = $datastore->get('tags')) {
+		$datastore->update('tags');
+		$tags = $datastore->get('tags');
+	}
+
+	if (isset($topic_id)) {
+		if (!$topic_tags = CACHE('bb_topic_tags')->get('topic_' . $topic_id)) {
+			$topic_tags = [];
+
+			$sql = "SELECT tt.* FROM " . BB_TOPIC_TAGS . " tt WHERE tt.topic_id = $topic_id";
+			foreach (DB()->fetch_rowset($sql) as $row) {
+				if (!isset($tags[$row['tag_id']])) {
+					continue;
+				}
+				$tag = $tags[$row['tag_id']];
+				$topic_tags[] = $tag;
+			}
+
+			CACHE('bb_topic_tags')->set('topic_' . $topic_id, $topic_tags, 3600);
+		}
+	} else {
+		$topic_tags = [];
+	}
+
+	return ['topic_tags' => $topic_tags, 'all_tags' => $tags];
+}
+=========================================================================
