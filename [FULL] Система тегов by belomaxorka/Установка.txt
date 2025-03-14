@@ -314,6 +314,7 @@ if (!empty($topic_tags)) {
 			name: 'topic_tags_list',
 			displayField: 'tag_name',
 			valueField: 'tag_id',
+			maxSelection: null,
 			placeholder: '{L_TAGS_PLACEHOLDER}',
 			noSuggestionText: '{L_TAGS_NOT_FOUND}',
 		});
