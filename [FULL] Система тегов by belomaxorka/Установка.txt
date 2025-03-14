@@ -196,7 +196,7 @@ if ($join_topic_tags) {
 =============================
 
 ======= Открыть src/Legacy/Admin/Common.php и найти =======
-// Delete posts, posts_text, attachments (from DB)
+// Delete topics, topics watch
 ===========================================================
 
 ======= Выше вставить =======
