@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS `bb_tags`;
 CREATE TABLE IF NOT EXISTS `bb_tags`
 (
   `tag_id`   MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `tag_name` VARCHAR(25)           NOT NULL DEFAULT '',
+  `tag_name` VARCHAR(55)           NOT NULL DEFAULT '',
   PRIMARY KEY (`tag_id`),
   FULLTEXT KEY `tag_name` (`tag_name`)
 )
@@ -103,9 +103,9 @@ if ($submit || $refresh) {
 $get_tags = get_topic_tags($topic_id);
 $all_tags_list = $get_tags['all_tags'];
 
-$topic_tags = [];
+$topic_tags_list = [];
 foreach ($get_tags['topic_tags'] as $tag) {
-	$topic_tags[] = $tag;
+	$topic_tags_list[] = $tag;
 }
 // ------------------------------------------
 =============================
