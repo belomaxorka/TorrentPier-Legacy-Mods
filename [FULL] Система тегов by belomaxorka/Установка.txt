@@ -134,3 +134,14 @@ if (!empty($_POST['topic_tags_list']) && is_array($_POST['topic_tags_list'])) {
 ======= Заменить на =======
 \TorrentPier\Legacy\Post::submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_id, $post_id, $topic_type, DB()->escape($username), DB()->escape($subject), DB()->escape($message), $update_post_time, $poster_rg_id, $attach_rg_sig, $topic_tags);
 ===========================
+
+======= Далее найти =======
+'MESSAGE' => $message,
+===========================
+
+======= Ниже вставить =======
+// --------------- Теги ---------------
+'ALL_TAGS_JSON' => empty($all_tags_list) ? '[]' : json_encode($all_tags_list, JSON_THROW_ON_ERROR),
+'TOPIC_TAGS_LIST' => empty($topic_tags) ? '[]' : json_encode($topic_tags, JSON_THROW_ON_ERROR),
+// ------------------------------------
+=============================
