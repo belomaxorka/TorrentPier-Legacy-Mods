@@ -28,3 +28,11 @@ CREATE TABLE IF NOT EXISTS `bb_topic_tags`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 =====================
+
+======= Открыть library/config.php и найти =======
+'bb_ip2countries' => ['filecache'],
+==================================================
+
+======= Ниже вставить =======
+'bb_topic_tags' => ['filecache'],
+=============================
