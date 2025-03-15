@@ -213,6 +213,27 @@ if ($join_topic_tags) {
 }
 =============================
 
+======= Далее найти =======
+if ($items_display) {
+===========================
+
+======= Выше вставить =======
+// Теги
+if (!$tags = $datastore->get('tags')) {
+	$datastore->update('tags');
+	$tags = $datastore->get('tags');
+}
+=============================
+
+======= Далее найти =======
+'DISPLAY_AS_POSTS' => $post_mode,
+===========================
+
+======= Ниже вставить =======
+// Теги
+'BY_TAG' => $tag_id ? ($lang['TAGS_SEARCH_RESULTS'] . $tags[$tag_id]['tag_name']) : false,
+=============================
+
 ======= Открыть src/Legacy/Admin/Common.php и найти =======
 // Delete topics, topics watch
 ===========================================================
