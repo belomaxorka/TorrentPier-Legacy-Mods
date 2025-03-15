@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `bb_topic_tags`
 ======= Далее вставить в конце =======
 // Теги
 $bb_cfg['show_index_new_tags'] = true;
+$bb_cfg['new_tags_limit'] = 25;
 ======================================
 
 ======= Открыть library/includes/functions.php и вставить в конце =======
