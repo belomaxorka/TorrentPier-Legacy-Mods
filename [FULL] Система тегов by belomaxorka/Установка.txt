@@ -236,10 +236,8 @@ if ($items_display) {
 
 ======= Выше вставить =======
 // Теги
-if (!$tags = $datastore->get('tags')) {
-	$datastore->update('tags');
-	$tags = $datastore->get('tags');
-}
+$tags = get_topic_tags()['all_tags'];
+$by_tag = isset($tags[$tag_id]['tag_name']) ? $tags[$tag_id]['tag_name'] : false;
 =============================
 
 ======= Далее найти =======
