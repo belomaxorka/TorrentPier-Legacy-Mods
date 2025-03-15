@@ -46,7 +46,7 @@ $bb_cfg['show_index_new_tags'] = true;
 
 ======= Открыть library/includes/functions.php и вставить в конце =======
 /**
- * Get topic tags
+ * Возращает список тегов
  *
  * @param string|int $topic_id
  * @return array
