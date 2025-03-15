@@ -129,6 +129,16 @@ if (IS_AM) {
 // Блок: Новые теги
 if ($bb_cfg['show_index_new_tags']) {
 	$tags = get_tags_list()['all_tags'];
+	krsort($tags);
+	$tags = array_slice($tags, 0, $bb_cfg['new_tags_limit'], true);
+
+	foreach ($tags as $tag) {
+		$topic_tags[] = '<a href="search.php?tag_id=' . $tag['tag_id'] . '">' . $tag['tag_name'] . '</a>';
+	}
+
+	$template->assign_vars([
+		'LATEST_TAGS' => !empty($topic_tags) ? implode(', ', $topic_tags) : '',
+	]);
 }
 =============================
 
