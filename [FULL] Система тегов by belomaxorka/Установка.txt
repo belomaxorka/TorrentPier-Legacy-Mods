@@ -39,6 +39,11 @@ CREATE TABLE IF NOT EXISTS `bb_topic_tags`
 'bb_topic_tags' => ['filecache'],
 =============================
 
+======= Далее вставить в конце =======
+// Теги
+$bb_cfg['show_index_new_tags'] = true;
+======================================
+
 ======= Открыть library/includes/functions.php и вставить в конце =======
 /**
  * Get topic tags
