@@ -246,7 +246,7 @@ $by_tag = isset($tags[$tag_id]['tag_name']) ? $tags[$tag_id]['tag_name'] : false
 
 ======= Ниже вставить =======
 // Теги
-'BY_TAG' => $tag_id ? ($lang['TAGS_SEARCH_RESULTS'] . $tags[$tag_id]['tag_name']) : false,
+'BY_TAG' => $tag_id ? ($lang['TAGS_SEARCH_RESULTS'] . $by_tag) : false,
 =============================
 
 ======= Открыть src/Legacy/Admin/Common.php и найти =======
