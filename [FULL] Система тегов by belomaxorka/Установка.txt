@@ -220,6 +220,7 @@ $egosearch = false;
 ======= Выше вставить =======
 // Теги
 $tag_id = $_REQUEST['tag_id'] ?? 0;
+$tags_csv = is_array($tag_id) ? implode(', ', $tag_id) : $tag_id;
 =============================
 
 ======= Далее найти =======
@@ -230,7 +231,7 @@ $join_dl = ($dl_search);
 
 ======= Ниже вставить =======
 // Теги
-$join_topic_tags = ($tag_id);
+$join_topic_tags = ($tags_csv);
 =============================
 
 ======= Далее найти =======
