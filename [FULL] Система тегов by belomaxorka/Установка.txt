@@ -432,6 +432,28 @@ if (!empty($topic_id)) {
 </fieldset>
 ============================================================
 
+======= Ниже вставить =======
+<fieldset>
+	<legend>{L_TAGS}</legend>
+	<div>
+		<div id="topic_tags_container"></div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('div#topic_tags_container').magicSuggest({
+				data: {ALL_TAGS_JSON},
+				name: 'tag_id',
+				displayField: 'tag_name',
+				valueField: 'tag_id',
+				maxSelection: null,
+				placeholder: '{L_TAGS_PLACEHOLDER}',
+				noSuggestionText: '{L_TAGS_NOT_FOUND}',
+			});
+		});
+	</script>
+</fieldset>
+=============================
+
 ======= Открыть search_results.tpl (В вашем шаблоне) и найти =======
 <h1 class="pagetitle">{SEARCH_MATCHES}</h1>
 ====================================================================
