@@ -216,6 +216,18 @@ $tags_topic_tbl = BB_TOPIC_TAGS . ' tt';
 =============================
 
 ======= Далее найти =======
+print_page('search.tpl');
+===========================
+
+======= Выше вставить =======
+// Теги
+$tags = get_topic_tags()['all_tags'];
+$template->assign_vars(array(
+	'ALL_TAGS_JSON' => empty($tags) ? '[]' : json_encode($tags, JSON_THROW_ON_ERROR),
+));
+=============================
+
+======= Далее найти =======
 // Get other "REQUEST" vars
 $egosearch = false;
 ===========================
