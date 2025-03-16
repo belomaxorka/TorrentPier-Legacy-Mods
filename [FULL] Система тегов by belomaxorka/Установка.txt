@@ -245,7 +245,7 @@ if ($join_topic_tags) {
 }
 
 if ($join_topic_tags) {
-	$SQL['WHERE'][] = "t.topic_id = tt.topic_id AND tt.tag_id = $tag_id";
+	$SQL['WHERE'][] = "t.topic_id = tt.topic_id AND tt.tag_id IN($tags_csv)";
 }
 =============================
 
@@ -253,10 +253,16 @@ if ($join_topic_tags) {
 if ($items_display) {
 ===========================
 
-======= Выше вставить =======
+======= Ниже вставить =======
 // Теги
-$tags = get_topic_tags()['all_tags'];
-$by_tag = isset($tags[$tag_id]['tag_name']) ? '<b>' . $tags[$tag_id]['tag_name'] . '</b>' : false;
+$tags = get_tags_list()['all_tags'];
+$by_tag = [];
+foreach ((array)$tag_id as $tag) {
+	if (isset($tags[$tag]['tag_name'])) {
+		$by_tag[] = '<b>' . $tags[$tag]['tag_name'] . '</b>';
+	}
+}
+$by_tag = implode(', ', $by_tag);
 =============================
 
 ======= Далее найти =======
