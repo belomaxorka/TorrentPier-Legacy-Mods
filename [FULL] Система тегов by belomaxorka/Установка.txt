@@ -224,9 +224,9 @@ $egosearch = false;
 // Теги
 $tag_id = $_REQUEST['tag_id'] ?? 0;
 if (!is_array($tag_id)) {
-	$tag_id = explode(',', $_REQUEST['tag_id']);
+	$tag_id = explode(',', $tag_id);
 }
-$tags_csv = is_array($tag_id) ? implode(', ', $tag_id) : $tag_id;
+$tags_csv = implode(', ', $tag_id);
 =============================
 
 ======= Далее найти =======
