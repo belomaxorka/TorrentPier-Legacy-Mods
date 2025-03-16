@@ -8,14 +8,14 @@
  */
 
 if (!defined('BB_ROOT')) {
-    die(basename(__FILE__));
+	die(basename(__FILE__));
 }
 
 $sql = "SELECT * FROM " . BB_TAGS;
 $tags = [];
 
 foreach (DB()->fetch_rowset($sql) as $row) {
-    $tags[$row['tag_id']] = $row;
+	$tags[$row['tag_id']] = $row;
 }
 
 $this->store('tags', $tags);
