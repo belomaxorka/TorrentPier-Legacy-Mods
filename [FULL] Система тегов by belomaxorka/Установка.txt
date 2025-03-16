@@ -436,11 +436,11 @@ if (!empty($topic_id)) {
 <fieldset>
 	<legend>{L_TAGS_SEARCH_BY}</legend>
 	<div>
-		<div id="topic_tags_container"></div>
+		<div id="search_tags_container"></div>
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function () {
-			$('div#topic_tags_container').magicSuggest({
+			$('div#search_tags_container').magicSuggest({
 				data: {ALL_TAGS_JSON},
 				name: 'tag_id',
 				displayField: 'tag_name',
