@@ -434,7 +434,7 @@ if (!empty($topic_id)) {
 
 ======= Ниже вставить =======
 <fieldset>
-	<legend>{L_TAGS}</legend>
+	<legend>{L_TAGS_SEARCH_BY}</legend>
 	<div>
 		<div id="topic_tags_container"></div>
 	</div>
