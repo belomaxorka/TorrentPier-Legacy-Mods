@@ -103,7 +103,7 @@ define('BB_TOPIC_TAGS', 'bb_topic_tags');
 $lang['TAGS'] = 'Теги';
 $lang['TAGS_PLACEHOLDER'] = 'Выберите тег из списка, или укажите новый';
 $lang['TAGS_NOT_FOUND'] = 'Такой тег не найден...';
-$lang['TAGS_SEARCH_RESULTS'] = 'По тегу: ';
+$lang['TAGS_SEARCH_RESULTS'] = 'По тегам: ';
 $lang['TAGS_SEARCH_BY'] = 'Поиск по тегам';
 $lang['TAGS_LATEST_TAGS'] = 'Последние теги';
 =======================================================================
@@ -113,7 +113,7 @@ $lang['TAGS_LATEST_TAGS'] = 'Последние теги';
 $lang['TAGS'] = 'Tags';
 $lang['TAGS_PLACEHOLDER'] = 'Type or click here';
 $lang['TAGS_NOT_FOUND'] = 'No suggestions';
-$lang['TAGS_SEARCH_RESULTS'] = 'By tag: ';
+$lang['TAGS_SEARCH_RESULTS'] = 'By tags: ';
 $lang['TAGS_SEARCH_BY'] = 'Search by tags';
 $lang['TAGS_LATEST_TAGS'] = 'Latest tags';
 ===========================================================================
@@ -123,7 +123,7 @@ $lang['TAGS_LATEST_TAGS'] = 'Latest tags';
 $lang['TAGS'] = 'Tags';
 $lang['TAGS_PLACEHOLDER'] = 'Type or click here';
 $lang['TAGS_NOT_FOUND'] = 'No suggestions';
-$lang['TAGS_SEARCH_RESULTS'] = 'By tag: ';
+$lang['TAGS_SEARCH_RESULTS'] = 'By tags: ';
 $lang['TAGS_SEARCH_BY'] = 'Search by tags';
 $lang['TAGS_LATEST_TAGS'] = 'Latest tags';
 ===========================================================================
