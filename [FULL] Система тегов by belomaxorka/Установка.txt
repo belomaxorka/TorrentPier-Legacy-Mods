@@ -433,6 +433,7 @@ if (!empty($topic_id)) {
 ============================================================
 
 ======= Ниже вставить =======
+<link rel="stylesheet" type="text/css" href="{SITE_URL}styles/js/libs/magicsuggest.css"/>
 <fieldset>
 	<legend>{L_TAGS_SEARCH_BY}</legend>
 	<div>
@@ -452,6 +453,7 @@ if (!empty($topic_id)) {
 		});
 	</script>
 </fieldset>
+<script src="{SITE_URL}styles/js/libs/magicsuggest.js"></script>
 =============================
 
 ======= Открыть search_results.tpl (В вашем шаблоне) и найти =======
