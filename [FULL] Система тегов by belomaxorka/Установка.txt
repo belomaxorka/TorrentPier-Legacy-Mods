@@ -256,7 +256,7 @@ if ($items_display) {
 ======= Выше вставить =======
 // Теги
 $tags = get_topic_tags()['all_tags'];
-$by_tag = isset($tags[$tag_id]['tag_name']) ? $tags[$tag_id]['tag_name'] : false;
+$by_tag = isset($tags[$tag_id]['tag_name']) ? '<b>' . $tags[$tag_id]['tag_name'] . '</b>' : false;
 =============================
 
 ======= Далее найти =======
