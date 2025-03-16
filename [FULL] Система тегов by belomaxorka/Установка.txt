@@ -264,7 +264,7 @@ if ($items_display) {
 // Теги
 $tags = get_tags_list()['all_tags'];
 $by_tag = [];
-foreach ((array)$tag_id as $tag) {
+foreach ($tag_id as $tag) {
 	if (isset($tags[$tag]['tag_name'])) {
 		$by_tag[] = '<b>' . $tags[$tag]['tag_name'] . '</b>';
 	}
