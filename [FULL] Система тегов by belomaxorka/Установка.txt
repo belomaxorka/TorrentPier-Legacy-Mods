@@ -262,7 +262,7 @@ if ($items_display) {
 
 ======= Ниже вставить =======
 // Теги
-$tags = get_tags_list()['all_tags'];
+$tags = get_topic_tags()['all_tags'];
 $by_tag = [];
 foreach ($tag_id as $tag) {
 	if (isset($tags[$tag]['tag_name'])) {
