@@ -299,16 +299,17 @@ DB()->query("
 'tags'                   => 'build_tags.php',
 =============================
 
-======= Открыть src/Legacy/Post.php и найти =======
+======= Открыть library/includes/functions_post.php и найти =======
 function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_id, &$post_id, &$topic_type, $post_username, $post_subject, $post_message, $update_post_time, $poster_rg_id, $attach_rg_sig)
-===================================================
+===================================================================
 
 ======= Заменить на =======
 function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_id, &$post_id, &$topic_type, $post_username, $post_subject, $post_message, $update_post_time, $poster_rg_id, $attach_rg_sig, $topic_tags)
 ===========================
 
 ======= Далее найти =======
-if ($mode == 'newtopic') {
+if ($mode == 'newtopic')
+{
 	$topic_id = DB()->sql_nextid();
 }
 ===========================
