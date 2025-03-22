@@ -84,7 +84,7 @@ function get_topic_tags($topic_id = null)
 		$topic_tags = array();
 	}
 
-	return ['topic_tags' => $topic_tags, 'all_tags' => $tags];
+	return array('topic_tags' => $topic_tags, 'all_tags' => $tags);
 }
 =========================================================================
 
