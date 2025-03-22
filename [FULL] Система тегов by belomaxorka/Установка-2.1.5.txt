@@ -494,25 +494,33 @@ if (!empty($topic_id)) {
 .fieldsets fieldset > div {
 ===========================
 
-======= Открыть css/page_content.css (В вашем шаблоне) и найти =======
+======= Далее найти =======
 #sidebar2 h3 {
-	padding: 0 0 4px 0;
-	margin: 0 0 2px 0;
-======================================================================
+	padding: 0 0 4px 0; margin: 0 0 2px 0;
+	color: #333333; text-indent: 0.5em;
+	background: transparent url(../images/hr200_ltr_gradient.jpg) no-repeat left bottom;
+}
+===========================
 
 ======= Заменить на =======
 #sidebar2 h3 {
-	padding: 0 0 4px 0;
-	margin: 8px 0 2px 0;
+	padding: 0 0 4px 0; margin: 8px 0 2px 0;
+	color: #333333; text-indent: 0.5em;
+	background: transparent url(../images/hr200_ltr_gradient.jpg) no-repeat left bottom;
+}
 ===========================
 
 ======= Далее найти =======
 #user_ratio {
-	padding: 1px 6px 0 0;
+	padding: 1px 6px 0 0; font-size: 11px;
+	font-size: 11px;
+}
 ===========================
 
 ======= Заменить на =======
 #user_ratio {
+	font-size: 11px;
+}
 ===========================
 
 ======= Открыть css/top.css (В вашем шаблоне) и найти =======
