@@ -532,18 +532,16 @@ if (!empty($topic_id)) {
 ===========================
 
 ======= Открыть viewtopic.php и найти =======
-$datastore->enqueue([
-    'ranks',
-    'cat_forums'
-]);
+$datastore->enqueue(array(
+	'ranks',
+));
 ==============================================
 
 ======= Заменить на =======
-$datastore->enqueue([
-    'ranks',
-    'cat_forums',
-    'tags'
-]);
+$datastore->enqueue(array(
+	'ranks',
+	'tags',
+));
 ===========================
 
 ======= Далее найти =======
