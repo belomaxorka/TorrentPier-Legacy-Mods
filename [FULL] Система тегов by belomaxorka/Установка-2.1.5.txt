@@ -238,8 +238,7 @@ $join_topic_tags = ($tags_csv);
 =============================
 
 ======= Далее найти =======
-	$SQL['WHERE'][] = "dl.topic_id = t.topic_id AND dl.user_id = $dl_user_id_val AND dl.user_status IN($dl_status_csv)";
-}
+if ($join_dl) $SQL['WHERE'][] = "dl.topic_id = t.topic_id AND dl.user_id = $dl_user_id_val AND dl.user_status IN($dl_status_csv)";
 ===========================
 
 ======= Ниже вставить =======
