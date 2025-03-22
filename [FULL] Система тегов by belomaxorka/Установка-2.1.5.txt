@@ -35,12 +35,12 @@ INSERT INTO `bb_cron` VALUES ('', 1, 'Очистка тегов', 'clean_tags.ph
 =====================
 
 ======= Открыть library/config.php и найти =======
-'bb_ip2countries' => ['filecache'],
+'bb_poll_data'  => array('filecache', array()),
 ==================================================
 
 ======= Ниже вставить =======
 // Теги
-'bb_topic_tags' => ['filecache'],
+'bb_topic_tags' => array('filecache', array()),
 =============================
 
 ======= Далее вставить в конце =======
@@ -67,7 +67,7 @@ function get_topic_tags($topic_id = null)
 
 	if (isset($topic_id)) {
 		if (!$topic_tags = CACHE('bb_topic_tags')->get('topic_' . $topic_id)) {
-			$topic_tags = [];
+			$topic_tags = array();
 
 			$sql = "SELECT tt.* FROM " . BB_TOPIC_TAGS . " tt WHERE tt.topic_id = $topic_id";
 			foreach (DB()->fetch_rowset($sql) as $row) {
@@ -81,7 +81,7 @@ function get_topic_tags($topic_id = null)
 			CACHE('bb_topic_tags')->set('topic_' . $topic_id, $topic_tags, 3600);
 		}
 	} else {
-		$topic_tags = [];
+		$topic_tags = array();
 	}
 
 	return ['topic_tags' => $topic_tags, 'all_tags' => $tags];
@@ -108,16 +108,6 @@ $lang['TAGS_SEARCH_BY'] = 'Поиск по тегам';
 $lang['TAGS_LATEST_TAGS'] = 'Последние теги';
 =======================================================================
 
-======= Открыть library/language/source/main.php и вставить в конце =======
-// Теги
-$lang['TAGS'] = 'Tags';
-$lang['TAGS_PLACEHOLDER'] = 'Type or click here';
-$lang['TAGS_NOT_FOUND'] = 'No suggestions';
-$lang['TAGS_SEARCH_RESULTS'] = 'By tags: ';
-$lang['TAGS_SEARCH_BY'] = 'Search by tags';
-$lang['TAGS_LATEST_TAGS'] = 'Latest tags';
-===========================================================================
-
 ======= Открыть library/language/en/main.php и вставить в конце ===========
 // Теги
 $lang['TAGS'] = 'Tags';
@@ -130,7 +120,8 @@ $lang['TAGS_LATEST_TAGS'] = 'Latest tags';
 
 ======= Открыть index.php и найти =======
 // Allow cron
-if (IS_AM) {
+if (IS_AM)
+{
 =========================================
 
 ======= Выше вставить =======
@@ -140,7 +131,7 @@ if ($bb_cfg['show_index_new_tags']) {
 	krsort($tags);
 	$tags = array_slice($tags, 0, $bb_cfg['new_tags_limit'], true);
 
-	$latest_tags = [];
+	$latest_tags = array();
 	foreach ($tags as $tag) {
 		$latest_tags[] = '<a href="search.php?tag_id=' . $tag['tag_id'] . '">' . $tag['tag_name'] . '</a>';
 	}
@@ -160,7 +151,7 @@ if ($submit || $refresh) {
 $get_tags = get_topic_tags($topic_id);
 $all_tags_list = $get_tags['all_tags'];
 
-$topic_tags_list = [];
+$topic_tags_list = array();
 foreach ($get_tags['topic_tags'] as $tag) {
 	$topic_tags_list[] = $tag;
 }
