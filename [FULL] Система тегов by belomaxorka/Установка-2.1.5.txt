@@ -192,7 +192,7 @@ submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_
 =============================
 
 ======= Открыть search.php и найти =======
-$posts_tbl = BB_POSTS . ' p';
+$posts_tbl      = BB_POSTS           .' p';
 ===========================================
 
 ======= Ниже вставить =======
@@ -208,7 +208,7 @@ print_page('search.tpl');
 // Теги
 $tags = get_topic_tags()['all_tags'];
 $template->assign_vars(array(
-	'ALL_TAGS_JSON' => empty($tags) ? '[]' : json_encode($tags, JSON_THROW_ON_ERROR),
+	'ALL_TAGS_JSON' => empty($tags) ? '[]' : json_encode($tags),
 ));
 =============================
 
