@@ -253,13 +253,14 @@ if ($join_topic_tags) {
 =============================
 
 ======= Далее найти =======
-if ($items_display) {
+if ($items_display)
+{
 ===========================
 
 ======= Ниже вставить =======
 // Теги
 $tags = get_topic_tags()['all_tags'];
-$by_tag = [];
+$by_tag = array();
 foreach ($tag_id as $tag) {
 	if (isset($tags[$tag]['tag_name'])) {
 		$by_tag[] = '<b>' . $tags[$tag]['tag_name'] . '</b>';
