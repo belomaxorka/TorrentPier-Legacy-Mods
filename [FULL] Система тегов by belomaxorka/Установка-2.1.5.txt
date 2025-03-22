@@ -278,9 +278,9 @@ $by_tag = implode(', ', $by_tag);
 'BY_TAG' => ($by_tag) ? ($lang['TAGS_SEARCH_RESULTS'] . $by_tag) : false,
 =============================
 
-======= Открыть src/Legacy/Admin/Common.php и найти =======
+======= Открыть library/includes/functions_admin.php и найти =======
 // Delete topics, topics watch
-===========================================================
+====================================================================
 
 ======= Выше вставить =======
 // Delete topic tags
@@ -291,12 +291,12 @@ DB()->query("
 ");
 =============================
 
-======= Открыть src/Legacy/Datastore/Common.php и найти =======
-'censor' => 'build_censor.php',
-===============================================================
+======= Открыть library/includes/datastore/common.php и найти =======
+'smile_replacements'     => 'build_smilies.php',
+=====================================================================
 
 ======= Ниже вставить =======
-'tags' => 'build_tags.php',
+'tags'                   => 'build_tags.php',
 =============================
 
 ======= Открыть src/Legacy/Post.php и найти =======
