@@ -556,7 +556,7 @@ $datastore->enqueue([
 
 ======= Выше вставить =======
 // ------------------ Теги ------------------
-$topic_tags = [];
+$topic_tags = array();
 
 foreach (get_topic_tags($topic_id)['topic_tags'] as $tag) {
 	$topic_tags[] = '<a href="search.php?tag_id=' . $tag['tag_id'] . '">' . $tag['tag_name'] . '</a>';
