@@ -1,11 +1,11 @@
 <?php
 
 if (!defined('IN_AJAX')) {
-    die(basename(__FILE__));
+	die(basename(__FILE__));
 }
 
 if (!$topic_id = (int)$this->request['topic_id']) {
-    $this->ajax_die('invalid topic_id (empty)');
+	$this->ajax_die('invalid topic_id (empty)');
 }
 
 $row = DB()->fetch_row("
