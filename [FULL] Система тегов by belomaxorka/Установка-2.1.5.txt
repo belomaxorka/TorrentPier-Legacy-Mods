@@ -143,7 +143,9 @@ if ($bb_cfg['show_index_new_tags']) {
 =============================
 
 ======= Открыть posting.php и найти =======
-if ($submit || $refresh) {
+// Notify
+if ($submit || $refresh)
+{
 ===========================================
 
 ======= Выше вставить =======
@@ -159,12 +161,12 @@ foreach ($get_tags['topic_tags'] as $tag) {
 =============================
 
 ======= Далее найти =======
-$notify_user = (int)!empty($_POST['notify']);
+$notify_user = (int) !empty($_POST['notify']);
 ===========================
 
 ======= Ниже вставить =======
 // Теги
-$topic_tags = [];
+$topic_tags = array();
 if (!empty($_POST['topic_tags_list']) && is_array($_POST['topic_tags_list'])) {
 	$topic_tags = $_POST['topic_tags_list'];
 }
