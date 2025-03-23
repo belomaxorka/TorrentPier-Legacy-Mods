@@ -25,90 +25,90 @@ if ($user_sig) {
 preg_match_all('/\[hide(.+?)\](.+?)\[\/hide\]/si', $message, $hide_blocks);
 
 foreach ($hide_blocks[0] as $index => $block) {
-    $access_errors = [];
-    $silent_mode = false;
+	$access_errors = [];
+	$silent_mode = false;
 
-    // Извлечение параметров из тега [hide]
-    preg_match_all('/\s(\w+)=["\']([^"\']+)["\']/i', $hide_blocks[1][$index], $options);
-    foreach ($options[1] as $option_key => $option_name) {
-        $option_value = $options[2][$option_key];
+	// Извлечение параметров из тега [hide]
+	preg_match_all('/\s(\w+)=["\']([^"\']+)["\']/i', $hide_blocks[1][$index], $options);
+	foreach ($options[1] as $option_key => $option_name) {
+		$option_value = $options[2][$option_key];
 
-        switch ($option_name) {
-            case 'rank':
-                $allowed_ranks = array_map('trim', explode(',', mb_strtolower($option_value)));
-                if ($option_value === 'logged in' && IS_GUEST) {
-                    $access_errors[] = 'be logged in';
-                } elseif (!in_array(mb_strtolower($ranks[$userdata['user_rank']]['rank_title']), $allowed_ranks)) {
-                    $access_errors[] = "be one of the following ranks: {$option_value}";
-                }
-                break;
+		switch ($option_name) {
+			case 'rank':
+				$allowed_ranks = array_map('trim', explode(',', mb_strtolower($option_value)));
+				if (IS_GUEST || !isset($ranks[$userdata['user_rank']]['rank_title']) || !in_array(mb_strtolower($ranks[$userdata['user_rank']]['rank_title']), $allowed_ranks)) {
+					$access_errors[] = "be one of the following ranks: {$option_value}";
+				}
+				break;
 
-            case 'users':
-                $allowed_users = array_map('trim', explode(',', $option_value));
-                if (!in_array($userdata['username'], $allowed_users)) {
-                    $access_errors[] = "be one of the following users: {$option_value}";
-                }
-                break;
+			case 'users':
+				$allowed_users = array_map('trim', explode(',', $option_value));
+				if (IS_GUEST || !in_array($userdata['username'], $allowed_users)) {
+					$access_errors[] = "be one of the following users: {$option_value}";
+				}
+				break;
 
-            case 'points':
-                $required_points = (int)$option_value;
-                if ($userdata['user_points'] < $required_points) {
-                    $access_errors[] = "have at least {$required_points} seed points";
-                }
-                break;
+			case 'points':
+				$required_points = (int)$option_value;
+				if (IS_GUEST || ($userdata['user_points'] < $required_points)) {
+					$access_errors[] = "have at least {$required_points} seed points";
+				}
+				break;
 
-            case 'language':
-                if ($userdata['user_lang'] !== $option_value) {
-                    $silent_mode = true; // Скрыть блок без ошибки
-                }
-                break;
+			case 'language':
+				if (IS_GUEST || ($userdata['user_lang'] !== $option_value)) {
+					$silent_mode = true; // Скрыть блок без ошибки
+				}
+				break;
 
-            case 'posts':
-                $required_posts = (int)$option_value;
-                if ($userdata['user_posts'] < $required_posts) {
-                    $access_errors[] = "have at least {$required_posts} posts";
-                }
-                break;
+			case 'posts':
+				$required_posts = (int)$option_value;
+				if (IS_GUEST || ($userdata['user_posts'] < $required_posts)) {
+					$access_errors[] = "have at least {$required_posts} posts";
+				}
+				break;
 
-            case 'role':
-                $allowed_roles = array_map('trim', explode(',', mb_strtolower($option_value)));
-                $current_role = '';
-                if (IS_ADMIN) {
-                    $current_role = 'admin';
-                } elseif (IS_MOD) {
-                    $current_role = 'moderator';
-                } elseif (IS_USER) {
-                    $current_role = 'user';
-                } elseif (IS_GUEST) {
-                    $current_role = 'guest';
-                }
+			case 'role':
+				$allowed_roles = array_map('trim', explode(',', mb_strtolower($option_value)));
+				$current_role = '';
+				if (IS_ADMIN) {
+					$current_role = 'admin';
+				} elseif (IS_MOD) {
+					$current_role = 'moderator';
+				} elseif (IS_USER) {
+					$current_role = 'user';
+				} elseif (IS_GUEST) {
+					$current_role = 'guest';
+				}
 
-                if (!in_array($current_role, $allowed_roles)) {
-                    $access_errors[] = "be one of the following roles: {$option_value}";
-                }
-                break;
-        }
-    }
+				if (!in_array($current_role, $allowed_roles)) {
+					$access_errors[] = "be one of the following roles: {$option_value}";
+				}
+				break;
+		}
+	}
 
-    // Администраторы и автор поста всегда имеют доступ
-    if (IS_AM || $poster === $userdata['username']) {
-        $access_errors = [];
-    }
+	// Администраторы и автор поста всегда имеют доступ
+	if (IS_AM || $poster === $userdata['username']) {
+		$access_errors = [];
+	}
 
-    // Обработка блока в зависимости от прав доступа
-    if ($silent_mode) {
-        // Удаление блока без вывода сообщения
-        $message = str_replace($block, '', $message);
-    } elseif (!empty($access_errors)) {
-        // Формирование сообщения об ошибке
-        $error_message = implode(', ', array_map(fn($msg) => "<span>$msg</span>", $access_errors));
-        $replacement = '<span style="background: rgb(209, 5, 5); padding: 5px; color: white;">'
-                     . 'To see this block you must: ' . $error_message . '</span>';
-        $message = str_replace($block, $replacement, $message);
-    } else {
-        // Отображение содержимого блока
-        $message = str_replace($block, $hide_blocks[2][$index], $message);
-    }
+	// Обработка блока в зависимости от прав доступа
+	if ($silent_mode) {
+		// Удаление блока без вывода сообщения
+		$message = str_replace($block, '', $message);
+	} elseif (!empty($access_errors)) {
+		// Формирование сообщения об ошибке
+		$error_message = implode(', ', array_map(function ($msg) {
+			return "<span>{$msg}</span>";
+		}, $access_errors));
+		$replacement = '<span style="background: rgb(209, 5, 5); padding-left: 5px; padding-right: 5px; color: white;">'
+			. 'To see this block you must: ' . $error_message . '</span>';
+		$message = str_replace($block, $replacement, $message);
+	} else {
+		// Отображение содержимого блока
+		$message = str_replace($block, $hide_blocks[2][$index], $message);
+	}
 }
 =============================
 
