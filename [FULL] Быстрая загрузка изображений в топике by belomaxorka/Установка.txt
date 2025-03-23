@@ -102,3 +102,39 @@ $template->assign_var('SHOW_IMAGES_UPLOADER');
 </script>
 <!-- ENDIF -->
 -----------------------------------------------------
+
+------------------- Открыть library/language/ru/main.php и вставить -------------------
+// Постер и скрины в теме
+$lang['POSTING_IMAGES_ERROR'] = 'Ошибка: При конвертации что-то пошло не так...';
+$lang['POSTING_IMAGES_UPLOAD'] = 'Загрузка изображений';
+$lang['POSTING_IMAGES_POSTER'] = 'Загрузка постера';
+$lang['POSTING_IMAGES_SCREENSHOTS'] = 'Загрузка скриншотов';
+$lang['POSTING_IMAGES_PROCESSING_UPLOAD'] = 'Загрузка...';
+$lang['POSTING_IMAGES_ERROR_UPLOADING'] = 'Ошибка при загрузке файлов';
+$lang['POSTING_IMAGES_SUCCESS_UPLOADED'] = 'Файлы успешно загружены!';
+$lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'Не выбран ни один файл!';
+---------------------------------------------------------------------------------------
+
+------------------- Открыть library/language/en/main.php и вставить -------------------
+// Постер и скрины в теме
+$lang['POSTING_IMAGES_ERROR'] = 'Ошибка: При конвертации что-то пошло не так...';
+$lang['POSTING_IMAGES_UPLOAD'] = 'Загрузка изображений';
+$lang['POSTING_IMAGES_POSTER'] = 'Загрузка постера';
+$lang['POSTING_IMAGES_SCREENSHOTS'] = 'Загрузка скриншотов';
+$lang['POSTING_IMAGES_PROCESSING_UPLOAD'] = 'Загрузка...';
+$lang['POSTING_IMAGES_ERROR_UPLOADING'] = 'Ошибка при загрузке файлов';
+$lang['POSTING_IMAGES_SUCCESS_UPLOADED'] = 'Файлы успешно загружены!';
+$lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'Не выбран ни один файл!';
+---------------------------------------------------------------------------------------
+
+------------------- Открыть library/language/source/main.php и вставить -------------------
+// Постер и скрины в теме
+$lang['POSTING_IMAGES_ERROR'] = 'Ошибка: При конвертации что-то пошло не так...';
+$lang['POSTING_IMAGES_UPLOAD'] = 'Загрузка изображений';
+$lang['POSTING_IMAGES_POSTER'] = 'Загрузка постера';
+$lang['POSTING_IMAGES_SCREENSHOTS'] = 'Загрузка скриншотов';
+$lang['POSTING_IMAGES_PROCESSING_UPLOAD'] = 'Загрузка...';
+$lang['POSTING_IMAGES_ERROR_UPLOADING'] = 'Ошибка при загрузке файлов';
+$lang['POSTING_IMAGES_SUCCESS_UPLOADED'] = 'Файлы успешно загружены!';
+$lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'Не выбран ни один файл!';
+-------------------------------------------------------------------------------------------
