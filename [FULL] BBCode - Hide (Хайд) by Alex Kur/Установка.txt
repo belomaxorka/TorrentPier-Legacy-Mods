@@ -91,6 +91,7 @@ foreach ($hide_blocks[0] as $index => $block) {
 	// Администраторы и автор поста всегда имеют доступ
 	if (IS_AM || $poster === $userdata['username']) {
 		$access_errors = [];
+		$silent_mode = false;
 	}
 
 	// Обработка блока в зависимости от прав доступа
@@ -100,9 +101,10 @@ foreach ($hide_blocks[0] as $index => $block) {
 	} elseif (!empty($access_errors)) {
 		// Формирование сообщения об ошибке
 		$error_message = implode(', ', array_map(function ($msg) {
-			return $msg;
+			return '<br/>- ' . $msg;
 		}, $access_errors));
-		$replacement = '<span style="background: rgb(209, 5, 5); padding-left: 5px; padding-right: 5px; color: white;">' . $error_message . '</span>';
+		$replacement = '<span style="background: rgb(209, 5, 5); padding-left: 5px; padding-right: 5px; color: white;">'
+			. $lang['BBCODE_HIDE_MUST_BE'] . $error_message . '</span>';
 		$message = str_replace($block, $replacement, $message);
 	} else {
 		// Отображение содержимого блока
