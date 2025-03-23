@@ -135,6 +135,7 @@ $template->assign_var('SHOW_IMAGES_UPLOADER');
 	});
 </script>
 <!-- ENDIF -->
+<script type="text/javascript" src="{SITE_URL}styles/js/libs/jquery.insert-at-caret.min.js"></script>
 -----------------------------------------------------
 
 ------------------- Открыть library/language/ru/main.php и вставить -------------------
