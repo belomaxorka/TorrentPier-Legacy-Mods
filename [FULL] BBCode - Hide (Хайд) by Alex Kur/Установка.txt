@@ -61,6 +61,24 @@ foreach ($hide_blocks[0] as $index => $block) {
                     $access_errors[] = "have at least {$required_posts} posts";
                 }
                 break;
+
+            case 'role':
+                $allowed_roles = array_map('trim', explode(',', mb_strtolower($option_value)));
+                $current_role = '';
+                if (IS_ADMIN) {
+                    $current_role = 'admin';
+                } elseif (IS_MOD) {
+                    $current_role = 'moderator';
+                } elseif (IS_USER) {
+                    $current_role = 'user';
+                } elseif (IS_GUEST) {
+                    $current_role = 'guest';
+                }
+
+                if (!in_array($current_role, $allowed_roles)) {
+                    $access_errors[] = "be one of the following roles: {$option_value}";
+                }
+                break;
         }
     }
 
