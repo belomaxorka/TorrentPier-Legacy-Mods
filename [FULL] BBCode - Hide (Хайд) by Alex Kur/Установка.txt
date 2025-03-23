@@ -1,0 +1,64 @@
+// Регулярное выражение для поиска блоков [hide] с параметрами
+preg_match_all('/\[hide(.+?)\](.+?)\[\/hide\]/si', $message, $hide_blocks);
+
+foreach ($hide_blocks[0] as $index => $block) {
+    $access_errors = [];
+    $silent_mode = false;
+
+    // Извлечение параметров из тега [hide]
+    preg_match_all('/\s(\w+)=["\']([^"\']+)["\']/i', $hide_blocks[1][$index], $options);
+    foreach ($options[1] as $option_key => $option_name) {
+        $option_value = $options[2][$option_key];
+
+        switch ($option_name) {
+            case 'rank':
+                $allowed_ranks = array_map('trim', explode(',', mb_strtolower($option_value)));
+                if ($option_value === 'logged in' && IS_GUEST) {
+                    $access_errors[] = 'be logged in';
+                } elseif (!in_array(mb_strtolower($ranks[$userdata['user_rank']]['rank_title']), $allowed_ranks)) {
+                    $access_errors[] = "be one of the following ranks: {$option_value}";
+                }
+                break;
+
+            case 'users':
+                $allowed_users = array_map('trim', explode(',', $option_value));
+                if (!in_array($userdata['username'], $allowed_users)) {
+                    $access_errors[] = "be one of the following users: {$option_value}";
+                }
+                break;
+
+            case 'points':
+                $required_points = (int)$option_value;
+                if ($userdata['user_points'] < $required_points) {
+                    $access_errors[] = "have at least {$required_points} seed points";
+                }
+                break;
+
+            case 'language':
+                if ($userdata['user_lang'] !== $option_value) {
+                    $silent_mode = true; // Скрыть блок без ошибки
+                }
+                break;
+        }
+    }
+
+    // Администраторы и автор поста всегда имеют доступ
+    if (IS_ADMIN || $poster === $userdata['username']) {
+        $access_errors = [];
+    }
+
+    // Обработка блока в зависимости от прав доступа
+    if ($silent_mode) {
+        // Удаление блока без вывода сообщения
+        $message = str_replace($block, '', $message);
+    } elseif (!empty($access_errors)) {
+        // Формирование сообщения об ошибке
+        $error_message = implode(', ', array_map(fn($msg) => "<span>$msg</span>", $access_errors));
+        $replacement = '<span style="background: rgb(209, 5, 5); padding: 5px; color: white;">'
+                     . 'To see this block you must: ' . $error_message . '</span>';
+        $message = str_replace($block, $replacement, $message);
+    } else {
+        // Отображение содержимого блока
+        $message = str_replace($block, $hide_blocks[2][$index], $message);
+    }
+}
