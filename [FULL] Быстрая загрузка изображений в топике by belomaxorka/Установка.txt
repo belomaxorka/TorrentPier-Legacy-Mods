@@ -149,24 +149,24 @@ $lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'Не выбран ни один ф�
 
 ------------------- Открыть library/language/en/main.php и вставить -------------------
 // Постер и скрины в теме
-$lang['POSTING_IMAGES_ERROR'] = 'Ошибка: При конвертации что-то пошло не так...';
-$lang['POSTING_IMAGES_UPLOAD'] = 'Загрузка изображений';
-$lang['POSTING_IMAGES_POSTER'] = 'Загрузка постера';
-$lang['POSTING_IMAGES_SCREENSHOTS'] = 'Загрузка скриншотов';
-$lang['POSTING_IMAGES_PROCESSING_UPLOAD'] = 'Загрузка...';
-$lang['POSTING_IMAGES_ERROR_UPLOADING'] = 'Ошибка при загрузке файлов';
-$lang['POSTING_IMAGES_SUCCESS_UPLOADED'] = 'Файлы успешно загружены!';
-$lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'Не выбран ни один файл!';
+$lang['POSTING_IMAGES_ERROR'] = 'Error: Something went wrong during conversion...';
+$lang['POSTING_IMAGES_UPLOAD'] = 'Upload Images';
+$lang['POSTING_IMAGES_POSTER'] = 'Upload Poster';
+$lang['POSTING_IMAGES_SCREENSHOTS'] = 'Upload Screenshots';
+$lang['POSTING_IMAGES_PROCESSING_UPLOAD'] = 'Uploading...';
+$lang['POSTING_IMAGES_ERROR_UPLOADING'] = 'Error uploading files';
+$lang['POSTING_IMAGES_SUCCESS_UPLOADED'] = 'Files uploaded successfully!';
+$lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'No files selected!';
 ---------------------------------------------------------------------------------------
 
 ------------------- Открыть library/language/source/main.php и вставить -------------------
 // Постер и скрины в теме
-$lang['POSTING_IMAGES_ERROR'] = 'Ошибка: При конвертации что-то пошло не так...';
-$lang['POSTING_IMAGES_UPLOAD'] = 'Загрузка изображений';
-$lang['POSTING_IMAGES_POSTER'] = 'Загрузка постера';
-$lang['POSTING_IMAGES_SCREENSHOTS'] = 'Загрузка скриншотов';
-$lang['POSTING_IMAGES_PROCESSING_UPLOAD'] = 'Загрузка...';
-$lang['POSTING_IMAGES_ERROR_UPLOADING'] = 'Ошибка при загрузке файлов';
-$lang['POSTING_IMAGES_SUCCESS_UPLOADED'] = 'Файлы успешно загружены!';
-$lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'Не выбран ни один файл!';
+$lang['POSTING_IMAGES_ERROR'] = 'Error: Something went wrong during conversion...';
+$lang['POSTING_IMAGES_UPLOAD'] = 'Upload Images';
+$lang['POSTING_IMAGES_POSTER'] = 'Upload Poster';
+$lang['POSTING_IMAGES_SCREENSHOTS'] = 'Upload Screenshots';
+$lang['POSTING_IMAGES_PROCESSING_UPLOAD'] = 'Uploading...';
+$lang['POSTING_IMAGES_ERROR_UPLOADING'] = 'Error uploading files';
+$lang['POSTING_IMAGES_SUCCESS_UPLOADED'] = 'Files uploaded successfully!';
+$lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'No files selected!';
 -------------------------------------------------------------------------------------------
