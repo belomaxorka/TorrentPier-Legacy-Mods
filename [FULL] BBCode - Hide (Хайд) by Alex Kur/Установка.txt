@@ -39,6 +39,13 @@ foreach ($hide_blocks[0] as $index => $block) {
                     $silent_mode = true; // Скрыть блок без ошибки
                 }
                 break;
+
+            case 'posts':
+                $required_posts = (int)$option_value;
+                if ($userdata['user_posts'] < $required_posts) {
+                    $access_errors[] = "have at least {$required_posts} posts";
+                }
+                break;
         }
     }
 
