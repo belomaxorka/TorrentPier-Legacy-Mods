@@ -83,7 +83,7 @@ foreach ($hide_blocks[0] as $index => $block) {
     }
 
     // Администраторы и автор поста всегда имеют доступ
-    if (IS_ADMIN || $poster === $userdata['username']) {
+    if (IS_AM || $poster === $userdata['username']) {
         $access_errors = [];
     }
 
