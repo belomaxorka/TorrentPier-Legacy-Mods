@@ -13,7 +13,15 @@
 -- Доступные роли: guest, user, admin, moderator
 --------------------------------------------------
 
-// Регулярное выражение для поиска блоков [hide] с параметрами
+======= Открыть viewtopic.php и найти =======
+// Replace newlines (we use this rather than nl2br because till recently it wasn't XHTML compliant)
+if ($user_sig) {
+    $user_sig = $bb_cfg['user_signature_start'] . $user_sig . $bb_cfg['user_signature_end'];
+}
+=============================================
+
+======= Ниже вставить =======
+// BBCode - Hide (Хайд)
 preg_match_all('/\[hide(.+?)\](.+?)\[\/hide\]/si', $message, $hide_blocks);
 
 foreach ($hide_blocks[0] as $index => $block) {
@@ -102,3 +110,4 @@ foreach ($hide_blocks[0] as $index => $block) {
         $message = str_replace($block, $hide_blocks[2][$index], $message);
     }
 }
+=============================
