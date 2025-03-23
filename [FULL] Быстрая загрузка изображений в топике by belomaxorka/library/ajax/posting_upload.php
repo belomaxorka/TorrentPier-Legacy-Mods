@@ -8,7 +8,7 @@
  */
 
 if (!defined('IN_AJAX')) {
-    die(basename(__FILE__));
+	die(basename(__FILE__));
 }
 
 global $bb_cfg, $lang;
@@ -17,73 +17,73 @@ $upload_dir = DATA_DIR . '/posts_images/';
 $posterLink = $screenshotsLink = [];
 
 if (!empty($_FILES['poster_images'])) {
-    $posterFiles = $_FILES['poster_images'];
-    foreach ($posterFiles['tmp_name'] as $key => $tmpName) {
-        $destination = $upload_dir . 'poster_' . TIMENOW . '_' . replaceExtensionWithWebP($posterFiles['name'][$key]);
-        if (!convertToWebP($tmpName, $destination)) {
-            $this->ajax_die($lang['POSTING_IMAGES_ERROR']);
-        }
-        $posterLink[] = make_url(hide_bb_path($destination));
-    }
+	$posterFiles = $_FILES['poster_images'];
+	foreach ($posterFiles['tmp_name'] as $key => $tmpName) {
+		$destination = $upload_dir . 'poster_' . TIMENOW . '_' . replaceExtensionWithWebP($posterFiles['name'][$key]);
+		if (!convertToWebP($tmpName, $destination)) {
+			$this->ajax_die($lang['POSTING_IMAGES_ERROR']);
+		}
+		$posterLink[] = make_url(hide_bb_path($destination));
+	}
 }
 
 if (!empty($_FILES['screenshots_images'])) {
-    $screenshotFiles = $_FILES['screenshots_images'];
-    foreach ($screenshotFiles['tmp_name'] as $key => $tmpName) {
-        $destination = $upload_dir . 'screenshot_' . TIMENOW . '_' . replaceExtensionWithWebP($screenshotFiles['name'][$key]);
-        if (!convertToWebP($tmpName, $destination)) {
-            $this->ajax_die($lang['POSTING_IMAGES_ERROR']);
-        }
-        $screenshotsLink[] = make_url(hide_bb_path($destination));
-    }
+	$screenshotFiles = $_FILES['screenshots_images'];
+	foreach ($screenshotFiles['tmp_name'] as $key => $tmpName) {
+		$destination = $upload_dir . 'screenshot_' . TIMENOW . '_' . replaceExtensionWithWebP($screenshotFiles['name'][$key]);
+		if (!convertToWebP($tmpName, $destination)) {
+			$this->ajax_die($lang['POSTING_IMAGES_ERROR']);
+		}
+		$screenshotsLink[] = make_url(hide_bb_path($destination));
+	}
 }
 
-function convertToWebP(string $inputFile, string $outputFile, int $quality = 90): bool
+function convertToWebP($inputFile, $outputFile, $quality = 90)
 {
-    // Определение типа исходного изображения
-    $imageInfo = getimagesize($inputFile);
-    if (!$imageInfo) {
-        return false;
-    }
+	// Определение типа исходного изображения
+	$imageInfo = getimagesize($inputFile);
+	if (!$imageInfo) {
+		return false;
+	}
 
-    $imageType = $imageInfo[2];
+	$imageType = $imageInfo[2];
 
-    // Загрузка изображения в зависимости от типа
-    $image = null;
-    switch ($imageType) {
-        case IMAGETYPE_JPEG:
-            $image = imagecreatefromjpeg($inputFile);
-            break;
-        case IMAGETYPE_PNG:
-            $image = @imagecreatefrompng($inputFile);
-            break;
-        case IMAGETYPE_GIF:
-            $image = imagecreatefromgif($inputFile);
-            break;
-    }
+	// Загрузка изображения в зависимости от типа
+	$image = null;
+	switch ($imageType) {
+		case IMAGETYPE_JPEG:
+			$image = imagecreatefromjpeg($inputFile);
+			break;
+		case IMAGETYPE_PNG:
+			$image = @imagecreatefrompng($inputFile);
+			break;
+		case IMAGETYPE_GIF:
+			$image = imagecreatefromgif($inputFile);
+			break;
+	}
 
-    // Проверка, успешно ли загружено изображение
-    if (!$image) {
-        return false;
-    }
+	// Проверка, успешно ли загружено изображение
+	if (!$image) {
+		return false;
+	}
 
-    // Сохранение в формате WebP
-    $result = imagewebp($image, $outputFile, $quality);
+	// Сохранение в формате WebP
+	$result = imagewebp($image, $outputFile, $quality);
 
-    // Освобождение памяти
-    imagedestroy($image);
+	// Освобождение памяти
+	imagedestroy($image);
 
-    return $result;
+	return $result;
 }
 
-function replaceExtensionWithWebP(string $filename): string
+function replaceExtensionWithWebP($filename)
 {
-    $fileInfo = pathinfo($filename);
-    if (!isset($fileInfo['extension'])) {
-        return $filename . '.webp';
-    }
+	$fileInfo = pathinfo($filename);
+	if (!isset($fileInfo['extension'])) {
+		return $filename . '.webp';
+	}
 
-    return $fileInfo['filename'] . '.webp';
+	return $fileInfo['filename'] . '.webp';
 }
 
 $this->response['success'] = true;
