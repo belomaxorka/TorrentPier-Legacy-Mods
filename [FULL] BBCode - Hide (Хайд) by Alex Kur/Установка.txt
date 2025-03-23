@@ -3,10 +3,11 @@
 Последующие улучшения: belomaxorka
 Версия: v1.0.0
 Синтаксис:
-- [hide users="john,doe"]Hello, John or Doe![/hide]
-- [hide posts="50"]You need at least 50 posts to see this.[/hide]
-- [hide points="100"]You need at least 100 points to see this.[/hide]
-- [hide language="en"]This is only for English users.[/hide]
+- [hide rank="Администратор"]Секретная информация для админа.[/hide]
+- [hide users="belomaxorka,admin"]Привет, belomaxorka или admin![/hide]
+- [hide posts="50"]Вы видите этот текст! У вас больше 50 постов.[/hide]
+- [hide points="100"]Вы видите этот текст! У вас больше 100 сид-бонусов.[/hide]
+- [hide language="en,ru"]Ваш язык русский или английский.[/hide]
 --------------------------------------------------
 
 // Регулярное выражение для поиска блоков [hide] с параметрами
