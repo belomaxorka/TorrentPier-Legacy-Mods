@@ -123,8 +123,16 @@ foreach ($hide_blocks[0] as $index => $block) {
 =============================
 
 ======= Открыть posting_editor.tpl и найти =======
-bbcode.addTag("codeSpoiler", "spoiler", null, "", ctrl);
+<input type="button" value="{L_SPOILER}" name="codeSpoiler" title="{L_SPOILER}" />
 ==================================================
+
+======= Ниже вставить =======
+<input type="button" value="Hide" name="codeHide" title="Hide" />
+=============================
+
+======= Далее найти =======
+bbcode.addTag("codeSpoiler", "spoiler", null, "", ctrl);
+===========================
 
 ======= Ниже вставить =======
 bbcode.addTag("codeHide", "hide", null, "", ctrl);
