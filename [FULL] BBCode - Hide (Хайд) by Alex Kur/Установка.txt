@@ -153,8 +153,24 @@ $lang['BBCODE_HIDE_ROLE'] = 'иметь одну из следующих рол�
 
 ======= Открыть library/language/source/main.php и вставить в конце =======
 // BBCode - Hide (Хайд)
+$lang['BBCODE_HIDE'] = 'Hide';
+$lang['BBCODE_HIDE_TITLE'] = 'Hide content: [hide role="" rank="" ...]text...[/hide]';
+$lang['BBCODE_HIDE_MUST_BE'] = 'To see this block, you must: ';
+$lang['BBCODE_HIDE_RANK'] = 'have one of the following ranks: <b>%s</b>';
+$lang['BBCODE_HIDE_USERS'] = 'be one of the following users: <b>%s</b>';
+$lang['BBCODE_HIDE_POINTS'] = 'have at least <b>%d</b> bonus points';
+$lang['BBCODE_HIDE_POSTS'] = 'have at least <b>%d</b> posts';
+$lang['BBCODE_HIDE_ROLE'] = 'have one of the following roles: <b>%s</b>';
 ===========================================================================
 
 ======= Открыть library/language/en/main.php и вставить в конце ===========
 // BBCode - Hide (Хайд)
+$lang['BBCODE_HIDE'] = 'Hide';
+$lang['BBCODE_HIDE_TITLE'] = 'Hide content: [hide role="" rank="" ...]text...[/hide]';
+$lang['BBCODE_HIDE_MUST_BE'] = 'To see this block, you must: ';
+$lang['BBCODE_HIDE_RANK'] = 'have one of the following ranks: <b>%s</b>';
+$lang['BBCODE_HIDE_USERS'] = 'be one of the following users: <b>%s</b>';
+$lang['BBCODE_HIDE_POINTS'] = 'have at least <b>%d</b> bonus points';
+$lang['BBCODE_HIDE_POSTS'] = 'have at least <b>%d</b> posts';
+$lang['BBCODE_HIDE_ROLE'] = 'have one of the following roles: <b>%s</b>';
 ===========================================================================
