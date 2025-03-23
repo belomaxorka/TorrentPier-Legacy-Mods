@@ -9,3 +9,96 @@ if ($mode == 'newtopic' || ($mode == 'editpost' && $post_data['first_post'])) {
 // Show images uploader (загрузка постера / скриншотов)
 $template->assign_var('SHOW_IMAGES_UPLOADER');
 -----------------------------------------------------
+
+------------------- Открыть posting.tpl и найти -------------------
+<!-- IF IN_PM -->
+<!-- ELSEIF LOGGED_IN -->
+-------------------------------------------------------------------
+
+------------------- Ниже вставить -------------------
+<!-- IF SHOW_IMAGES_UPLOADER -->
+<tr>
+	<td class="vTop pad_4" valign="top">
+		<p><b>{L_POSTING_IMAGES_UPLOAD}</b></p>
+	</td>
+	<td class="pad_12 tCenter">
+		<label>{L_POSTING_IMAGES_POSTER}:
+			<input type="file" accept="image/*" id="poster_upload_file">
+		</label>
+		<label>{L_POSTING_IMAGES_SCREENSHOTS}:
+			<input type="file" accept="image/*" id="screenshots_upload_file"
+				   multiple>
+		</label>
+		<div id="upload-file-status"></div>
+	</td>
+</tr>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#poster_upload_file, #screenshots_upload_file').val('');
+		$('#poster_upload_file').on('change', function () {
+			uploadFile($(this), 'poster');
+		});
+		$('#screenshots_upload_file').on('change', function () {
+			uploadFile($(this), 'screenshots');
+		});
+
+		function uploadFile(input, type) {
+			const files = input[0].files;
+			if (files.length === 0) {
+				$('#upload-file-status').html('<hr><span class="leechmed">{L_POSTING_IMAGES_NO_SELECTED_FILES}</span>');
+				return;
+			}
+
+			const formData = new FormData();
+			formData.append('action', 'posting_upload');
+			for (let i = 0; i < files.length; i++) {
+				formData.append(type + '_images[]', files[i]);
+			}
+
+			$.ajax({
+				url: '{SITE_URL}{$bb_cfg['ajax_url']}',
+				type: 'POST',
+				dataType: 'json',
+				data: formData,
+				contentType: false,
+				processData: false,
+				cache: false,
+				beforeSend: function () {
+					$('#upload-file-status').html('<hr><span>{L_POSTING_IMAGES_PROCESSING_UPLOAD}</span>');
+				},
+				error: function (xhr, status, error) {
+					$('#upload-file-status').html('<hr><span class="leechmed">{L_POSTING_IMAGES_ERROR_UPLOADING}</span>');
+					console.error(error);
+				},
+				success: function (response) {
+					if (response.success) {
+						$('#upload-file-status').html('<hr><span class="seedmed">{L_POSTING_IMAGES_SUCCESS_UPLOADED}</span>');
+
+						// BBCode [Постер]
+						response.poster.forEach(function (item) {
+							$('textarea#message').insertAtCaret('[align=center][img]' + item + '[/img][/align]\n');
+						});
+
+						// BBCode [Скрины]
+						response.screenshots.forEach(function (item, index, array) {
+							var closingTag = '';
+							var openTag = '';
+
+							if (index === 0) {
+								openTag = '[align=center]';
+							}
+
+							if (index === array.length - 1) {
+								closingTag = '[/align]';
+							}
+
+							$('textarea#message').insertAtCaret(openTag + '[thumb]' + item + '[/thumb]' + closingTag + '\n');
+						});
+					}
+				},
+			});
+		}
+	});
+</script>
+<!-- ENDIF -->
+-----------------------------------------------------
