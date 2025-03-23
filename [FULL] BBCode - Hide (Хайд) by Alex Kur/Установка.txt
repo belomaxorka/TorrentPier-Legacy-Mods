@@ -136,7 +136,9 @@ bbcode.addTag("codeSpoiler", "spoiler", null, "", ctrl);
 ===========================
 
 ======= Ниже вставить =======
-bbcode.addTag("codeHide", "hide", null, "", ctrl);
+bbcode.addTag("codeHide", function () {
+	return 'hide role="" rank="" users="" posts="" points="" language=""';
+}, "/hide");
 =============================
 
 ======= Открыть library/language/ru/main.php и вставить в конце =======
