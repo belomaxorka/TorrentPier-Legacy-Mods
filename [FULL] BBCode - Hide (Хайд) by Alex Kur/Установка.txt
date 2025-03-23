@@ -35,8 +35,11 @@ foreach ($hide_blocks[0] as $index => $block) {
 
 		switch ($option_name) {
 			case 'rank':
+				if (!isset($ranks[$userdata['user_rank']]['rank_title'])) {
+					continue 2;
+				}
 				$allowed_ranks = array_map('trim', explode(',', mb_strtolower($option_value)));
-				if (IS_GUEST || !isset($ranks[$userdata['user_rank']]['rank_title']) || !in_array(mb_strtolower($ranks[$userdata['user_rank']]['rank_title']), $allowed_ranks)) {
+				if (IS_GUEST || !in_array(mb_strtolower($ranks[$userdata['user_rank']]['rank_title']), $allowed_ranks)) {
 					$access_errors[] = sprintf($lang['BBCODE_HIDE_RANK'], $option_value);
 				}
 				break;
@@ -50,19 +53,25 @@ foreach ($hide_blocks[0] as $index => $block) {
 
 			case 'points':
 				$required_points = (int)$option_value;
+				if ($required_points == 0) {
+					continue 2;
+				}
 				if (IS_GUEST || ($userdata['user_points'] < $required_points)) {
 					$access_errors[] = sprintf($lang['BBCODE_HIDE_POINTS'], $required_points);
 				}
 				break;
 
 			case 'language':
-				if (IS_GUEST || ($userdata['user_lang'] !== $option_value)) {
+				if ($userdata['user_lang'] !== $option_value) {
 					$silent_mode = true; // Скрыть блок без ошибки
 				}
 				break;
 
 			case 'posts':
 				$required_posts = (int)$option_value;
+				if ($required_posts == 0) {
+					continue 2;
+				}
 				if (IS_GUEST || ($userdata['user_posts'] < $required_posts)) {
 					$access_errors[] = sprintf($lang['BBCODE_HIDE_POSTS'], $required_posts);
 				}
