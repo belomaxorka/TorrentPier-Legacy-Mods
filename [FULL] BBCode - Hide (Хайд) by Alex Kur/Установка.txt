@@ -143,7 +143,7 @@ bbcode.addTag("codeHide", "hide", null, "", ctrl);
 // BBCode - Hide (Хайд)
 $lang['BBCODE_HIDE'] = 'Под хайд';
 $lang['BBCODE_HIDE_TITLE'] = 'Скрыть содержимое: [hide role="" rank="" ...]текст...[/hide]';
-$lang['BBCODE_HIDE_MUST_BE'] = 'Чтобы увидеть этот блок, вы должны:';
+$lang['BBCODE_HIDE_MUST_BE'] = 'Чтобы увидеть этот блок, вы должны: ';
 $lang['BBCODE_HIDE_RANK'] = 'иметь один из следующих рангов: <b>%s</b>';
 $lang['BBCODE_HIDE_USERS'] = 'быть одним из следующих пользователей: <b>%s</b>';
 $lang['BBCODE_HIDE_POINTS'] = 'иметь как минимум <b>%d</b> сидбонусов';
