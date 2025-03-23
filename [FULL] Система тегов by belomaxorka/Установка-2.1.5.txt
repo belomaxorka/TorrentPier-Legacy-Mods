@@ -219,7 +219,7 @@ $egosearch = false;
 
 ======= Выше вставить =======
 // Теги
-$tag_id = $_REQUEST['tag_id'] ?? 0;
+$tag_id = isset($_REQUEST['tag_id']) ? $_REQUEST['tag_id'] : 0;
 if (!is_array($tag_id)) {
 	$tag_id = explode(',', $tag_id);
 }
