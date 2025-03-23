@@ -127,7 +127,7 @@ foreach ($hide_blocks[0] as $index => $block) {
 ==================================================
 
 ======= Ниже вставить =======
-<input type="button" value="Hide" name="codeHide" title="Hide" />
+<input type="button" value="{L_BBCODE_HIDE}" name="codeHide" title="{L_BBCODE_HIDE_TITLE}" />
 =============================
 
 ======= Далее найти =======
