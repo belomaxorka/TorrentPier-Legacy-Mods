@@ -37,21 +37,21 @@ foreach ($hide_blocks[0] as $index => $block) {
 			case 'rank':
 				$allowed_ranks = array_map('trim', explode(',', mb_strtolower($option_value)));
 				if (IS_GUEST || !isset($ranks[$userdata['user_rank']]['rank_title']) || !in_array(mb_strtolower($ranks[$userdata['user_rank']]['rank_title']), $allowed_ranks)) {
-					$access_errors[] = "be one of the following ranks: {$option_value}";
+					$access_errors[] = sprintf($lang['BBCODE_HIDE_RANK'], $option_value);
 				}
 				break;
 
 			case 'users':
 				$allowed_users = array_map('trim', explode(',', $option_value));
 				if (IS_GUEST || !in_array($userdata['username'], $allowed_users)) {
-					$access_errors[] = "be one of the following users: {$option_value}";
+					$access_errors[] = sprintf($lang['BBCODE_HIDE_USERS'], $option_value);
 				}
 				break;
 
 			case 'points':
 				$required_points = (int)$option_value;
 				if (IS_GUEST || ($userdata['user_points'] < $required_points)) {
-					$access_errors[] = "have at least {$required_points} seed points";
+					$access_errors[] = sprintf($lang['BBCODE_HIDE_POINTS'], $required_points);
 				}
 				break;
 
@@ -64,7 +64,7 @@ foreach ($hide_blocks[0] as $index => $block) {
 			case 'posts':
 				$required_posts = (int)$option_value;
 				if (IS_GUEST || ($userdata['user_posts'] < $required_posts)) {
-					$access_errors[] = "have at least {$required_posts} posts";
+					$access_errors[] = sprintf($lang['BBCODE_HIDE_POSTS'], $required_posts);
 				}
 				break;
 
@@ -82,7 +82,7 @@ foreach ($hide_blocks[0] as $index => $block) {
 				}
 
 				if (!in_array($current_role, $allowed_roles)) {
-					$access_errors[] = "be one of the following roles: {$option_value}";
+					$access_errors[] = sprintf($lang['BBCODE_HIDE_ROLE'], $option_value);
 				}
 				break;
 		}
@@ -100,10 +100,9 @@ foreach ($hide_blocks[0] as $index => $block) {
 	} elseif (!empty($access_errors)) {
 		// Формирование сообщения об ошибке
 		$error_message = implode(', ', array_map(function ($msg) {
-			return "<span>{$msg}</span>";
+			return $msg;
 		}, $access_errors));
-		$replacement = '<span style="background: rgb(209, 5, 5); padding-left: 5px; padding-right: 5px; color: white;">'
-			. 'To see this block you must: ' . $error_message . '</span>';
+		$replacement = '<span style="background: rgb(209, 5, 5); padding-left: 5px; padding-right: 5px; color: white;">' . $error_message . '</span>';
 		$message = str_replace($block, $replacement, $message);
 	} else {
 		// Отображение содержимого блока
