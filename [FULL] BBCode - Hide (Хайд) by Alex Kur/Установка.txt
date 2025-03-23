@@ -111,3 +111,21 @@ foreach ($hide_blocks[0] as $index => $block) {
     }
 }
 =============================
+
+======= Открыть src\Legacy\BBCode.php и найти =======
+'[clear]' => '<div class="clear">&nbsp;</div>',
+=====================================================
+
+======= Ниже вставить =======
+// BBCode - Hide (Хайд)
+'[hide]' => '<div class="hide-container">',
+'[/hide]' => '</div>',
+=============================
+
+======= Открыть posting_editor.tpl и найти =======
+bbcode.addTag("codeSpoiler", "spoiler", null, "", ctrl);
+==================================================
+
+======= Ниже вставить =======
+bbcode.addTag("codeHide", "hide", null, "", ctrl);
+=============================
