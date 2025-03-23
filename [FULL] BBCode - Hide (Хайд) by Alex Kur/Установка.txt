@@ -109,9 +109,10 @@ foreach ($hide_blocks[0] as $index => $block) {
 		$message = str_replace($block, '', $message);
 	} elseif (!empty($access_errors)) {
 		// Формирование сообщения об ошибке
-		$error_message = implode(', ', array_map(function ($msg) {
-			return '<br/>- ' . $msg;
-		}, $access_errors));
+		$error_message = '';
+		foreach ($access_errors as $msg) {
+			$error_message .= '<br/>- ' . $msg;
+		}
 		$replacement = '<span style="display: inline-block; background: rgb(209, 5, 5); padding-left: 5px; padding-right: 5px; color: white;">'
 			. $lang['BBCODE_HIDE_MUST_BE'] . $error_message . '</span>';
 		$message = str_replace($block, $replacement, $message);
