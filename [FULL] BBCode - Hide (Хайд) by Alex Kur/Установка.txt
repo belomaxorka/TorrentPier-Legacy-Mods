@@ -103,7 +103,7 @@ foreach ($hide_blocks[0] as $index => $block) {
 		$error_message = implode(', ', array_map(function ($msg) {
 			return '<br/>- ' . $msg;
 		}, $access_errors));
-		$replacement = '<span style="background: rgb(209, 5, 5); padding-left: 5px; padding-right: 5px; color: white;">'
+		$replacement = '<span style="display: inline-block; background: rgb(209, 5, 5); padding-left: 5px; padding-right: 5px; color: white;">'
 			. $lang['BBCODE_HIDE_MUST_BE'] . $error_message . '</span>';
 		$message = str_replace($block, $replacement, $message);
 	} else {
