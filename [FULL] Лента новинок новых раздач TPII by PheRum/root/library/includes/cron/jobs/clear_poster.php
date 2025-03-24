@@ -6,6 +6,9 @@ $clear_dir = BB_ROOT . 'data/thumbnails'; // Директория в котор�
 
 $dir = opendir($clear_dir);
 while (($file = readdir($dir))) {
+	if ($file === '.keep') {
+		continue;
+	}
 	if (is_file($clear_dir . '/' . $file)) {
 		unlink($clear_dir . '/' . $file);
 	}
