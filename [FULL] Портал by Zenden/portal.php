@@ -68,6 +68,19 @@ if ($bb_cfg['show_network_news']) {
 	}
 }
 
+// Список категорий
+if (!$forums = $datastore->get('cat_forums')) {
+	$datastore->update('cat_forums');
+	$forums = $datastore->get('cat_forums');
+}
+
+foreach ($forums['c'] as $category) {
+	$template->assign_block_vars('cat', [
+		'CAT_ID' => $category['cat_id'],
+		'CAT_NAME' => $category['cat_title'],
+	]);
+}
+
 // Режима поиска
 switch ($mode) {
 	case'user': // поиск по пользователям
@@ -83,6 +96,9 @@ switch ($mode) {
 		break;
 
 	case'c': // поиск по категориям
+		if (!is_numeric($search)) {
+			bb_die('Category ID must be numeric');
+		}
 		$and = "AND f.cat_id = $search";
 		break;
 

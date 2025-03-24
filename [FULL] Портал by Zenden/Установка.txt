@@ -2,7 +2,7 @@
 ICQ: 590-700-200
 -----------------
 Автор адаптации: belomaxorka
-Версия: 1.4.2
+Версия: 1.4.3
 ////////////////////////////////////////////////////
 Открыть config.php
 Найти
@@ -155,11 +155,9 @@ function des_short($title_post, $max_length, $space = ' ')
 	<h3>Категории</h3>
 	<div class="genmed bold" style="line-height: 150%;">
 		<ul>
-			<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
-			<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
-			<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
-			<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
-			<li><a href="portal.php?mode=c&search=id">Название категории</a></li>
+			<!-- BEGIN cat -->
+			<li><a href="portal.php?mode=c&search={cat.CAT_ID}">{cat.CAT_NAME}</a></li>
+			<!-- END cat -->
 		</ul>
 	</div>
 	<img width="210" class="spacer" src="{SPACER}" alt=""/>
