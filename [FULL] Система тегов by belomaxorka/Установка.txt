@@ -1,6 +1,6 @@
 -------------- Система тегов --------------
 Автор: belomaxorka
-Версия: v1.4.1
+Версия: v1.4.2
 Описание: Добавляет возможность устанавливать теги темам. Также имеется поиск тем по тегам (при клике на тег).
 -------------------------------------------
 
@@ -66,7 +66,7 @@ function get_topic_tags($topic_id = null)
 	}
 
 	if (isset($topic_id)) {
-		if (!$topic_tags = CACHE('bb_topic_tags')->get('topic_' . $topic_id)) {
+		if (!$topic_tags = CACHE('bb_topic_tags')->get('topic_tags_' . $topic_id)) {
 			$topic_tags = [];
 
 			$sql = "SELECT tt.* FROM " . BB_TOPIC_TAGS . " tt WHERE tt.topic_id = $topic_id";
@@ -78,7 +78,7 @@ function get_topic_tags($topic_id = null)
 				$topic_tags[] = $tag;
 			}
 
-			CACHE('bb_topic_tags')->set('topic_' . $topic_id, $topic_tags, 3600);
+			CACHE('bb_topic_tags')->set('topic_tags_' . $topic_id, $topic_tags, 3600);
 		}
 	} else {
 		$topic_tags = [];
@@ -406,7 +406,7 @@ if (!empty($topic_id)) {
 
 	// Очистка кэша темы, если были добавлены новые теги
 	if ($mode == 'editpost') {
-		CACHE('bb_topic_tags')->rm('topic_' . $topic_id);
+		CACHE('bb_topic_tags')->rm('topic_tags_' . $topic_id);
 	}
 }
 // ----------------------------------------
