@@ -448,6 +448,7 @@ if (!empty($topic_id)) {
 				valueField: 'tag_id',
 				maxSelection: null,
 				allowFreeEntries: false,
+				expandOnFocus: true,
 				placeholder: '{L_TAGS_PLACEHOLDER}',
 				noSuggestionText: '{L_TAGS_NOT_FOUND}',
 			});
