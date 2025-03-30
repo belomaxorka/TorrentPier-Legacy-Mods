@@ -1,6 +1,6 @@
 -------------- Быстрое создание раздачи & топика --------------
 Автор: belomaxorka
-Версия: v1.0.0
+Версия: v1.0.1
 Описание: Данный мод позволяет ускорить процесс создания раздач.
 Кнопка для создания появляется рядом с названием форума в списке категорий на главной.
 ---------------------------------------------------------------
@@ -17,9 +17,10 @@ $create_new_topic = false;
 $is_auth = auth(AUTH_ALL, $fid, $userdata);
 if ($is_auth['auth_post']) {
 	$post_new = ($f['allow_reg_tracker']) ? $lang['POST_NEW_RELEASE'] : $lang['POST_NEW_TOPIC'];
-	$create_new_topic = "<a href='" . POSTING_URL . "?mode=newtopic&" . POST_FORUM_URL . "=$fid'><img title='$post_new' alt='$post_new' src='" . $images['icon_plus'] . "'></a>";
+	$post_link = ($f['allow_reg_tracker']) ? 'new_rel' : 'newtopic';
+	$create_new_topic = "<a href='" . POSTING_URL . "?mode=$post_link&" . POST_FORUM_URL . "=$fid'><img title='$post_new' alt='$post_new' src='" . $images['icon_plus'] . "'></a>";
 }
-unset($is_auth, $post_new);
+unset($is_auth, $post_new, $post_link);
 =============================
 
 ======= Далее найти =======
