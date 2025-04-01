@@ -85,13 +85,7 @@ function convertToWebP($inputFile, $outputFile, $quality = 90)
 function prepareFile($filename)
 {
 	$fileInfo = pathinfo($filename);
-
-	if (version_compare(PHP_VERSION, '8.1.0', '>=')) {
-		$fileInfo['filename'] = hash('xxh128', $fileInfo['filename']);
-	} else {
-		$fileInfo['filename'] = make_rand_str(32);
-	}
-
+	$fileInfo['filename'] = make_rand_str(32);
 	return $fileInfo['filename'] . '.webp';
 }
 
