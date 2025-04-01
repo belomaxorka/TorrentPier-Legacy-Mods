@@ -148,6 +148,7 @@ $lang['POSTING_IMAGES_PROCESSING_UPLOAD'] = 'Загрузка...';
 $lang['POSTING_IMAGES_ERROR_UPLOADING'] = 'Ошибка при загрузке файлов';
 $lang['POSTING_IMAGES_SUCCESS_UPLOADED'] = 'Файлы успешно загружены!';
 $lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'Не выбран ни один файл!';
+$lang['POSTING_IMAGES_FILE_TOO_LARGE'] = 'Изображение весит слишком много. Максимально допустимый размер файла: ';
 ---------------------------------------------------------------------------------------
 
 ------------------- Открыть library/language/en/main.php и вставить -------------------
@@ -160,6 +161,7 @@ $lang['POSTING_IMAGES_PROCESSING_UPLOAD'] = 'Uploading...';
 $lang['POSTING_IMAGES_ERROR_UPLOADING'] = 'Error uploading files';
 $lang['POSTING_IMAGES_SUCCESS_UPLOADED'] = 'Files uploaded successfully!';
 $lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'No files selected!';
+$lang['POSTING_IMAGES_FILE_TOO_LARGE'] = 'The image is too large. Maximum file size allowed: ';
 ---------------------------------------------------------------------------------------
 
 ------------------- Открыть library/language/source/main.php и вставить -------------------
@@ -172,4 +174,5 @@ $lang['POSTING_IMAGES_PROCESSING_UPLOAD'] = 'Uploading...';
 $lang['POSTING_IMAGES_ERROR_UPLOADING'] = 'Error uploading files';
 $lang['POSTING_IMAGES_SUCCESS_UPLOADED'] = 'Files uploaded successfully!';
 $lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'No files selected!';
+$lang['POSTING_IMAGES_FILE_TOO_LARGE'] = 'The image is too large. Maximum file size allowed: ';
 -------------------------------------------------------------------------------------------
