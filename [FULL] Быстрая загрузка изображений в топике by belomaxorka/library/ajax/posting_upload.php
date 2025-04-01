@@ -13,13 +13,17 @@ if (!defined('IN_AJAX')) {
 
 global $bb_cfg, $lang;
 
-$upload_dir = DATA_DIR . '/posts_images/';
+$upload_dir = $bb_cfg['ajax_upload_posting_images_path'];
 $posterLink = $screenshotsLink = [];
 
 if (!empty($_FILES['poster_images'])) {
 	$posterFiles = $_FILES['poster_images'];
 	foreach ($posterFiles['tmp_name'] as $key => $tmpName) {
-		$destination = $upload_dir . 'poster_' . TIMENOW . '_' . replaceExtensionWithWebP($posterFiles['name'][$key]);
+		if ($posterFiles['size'][$key] > $bb_cfg['ajax_upload_posting_images_size_limit']) {
+			$this->ajax_die($lang['POSTING_IMAGES_FILE_TOO_LARGE'] . humn_size($bb_cfg['ajax_upload_posting_images_size_limit']));
+		}
+
+		$destination = $upload_dir . 'poster_' . TIMENOW . '_' . prepareFile($posterFiles['name'][$key]);
 		if (!convertToWebP($tmpName, $destination)) {
 			$this->ajax_die($lang['POSTING_IMAGES_ERROR']);
 		}
@@ -30,7 +34,7 @@ if (!empty($_FILES['poster_images'])) {
 if (!empty($_FILES['screenshots_images'])) {
 	$screenshotFiles = $_FILES['screenshots_images'];
 	foreach ($screenshotFiles['tmp_name'] as $key => $tmpName) {
-		$destination = $upload_dir . 'screenshot_' . TIMENOW . '_' . replaceExtensionWithWebP($screenshotFiles['name'][$key]);
+		$destination = $upload_dir . 'screenshot_' . TIMENOW . '_' . prepareFile($screenshotFiles['name'][$key]);
 		if (!convertToWebP($tmpName, $destination)) {
 			$this->ajax_die($lang['POSTING_IMAGES_ERROR']);
 		}
@@ -40,16 +44,18 @@ if (!empty($_FILES['screenshots_images'])) {
 
 function convertToWebP($inputFile, $outputFile, $quality = 90)
 {
-	// Определение типа исходного изображения
 	$imageInfo = getimagesize($inputFile);
 	if (!$imageInfo) {
 		return false;
 	}
 
-	$imageType = $imageInfo[2];
+	if ($imageInfo['mime'] === 'image/webp') {
+		return copy($inputFile, $outputFile);
+	}
 
-	// Загрузка изображения в зависимости от типа
+	$imageType = $imageInfo[2];
 	$image = null;
+
 	switch ($imageType) {
 		case IMAGETYPE_JPEG:
 			$image = imagecreatefromjpeg($inputFile);
@@ -62,25 +68,28 @@ function convertToWebP($inputFile, $outputFile, $quality = 90)
 			break;
 	}
 
-	// Проверка, успешно ли загружено изображение
 	if (!$image) {
 		return false;
 	}
 
-	// Сохранение в формате WebP
-	$result = imagewebp($image, $outputFile, $quality);
+	imagepalettetotruecolor($image);
+	imagealphablending($image, true);
+	imagesavealpha($image, true);
 
-	// Освобождение памяти
+	$result = imagewebp($image, $outputFile, $quality);
 	imagedestroy($image);
 
 	return $result;
 }
 
-function replaceExtensionWithWebP($filename)
+function prepareFile($filename)
 {
 	$fileInfo = pathinfo($filename);
-	if (!isset($fileInfo['extension'])) {
-		return $filename . '.webp';
+
+	if (version_compare(PHP_VERSION, '8.1.0', '>=')) {
+		$fileInfo['filename'] = hash('xxh128', $fileInfo['filename']);
+	} else {
+		$fileInfo['filename'] = make_rand_str(32);
 	}
 
 	return $fileInfo['filename'] . '.webp';
