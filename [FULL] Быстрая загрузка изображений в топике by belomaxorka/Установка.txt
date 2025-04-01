@@ -88,6 +88,14 @@ $template->assign_var('SHOW_IMAGES_UPLOADER');
 				return;
 			}
 
+			const maxSize = {$bb_cfg['ajax_upload_posting_images_size_limit']};
+			for (let i = 0; i < files.length; i++) {
+				if (files[i].size > maxSize) {
+					$('#upload-file-status').html('<hr><span class="leechmed">{L_POSTING_IMAGES_FILE_TOO_LARGE}' + maxSize + ' MB</span>');
+					return;
+				}
+			}
+
 			const formData = new FormData();
 			formData.append('action', 'posting_upload');
 			for (let i = 0; i < files.length; i++) {
