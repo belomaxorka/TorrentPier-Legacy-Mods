@@ -35,6 +35,7 @@ $bb_cfg['captcha'] = array(
 		// Получить ключи можно в админ-панели: https://dashboard.hcaptcha.com/overview
 		'site_key' => '', // ключ сайта
 		'secret_key' => '', // секретный ключ
+		'theme' => 'light', // выбор темы (доступны: light, dark)
 	),
 	'yandex_captcha' => array(
 		// https://yandex.cloud/ru/docs/smartcaptcha/quickstart
