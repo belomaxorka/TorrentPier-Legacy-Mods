@@ -5,8 +5,8 @@ if (!empty($setmodules)) {
 	return;
 }
 
-require __DIR__ . '/pagestart.php';
-require INC_DIR . '/bbcode.php';
+require('./pagestart.php');
+require(INC_DIR . 'bbcode.php');
 
 $start = (int)request_var('start', 0);
 
@@ -34,8 +34,8 @@ while ($pm_text = DB()->sql_fetchrow($result)) {
 	$row_class = !($row_counter % 2) ? 'row1' : 'row2';
 	$template->assign_block_vars('pmrow', [
 		'ROW_CLASS' => $row_class,
-		'FROM' => profile_url(['username' => $pm_text['username_1'], 'user_id' => $pm_text['user_id_1'], 'user_rank' => $pm_text['user_rank_1']]),
-		'TO' => profile_url(['username' => $pm_text['username_2'], 'user_id' => $pm_text['user_id_2'], 'user_rank' => $pm_text['user_rank_2']]),
+		'FROM' => profile_url(array('username' => $pm_text['username_1'], 'user_id' => $pm_text['user_id_1'], 'user_rank' => $pm_text['user_rank_1'])),
+		'TO' => profile_url(array('username' => $pm_text['username_2'], 'user_id' => $pm_text['user_id_2'], 'user_rank' => $pm_text['user_rank_2'])),
 		'DATE' => bb_date($pm_text['privmsgs_date']),
 		'IP' => ($pm_text['privmsgs_ip'] != '7f000001') ? \TorrentPier\Helpers\IPHelper::long2ip_extended($pm_text['privmsgs_ip']) : '0.0.0.0',
 		'MESSAGE' => '<div class="post_wrap"><div class="post_body">' . bbcode2html($pm_text['privmsgs_text']) . '</div></div>',
