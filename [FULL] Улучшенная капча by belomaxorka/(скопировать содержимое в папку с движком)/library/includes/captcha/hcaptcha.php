@@ -3,8 +3,8 @@
 function hcaptcha_get($settings)
 {
 	return "
-		<div class='h-captcha' data-sitekey='{$settings['site_key']}'></div>
-		<script src='https://www.hCaptcha.com/1/api.js' async defer></script>";
+		<div class='h-captcha' data-sitekey='{$settings['site_key']}' data-theme='light'></div>
+		<script src='https://www.hCaptcha.com/1/api.js?hl={$this->settings['language']}' async defer></script>";
 }
 
 function hcaptcha_check($settings)
