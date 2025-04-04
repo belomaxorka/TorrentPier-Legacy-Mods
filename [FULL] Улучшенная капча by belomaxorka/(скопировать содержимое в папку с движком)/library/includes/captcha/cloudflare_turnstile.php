@@ -4,7 +4,7 @@ function cloudflare_turnstile_get($settings)
 {
 	return "
 		<script src='https://challenges.cloudflare.com/turnstile/v0/api.js' async defer></script>
-		<div class='cf-turnstile' data-sitekey='{$settings['site_key']}' data-language='{$this->settings['language']}' data-theme='light'></div>";
+		<div class='cf-turnstile' data-sitekey='{$settings['site_key']}' data-language='{$this->settings['language']}' data-theme='" . (isset($this->settings['theme']) ? $this->settings['theme'] : 'light') . "'></div>";
 }
 
 function cloudflare_turnstile_check($settings)
