@@ -102,6 +102,8 @@ function bb_captcha($mode)
 		bb_die(sprintf("Не найден файл для работы с капчей (%s)", (INC_DIR . 'captcha/' . $captchaMethod . '.php')));
 	}
 
+	$settings['language'] = $bb_cfg['default_lang'];
+
 	// Проверка
 	switch ($mode) {
 		case 'check':
