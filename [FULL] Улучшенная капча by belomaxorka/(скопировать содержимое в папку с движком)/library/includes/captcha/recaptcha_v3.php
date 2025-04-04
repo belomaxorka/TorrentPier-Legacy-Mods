@@ -3,7 +3,7 @@
 function recaptcha_v3_get($settings)
 {
 	return "Проверка капчи происходит в фоновом режиме
-	<script src='https://www.google.com/recaptcha/api.js?render={$settings['site_key']}'></script>
+	<script src='https://www.google.com/recaptcha/api.js?render={$settings['site_key']}&lang={$this->settings['language']}'></script>
 	<script>
 		grecaptcha.ready(function() {
 			grecaptcha.execute('{$settings['site_key']}', { action:'validate_captcha' }).then(function(token) {
