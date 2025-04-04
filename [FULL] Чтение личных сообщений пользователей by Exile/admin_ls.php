@@ -11,7 +11,7 @@ require INC_DIR . '/bbcode.php';
 $start = (int)request_var('start', 0);
 
 $pagination = '';
-$pm_count = DB()->sql_fetchrow(DB()->sql_query("SELECT COUNT(privmsgs_id) as total FROM " . BB_PRIVMSGS));
+$pm_count = DB()->fetch_row("SELECT COUNT(privmsgs_id) as total FROM " . BB_PRIVMSGS);
 if ($pm_count['total'] > 50) {
 	$pagination = generate_pagination('admin_ls.php?', $pm_count['total'], $bb_cfg['posts_per_page'], $start);
 }
