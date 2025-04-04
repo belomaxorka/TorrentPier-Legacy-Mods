@@ -45,6 +45,7 @@ $bb_cfg['captcha'] = array(
 		// https://www.cloudflare.com/application-services/products/turnstile
 		'site_key' => '', // ключ сайта
 		'secret_key' => '', // секретный ключ
+		'theme' => 'light', // выбор темы (доступны: light, dark)
 	),
 );
 ===========================
