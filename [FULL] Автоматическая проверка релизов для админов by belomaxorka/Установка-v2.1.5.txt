@@ -54,9 +54,9 @@ else tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_NOT_APPROVED);
 ------ Заменить на ------
 } else {
 	if (IS_ADMIN) {
-		\TorrentPier\Legacy\Torrent::tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_APPROVED);
+		tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_APPROVED);
 	} else {
-		\TorrentPier\Legacy\Torrent::tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_NOT_APPROVED);
+		tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_NOT_APPROVED);
 	}
 }
 -------------------------
