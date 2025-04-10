@@ -1,0 +1,22 @@
+- Автоматическая проверка релизов для админов
+- Версия: v1.0.0
+- Автор: belomaxorka
+- Совместимость: v2.2.0 - v2.4.*
+
+------ Открыть library/ajax/change_torrent.php и найти ------
+case 'reg':
+	\TorrentPier\Legacy\Torrent::tracker_register($attach_id);
+	$url = (TOPIC_URL . $torrent['topic_id']);
+	break;
+-------------------------------------------------------------
+
+------ Заменить на ------
+case 'reg':
+	if (IS_ADMIN) {
+		\TorrentPier\Legacy\Torrent::tracker_register($attach_id, '', TOR_APPROVED);
+	} else {
+		\TorrentPier\Legacy\Torrent::tracker_register($attach_id, '', TOR_NOT_APPROVED);
+	}
+	$url = (TOPIC_URL . $torrent['topic_id']);
+	break;
+-------------------------
