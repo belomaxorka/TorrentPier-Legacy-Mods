@@ -48,9 +48,7 @@ else
 -------------------------
 
 ------ Далее найти ------
-} else {
-	\TorrentPier\Legacy\Torrent::tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_NOT_APPROVED);
-}
+else tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_NOT_APPROVED);
 -------------------------
 
 ------ Заменить на ------
