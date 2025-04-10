@@ -1,0 +1,58 @@
+- Автоматическая проверка релизов для админов
+- Версия: v1.0.0
+- Автор: belomaxorka
+- Совместимость: v2.1.5 / LTS
+
+------ Открыть library/ajax/change_torrent.php и найти ------
+case 'reg':
+	tracker_register($attach_id);
+	$url = (TOPIC_URL . $torrent['topic_id']);
+break;
+-------------------------------------------------------------
+
+------ Заменить на ------
+case 'reg':
+	if (IS_ADMIN) {
+		tracker_register($attach_id, '', TOR_APPROVED);
+	} else {
+		tracker_register($attach_id, '', TOR_NOT_APPROVED);
+	}
+	$url = (TOPIC_URL . $torrent['topic_id']);
+break;
+-------------------------
+
+------ Открыть posting.php и найти ------
+if ($count_checked_releases || IS_AM) {
+	\TorrentPier\Legacy\Torrent::tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_NOT_APPROVED);
+} else {
+	\TorrentPier\Legacy\Torrent::tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_PREMOD);
+}
+-----------------------------------------
+
+------ Заменить на ------
+if ($count_checked_releases || IS_AM) {
+	if (IS_ADMIN) {
+		\TorrentPier\Legacy\Torrent::tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_APPROVED);
+	} else {
+		\TorrentPier\Legacy\Torrent::tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_NOT_APPROVED);
+	}
+} else {
+	\TorrentPier\Legacy\Torrent::tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_PREMOD);
+}
+-------------------------
+
+------ Далее найти ------
+} else {
+	\TorrentPier\Legacy\Torrent::tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_NOT_APPROVED);
+}
+-------------------------
+
+------ Заменить на ------
+} else {
+	if (IS_ADMIN) {
+		\TorrentPier\Legacy\Torrent::tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_APPROVED);
+	} else {
+		\TorrentPier\Legacy\Torrent::tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_NOT_APPROVED);
+	}
+}
+-------------------------
