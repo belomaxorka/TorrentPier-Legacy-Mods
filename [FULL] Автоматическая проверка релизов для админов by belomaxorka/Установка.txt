@@ -40,3 +40,19 @@ if ($count_checked_releases || IS_AM) {
 	\TorrentPier\Legacy\Torrent::tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_PREMOD);
 }
 -------------------------
+
+------ Далее найти ------
+} else {
+	\TorrentPier\Legacy\Torrent::tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_NOT_APPROVED);
+}
+-------------------------
+
+------ Заменить на ------
+} else {
+	if (IS_ADMIN) {
+		\TorrentPier\Legacy\Torrent::tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_APPROVED);
+	} else {
+		\TorrentPier\Legacy\Torrent::tracker_register(TORRENT_ATTACH_ID, 'newtopic', TOR_NOT_APPROVED);
+	}
+}
+-------------------------
