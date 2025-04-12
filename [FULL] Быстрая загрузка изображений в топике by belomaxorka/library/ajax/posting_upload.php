@@ -23,7 +23,7 @@ if (!empty($_FILES['poster_images'])) {
 			$this->ajax_die($lang['POSTING_IMAGES_FILE_TOO_LARGE'] . humn_size($bb_cfg['ajax_upload_posting_images_size_limit']));
 		}
 
-		$destination = $upload_dir . 'poster_' . TIMENOW . '_' . prepareFile($posterFiles['name'][$key]);
+		$destination = $upload_dir . 'poster_' . TIMENOW . '_' . generateRandomName();
 		if (!convertToWebP($tmpName, $destination)) {
 			$this->ajax_die($lang['POSTING_IMAGES_ERROR']);
 		}
@@ -34,7 +34,7 @@ if (!empty($_FILES['poster_images'])) {
 if (!empty($_FILES['screenshots_images'])) {
 	$screenshotFiles = $_FILES['screenshots_images'];
 	foreach ($screenshotFiles['tmp_name'] as $key => $tmpName) {
-		$destination = $upload_dir . 'screenshot_' . TIMENOW . '_' . prepareFile($screenshotFiles['name'][$key]);
+		$destination = $upload_dir . 'screenshot_' . TIMENOW . '_' . generateRandomName();
 		if (!convertToWebP($tmpName, $destination)) {
 			$this->ajax_die($lang['POSTING_IMAGES_ERROR']);
 		}
@@ -82,11 +82,10 @@ function convertToWebP($inputFile, $outputFile, $quality = 90)
 	return $result;
 }
 
-function prepareFile($filename)
+function generateRandomName()
 {
-	$fileInfo = pathinfo($filename);
-	$fileInfo['filename'] = make_rand_str(32);
-	return $fileInfo['filename'] . '.webp';
+	$fileName = make_rand_str(32);
+	return $fileName . '.webp';
 }
 
 $this->response['success'] = true;
