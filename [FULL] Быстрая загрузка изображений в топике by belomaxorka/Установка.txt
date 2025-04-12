@@ -1,5 +1,5 @@
 - Автор: belomaxorka
-- Версия: v1.1.0
+- Версия: v1.1.1
 - Описание: Добавляет возможность быстрой загрузки изображений в топик (постер / скриншоты).
   Реализовано с использованием AJAX технологии. Есть конвертация в WEBP.
 
@@ -112,6 +112,7 @@ $template->assign_var('SHOW_IMAGES_UPLOADER');
 				cache: false,
 				beforeSend: function () {
 					$('#upload-file-status').html('<hr><span>{L_POSTING_IMAGES_PROCESSING_UPLOAD}</span>');
+					$('#post-buttons-block :button, #post-buttons-block :submit').prop('disabled', true);
 				},
 				error: function (xhr, status, error) {
 					$('#upload-file-status').html('<hr><span class="leechmed">{L_POSTING_IMAGES_ERROR_UPLOADING}</span>');
@@ -119,6 +120,7 @@ $template->assign_var('SHOW_IMAGES_UPLOADER');
 				},
 				success: function (response) {
 					if (response.success) {
+						$('#post-buttons-block :button, #post-buttons-block :submit').prop('disabled', false);
 						$('#upload-file-status').html('<hr><span class="seedmed">{L_POSTING_IMAGES_SUCCESS_UPLOADED}</span>');
 
 						// BBCode [Постер]
