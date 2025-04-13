@@ -47,6 +47,7 @@ $sql = "
     LEFT JOIN bb_forums AS f ON (f.forum_id = t.forum_id)
     LEFT JOIN bb_attachments AS a ON (a.post_id = p.post_id)
     LEFT JOIN bb_attachments_desc AS ad ON (ad.attach_id = a.attach_id)
+    LEFT JOIN bb_bt_torrents AS tr ON (tr.post_id = p.post_id)
     WHERE t.posted_tg_status = 0
     LIMIT 10
 ";
@@ -94,11 +95,12 @@ foreach (DB()->fetch_rowset($sql) as $row) {
 		//
 
 		$message .= "<b>Автор темы:</b> <a href=\"" . FULL_URL . PROFILE_URL . $row['user_id'] . "\">" . htmlCHR($row['username']) . "</a>";
-		// if ($row['post_time'] == $row['filetime']) {
-		//     $message .= "\nРелиз добавлен: " . rudate("j M Y G:i:s", $row['post_time']) . " (GMT +3)";
-		// } elseif ($row['post_time'] < $row['filetime']) {
-		//     $message .= "\nРелиз обновлен: " . rudate("j M Y G:i:s", $row['filetime']) . " (GMT +3)";
-		// }
+		if ($row['post_time'] == $row['filetime']) {
+			$message .= "\n<b>Релиз добавлен:</b> " . rudate("j M Y G:i:s", $row['post_time']) . " (GMT +3)";
+		} elseif ($row['post_time'] < $row['filetime']) {
+			$message .= "\n<b>Релиз обновлен:</b> " . rudate("j M Y G:i:s", $row['filetime']) . " (GMT +3)";
+		}
+		$message .= "\nРазмер: " . humn_size($row['size']);
 
 		// Комментарий
 		if (!empty($row['comment'])) {
