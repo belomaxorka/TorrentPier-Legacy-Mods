@@ -100,15 +100,9 @@ foreach (DB()->fetch_rowset($sql) as $row) {
 		//     $message .= "\nРелиз обновлен: " . rudate("j M Y G:i:s", $row['filetime']) . " (GMT +3)";
 		// }
 
-		// Ссылка на Android-приложение
-		$islandAndroid = !empty($row['island_cloud_android_url']) ? $row['island_cloud_android_url'] : false;
-		if ($islandAndroid) {
-			$message .= "\n\n<b>Андроид порт:</b> <a href=\"" . $islandAndroid . "\">" . $islandAndroid . "</a>";
-		}
-
-		// Причина редактирования темы
+		// Комментарий
 		if (!empty($row['comment'])) {
-			$message .= "\n\n<b>Причина редактирования:</b> " . htmlCHR($row['comment']);
+			$message .= "\n\n<b>Комментарий:</b> " . htmlCHR($row['comment']);
 		}
 	} else {
 		//
@@ -120,7 +114,6 @@ foreach (DB()->fetch_rowset($sql) as $row) {
 		}
 
 		$message .= strip_bbcode($row['post_text']);
-		$message = preg_replace('/https?:\/\/[^\s]+\/' . preg_quote(hide_bb_path($bb_cfg['ajax_upload_posting_images_path']), '/') . '[^\s]+/', '', $message);
 	}
 
 	// Вывод списка тегов
