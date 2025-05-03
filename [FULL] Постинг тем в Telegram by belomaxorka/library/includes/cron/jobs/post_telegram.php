@@ -14,13 +14,14 @@ if (empty($botToken) || empty($chatId)) {
 /**
  * Конвертация даты в RU формат
  *
- * @param $format
- * @param $timestamp
+ * @param string $format
+ * @param int|string $timestamp
  * @param bool $nominative_month
  * @return false|string
  */
 function rudate($format, $timestamp = 0, $nominative_month = false)
 {
+	$timestamp = (int)$timestamp;
 	if (!$timestamp) {
 		$timestamp = time();
 	} elseif (!preg_match("/^[0-9]+$/", $timestamp)) {
