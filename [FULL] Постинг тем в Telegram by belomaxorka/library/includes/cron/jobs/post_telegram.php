@@ -11,7 +11,15 @@ if (empty($botToken) || empty($chatId)) {
 	return;
 }
 
-function rudate($format, $timestamp = 0, $nominative_month = false): string
+/**
+ * Конвертация даты в RU формат
+ *
+ * @param $format
+ * @param $timestamp
+ * @param bool $nominative_month
+ * @return false|string
+ */
+function rudate($format, $timestamp = 0, $nominative_month = false)
 {
 	if (!$timestamp) {
 		$timestamp = time();
@@ -19,10 +27,28 @@ function rudate($format, $timestamp = 0, $nominative_month = false): string
 		$timestamp = strtotime($timestamp);
 	}
 
-	$F = $nominative_month ? array(1 => "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь") : array(1 => "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря");
-	$M = array(1 => "Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек");
-	$l = array("Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота");
-	$D = array("Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб");
+	$F = $nominative_month ? array(1 =>
+		'Январь', 'Февраль', 'Март',
+		'Апрель', 'Май', 'Июнь',
+		'Июль', 'Август', 'Сентябрь',
+		'Октябрь', 'Ноябрь', 'Декабрь'
+	) : array(1 =>
+		'Января', 'Февраля', 'Марта',
+		'Апреля', 'Мая', 'Июня',
+		'Июля', 'Августа', 'Сентября',
+		'Октября', 'Ноября', 'Декабря'
+	);
+	$M = array(1 =>
+		'Янв', 'Фев', 'Мар',
+		'Апр', 'Май', 'Июн',
+		'Июл', 'Авг', 'Сен',
+		'Окт', 'Ноя', 'Дек'
+	);
+	$l = array(
+		'Воскресенье', 'Понедельник', 'Вторник',
+		'Среда', 'Четверг', 'Пятница', 'Суббота'
+	);
+	$D = array('Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб');
 
 	$format = str_replace("F", $F[date("n", $timestamp)], $format);
 	$format = str_replace("M", $M[date("n", $timestamp)], $format);
