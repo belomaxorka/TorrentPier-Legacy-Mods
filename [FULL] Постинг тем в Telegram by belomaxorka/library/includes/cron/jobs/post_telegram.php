@@ -69,7 +69,9 @@ foreach (DB()->fetch_rowset($sql) as $row) {
 	$prefixes = '';
 	if (defined('BB_PREFIXES')) {
 		$topic_prefixes = get_prefixes_list($row['topic_id'])['topic_prefixes'];
-		$topic_prefixes = array_map(fn($prefix) => $prefix['prefix_name'], $topic_prefixes);
+		$topic_prefixes = array_map(function ($prefix) {
+			return $prefix['prefix_name'];
+		}, $topic_prefixes);
 		$prefixes = ' ' . implode(' ', $topic_prefixes);
 	}
 
@@ -77,7 +79,9 @@ foreach (DB()->fetch_rowset($sql) as $row) {
 	$tags = '';
 	if (defined('BB_TAGS')) {
 		$topic_tags = get_tags_list($row['topic_id'])['topic_tags'];
-		$topic_tags = array_map(fn($tag) => '#' . str_replace([' ', '-', ',', '.', "'"], '_', $tag['tag_name']), $topic_tags);
+		$topic_tags = array_map(function ($tag) {
+			return '#' . str_replace([' ', '-', ',', '.', "'"], '_', $tag['tag_name']);
+		}, $topic_tags);
 		$tags = implode(' ', $topic_tags);
 	}
 
@@ -158,7 +162,7 @@ foreach (DB()->fetch_rowset($sql) as $row) {
 		if ($decodedResponse && $decodedResponse['ok']) {
 			DB()->sql_query("UPDATE `bb_topics` SET `posted_tg_status` = 1 WHERE `topic_id` = " . (int)$row['topic_id'] . " LIMIT 1");
 		} else {
-			$cron_runtime_log[] = 'Ошибка при публикации поста: ' . $decodedResponse['description'] ?? 'Неизвестная ошибка';
+			$cron_runtime_log[] = 'Ошибка при публикации поста: ' . (isset($decodedResponse['description']) ? $decodedResponse['description'] : 'Неизвестная ошибка');
 		}
 	}
 
