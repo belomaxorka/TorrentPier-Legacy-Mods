@@ -47,7 +47,7 @@ INSERT INTO `bb_cron` VALUES ('', 1, 'Очистка префиксов', 'clean
 
 ======= Открыть library/includes/functions.php и вставить в конце =======
 /**
- * Возращает список префиксов
+ * Возвращает список префиксов
  *
  * @param string|int $topic_id
  * @return array
@@ -89,39 +89,84 @@ define('BB_SMILIES', 'bb_smilies');
 ============================================================
 
 ======= Ниже вставить =======
-// Теги
-define('BB_TAGS', 'bb_tags');
-define('BB_TOPIC_TAGS', 'bb_topic_tags');
+// Префиксы
+define('BB_PREFIXES', 'bb_prefixes');
+define('BB_TOPIC_PREFIXES', 'bb_topic_prefixes');
 =============================
 
 ======= Открыть library/language/ru/main.php и вставить в конце =======
-// Теги
-$lang['TAGS'] = 'Теги';
-$lang['TAGS_PLACEHOLDER'] = 'Выберите тег из списка, или укажите новый';
-$lang['TAGS_NOT_FOUND'] = 'Такой тег не найден...';
-$lang['TAGS_SEARCH_RESULTS'] = 'По тегам: ';
-$lang['TAGS_SEARCH_BY'] = 'Поиск по тегам';
-$lang['TAGS_LATEST_TAGS'] = 'Последние теги';
+// Префиксы тем
+$lang['TOPIC_PREFIXES'] = 'Префиксы тем';
+$lang['PREFIXES'] = 'Префиксы';
+$lang['PREFIX'] = 'Префикс';
+$lang['PREFIXES_PLACEHOLDER'] = 'Выберите префикс из списка';
+$lang['PREFIXES_NOT_FOUND'] = 'Такой префикс не найден...';
+$lang['PREFIXES_SEARCH_RESULTS'] = 'По префиксам: ';
+$lang['PREFIXES_SEARCH_BY'] = 'Поиск по префиксам';
+$lang['MUST_SELECT_PREFIX'] = 'Извините, вы не выбрали префикс. Вернитесь и попробуйте еще раз.';
+$lang['PREFIX_UPDATED'] = 'Префикс был успешно изменен';
+$lang['PREFIX_ADDED'] = 'Префикс был успешно добавлен';
+$lang['PREFIX_REMOVED'] = 'Префикс был успешно удален';
+$lang['CLICK_RETURN_PREFIXADMIN'] = '%sВернуться к управлению префиксами%s';
+$lang['PREFIX_ADMIN_TITLE_EDIT'] = 'Редактирование / создание префикса';
+$lang['PREFIX_ADMIN_MANAGE'] = 'Управление префиксами';
+$lang['PREFIX_ADMIN_NAME'] = 'Название префикса';
+$lang['PREFIX_ADMIN_DESC'] = 'Описание префикса';
+$lang['PREFIX_ADMIN_COLOR'] = 'Цвет префикса';
+$lang['PREFIX_ADMIN_TITLE_DESC'] = 'Здесь вы можете настроить префиксы для тем. Созданные префиксы будут доступны для выбора при создании / редактировании топика.';
+$lang['PREFIX_ADMIN_ADD_NEW'] = 'Добавить новый префикс';
+$lang['PREFIX_ADMIN_PREFIX_COLOR_NOT_SELECTED'] = 'Не указан цвет префикса';
+$lang['PREFIX_POSTING_NO_SELECTED'] = 'Необходимо указать хотя-бы один префикс для этой темы';
 =======================================================================
 
 ======= Открыть library/language/source/main.php и вставить в конце =======
-// Теги
-$lang['TAGS'] = 'Tags';
-$lang['TAGS_PLACEHOLDER'] = 'Type or click here';
-$lang['TAGS_NOT_FOUND'] = 'No suggestions';
-$lang['TAGS_SEARCH_RESULTS'] = 'By tags: ';
-$lang['TAGS_SEARCH_BY'] = 'Search by tags';
-$lang['TAGS_LATEST_TAGS'] = 'Latest tags';
+// Префиксы тем
+$lang['TOPIC_PREFIXES'] = 'Префиксы тем';
+$lang['PREFIXES'] = 'Префиксы';
+$lang['PREFIX'] = 'Префикс';
+$lang['PREFIXES_PLACEHOLDER'] = 'Выберите префикс из списка';
+$lang['PREFIXES_NOT_FOUND'] = 'Такой префикс не найден...';
+$lang['PREFIXES_SEARCH_RESULTS'] = 'По префиксам: ';
+$lang['PREFIXES_SEARCH_BY'] = 'Поиск по префиксам';
+$lang['MUST_SELECT_PREFIX'] = 'Извините, вы не выбрали префикс. Вернитесь и попробуйте еще раз.';
+$lang['PREFIX_UPDATED'] = 'Префикс был успешно изменен';
+$lang['PREFIX_ADDED'] = 'Префикс был успешно добавлен';
+$lang['PREFIX_REMOVED'] = 'Префикс был успешно удален';
+$lang['CLICK_RETURN_PREFIXADMIN'] = '%sВернуться к управлению префиксами%s';
+$lang['PREFIX_ADMIN_TITLE_EDIT'] = 'Редактирование / создание префикса';
+$lang['PREFIX_ADMIN_MANAGE'] = 'Управление префиксами';
+$lang['PREFIX_ADMIN_NAME'] = 'Название префикса';
+$lang['PREFIX_ADMIN_DESC'] = 'Описание префикса';
+$lang['PREFIX_ADMIN_COLOR'] = 'Цвет префикса';
+$lang['PREFIX_ADMIN_TITLE_DESC'] = 'Здесь вы можете настроить префиксы для тем. Созданные префиксы будут доступны для выбора при создании / редактировании топика.';
+$lang['PREFIX_ADMIN_ADD_NEW'] = 'Добавить новый префикс';
+$lang['PREFIX_ADMIN_PREFIX_COLOR_NOT_SELECTED'] = 'Не указан цвет префикса';
+$lang['PREFIX_POSTING_NO_SELECTED'] = 'Необходимо указать хотя-бы один префикс для этой темы';
 ===========================================================================
 
 ======= Открыть library/language/en/main.php и вставить в конце ===========
-// Теги
-$lang['TAGS'] = 'Tags';
-$lang['TAGS_PLACEHOLDER'] = 'Type or click here';
-$lang['TAGS_NOT_FOUND'] = 'No suggestions';
-$lang['TAGS_SEARCH_RESULTS'] = 'By tags: ';
-$lang['TAGS_SEARCH_BY'] = 'Search by tags';
-$lang['TAGS_LATEST_TAGS'] = 'Latest tags';
+// Префиксы тем
+$lang['TOPIC_PREFIXES'] = 'Префиксы тем';
+$lang['PREFIXES'] = 'Префиксы';
+$lang['PREFIX'] = 'Префикс';
+$lang['PREFIXES_PLACEHOLDER'] = 'Выберите префикс из списка';
+$lang['PREFIXES_NOT_FOUND'] = 'Такой префикс не найден...';
+$lang['PREFIXES_SEARCH_RESULTS'] = 'По префиксам: ';
+$lang['PREFIXES_SEARCH_BY'] = 'Поиск по префиксам';
+$lang['MUST_SELECT_PREFIX'] = 'Извините, вы не выбрали префикс. Вернитесь и попробуйте еще раз.';
+$lang['PREFIX_UPDATED'] = 'Префикс был успешно изменен';
+$lang['PREFIX_ADDED'] = 'Префикс был успешно добавлен';
+$lang['PREFIX_REMOVED'] = 'Префикс был успешно удален';
+$lang['CLICK_RETURN_PREFIXADMIN'] = '%sВернуться к управлению префиксами%s';
+$lang['PREFIX_ADMIN_TITLE_EDIT'] = 'Редактирование / создание префикса';
+$lang['PREFIX_ADMIN_MANAGE'] = 'Управление префиксами';
+$lang['PREFIX_ADMIN_NAME'] = 'Название префикса';
+$lang['PREFIX_ADMIN_DESC'] = 'Описание префикса';
+$lang['PREFIX_ADMIN_COLOR'] = 'Цвет префикса';
+$lang['PREFIX_ADMIN_TITLE_DESC'] = 'Здесь вы можете настроить префиксы для тем. Созданные префиксы будут доступны для выбора при создании / редактировании топика.';
+$lang['PREFIX_ADMIN_ADD_NEW'] = 'Добавить новый префикс';
+$lang['PREFIX_ADMIN_PREFIX_COLOR_NOT_SELECTED'] = 'Не указан цвет префикса';
+$lang['PREFIX_POSTING_NO_SELECTED'] = 'Необходимо указать хотя-бы один префикс для этой темы';
 ===========================================================================
 
 ======= Открыть index.php и найти =======
