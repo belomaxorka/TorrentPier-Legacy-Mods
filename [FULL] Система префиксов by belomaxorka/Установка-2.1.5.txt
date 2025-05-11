@@ -1,0 +1,566 @@
+-------------- Система тегов --------------
+Автор: belomaxorka
+Версия: v1.4.2
+Описание: Добавляет возможность устанавливать теги темам. Также имеется поиск тем по тегам (при клике на тег).
+-------------------------------------------
+
+======= [SQL] =======
+SET SESSION sql_mode = '';
+
+DROP TABLE IF EXISTS `bb_tags`;
+CREATE TABLE IF NOT EXISTS `bb_tags`
+(
+  `tag_id`   MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `tag_name` VARCHAR(55)           NOT NULL DEFAULT '',
+  PRIMARY KEY (`tag_id`),
+  FULLTEXT KEY `tag_name` (`tag_name`)
+)
+  ENGINE = MyISAM
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `bb_topic_tags`;
+CREATE TABLE IF NOT EXISTS `bb_topic_tags`
+(
+  `topic_id` MEDIUMINT(8) UNSIGNED NOT NULL,
+  `tag_id`   MEDIUMINT(8) UNSIGNED NOT NULL,
+  PRIMARY KEY (topic_id, tag_id),
+  FOREIGN KEY (topic_id) REFERENCES bb_topics (topic_id) ON DELETE CASCADE,
+  FOREIGN KEY (tag_id) REFERENCES bb_tags (tag_id) ON DELETE CASCADE
+) ENGINE = MyISAM
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
+
+INSERT INTO `bb_cron` VALUES ('', 1, 'Очистка тегов', 'clean_tags.php', 'daily', '', '05:00:00', 30, '', '', '', 0, '', 0, 0, 0);
+=====================
+
+======= Открыть library/config.php и найти =======
+'bb_poll_data'  => array('filecache', array()),
+==================================================
+
+======= Ниже вставить =======
+// Теги
+'bb_topic_tags' => array('filecache', array()),
+=============================
+
+======= Далее вставить в конце =======
+// Теги
+$bb_cfg['show_index_new_tags'] = true; // Показывать блок "Последние теги" на главной
+$bb_cfg['new_tags_limit'] = 25;
+======================================
+
+======= Открыть library/includes/functions.php и вставить в конце =======
+/**
+ * Возращает список тегов
+ *
+ * @param string|int $topic_id
+ * @return array
+ */
+function get_topic_tags($topic_id = null)
+{
+	global $datastore;
+
+	if (!$tags = $datastore->get('tags')) {
+		$datastore->update('tags');
+		$tags = $datastore->get('tags');
+	}
+
+	if (isset($topic_id)) {
+		if (!$topic_tags = CACHE('bb_topic_tags')->get('topic_tags_' . $topic_id)) {
+			$topic_tags = array();
+
+			$sql = "SELECT tt.* FROM " . BB_TOPIC_TAGS . " tt WHERE tt.topic_id = $topic_id";
+			foreach (DB()->fetch_rowset($sql) as $row) {
+				if (!isset($tags[$row['tag_id']])) {
+					continue;
+				}
+				$tag = $tags[$row['tag_id']];
+				$topic_tags[] = $tag;
+			}
+
+			CACHE('bb_topic_tags')->set('topic_tags_' . $topic_id, $topic_tags, 3600);
+		}
+	} else {
+		$topic_tags = array();
+	}
+
+	return array('topic_tags' => $topic_tags, 'all_tags' => $tags);
+}
+=========================================================================
+
+======= Открыть library/includes/init_bb.php и найти =======
+define('BB_SMILIES', 'bb_smilies');
+============================================================
+
+======= Ниже вставить =======
+// Теги
+define('BB_TAGS', 'bb_tags');
+define('BB_TOPIC_TAGS', 'bb_topic_tags');
+=============================
+
+======= Открыть library/language/ru/main.php и вставить в конце =======
+// Теги
+$lang['TAGS'] = 'Теги';
+$lang['TAGS_PLACEHOLDER'] = 'Выберите тег из списка, или укажите новый';
+$lang['TAGS_NOT_FOUND'] = 'Такой тег не найден...';
+$lang['TAGS_SEARCH_RESULTS'] = 'По тегам: ';
+$lang['TAGS_SEARCH_BY'] = 'Поиск по тегам';
+$lang['TAGS_LATEST_TAGS'] = 'Последние теги';
+=======================================================================
+
+======= Открыть library/language/en/main.php и вставить в конце ===========
+// Теги
+$lang['TAGS'] = 'Tags';
+$lang['TAGS_PLACEHOLDER'] = 'Type or click here';
+$lang['TAGS_NOT_FOUND'] = 'No suggestions';
+$lang['TAGS_SEARCH_RESULTS'] = 'By tags: ';
+$lang['TAGS_SEARCH_BY'] = 'Search by tags';
+$lang['TAGS_LATEST_TAGS'] = 'Latest tags';
+===========================================================================
+
+======= Открыть index.php и найти =======
+// Allow cron
+if (IS_AM)
+{
+=========================================
+
+======= Выше вставить =======
+// Блок: Новые теги
+if ($bb_cfg['show_index_new_tags']) {
+	$tags = get_topic_tags()['all_tags'];
+	krsort($tags);
+	$tags = array_slice($tags, 0, $bb_cfg['new_tags_limit'], true);
+
+	$latest_tags = array();
+	foreach ($tags as $tag) {
+		$latest_tags[] = '<a href="search.php?tag_id=' . $tag['tag_id'] . '">' . $tag['tag_name'] . '</a>';
+	}
+
+	$template->assign_vars([
+		'LATEST_TAGS' => !empty($latest_tags) ? implode(', ', $latest_tags) : '',
+	]);
+}
+=============================
+
+======= Открыть posting.php и найти =======
+// Notify
+if ($submit || $refresh)
+{
+===========================================
+
+======= Выше вставить =======
+// ------------------ Теги ------------------
+$get_tags = get_topic_tags($topic_id);
+$all_tags_list = $get_tags['all_tags'];
+
+$topic_tags_list = array();
+foreach ($get_tags['topic_tags'] as $tag) {
+	$topic_tags_list[] = $tag;
+}
+// ------------------------------------------
+=============================
+
+======= Далее найти =======
+$notify_user = (int) !empty($_POST['notify']);
+===========================
+
+======= Ниже вставить =======
+// Теги
+$topic_tags = array();
+if (!empty($_POST['topic_tags_list']) && is_array($_POST['topic_tags_list'])) {
+	$topic_tags = $_POST['topic_tags_list'];
+}
+=============================
+
+======= Далее найти =======
+submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_id, $post_id, $topic_type, DB()->escape($username), DB()->escape($subject), DB()->escape($message), $update_post_time, $poster_rg_id, $attach_rg_sig);
+===========================
+
+======= Заменить на =======
+submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_id, $post_id, $topic_type, DB()->escape($username), DB()->escape($subject), DB()->escape($message), $update_post_time, $poster_rg_id, $attach_rg_sig, $topic_tags);
+===========================
+
+======= Далее найти =======
+'MESSAGE'              => $message,
+===========================
+
+======= Ниже вставить =======
+// --------------- Теги ---------------
+'ALL_TAGS_JSON'        => empty($all_tags_list) ? '[]' : json_encode($all_tags_list),
+'TOPIC_TAGS_LIST'      => empty($topic_tags_list) ? '[]' : json_encode($topic_tags_list),
+// ------------------------------------
+=============================
+
+======= Открыть search.php и найти =======
+$posts_tbl      = BB_POSTS           .' p';
+===========================================
+
+======= Ниже вставить =======
+// Теги
+$tags_topic_tbl = BB_TOPIC_TAGS . ' tt';
+=============================
+
+======= Далее найти =======
+print_page('search.tpl');
+===========================
+
+======= Выше вставить =======
+// Теги
+$tags = get_topic_tags()['all_tags'];
+$template->assign_vars(array(
+	'ALL_TAGS_JSON' => empty($tags) ? '[]' : json_encode($tags),
+));
+=============================
+
+======= Далее найти =======
+// Get other "REQUEST" vars
+$egosearch = false;
+===========================
+
+======= Выше вставить =======
+// Теги
+$tag_id = isset($_REQUEST['tag_id']) ? $_REQUEST['tag_id'] : 0;
+if (!is_array($tag_id)) {
+	$tag_id = explode(',', $tag_id);
+}
+$tags_csv = implode(', ', $tag_id);
+=============================
+
+======= Далее найти =======
+$join_s = ($text_match_sql && !$title_match);
+$join_p = ($my_posts || $join_s);
+$join_dl = ($dl_search);
+===========================
+
+======= Ниже вставить =======
+// Теги
+$join_topic_tags = ($tags_csv);
+=============================
+
+======= Далее найти =======
+if ($join_dl) $SQL['WHERE'][] = "dl.topic_id = t.topic_id AND dl.user_id = $dl_user_id_val AND dl.user_status IN($dl_status_csv)";
+===========================
+
+======= Ниже вставить =======
+// Теги
+if ($join_topic_tags) {
+	$SQL['FROM'][] = $tags_topic_tbl;
+}
+
+if ($join_topic_tags) {
+	$SQL['WHERE'][] = "t.topic_id = tt.topic_id AND tt.tag_id IN($tags_csv)";
+}
+=============================
+
+======= Далее найти =======
+if ($items_display)
+{
+===========================
+
+======= Ниже вставить =======
+// Теги
+$tags = get_topic_tags()['all_tags'];
+$by_tag = array();
+foreach ($tag_id as $tag) {
+	if (isset($tags[$tag]['tag_name'])) {
+		$by_tag[] = '<b>' . $tags[$tag]['tag_name'] . '</b>';
+	}
+}
+$by_tag = implode(', ', $by_tag);
+=============================
+
+======= Далее найти =======
+'DISPLAY_AS_POSTS' => $post_mode,
+===========================
+
+======= Ниже вставить =======
+// Теги
+'BY_TAG' => ($by_tag) ? ($lang['TAGS_SEARCH_RESULTS'] . $by_tag) : false,
+=============================
+
+======= Открыть library/includes/functions_admin.php и найти =======
+// Delete topics, topics watch
+====================================================================
+
+======= Выше вставить =======
+// Delete topic tags
+DB()->query("
+	DELETE tt
+	FROM      " . $tmp_delete_topics . " del
+	LEFT JOIN " . BB_TOPIC_TAGS . " tt  USING(topic_id)
+");
+=============================
+
+======= Открыть library/includes/datastore/common.php и найти =======
+'smile_replacements'     => 'build_smilies.php',
+=====================================================================
+
+======= Ниже вставить =======
+'tags'                   => 'build_tags.php',
+=============================
+
+======= Открыть library/includes/functions_post.php и найти =======
+function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_id, &$post_id, &$topic_type, $post_username, $post_subject, $post_message, $update_post_time, $poster_rg_id, $attach_rg_sig)
+===================================================================
+
+======= Заменить на =======
+function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_id, &$post_id, &$topic_type, $post_username, $post_subject, $post_message, $update_post_time, $poster_rg_id, $attach_rg_sig, $topic_tags)
+===========================
+
+======= Далее найти =======
+if ($mode == 'newtopic')
+{
+	$topic_id = DB()->sql_nextid();
+}
+===========================
+
+======= Ниже вставить =======
+// ----------------- Теги -----------------
+if (!empty($topic_id)) {
+	// Получаем все теги и теги, связанные с темой
+	$tags_list = get_topic_tags($topic_id);
+	$all_tags_list = $tags_list['all_tags']; // Все теги
+	$topic_tags_db = $tags_list['topic_tags']; // Теги, связанные с темой
+
+	// Создаем массивы для быстрого поиска
+	$all_tags_id = array_column($all_tags_list, 'tag_id'); // Массив всех tag_id
+	$all_tags_name_to_id = array_column($all_tags_list, 'tag_id', 'tag_name'); // Ассоциативный массив tag_name => tag_id
+	$topic_tags_db_ids = array_column($topic_tags_db, 'tag_id'); // Массив tag_id, связанных с темой
+
+	$need_update_datastore = false;
+
+	// Если POST-запрос содержит новые теги
+	if (!empty($topic_tags)) {
+		foreach ($topic_tags as $tag) {
+			$tag = trim($tag); // Удаляем лишние пробелы
+
+			if (ctype_digit($tag) && in_array((int)$tag, $all_tags_id)) {
+				// Если значение является числом и существует в базе данных как tag_id
+				$tag_id = (int)$tag;
+			} else {
+				// Если значение не является tag_id, считаем его tag_name
+				$tag_name = $tag;
+
+				if (isset($all_tags_name_to_id[$tag_name])) {
+					// Если тег уже существует, берем его ID
+					$tag_id = $all_tags_name_to_id[$tag_name];
+				} else {
+					// Если тега нет, создаем новый
+					DB()->sql_query("INSERT INTO " . BB_TAGS . " (tag_name) VALUES ('" . DB()->escape($tag_name) . "')");
+					$tag_id = DB()->sql_nextid(); // Получаем ID нового тега
+					$all_tags_id[] = $tag_id; // Добавляем новый ID в массив существующих тегов
+					$all_tags_name_to_id[$tag_name] = $tag_id; // Обновляем ассоциативный массив
+					$need_update_datastore = true;
+				}
+			}
+
+			// Проверяем, что тег еще не связан с темой
+			if (!in_array($tag_id, $topic_tags_db_ids)) {
+				// Добавляем связь между темой и тегом
+				DB()->sql_query("INSERT INTO " . BB_TOPIC_TAGS . " (topic_id, tag_id) VALUES ($topic_id, $tag_id)");
+			}
+		}
+	}
+
+	// Удаление всех связей, если POST-запрос пустой
+	if (empty($topic_tags)) {
+		// Удаляем все связи между темой и тегами
+		DB()->sql_query("DELETE FROM " . BB_TOPIC_TAGS . " WHERE topic_id = $topic_id");
+	} else {
+		// Удаление отдельных тегов, которые были отсоединены
+		foreach ($topic_tags_db_ids as $existing_tag_id) {
+			// Проверяем, есть ли этот тег в POST-запросе
+			if (!in_array((string)$existing_tag_id, $topic_tags) && !in_array($all_tags_list[$existing_tag_id]['tag_name'], $topic_tags)) {
+				// Если тега нет в POST-запросе, удаляем связь
+				DB()->sql_query("DELETE FROM " . BB_TOPIC_TAGS . " WHERE topic_id = $topic_id AND tag_id = $existing_tag_id");
+			}
+		}
+	}
+
+	// Обновляем кэш тегов, если были созданы новые теги или удалены связи
+	if ($need_update_datastore || empty($topic_tags)) {
+		$datastore->update('tags');
+	}
+
+	// Очистка кэша темы, если были добавлены новые теги
+	if ($mode == 'editpost') {
+		CACHE('bb_topic_tags')->rm('topic_tags_' . $topic_id);
+	}
+}
+// ----------------------------------------
+=============================
+
+======= Открыть page_footer.tpl (В вашем шаблоне) и найти =======
+<div id="sidebar2-wrap">
+=================================================================
+
+======= Ниже вставить =======
+<!-- IF LATEST_TAGS -->
+<div>
+	<h3>{L_TAGS_LATEST_TAGS}</h3>
+	{LATEST_TAGS}
+</div>
+<!-- ENDIF -->
+=============================
+
+======= Открыть search.tpl (В вашем шаблоне) и найти =======
+		{MY_TOPICS_CHBOX}
+	</p>
+</div>
+</fieldset>
+============================================================
+
+======= Ниже вставить =======
+<link rel="stylesheet" type="text/css" href="{SITE_URL}styles/js/libs/magicsuggest.css"/>
+<fieldset>
+	<legend>{L_TAGS_SEARCH_BY}</legend>
+	<div>
+		<div id="search_tags_container"></div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('div#search_tags_container').magicSuggest({
+				data: {ALL_TAGS_JSON},
+				name: 'tag_id',
+				displayField: 'tag_name',
+				valueField: 'tag_id',
+				maxSelection: null,
+				allowFreeEntries: false,
+				expandOnFocus: true,
+				placeholder: '{L_TAGS_PLACEHOLDER}',
+				noSuggestionText: '{L_TAGS_NOT_FOUND}',
+			});
+		});
+	</script>
+</fieldset>
+<script src="{SITE_URL}styles/js/libs/magicsuggest.js"></script>
+=============================
+
+======= Открыть search_results.tpl (В вашем шаблоне) и найти =======
+<h1 class="pagetitle">{SEARCH_MATCHES}</h1>
+====================================================================
+
+======= Ниже вставить =======
+<!-- IF BY_TAG --><span>{BY_TAG}</span><!-- ENDIF -->
+=============================
+
+======= Открыть posting.tpl (В вашем шаблоне) и найти =======
+<!-- ELSEIF LOGGED_IN -->
+=============================================================
+
+======= Ниже вставить =======
+<link rel="stylesheet" type="text/css" href="{SITE_URL}styles/js/libs/magicsuggest.css"/>
+<tr class="pad_6">
+	<td class="vTop pad_4" valign="top">
+		<p><b>{L_TAGS}</b></p>
+	</td>
+	<td>
+		<div id="topic_tags_container"></div>
+	</td>
+</tr>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('div#topic_tags_container').magicSuggest({
+			data: {ALL_TAGS_JSON},
+			value: {TOPIC_TAGS_LIST},
+			name: 'topic_tags_list',
+			displayField: 'tag_name',
+			valueField: 'tag_id',
+			maxSelection: null,
+			placeholder: '{L_TAGS_PLACEHOLDER}',
+			noSuggestionText: '{L_TAGS_NOT_FOUND}',
+		});
+	});
+</script>
+<script src="{SITE_URL}styles/js/libs/magicsuggest.js"></script>
+=============================
+
+======= Открыть viewtopic.tpl (В вашем шаблоне) и найти =======
+</div>
+<!-- ENDIF -->
+</h1>
+===============================================================
+
+======= Ниже вставить =======
+<!-- IF TAGS_LIST -->
+<div class="mrg_6"><span>{L_TAGS}: {TAGS_LIST}</span></div>
+<!-- ENDIF -->
+=============================
+
+========= Открыть css/main.css (В вашем шаблоне) и найти =========
+.fieldsets fieldset div {
+==================================================================
+
+======= Заменить на =======
+.fieldsets fieldset > div {
+===========================
+
+======= Далее найти =======
+#sidebar2 h3 {
+	padding: 0 0 4px 0; margin: 0 0 2px 0;
+	color: #333333; text-indent: 0.5em;
+	background: transparent url(../images/hr200_ltr_gradient.jpg) no-repeat left bottom;
+}
+===========================
+
+======= Заменить на =======
+#sidebar2 h3 {
+	padding: 0 0 4px 0; margin: 8px 0 2px 0;
+	color: #333333; text-indent: 0.5em;
+	background: transparent url(../images/hr200_ltr_gradient.jpg) no-repeat left bottom;
+}
+===========================
+
+======= Далее найти =======
+#user_ratio {
+	padding: 1px 6px 0 0; font-size: 11px;
+	font-size: 11px;
+}
+===========================
+
+======= Заменить на =======
+#user_ratio {
+	font-size: 11px;
+}
+===========================
+
+======= Открыть css/top.css (В вашем шаблоне) и найти =======
+#sidebar2-wrap {}
+=============================================================
+
+======= Заменить на =======
+#sidebar2-wrap { margin-top: -8px; }
+===========================
+
+======= Открыть viewtopic.php и найти =======
+$datastore->enqueue(array(
+	'ranks',
+));
+==============================================
+
+======= Заменить на =======
+$datastore->enqueue(array(
+	'ranks',
+	'tags',
+));
+===========================
+
+======= Далее найти =======
+//
+// Send vars to template
+//
+===========================
+
+======= Выше вставить =======
+// ------------------ Теги ------------------
+$topic_tags = array();
+
+foreach (get_topic_tags($topic_id)['topic_tags'] as $tag) {
+	$topic_tags[] = '<a href="search.php?tag_id=' . $tag['tag_id'] . '">' . $tag['tag_name'] . '</a>';
+}
+
+$template->assign_vars([
+	'TAGS_LIST' => !empty($topic_tags) ? implode(', ', $topic_tags) : '',
+]);
+// ------------------------------------------
+=============================
