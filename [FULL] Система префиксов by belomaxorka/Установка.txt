@@ -7,31 +7,33 @@
 ======= [SQL] =======
 SET SESSION sql_mode = '';
 
-DROP TABLE IF EXISTS `bb_tags`;
-CREATE TABLE IF NOT EXISTS `bb_tags`
+DROP TABLE IF EXISTS `bb_prefixes`;
+CREATE TABLE IF NOT EXISTS `bb_prefixes`
 (
-  `tag_id`   MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `tag_name` VARCHAR(55)           NOT NULL DEFAULT '',
-  PRIMARY KEY (`tag_id`),
-  FULLTEXT KEY `tag_name` (`tag_name`)
+  `prefix_id`          MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `prefix_name`        VARCHAR(25)           NOT NULL DEFAULT '',
+  `prefix_description` TINYTEXT              NOT NULL DEFAULT '',
+  `prefix_color`       VARCHAR(7)            NOT NULL DEFAULT '',
+  PRIMARY KEY (`prefix_id`),
+  FULLTEXT KEY `prefix_name` (`prefix_name`)
 )
   ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
-DROP TABLE IF EXISTS `bb_topic_tags`;
-CREATE TABLE IF NOT EXISTS `bb_topic_tags`
+DROP TABLE IF EXISTS `bb_topic_prefixes`;
+CREATE TABLE IF NOT EXISTS `bb_topic_prefixes`
 (
-  `topic_id` MEDIUMINT(8) UNSIGNED NOT NULL,
-  `tag_id`   MEDIUMINT(8) UNSIGNED NOT NULL,
-  PRIMARY KEY (topic_id, tag_id),
+  `topic_id`  MEDIUMINT(8) UNSIGNED NOT NULL,
+  `prefix_id` MEDIUMINT(8) UNSIGNED NOT NULL,
+  PRIMARY KEY (topic_id, prefix_id),
   FOREIGN KEY (topic_id) REFERENCES bb_topics (topic_id) ON DELETE CASCADE,
-  FOREIGN KEY (tag_id) REFERENCES bb_tags (tag_id) ON DELETE CASCADE
+  FOREIGN KEY (prefix_id) REFERENCES bb_prefixes (prefix_id) ON DELETE CASCADE
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
-INSERT INTO `bb_cron` VALUES ('', 1, 'Очистка тегов', 'clean_tags.php', 'daily', '', '05:00:00', 30, '', '', '', 0, '', 0, 0, 0);
+INSERT INTO `bb_cron` VALUES ('', 1, 'Очистка префиксов', 'clean_prefixes.php', 'daily', '', '05:00:00', 30, '', '', '', 0, '', 0, 0, 0);
 =====================
 
 ======= Открыть library/config.php и найти =======
