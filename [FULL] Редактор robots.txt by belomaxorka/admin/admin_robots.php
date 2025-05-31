@@ -18,7 +18,7 @@ $robots_file = BB_ROOT . 'robots.txt';
 
 // Обработка сохранения
 if (isset($_POST['save'])) {
-    $robots_txt = $_POST['robots_txt'] ?? '';
+    $robots_txt = isset($_POST['robots_txt']) ? $_POST['robots_txt'] : '';
 
     if (!is_writable($robots_file) && is_file($robots_file)) {
         bb_die('File robots.txt is not writable #1');
@@ -37,9 +37,9 @@ if (is_file($robots_file)) {
     $current_content = file_get_contents($robots_file);
 }
 
-$template->assign_vars([
+$template->assign_vars(array(
     'S_ACTION' => 'admin_robots.php',
     'ROBOTS_TXT' => htmlCHR($current_content),
-]);
+));
 
 print_page('admin_robots.tpl', 'admin');
