@@ -53,6 +53,12 @@ if (!empty($forum_data['forum_desc'])) {
 
 -------- Ниже вставить --------
 // Set meta description
+if (!function_exist('br2nl')) {
+	function br2nl($string)
+    {
+        return preg_replace('#<br\s*/?>#i', "\n", $string);
+    }
+}
 if (($post_id == $t_data['topic_first_post_id']) || $i == 0) {
 	$page_cfg['meta_description'] = str_short(str_replace("\n", ' ', strip_tags(br2nl($message))), 220);
 }
