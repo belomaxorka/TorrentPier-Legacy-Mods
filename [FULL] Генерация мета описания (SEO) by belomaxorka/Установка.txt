@@ -1,0 +1,47 @@
+Автор: belomaxorka
+Версия: v1.0.0
+Совместимость: v2.1.5, LTS, v2.2.*, v2.3.*, v2.4.*
+Примечание: начиная с v2.4.6 встроен по умолчанию
+
+-------- Открыть index.php и найти --------
+// Init userdata
+$user->session_start();
+-------------------------------------------
+
+-------- Ниже вставить --------
+// Set meta description
+$page_cfg['meta_description'] = $bb_cfg['site_desc'];
+-------------------------------
+
+-------- Открыть library/includes/page_header.php и найти --------
+'U_INDEX' => BB_ROOT . 'index.php',
+------------------------------------------------------------------
+
+-------- Ниже вставить --------
+'META_DESCRIPTION' => isset($page_cfg['meta_description']) ? $page_cfg['meta_description'] : '',
+-------------------------------
+
+-------- Открыть styles/templates/default/page_header.tpl и найти --------
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+--------------------------------------------------------------------------
+
+-------- Ниже вставить --------
+<!-- IF META_DESCRIPTION -->
+<meta name="description" content="{META_DESCRIPTION}"/>
+<meta property="og:description" content="{META_DESCRIPTION}">
+<meta property="twitter:description" content="{META_DESCRIPTION}">
+<!-- ENDIF -->
+-------------------------------
+
+-------- Открыть viewforum.php и найти --------
+if (!$forum_id or !$forum_data = @$forums['forum'][$forum_id]) {
+	bb_die($lang['FORUM_NOT_EXIST']);
+}
+-----------------------------------------------
+
+-------- Ниже вставить --------
+// Set meta description
+if (!empty($forum_data['forum_desc'])) {
+    $page_cfg['meta_description'] = htmlCHR($forum_data['forum_desc']);
+}
+-------------------------------
