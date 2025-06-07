@@ -101,14 +101,40 @@ bbcode.addTag("codeNfo", "nfo", null, "", ctrl);
 
 ----------------- Ниже вставить -----------------
 // Набор BBCode тегов с рутрекера by belomaxorka
-'[box]' => '<div class="post-box-default"><div class="post-box">',
-'[/box]' => '</div></div>',
+'[box]' => $tpl['box_open'],
+'[/box]' => $tpl['box_close'],
 '[indent]' => '<div class="post-indent">',
 '[/indent]' => '</div>',
 '[pre]' => '<pre class="post-pre">',
 '[/pre]' => '</pre>',
 '[nfo]' => '<pre class="post-nfo">',
 '[/nfo]' => '</pre>',
+-------------------------------------------------
+
+----------------- Открыть library/includes/bbcode.php и найти -----------------
+// HR
+    $bbcode_tpl['hr'] = <<<HTML
+	<span class="post-hr">-</span>
+HTML;
+-------------------------------------------------------------------------------
+
+----------------- Ниже вставить -----------------
+// Box
+    $bbcode_tpl['box_open'] = <<<HTML
+    <div class="post-box-default"><div class="post-box">
+HTML;
+
+    $bbcode_tpl['box_open_color'] = <<<HTML
+    <div class="post-box-default"><div class="post-box" style="border-color: $1; background-color: $2;">
+HTML;
+
+    $bbcode_tpl['box_open_color_single'] = <<<HTML
+    <div class="post-box-default"><div class="post-box" style="border-color: $1;">
+HTML;
+
+    $bbcode_tpl['box_close'] = <<<HTML
+    </div></div>
+HTML;
 -------------------------------------------------
 
 ----------------- Открыть library/language/en/main.php и в конце вставить -----------------
@@ -121,7 +147,7 @@ $lang['NFO_TAG'] = 'NFO: [nfo]text[/nfo]';
 
 ----------------- Открыть library/language/ru/main.php и в конце вставить -----------------
 // Набор BBCode тегов с рутрекера by belomaxorka
-$lang['BOX_TAG'] = 'Рамка вокруг текста: [box]текст[/box]';
+$lang['BOX_TAG'] = 'Рамка вокруг текста: [box]текст[/box] или [box=#333,#888]текст[/box]';
 $lang['INDENT_TAG'] = 'Добавить отступ: [indent]текст[/indent]';
 $lang['PRE_TAG'] = 'Форматированный текст: [pre]текст[/pre]';
 $lang['NFO_TAG'] = 'NFO: [nfo]текст[/nfo]';
