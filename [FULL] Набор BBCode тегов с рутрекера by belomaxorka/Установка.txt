@@ -1,6 +1,6 @@
 ----------------- Набор BBCode тегов с рутрекера -----------------
 - Автор: belomaxorka
-- Версия: v1.0.0
+- Версия: v2.0.0
 - Описание: Данный мод добавляет в BBCode редактор несколько тегов
   которые используются на rutracker.org
 ------------------------------------------------------------------
@@ -113,7 +113,7 @@ bbcode.addTag("codeNfo", "nfo", null, "", ctrl);
 
 ----------------- Открыть library/language/en/main.php и в конце вставить -----------------
 // Набор BBCode тегов с рутрекера by belomaxorka
-$lang['BOX_TAG'] = 'Frame around text: [box]text[/box]';
+$lang['BOX_TAG'] = 'Frame around text: [box]text[/box] or [box=#333,#888]text[/box]';
 $lang['INDENT_TAG'] = 'Insert indent: [indent]text[/indent]';
 $lang['PRE_TAG'] = 'Preformatted text: [pre]text[/pre]';
 $lang['NFO_TAG'] = 'NFO: [nfo]text[/nfo]';
