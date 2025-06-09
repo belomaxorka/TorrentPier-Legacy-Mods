@@ -1,5 +1,5 @@
 Автор: belomaxorka
-Версия: v1.0.1
+Версия: v1.1.0
 Совместимость: v2.1.5, LTS, v2.2.*, v2.3.*, v2.4.*
 Примечание: начиная с v2.4.6 встроен по умолчанию
 
@@ -18,7 +18,7 @@ $page_cfg['meta_description'] = $bb_cfg['site_desc'];
 ------------------------------------------------------------------
 
 -------- Ниже вставить --------
-'META_DESCRIPTION' => isset($page_cfg['meta_description']) ? $page_cfg['meta_description'] : '',
+'META_DESCRIPTION' => !empty($page_cfg['meta_description']) ? trim(htmlCHR($page_cfg['meta_description'])) : '',
 -------------------------------
 
 -------- Открыть styles/templates/default/page_header.tpl и найти --------
@@ -42,7 +42,7 @@ if (!$forum_id or !$forum_data = @$forums['forum'][$forum_id]) {
 -------- Ниже вставить --------
 // Set meta description
 if (!empty($forum_data['forum_desc'])) {
-	$page_cfg['meta_description'] = htmlCHR($forum_data['forum_desc']);
+	$page_cfg['meta_description'] = $forum_data['forum_desc'];
 }
 -------------------------------
 
@@ -54,12 +54,8 @@ if (!empty($forum_data['forum_desc'])) {
 -------- Ниже вставить --------
 // Set meta description
 if (($post_id == $t_data['topic_first_post_id']) || $i == 0) {
-	if (!function_exists('br2nl')) {
-		function br2nl($string)
-		{
-			return preg_replace('#<br\s*/?>#i', "\n", $string);
-		}
-	}
-	$page_cfg['meta_description'] = str_short(str_replace("\n", ' ', strip_tags(br2nl($message))), 220);
+	$message_meta = preg_replace('#<br\s*/?>\s*#si', ' ', $message);
+	$message_meta = str_replace('&#10;', '', $message_meta);
+	$page_cfg['meta_description'] = str_short(strip_tags($message_meta), 220);
 }
 -------------------------------
