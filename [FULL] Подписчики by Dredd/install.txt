@@ -230,51 +230,52 @@ ajax.callback.index_data = function(data) {
 #-----[ FIND ]------------------------------------------
 #
 
-</table><!--/user_contacts-->
+</table>
+<!--/user_contacts-->
 
 #
 #-----[ AFTER, ADD ]------------------------------------------
 #
 
 <!-- IF MY_SUBS -->
-        <a class="med" href="#" onclick="remove_subs('{PROFILE_USER_ID}'); return false;"><input type="submit" value="Отписаться" class="main gen" /></a>
-        <!-- ELSE -->
-        <a class="med" href="#" onclick="add_subs('{PROFILE_USER_ID}'); return false;"><input type="submit" value="Подписаться" class="main gen" /></a>
-        <!-- ENDIF -->
+<a class="med" href="#" onclick="remove_subs('{PROFILE_USER_ID}'); return false;"><input type="submit" value="Отписаться" class="main gen" /></a>
+<!-- ELSE -->
+<a class="med" href="#" onclick="add_subs('{PROFILE_USER_ID}'); return false;"><input type="submit" value="Подписаться" class="main gen" /></a>
+<!-- ENDIF -->
 
+<!-- IF SUBS -->
+<div class="followBlocks">
+	<div class="section">
+		<h3 class="subHeading textWithCount" title="Подписчиков у {USERNAME}: {COUNT_SUBS}">
+			<span class="text">Подписавшиеся</span>
+			<a onclick="ajax.subs('list_subs'); return false;" href="#" class="count OverlayTrigger"><span id="count_subs_{PROFILE_USER_ID}">{COUNT_SUBS}</span></a>
+		</h3>
+		<div class="primaryContent avatarHeap">
+			<ol>
+				<!-- BEGIN subs -->{subs.LIST}<!-- END subs -->
+			</ol>
+		</div>
+	</div>
+</div>
+<!-- IF MORE_LIST_SUBS --><div class="sectionFooter"><a onclick="ajax.subs('list_subs'); return false;" href="#" class="OverlayTrigger">Показать все</a></div><!-- ENDIF -->
+<!-- ENDIF -->
 
-        <!-- IF SUBS -->
-        <div class="followBlocks">
-            <div class="section">
-                <h3 class="subHeading textWithCount" title="Подписчиков у {USERNAME}: {COUNT_SUBS}">
-                    <span class="text">Подписавшиеся</span>
-                    <a onclick="ajax.subs('list_subs'); return false;" href="#" class="count OverlayTrigger"><span id="count_subs_{PROFILE_USER_ID}">{COUNT_SUBS}</span></a>
-                </h3>
-                <div class="primaryContent avatarHeap">
-                    <ol>
-                        <!-- BEGIN subs -->{subs.LIST}<!-- END subs -->
-                    </ol>
-                </div>
-            </div>
-        </div>
-        <!-- IF MORE_LIST_SUBS --><div class="sectionFooter"><a onclick="ajax.subs('list_subs'); return false;" href="#" class="OverlayTrigger">Показать все</a></div><!-- ENDIF -->
-        <!-- ENDIF -->
-        <!-- IF USER_SUBS -->
-        <div class="followBlocks">
-            <div class="section">
-                <h3 class="subHeading textWithCount" title="Пользователи, чьим подписчиком является {USERNAME}: {COUNT_USER_SUBS}">
-                    <span class="text">Подписан на</span>
-                    <a onclick="ajax.subs('list_user_subs'); return false;" href="#" class="count OverlayTrigger">{COUNT_USER_SUBS}</a>
-                </h3>
-                <div class="primaryContent avatarHeap">
-                    <ol>
-                        <!-- BEGIN user_subs -->{user_subs.LIST}<!-- END user_subs -->
-                    </ol>
-                </div>
-            </div>
-        </div>
-        <!-- IF MORE_LIST_USER_SUBS --><div class="sectionFooter"><a onclick="ajax.subs('list_user_subs'); return false;" href="#" class="OverlayTrigger">Показать все</a></div><!-- ENDIF -->
-        <!-- ENDIF -->
+<!-- IF USER_SUBS -->
+<div class="followBlocks">
+	<div class="section">
+		<h3 class="subHeading textWithCount" title="Пользователи, чьим подписчиком является {USERNAME}: {COUNT_USER_SUBS}">
+			<span class="text">Подписан на</span>
+			<a onclick="ajax.subs('list_user_subs'); return false;" href="#" class="count OverlayTrigger">{COUNT_USER_SUBS}</a>
+		</h3>
+		<div class="primaryContent avatarHeap">
+			<ol>
+				<!-- BEGIN user_subs -->{user_subs.LIST}<!-- END user_subs -->
+			</ol>
+		</div>
+	</div>
+</div>
+<!-- IF MORE_LIST_USER_SUBS --><div class="sectionFooter"><a onclick="ajax.subs('list_user_subs'); return false;" href="#" class="OverlayTrigger">Показать все</a></div><!-- ENDIF -->
+<!-- ENDIF -->
 
 #
 #-----[ END OF INSTALL ]------------------------------------------
