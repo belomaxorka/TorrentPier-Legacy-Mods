@@ -47,17 +47,17 @@ library/includes/ucp/viewprofile.php
 if ($bb_cfg['subs']) {
 	// Вывод подписавшихся [START]
 	$count = DB()->fetch_row("SELECT COUNT(subs_id) AS subs FROM bb_subs WHERE user_id = " . $profiledata['user_id']);
-	$mysubs = DB()->fetch_row("SELECT * FROM bb_subs WHERE subs_id = " . $userdata['user_id'] . " AND user_id = " . $profiledata['user_id']);
+	$mysubs = DB()->fetch_row("SELECT subs_id FROM bb_subs WHERE subs_id = " . $userdata['user_id'] . " AND user_id = " . $profiledata['user_id'] . " LIMIT 1");
 
 	$template->assign_vars(array(
 		'COUNT_SUBS' => $count['subs'],
 		'SUBS' => ($count['subs'] != 0),
 		'MORE_LIST_SUBS' => ($count['subs'] > 6),
-		'MY_SUBS' => $mysubs,
+		'MY_SUBS' => !empty($mysubs),
 	));
 
 	if (!$list_subs = CACHE('bb_cache')->get('list_subs_[' . $profiledata['user_id'] . ']', 300)) {
-		$list_subs = DB()->fetch_rowset("SELECT s.*, u.*
+		$list_subs = DB()->fetch_rowset("SELECT s.*, u.username, u.user_id, u.avatar_ext_id, u.user_opt
         FROM bb_subs s,
         " . BB_USERS . " u
         WHERE s.user_id = " . $profiledata['user_id'] . "
@@ -67,7 +67,7 @@ if ($bb_cfg['subs']) {
 	}
 
 	foreach ($list_subs as $row) {
-		$list_templ = '<li><div style="width:50px; padding-top:4px;"><a title="' . $row['username'] . '" href="' . PROFILE_URL . $row['user_id'] . '">' . str_replace('<img', '<img class="avatarCropper"', get_avatar($row['user_avatar'], $row['user_avatar_type'], !bf($row['user_opt'], 'user_opt', 'allow_avatar'), 38, 38)) . '</a></div></li>';
+		$list_templ = '<li><div style="width:50px; padding-top:4px;"><a title="' . $row['username'] . '" href="' . PROFILE_URL . $row['user_id'] . '">' . str_replace('<img', '<img class="avatarCropper"', get_avatar($row['user_id'], $row['avatar_ext_id'], !bf($row['user_opt'], 'user_opt', 'dis_avatar'), '', 40, 40)) . '</a></div></li>';
 		$template->assign_block_vars('subs', array(
 			'LIST' => $list_templ,
 		));
@@ -76,7 +76,7 @@ if ($bb_cfg['subs']) {
 
 	// Вывод пользователей на которых подписан профиль [START]
 	if (!$list_user_subs = CACHE('bb_cache')->get('list_user_subs_[' . $profiledata['user_id'] . ']', 300)) {
-		$list_user_subs = DB()->fetch_rowset("SELECT s.*, u.*
+		$list_user_subs = DB()->fetch_rowset("SELECT s.*, u.username, u.user_id, u.avatar_ext_id, u.user_opt
         FROM bb_subs s,
         " . BB_USERS . " u
         WHERE s.subs_id = " . $profiledata['user_id'] . "
@@ -93,7 +93,7 @@ if ($bb_cfg['subs']) {
 	));
 
 	foreach ($list_user_subs as $row) {
-		$user_subs_templ = '<li><div style="width:50px; padding-top:4px;"><a title="' . $row['username'] . '" href="' . PROFILE_URL . $row['user_id'] . '">' . str_replace('<img', '<img class="avatarCropper"', get_avatar($row['user_avatar'], $row['user_avatar_type'], !bf($row['user_opt'], 'user_opt', 'allow_avatar'), 38, 38)) . '</a></div></li>';
+		$user_subs_templ = '<li><div style="width:50px; padding-top:4px;"><a title="' . $row['username'] . '" href="' . PROFILE_URL . $row['user_id'] . '">' . str_replace('<img', '<img class="avatarCropper"', get_avatar($row['user_id'], $row['avatar_ext_id'], !bf($row['user_opt'], 'user_opt', 'dis_avatar'), '', 40, 40)) . '</a></div></li>';
 		$template->assign_block_vars('user_subs', array(
 			'LIST' => $user_subs_templ,
 		));
