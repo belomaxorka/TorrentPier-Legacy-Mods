@@ -1,0 +1,287 @@
+##############################################################
+## Название мода: Подписчики
+## Автор мода: Dredd
+## Описание мода: Из названия понятно.
+##
+## Уровень инсталяции: простой
+## Время установки: 5 минут
+##
+## Обновление: belomaxorka
+## Версия: v2.0.0
+##
+## https://torrentpier.com/threads/mod-podpischiki.2156/
+##############################################################
+
+#
+#-----[ ALTER TABLE (ВЫПОЛНИТЬ ЗАПРОС В PHPMYADMIN) ]------------------------------------------
+#
+
+CREATE TABLE IF NOT EXISTS `bb_subs` (
+  `user_id` int(11) NOT NULL,
+  `subs_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+includes/ucp/usercp_viewprofile.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+$template->assign_vars(array(
+		'EDITABLE_TPLS'    => true,
+		'AJAX_USER_OPT'    => $ajax_user_opt,
+		'EMAIL_ADDRESS'    => htmlCHR($profiledata['user_email']),
+	));
+}
+
+#
+#-----[ AFTER, ADD ]------------------------------------------
+#
+
+if($bb_cfg['subs'])
+{
+    // Вывод подписавшихся [START]
+    $count = DB()->fetch_row("SELECT COUNT(subs_id) AS subs FROM bb_subs WHERE user_id = ". $profiledata['user_id']);
+    $mysubs = DB()->fetch_row("SELECT * FROM bb_subs WHERE subs_id = ". $userdata['user_id'] ." AND user_id = ". $profiledata['user_id']);
+
+    $template->assign_vars(array(
+        'COUNT_SUBS' => $count['subs'],
+        'SUBS' => ($count['subs'] != 0),
+        'MORE_LIST_SUBS' => ($count['subs'] > 6),
+        'MY_SUBS' => $mysubs,
+    ));
+
+    if (!$list_subs = CACHE('bb_cache')->get('list_subs_['.$profiledata['user_id'].']', 300))
+    {
+        $list_subs = DB()->fetch_rowset("SELECT s.*, u.*
+        FROM bb_subs s,
+        ".BB_USERS." u
+        WHERE s.user_id = ".$profiledata['user_id']."
+        AND s.subs_id = u.user_id
+        LIMIT 6");
+        CACHE('bb_cache')->set('list_subs_['.$profiledata['user_id'].']', $list_subs);
+    }
+
+
+    foreach($list_subs as $row)
+    {
+        $list_templ = '<li><div style="width:50px; padding-top:4px;"><a title="'.$row['username'].'" href="'.PROFILE_URL . $row['user_id'].'">'.str_replace('<img', '<img class="avatarCropper"', get_avatar($row['user_avatar'], $row['user_avatar_type'], !bf($row['user_opt'], 'user_opt', 'allow_avatar'), 38, 38)).'</a></div></li>';
+        $template->assign_block_vars('subs', array(
+            'LIST' => $list_templ,
+        ));
+    }
+    // Вывод подписавшихся [END]
+
+    // Вывод пользователей на которых подписан профиль [START]
+
+    if (!$list_user_subs = CACHE('bb_cache')->get('list_user_subs_['.$profiledata['user_id'].']', 300))
+    {
+        $list_user_subs = DB()->fetch_rowset("SELECT s.*, u.*
+        FROM bb_subs s,
+        ".BB_USERS." u
+        WHERE s.subs_id = ".$profiledata['user_id']."
+        AND s.user_id = u.user_id
+        LIMIT 6");
+        CACHE('bb_cache')->set('list_user_subs_['.$profiledata['user_id'].']', $list_user_subs);
+    }
+
+    $count_user_subs = DB()->fetch_row("SELECT COUNT(user_id) AS user_subs FROM bb_subs WHERE subs_id = ". $profiledata['user_id']);
+
+    $template->assign_vars(array(
+        'COUNT_USER_SUBS' => $count_user_subs['user_subs'],
+        'USER_SUBS' => ($count_user_subs['user_subs'] != 0),
+        'MORE_LIST_USER_SUBS' => ($count_user_subs['user_subs'] > 6),
+    ));
+
+    foreach($list_user_subs as $row)
+    {
+        $user_subs_templ = '<li><div style="width:50px; padding-top:4px;"><a title="'.$row['username'].'" href="'.PROFILE_URL . $row['user_id'].'">'.str_replace('<img', '<img class="avatarCropper"', get_avatar($row['user_avatar'], $row['user_avatar_type'], !bf($row['user_opt'], 'user_opt', 'allow_avatar'), 38, 38)).'</a></div></li>';
+        $template->assign_block_vars('user_subs', array(
+            'LIST' => $user_subs_templ,
+        ));
+    }
+    // Вывод пользователей на которых подписан профиль [END]
+}
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+ajax.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+'gen_passkey'       => array('user'),
+
+#
+#-----[ AFTER, ADD ]------------------------------------------
+#
+
+'subs'              => array('user'),
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+    function index_data()
+    {
+		require(AJAX_DIR .'index_data.php');
+	}
+
+#
+#-----[ AFTER, ADD ]------------------------------------------
+#
+
+    function subs()
+    {
+        require(AJAX_DIR .'subs.php');
+    }
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+config.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+Конец файла
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------
+#
+
+$bb_cfg['subs'] = true;
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+templates/default/ucp_userprofile.tpl
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+<!-- IF TRAF_STATS -->
+<script type="text/javascript">
+ajax.index_data = function(mode) {
+	ajax.exec({
+		action  : 'index_data',
+		mode    : mode,
+		user_id : {PROFILE_USER_ID}
+	});
+}
+ajax.callback.index_data = function(data) {
+	$('#traf-stats-tbl').html(data.html);
+	$('#bt_user_ratio').html(data.user_ratio);
+	$('#traf-stats-span').hide();
+	$('#traf-stats-tbl').show();
+	$('#bt_user_ratio').show();
+}
+</script>
+<!-- ENDIF -->
+
+#
+#-----[ AFTER, ADD ]------------------------------------------
+#
+
+<script type="text/javascript">
+    function add_subs(user_id)
+    {
+        ajax.exec({
+            action   : 'subs',
+            mode     : 'add',
+            user_id  : {PROFILE_USER_ID},
+
+        });
+        ajax.callback.subs = function (data) {
+            $('#count_subs_'+data.user_id).html(data.count);
+        }
+    }
+    function remove_subs(user_id)
+    {
+        ajax.exec({
+            action   : 'subs',
+            mode     : 'remove',
+            user_id  : {PROFILE_USER_ID},
+
+        });
+        ajax.callback.subs = function (data) {
+            $('#count_subs_'+data.user_id).html(data.count);
+        }
+    }
+    ajax.subs = function (mode) {
+        ajax.exec({
+            action: 'subs',
+            mode:  mode,
+            user_id: {PROFILE_USER_ID}
+        });
+    };
+    ajax.callback.subs = function (data) {
+        $('#subs').html(data.html);
+    }
+</script>
+<div id="subs"></div>
+
+#
+#-----[ FIND ]------------------------------------------
+#
+
+</table><!--/user_contacts-->
+
+#
+#-----[ AFTER, ADD ]------------------------------------------
+#
+
+<!-- IF MY_SUBS -->
+        <a class="med" href="#" onclick="remove_subs('{PROFILE_USER_ID}'); return false;"><input type="submit" value="Отписаться" class="main gen" /></a>
+        <!-- ELSE -->
+        <a class="med" href="#" onclick="add_subs('{PROFILE_USER_ID}'); return false;"><input type="submit" value="Подписаться" class="main gen" /></a>
+        <!-- ENDIF -->
+
+
+        <!-- IF SUBS -->
+        <div class="followBlocks">
+            <div class="section">
+                <h3 class="subHeading textWithCount" title="Подписчиков у {USERNAME}: {COUNT_SUBS}">
+                    <span class="text">Подписавшиеся</span>
+                    <a onclick="ajax.subs('list_subs'); return false;" href="#" class="count OverlayTrigger"><span id="count_subs_{PROFILE_USER_ID}">{COUNT_SUBS}</span></a>
+                </h3>
+                <div class="primaryContent avatarHeap">
+                    <ol>
+                        <!-- BEGIN subs -->{subs.LIST}<!-- END subs -->
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <!-- IF MORE_LIST_SUBS --><div class="sectionFooter"><a onclick="ajax.subs('list_subs'); return false;" href="#" class="OverlayTrigger">Показать все</a></div><!-- ENDIF -->
+        <!-- ENDIF -->
+        <!-- IF USER_SUBS -->
+        <div class="followBlocks">
+            <div class="section">
+                <h3 class="subHeading textWithCount" title="Пользователи, чьим подписчиком является {USERNAME}: {COUNT_USER_SUBS}">
+                    <span class="text">Подписан на</span>
+                    <a onclick="ajax.subs('list_user_subs'); return false;" href="#" class="count OverlayTrigger">{COUNT_USER_SUBS}</a>
+                </h3>
+                <div class="primaryContent avatarHeap">
+                    <ol>
+                        <!-- BEGIN user_subs -->{user_subs.LIST}<!-- END user_subs -->
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <!-- IF MORE_LIST_USER_SUBS --><div class="sectionFooter"><a onclick="ajax.subs('list_user_subs'); return false;" href="#" class="OverlayTrigger">Показать все</a></div><!-- ENDIF -->
+        <!-- ENDIF -->
+
+#
+#-----[ END OF INSTALL ]------------------------------------------
+#
