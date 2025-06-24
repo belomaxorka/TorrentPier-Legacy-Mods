@@ -18,8 +18,8 @@
 #
 
 CREATE TABLE IF NOT EXISTS `bb_subs` (
-  `user_id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `subs_id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `user_id` mediumint(8) NOT NULL,
+  `subs_id` mediumint(8) NOT NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 #
