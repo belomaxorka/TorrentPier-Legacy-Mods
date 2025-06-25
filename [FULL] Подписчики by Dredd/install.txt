@@ -73,8 +73,7 @@ if ($bb_cfg['subs']) {
         FROM bb_subs s,
         " . BB_USERS . " u
         WHERE s.user_id = " . $profiledata['user_id'] . "
-        AND s.subs_id = u.user_id
-        LIMIT 6");
+        AND s.subs_id = u.user_id");
 		CACHE('bb_cache')->set('list_subs_[' . $profiledata['user_id'] . ']', $list_subs);
 	}
 
@@ -92,8 +91,7 @@ if ($bb_cfg['subs']) {
         FROM bb_subs s,
         " . BB_USERS . " u
         WHERE s.subs_id = " . $profiledata['user_id'] . "
-        AND s.user_id = u.user_id
-        LIMIT 6");
+        AND s.user_id = u.user_id");
 		CACHE('bb_cache')->set('list_user_subs_[' . $profiledata['user_id'] . ']', $list_user_subs);
 	}
 
