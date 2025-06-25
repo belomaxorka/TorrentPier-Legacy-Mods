@@ -1,0 +1,118 @@
+/*xenOverlay*/
+.xenOverlay {
+	display: block;
+	z-index: 10000;
+	width: 90%;
+	box-sizing: border-box;
+	max-width: 690px;
+}
+
+.xenOverlay .errorOverlay {
+	color: #FFF;
+	padding: 25px;
+	border-radius: 20px;
+	border: 20px solid rgba(0, 0, 0, 0.25);
+	background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.75);
+}
+
+.xenOverlay .errorOverlay .heading {
+	padding: 5px 10px;
+	font-weight: bold;
+	font-size: 12pt;
+	background: none repeat scroll 0% 0% #B40000;
+	color: #FFF;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	border: 1px solid #640000;
+}
+
+.xenOverlay .xenForm {
+	max-width: 600px;
+}
+
+.xenOverlay .formOverlay {
+	color: #EEE;
+	background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.75);
+	padding: 15px 25px;
+	border: 20px solid rgba(0, 0, 0, 0.25);
+	border-radius: 20px;
+	box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.5);
+	margin: 0px;
+}
+
+.xenOverlay .formOverlay .heading {
+	font-weight: bold;
+	font-size: 12pt;
+	color: #F0F7FC;
+	background-color: #176093;
+	padding: 5px 10px;
+	margin-bottom: 10px;
+	border: 1px solid #2B485C;
+	border-radius: 5px;
+}
+
+.overlayScroll.pollResultsOverlay {
+	padding-right: 10px;
+}
+
+.primaryContent {
+	background-color: #fdfdff;
+	padding: 10px;
+	border-bottom: 1px solid #D7EDFC;
+}
+
+.memberListItem {
+	overflow: hidden;
+}
+
+.memberListItem .extra {
+	float: right;
+	font-size: 11px;
+}
+
+.memberListItem .member {
+	margin-left: 65px;
+}
+
+.memberListItem h3.username {
+	font-size: 13pt;
+	font-weight: 700;
+	margin-bottom: 3px;
+}
+
+.memberListItem .userInfo {
+	font-size: 11px;
+	margin-bottom: 3px;
+}
+
+.profilePage .primaryUserBlock .userBlurb {
+	margin-bottom: 5px;
+}
+
+.pairsInline dl, .pairsInline dt, .pairsInline dd {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+
+.pairsInline dt {
+	color: #969696;
+}
+
+.sectionFooter {
+	overflow: hidden;
+	font-size: 11px;
+	font-weight: normal;
+	color: #65A5D1 !important;
+	background: url('../images/category-23px-light.png') repeat-x scroll center top #D7EDFC;
+	padding: 4px 10px;
+	border-bottom: 1px solid #A5CAE4 !important;
+	line-height: 16px;
+}
+
+.sectionFooter a {
+	font-size: 11px;
+	font-weight: normal;
+	color: #65A5D1 !important;
+	line-height: 16px;
+}
