@@ -17,6 +17,13 @@
 # Если у вас используется не XenForo шаблон.
 # Переместите папку styles в корень вашего сайта.
 #
+# Откройте styles/templates/default/page_header.tpl
+# Найти:
+# <link rel="stylesheet" href="{STYLESHEET}?v={$bb_cfg['css_ver']}" type="text/css">
+#
+# Ниже вставить:
+# <link rel="stylesheet" href="{SITE_URL}styles/templates/default/css/xenOverlay.css" type="text/css">
+#
 
 #
 #-----[ ALTER TABLE (ВЫПОЛНИТЬ ЗАПРОС В PHPMYADMIN) ]------------------------------------------
