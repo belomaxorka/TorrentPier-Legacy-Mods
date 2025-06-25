@@ -40,8 +40,10 @@ switch ($mode) {
         [align=right][size=14][color=gray][font="Georgia"]На это сообщение не нужно отвечать![/font][/color][/size][/align]';
 		send_pm($user_id, $subject, $message, BOT_UID);
 		// [END]
+
 		// Чистим кеш
 		CACHE('bb_cache')->rm('list_subs_[' . $user_id . ']');
+
 		// Отправляем данные в шаблон
 		$this->response['count'] = $count['subs'];
 		$this->response['user_id'] = $user_id;
