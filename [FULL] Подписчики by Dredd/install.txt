@@ -160,7 +160,7 @@ $bb_cfg['subs'] = true;
 #-----[ OPEN ]------------------------------------------
 #
 
-templates/default/ucp_userprofile.tpl
+styles/templates/default/usercp_viewprofile.tpl
 
 #
 #-----[ FIND ]------------------------------------------
