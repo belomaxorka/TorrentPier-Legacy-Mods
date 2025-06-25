@@ -99,6 +99,10 @@
 	color: #969696;
 }
 
+.section {
+	margin: 10px auto;
+}
+
 .sectionFooter {
 	overflow: hidden;
 	font-size: 11px;
