@@ -78,7 +78,7 @@ switch ($mode) {
 
 	case 'list_subs':
 		if (!$sql = CACHE('bb_cache')->get('list_subs_[' . $user_id . ']', 300)) {
-			$sql = DB()->fetch_rowset("SELECT s.*, u.username, u.user_id, u.avatar_ext_id, u.user_opt, u.user_points, u.user_rank, u.user_gender
+			$sql = DB()->fetch_rowset("SELECT s.*, u.username, u.user_id, u.avatar_ext_id, u.user_opt, u.user_points, u.user_rank, u.user_gender, u.user_posts
             FROM bb_subs s,
             " . BB_USERS . " u
             WHERE s.user_id = " . $user_id . "
@@ -110,7 +110,7 @@ switch ($mode) {
 
 	case 'list_user_subs':
 		if (!$sql = CACHE('bb_cache')->get('list_user_subs_[' . $user_id . ']', 300)) {
-			$sql = DB()->fetch_rowset("SELECT s.*, u.username, u.user_id, u.avatar_ext_id, u.user_opt, u.user_points, u.user_rank, u.user_gender
+			$sql = DB()->fetch_rowset("SELECT s.*, u.username, u.user_id, u.avatar_ext_id, u.user_opt, u.user_points, u.user_rank, u.user_gender, u.user_posts
             FROM bb_subs s,
             " . BB_USERS . " u
             WHERE s.subs_id = " . $user_id . "
