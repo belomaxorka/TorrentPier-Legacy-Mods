@@ -1,15 +1,23 @@
 -------------- Быстрое создание раздачи & топика --------------
 Автор: belomaxorka
-Версия: v1.0.1
+Версия: v1.1.0
 Описание: Данный мод позволяет ускорить процесс создания раздач.
 Кнопка для создания появляется рядом с названием форума в списке категорий на главной.
 ---------------------------------------------------------------
 
 ======= Открыть index.php и найти =======
+f.cat_id, f.forum_id, f.forum_status, f.forum_parent, f.show_on_index,
+=========================================
+
+======= Ниже вставить =======
+f.allow_reg_tracker,
+=============================
+
+======= Далее найти =======
 if ($f['forum_status'] == FORUM_LOCKED) {
 	$folder_image = $is_sf ? $images['icon_minipost'] : $images['forum_locked'];
 }
-=========================================
+===========================
 
 ======= Ниже вставить =======
 // Быстрое создание раздачи & топика
@@ -62,8 +70,10 @@ $images['icon_plus'] = $_main . 'icon_plus_1.gif';
 
 ======= Далее найти =======
 <span class="sf_title{c.f.sf.SF_NEW}"><a href="{U_SEARCH}?{#POST_FORUM_URL#}={c.f.sf.SF_ID}&amp;new=1&amp;dm=1&amp;s=0&amp;o=1" class="dot-sf">&#9658;</a><a href="{FORUM_URL}{c.f.sf.SF_ID}" class="dot-sf">{c.f.sf.SF_NAME}</a></span><span class="sf_separator"></span>
+======== Или найти ========
+<span class="sf_title{c.f.sf.SF_NEW}"><a href="{U_SEARCH}?f={c.f.sf.SF_ID}&amp;new=1&amp;dm=1&amp;s=0&amp;o=1" class="dot-sf">&#9658;</a><a href="{FORUM_URL}{c.f.sf.SF_ID}" class="dot-sf">{c.f.sf.SF_NAME}</a></span><span class="sf_separator"></span>
 ===========================
 
 ======= Заменить на =======
-<span class="sf_title{c.f.sf.SF_NEW}"><a href="{U_SEARCH}?{#POST_FORUM_URL#}={c.f.sf.SF_ID}&amp;new=1&amp;dm=1&amp;s=0&amp;o=1" class="dot-sf">&#9658;</a><a href="{FORUM_URL}{c.f.sf.SF_ID}" class="dot-sf">{c.f.sf.SF_NAME}</a><!-- IF c.f.sf.CREATE_NEW_TOPIC -->&nbsp;{c.f.sf.CREATE_NEW_TOPIC}<!-- ENDIF --></span><span class="sf_separator"></span>
+<span class="sf_title{c.f.sf.SF_NEW}"><a href="{U_SEARCH}?f={c.f.sf.SF_ID}&amp;new=1&amp;dm=1&amp;s=0&amp;o=1" class="dot-sf">&#9658;</a><a href="{FORUM_URL}{c.f.sf.SF_ID}" class="dot-sf">{c.f.sf.SF_NAME}</a><!-- IF c.f.sf.CREATE_NEW_TOPIC -->&nbsp;{c.f.sf.CREATE_NEW_TOPIC}<!-- ENDIF --></span><span class="sf_separator"></span>
 ===========================
