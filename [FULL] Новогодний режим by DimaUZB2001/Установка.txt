@@ -28,12 +28,12 @@ $bb_cfg['new_year'] = array(
 	// Новогоднее лого сайта
 	'new_year_logo' => array(
 		'enabled' => true,
-		'path' => '',
+		'path' => hide_bb_path(IMAGES_DIR . '/logo/logo_new_year.png'),
 	),
 	// Новогодний аватар
 	'new_year_default_avatar' => array(
 		'enabled' => true,
-		'path' => '',
+		'path' => DATA_DIR . '/avatars/gallery/noavatar_new_year.png',
 	),
 	// Шапка Санта-Клауса около аватарки
 	'santa_hat_avatar' => true,
