@@ -87,3 +87,33 @@ if ($bb_cfg['new_year']['new_year_default_avatar']['enabled']) {
 	$user_avatar = '<img src="' . make_url($bb_cfg['avatars']['display_path'] . $bb_cfg['avatars']['no_avatar']) . '" alt="' . $user_id . '" ' . $height . ' ' . $width . ' />';
 }
 ===========================
+
+======= Далее найти =======
+return $user_avatar;
+===========================
+
+======= Заменить на =======
+if ($bb_cfg['new_year']['santa_hat_avatar']['enabled']) {
+	$avatar_size = 100;
+	if (preg_match('/height="(\d+)"/', $height, $h_matches)) {
+		$avatar_size = intval($h_matches[1]);
+	} elseif (preg_match('/width="(\d+)"/', $width, $w_matches)) {
+		$avatar_size = intval($w_matches[1]);
+	}
+
+	// Соотношение шапки 73x100 (ширина x высота)
+	$hat_ratio = 73 / 100; // 0.73
+	$hat_height = round($avatar_size * 0.8);
+	$hat_width = round($hat_height * $hat_ratio);
+
+	$hat_left = round(($avatar_size / 2) - ($hat_width / 2) - ($avatar_size * 0.4));
+	$hat_top = round($hat_height * -0.1);
+
+	$user_avatar = '<div style="position: relative; display: inline-block;">' .
+		$user_avatar .
+		'<div style="left: ' . $hat_left . 'px; top: ' . $hat_top . 'px; position: absolute;">' .
+		'<img alt="Santa Hat" src="' . make_url($bb_cfg['new_year']['santa_hat_avatar']['path']) . '" ' .
+		'style="width: ' . $hat_width . 'px; height: ' . $hat_height . 'px;">' .
+		'</div></div>';
+}
+===========================
