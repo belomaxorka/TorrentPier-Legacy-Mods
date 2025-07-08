@@ -36,7 +36,10 @@ $bb_cfg['new_year'] = array(
 		'path' => DATA_DIR . '/avatars/gallery/noavatar_new_year.png',
 	),
 	// Шапка Санта-Клауса около аватарки
-	'santa_hat_avatar' => true,
+	'santa_hat_avatar' => array(
+		'enabled' => true,
+		'path' => hide_bb_path(IMAGES_DIR . '/avatar_hat.png'),
+	),
 );
 =============================================================
 
