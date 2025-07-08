@@ -63,3 +63,15 @@ $p('{ONLOAD_FOCUS_ID}').focus();
 </script>
 <!-- ENDIF -->
 =============================
+
+======= Открыть styles/templates/default/page_header.tpl и найти =======
+<a href="{U_INDEX}"><img src="styles/images/logo/logo.png" title="{SITENAME}" alt="{SITENAME}" /></a>
+========================================================================
+
+======= Заменить на =======
+<!-- IF $bb_cfg['new_year']['new_year_logo']['enabled'] -->
+<a href="{U_INDEX}"><img src="{$bb_cfg['new_year']['new_year_logo']['path']}" title="{SITENAME}" alt="{SITENAME}" /></a>
+<!-- ELSE -->
+<a href="{U_INDEX}"><img src="styles/images/logo/logo.png" title="{SITENAME}" alt="{SITENAME}" /></a>
+<!-- ENDIF -->
+===========================
