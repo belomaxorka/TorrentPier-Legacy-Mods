@@ -1,0 +1,40 @@
+============================================================
+ОБЯЗАТЕЛЬНО: В $bb_cfg['new_year'] установите все значения ключей 'enabled' в false
+============================================================
+
+======= Открыть library/includes/init_bb.php и найти =======
+define('CLIENT_IP', $client_ip);
+define('USER_IP', $user_ip);
+============================================================
+
+======= Ниже вставить =======
+/**
+ * New year mode automated
+ */
+function new_year_mode()
+{
+    global $bb_cfg;
+
+    $current_date = new DateTime();
+    $current_month = (int)$current_date->format('n');
+    $current_day = (int)$current_date->format('j');
+    $new_year_enabled = false;
+
+    if ($current_month == 12 && $current_day >= 20) {
+        // С 20 декабря
+        $new_year_enabled = true;
+    } elseif ($current_month == 1 && $current_day <= 15) {
+        // До 15 января
+        $new_year_enabled = true;
+    }
+
+    if ($new_year_enabled) {
+        $bb_cfg['new_year']['snowfall']['enabled'] = true;
+        $bb_cfg['new_year']['new_year_logo']['enabled'] = true;
+        $bb_cfg['new_year']['new_year_default_avatar']['enabled'] = true;
+        $bb_cfg['new_year']['santa_hat_avatar']['enabled'] = true;
+    }
+}
+
+new_year_mode();
+=============================
