@@ -116,4 +116,6 @@ if ($bb_cfg['new_year']['santa_hat_avatar']['enabled']) {
 		'style="width: ' . $hat_width . 'px; height: ' . $hat_height . 'px;">' .
 		'</div></div>';
 }
+
+return $user_avatar;
 ===========================
