@@ -40,6 +40,15 @@ $bb_cfg['new_year'] = array(
 );
 =============================================================
 
+======= Открыть styles/templates/default/page_footer.tpl и найти =======
+<!-- IF ONLOAD_FOCUS_ID -->
+<script type="text/javascript">
+$p('{ONLOAD_FOCUS_ID}').focus();
+</script>
+<!-- ENDIF -->
+========================================================================
+
+======= Выше вставить =======
 <!-- IF $bb_cfg['new_year']['snowfall']['enabled'] -->
 <script type="text/javascript" src="{SITE_URL}styles/js/snowfall.jquery.min.js"></script>
 <script type="text/javascript">
@@ -53,3 +62,4 @@ $bb_cfg['new_year'] = array(
 	});
 </script>
 <!-- ENDIF -->
+=============================
