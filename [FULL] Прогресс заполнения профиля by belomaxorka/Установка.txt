@@ -149,7 +149,11 @@ if ($bb_cfg['progress_profile_filling']['enabled'] && $mode != 'register') {
 		// Бонус начисляется только если прогресс увеличился до максимума
 		if ($current_progress > $pr_data['user_profile_progress_cur'] && $bb_cfg['progress_profile_filling']['seed_points'] > 0) {
 			$db_data['user_points'] = $pr_data['user_points'] + $bb_cfg['progress_profile_filling']['seed_points'];
-			cache_rm_user_sessions($pr_data['user_id']);
+			if (function_exists('cache_rm_user_sessions')) {
+				cache_rm_user_sessions($pr_data['user_id']);
+			} elseif (class_exists('\TorrentPier\Sessions')) {
+				\TorrentPier\Sessions::cache_rm_user_sessions($user_id);
+			}
 		}
 	}
 
