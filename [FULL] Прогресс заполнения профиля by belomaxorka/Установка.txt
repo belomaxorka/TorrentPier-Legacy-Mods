@@ -158,7 +158,7 @@ if ($bb_cfg['progress_profile_filling']['enabled'] && $mode != 'register') {
 	}
 
 	// Сохраняем обновлённый список заполненных полей
-	if (!empty($filled_fields)) {
+	if (!empty($filled_fields) && $pr_data['user_profile_progress_cur'] !== $user_max_progress) {
 		$db_data['user_profile_progress_filled'] = json_encode($filled_fields);
 	}
 }
