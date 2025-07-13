@@ -103,8 +103,23 @@ if ($bb_cfg['progress_profile_filling']['enabled'] && $mode != 'register') {
 			continue;
 		}
 
-		// Проверяем, что поле сейчас заполнено
+		// Проверяем, что поле действительно заполнено (не дефолтное значение)
+		$is_filled = false;
+
+		// Обычная проверка для большинства полей
 		if (!empty($value) || $value || $value == 1) {
+			$is_filled = true;
+		}
+
+		// Дополнительные проверки для полей с дефолтными значениями
+		if ($is_filled && isset($bb_cfg['progress_profile_filling']['default_values'][$key])) {
+			$default_values = $bb_cfg['progress_profile_filling']['default_values'][$key];
+			if (in_array($value, $default_values, true)) {
+				$is_filled = false;
+			}
+		}
+
+		if ($is_filled) {
 			// Добавляем поле в список заполненных
 			$filled_fields[] = $key;
 
