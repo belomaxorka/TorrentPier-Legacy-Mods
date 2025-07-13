@@ -152,7 +152,7 @@ if ($bb_cfg['progress_profile_filling']['enabled'] && $mode != 'register') {
 			if (function_exists('cache_rm_user_sessions')) {
 				cache_rm_user_sessions($pr_data['user_id']);
 			} elseif (class_exists('\TorrentPier\Sessions')) {
-				\TorrentPier\Sessions::cache_rm_user_sessions($user_id);
+				\TorrentPier\Sessions::cache_rm_user_sessions($pr_data['user_id']);
 			}
 		}
 	}
