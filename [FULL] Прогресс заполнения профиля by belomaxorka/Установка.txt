@@ -26,6 +26,13 @@ $bb_cfg['progress_profile_filling'] = array(
 		'user_occ',
 		'user_interests',
 		'avatar_ext_id',
+		'user_birthday',
+	),
+	// Дефолтные значения для полей (поле не засчитывается если имеет одно из этих значений)
+	'default_values' => array(
+		'user_birthday' => array('1900-01-01', '01-01-1900', '1900/01/01', '01/01/1900', '0000-00-00'),
+		// Добавляйте свои поля здесь
+		// 'your_custom_field' => array('default_value1', 'default_value2'),
 	),
 	// Сколько сидбонусов начислять за 100% заполнение профиля
 	// (0 - чтобы отключить)
