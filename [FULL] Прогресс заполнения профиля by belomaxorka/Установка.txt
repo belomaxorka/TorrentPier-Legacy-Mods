@@ -79,53 +79,52 @@ if ($bb_cfg['progress_profile_filling']['enabled'] && $mode != 'register') {
 		$max_progress_fields[] = $key;
 	}
 
+	// Получаем список уже заполненных полей
+	$filled_fields = json_decode($pr_data['user_profile_progress_filled'], true);
+	if (!is_array($filled_fields) || empty($filled_fields)) {
+		$filled_fields = array();
+	}
+
+	// Проверяем только те поля, которые ещё не были засчитаны
 	foreach ($db_data as $key => $value) {
 		if (!in_array($key, $bb_cfg['progress_profile_filling']['profile_fields'])) {
 			continue;
 		}
 
-		if ($pr_data['user_profile_progress_max'] > 0) {
-			if ($pr_data['user_profile_progress_cur'] >= $pr_data['user_profile_progress_max']) {
-				continue;
-			}
+		// Если поле уже было засчитано ранее, пропускаем его
+		if (in_array($key, $filled_fields)) {
+			continue;
 		}
 
+		// Проверяем, что поле сейчас заполнено
 		if (!empty($value) || $value || $value == 1) {
-			$db_data['user_profile_progress_filled'] = json_decode($pr_data['user_profile_progress_filled'], true);
-			if (is_array($db_data['user_profile_progress_filled']) && !empty($db_data['user_profile_progress_filled'])) {
-				if (in_array($key, $db_data['user_profile_progress_filled'])) {
-					continue;
-				}
-			} else {
-				$db_data['user_profile_progress_filled'] = array();
-			}
+			// Добавляем поле в список заполненных
+			$filled_fields[] = $key;
 
-			$db_data['user_profile_progress_cur'] = $pr_data['user_profile_progress_cur'];
-			$pr_data['user_profile_progress_cur'] += 1;
-			$db_data['user_profile_progress_cur'] += 1;
-			$db_data['user_profile_progress_filled'][] = $key;
-		}
+			// Увеличиваем счётчик прогресса
+			$db_data['user_profile_progress_cur'] = $pr_data['user_profile_progress_cur'] + 1;
 
-		// Начисляем бонусы
-		if ($pr_data['user_profile_progress_max'] > 0) {
-			if ($pr_data['user_profile_progress_cur'] == $pr_data['user_profile_progress_max']) {
-				if ($bb_cfg['progress_profile_filling']['seed_points'] > 0) {
-					$db_data['user_points'] = $pr_data['user_points'];
-					$pr_data['user_points'] += $bb_cfg['progress_profile_filling']['seed_points'];
-					$db_data['user_points'] += $bb_cfg['progress_profile_filling']['seed_points'];
-					cache_rm_user_sessions($pr_data['user_id']);
+			// Проверяем, достигнут ли максимум для начисления бонуса
+			if ($pr_data['user_profile_progress_max'] > 0) {
+				if ($db_data['user_profile_progress_cur'] == $pr_data['user_profile_progress_max']) {
+					if ($bb_cfg['progress_profile_filling']['seed_points'] > 0) {
+						$db_data['user_points'] = $pr_data['user_points'] + $bb_cfg['progress_profile_filling']['seed_points'];
+						cache_rm_user_sessions($pr_data['user_id']);
+					}
 				}
 			}
 		}
 	}
 
-	if (!empty($db_data['user_profile_progress_filled'])) {
-		$db_data['user_profile_progress_filled'] = json_encode($db_data['user_profile_progress_filled']);
+	// Сохраняем обновлённый список заполненных полей
+	if (!empty($filled_fields)) {
+		$db_data['user_profile_progress_filled'] = json_encode($filled_fields);
+		$db_data['user_profile_progress_cur'] = count($filled_fields);
 	}
 
+	// Устанавливаем максимальное значение прогресса, если оно не задано
 	if (empty($pr_data['user_profile_progress_max'])) {
 		$count_max_fields = count($max_progress_fields);
-		$pr_data['user_profile_progress_max'] = $count_max_fields;
 		$db_data['user_profile_progress_max'] = $count_max_fields;
 		unset($count_max_fields);
 	}
