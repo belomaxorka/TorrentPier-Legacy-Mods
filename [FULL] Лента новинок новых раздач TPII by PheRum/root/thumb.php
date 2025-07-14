@@ -7,202 +7,257 @@ require(BB_ROOT . 'common.php');
 // Start session management
 $user->session_start(array('req_login' => true));
 
-// Получаем id раздачи (темы)
+$folder = BB_ROOT . 'data/thumbnails/';
+
+// Force cleanup thumbs
+if (IS_SUPER_ADMIN && isset($_GET['force_cleanup'])) {
+    $images = array_merge(
+        glob($folder . '*.webp'),
+        glob($folder . '*.jpg'),
+        glob($folder . '*.png'),
+        glob($folder . '*.gif')
+    );
+    $images = array_unique($images);
+    $images = array_values($images);
+    $processed_files = array();
+    foreach ($images as $file) {
+        if (is_file($file)) {
+            if (unlink($file)) {
+                $processed_files[] = $file;
+            } else {
+                bb_log('[Thumb] Cant remove file (Force delete): ' . $file . LOG_LF);
+            }
+        }
+    }
+    if (!empty($processed_files)) {
+        die('<ul><li>' . implode('</li><li>', $processed_files) . '</li></ul>');
+    }
+    die;
+}
+
+// Получаем ID раздачи (темы)
 $topic_id = isset($_GET[POST_TOPIC_URL]) ? (int)$_GET[POST_TOPIC_URL] : 0;
 if (!$topic_id) {
-	bb_die('INVALID_TOPIC_ID');
+    bb_die('INVALID_TOPIC_ID');
 }
 
 // Получаем данные о раздаче из базы
-$row = DB()->fetch_row("SELECT pt.post_text
-		FROM " . BB_BT_TORRENTS . " tr
-			LEFT JOIN " . BB_TOPICS . " t ON(tr.topic_id = t.topic_id)
-			LEFT JOIN " . BB_POSTS_TEXT . " pt ON(pt.post_id = tr.post_id)
-		WHERE t.topic_id  = $topic_id");
+$row = DB()->fetch_row("
+    SELECT pt.post_text
+    FROM " . BB_TOPICS . " t
+    LEFT JOIN " . BB_POSTS . " p ON (t.topic_id = p.topic_id)
+    LEFT JOIN " . BB_POSTS_TEXT . " pt ON (pt.post_id = p.post_id)
+    WHERE t.topic_id = $topic_id
+");
+
 if (!$row) {
-	bb_die('INVALID_TOPIC_ID_DB');
+    bb_die('INVALID_TOPIC_ID_DB');
 }
 
 // Поддерживаемые теги изображений
-preg_match_all('/\[case\](.*?)\[\/case\]/i', $row['post_text'], $poster8, PREG_SET_ORDER);
-preg_match_all('/\[gposter=right\](.*?)\[\/gposter\]/i', $row['post_text'], $poster7, PREG_SET_ORDER);
-preg_match_all('/\[gposter=left\](.*?)\[\/gposter\]/i', $row['post_text'], $poster6, PREG_SET_ORDER);
-preg_match_all('/\[gposter\](.*?)\[\/gposter\]/i', $row['post_text'], $poster5, PREG_SET_ORDER);
-preg_match_all('/\[poster\](.*?)\[\/poster\]/i', $row['post_text'], $poster4, PREG_SET_ORDER);
-preg_match_all('/\[img=right\](.*?)\[\/img\]/i', $row['post_text'], $poster3, PREG_SET_ORDER);
-preg_match_all('/\[img=left\](.*?)\[\/img\]/i', $row['post_text'], $poster2, PREG_SET_ORDER);
-preg_match_all('/\[img\](.*?)\[\/img\]/i', $row['post_text'], $poster1, PREG_SET_ORDER);
+$tags = array(
+    '/\[case\](.*?)\[\/case\]/i',
+    '/\[gposter=right\](.*?)\[\/gposter\]/i',
+    '/\[gposter=left\](.*?)\[\/gposter\]/i',
+    '/\[gposter\](.*?)\[\/gposter\]/i',
+    '/\[poster\](.*?)\[\/poster\]/i',
+    '/\[img=right\](.*?)\[\/img\]/i',
+    '/\[img=left\](.*?)\[\/img\]/i',
+    '/\[img\](.*?)\[\/img\]/i',
+);
 
-// Настройки
-$no_poster_img_name = 'noposter.png'; // Имя файла плейсхолдера (для релизов, в которых нет постера)
-$no_poster = BB_ROOT . 'styles/images/' . $no_poster_img_name; // Абсолютный путь до файла плейсхолдера
-$folder = BB_ROOT . 'data/thumbnails'; // Папка куда сохраняем
+$image_url = '';
+foreach ($tags as $tag) {
+    if (preg_match($tag, $row['post_text'], $matches)) {
+        $image_url = trim($matches[1]);
+        break;
+    }
+}
 
-$url = empty($url) ? $no_poster_img_name : '';
-if (isset($poster8[0][1])) $url = $poster8[0][1];
-elseif (isset($poster7[0][1])) $url = $poster7[0][1];
-elseif (isset($poster6[0][1])) $url = $poster6[0][1];
-elseif (isset($poster5[0][1])) $url = $poster5[0][1];
-elseif (isset($poster4[0][1])) $url = $poster4[0][1];
-elseif (isset($poster3[0][1])) $url = $poster3[0][1];
-elseif (isset($poster2[0][1])) $url = $poster2[0][1];
-elseif (isset($poster1[0][1])) $url = $poster1[0][1];
+if (empty($image_url)) {
+    bb_log('[Thumb] No image url. Used: noposter.png' . LOG_LF);
+    $image_url = BB_ROOT . 'styles/images/noposter.png';
+}
 
-// Получаем информацию о картинке
-$filetype = substr(strrchr($url, '.'), 1);
-$filename = substr($url, strrpos($url, '/'));
+// Проверяем, является ли URL локальным для текущего домена
+$image_url = convertToLocalPath($image_url);
 
-// Генерируем путь до файла
-if (!is_dir($folder)) bb_mkdir($folder);
+// Создание папки с миниатюрами
+if (!is_dir($folder)) {
+    bb_mkdir($folder);
+}
+
+// Генерация имени файла миниатюры
+$filename = basename($image_url);
 $thumb_file = $folder . $filename;
 
-// Проверяем на наличие и выводим
-if (@fopen($thumb_file, "r")) {
-	switch ($filetype) {
-		case 'jpg':
-		case 'jpeg':
-			header('Content-type: image/jpeg');
-			header('Content-Disposition: filename=' . $filename);
-			break;
-		case 'png':
-			header('Content-type: image/png');
-			header('Content-Disposition: filename=' . $filename);
-			break;
-		case 'gif':
-			header('Content-type: image/gif');
-			header('Content-Disposition: filename=' . $filename);
-			break;
-		case 'webp':
-			header('Content-type: image/webp');
-			header('Content-Disposition: filename=' . $filename);
-			break;
-		default:
-			bb_die('Unknown filetype: ' . $filetype);
-			break;
-	}
+// Проверка наличия миниатюры
+if (file_exists($thumb_file)) {
+    serveImage($thumb_file);
+}
 
-	readfile($thumb_file); // Выводим
-	exit;
-} else {
-	// Пробуем открыть файл для чтения
-	if (@fopen($url, "r")) {
-		// Узнаём размеры
-		if ($filetype == 'webp') {
-			$img_webp = ImageCreateFromWEBP($url);
-			$poster_width = imagesx($img_webp);
-			$poster_height = imagesy($img_webp);
-			unset($img_webp);
-		} else {
-			list($poster_width, $poster_height) = getimagesize($url);
-		}
+// Если миниатюры нет, создаем её
+try {
+    $image_info = getimagesize($image_url);
+    if (!$image_info) {
+        throw new Exception('Invalid image file');
+    }
 
-		if (!$poster_width || !$poster_height) // Проверяем на изображение
-		{
-			header('Content-type: image/png');
-			header('Content-Disposition: filename=' . $no_poster_img_name);
-			readfile($no_poster);
-			exit;
-		} else {
-			// Узнаём размеры
-			if ($filetype == 'webp') {
-				$img_webp = ImageCreateFromWEBP($url);
-				$poster_width = imagesx($img_webp);
-				$poster_height = imagesy($img_webp);
-				unset($img_webp);
-			} else {
-				@list($poster_width, $poster_height) = getimagesize($url);
-			}
+    list($original_width, $original_height, $type) = $image_info;
+    $mime_type = image_type_to_mime_type($type);
 
-			if (!$poster_width && !$poster_height) // Проверяем на наличие
-			{
-				header('Content-type: image/png');
-				header('Content-Disposition: filename=' . $no_poster_img_name);
-				readfile($no_poster);
-				exit;
-			}
+    // Создание миниатюры
+    $max_width = 200;
+    $ratio = $original_width / $original_height;
+    $thumb_width = $max_width;
+    $thumb_height = round($thumb_width / $ratio);
 
-			// Открываем
-			$poster = '';
+    $source_image = createImageFromType($image_url, $type);
+    $thumb = imagecreatetruecolor($thumb_width, $thumb_height);
 
-			switch ($filetype) {
-				case 'jpg':
-				case 'jpeg':
-					$poster = ImageCreateFromJPEG($url);
-					break;
-				case 'png':
-					$poster = ImageCreateFromPNG($url);
-					break;
-				case 'gif':
-					$poster = ImageCreateFromGIF($url);
-					break;
-				case 'webp':
-					$poster = ImageCreateFromWEBP($url);
-					break;
-				default:
-					bb_die('Unknown filetype: ' . $filetype);
-					break;
-			}
+    // Обработка прозрачности для PNG/GIF/WEBP
+    if ($type === IMAGETYPE_PNG || $type === IMAGETYPE_GIF ||
+        (defined('IMAGETYPE_WEBP') && $type === IMAGETYPE_WEBP)) {
+        imagecolortransparent($thumb, imagecolorallocatealpha($thumb, 0, 0, 0, 127));
+        imagealphablending($thumb, false);
+        imagesavealpha($thumb, true);
+    }
 
-			$max_width = 100; // Уменьшение по ширине
-			$thumb_width = $max_width;
-			$thumb_height = round(($poster_height * $max_width) / $poster_width);
+    imagecopyresampled($thumb, $source_image, 0, 0, 0, 0, $thumb_width, $thumb_height, $original_width, $original_height);
 
-			if (($poster_width > $max_width)) {
-				$thumb = imagecreatetruecolor($thumb_width, $thumb_height);
+    // Сохранение миниатюры
+    saveThumbnail($thumb, $thumb_file, $type);
 
-				if ($filetype == 'gif' || $filetype == 'png' || $filetype = 'webp') {
-					imagecolortransparent($thumb, imagecolorallocate($thumb, 0, 0, 0));
-					if ($filetype == 'png' || $filetype = 'webp') {
-						imagealphablending($thumb, false);
-						imagesavealpha($thumb, true);
-					}
-				}
+    // Вывод миниатюры
+    serveImage($thumb_file);
 
-				imagecopyresampled($thumb, $poster, 0, 0, 0, 0, $thumb_width, $thumb_height, $poster_width, $poster_height);
-			} else {
-				$thumb = $poster;
-			}
+    // Очистка ресурсов
+    imagedestroy($source_image);
+    imagedestroy($thumb);
+} catch (Exception $e) {
+    bb_log('[Thumb] Exception: ' . $e->getMessage() . LOG_LF);
+    // В случае ошибки выводим плейсхолдер
+    header('Content-type: image/png');
+    readfile(BB_ROOT . 'styles/images/noposter.png');
+    exit;
+}
 
-			// Создаём миниатюру
-			switch ($filetype) {
-				case "jpg":
-				case "jpeg":
-					header('Content-type: image/jpeg');
-					header('Content-Disposition: filename=' . $filename);
-					ImageJPEG($thumb, $thumb_file, 85);
-					break;
-				case "png":
-					header("Content-type: image/png");
-					header('Content-Disposition: filename=' . $filename);
-					ImagePNG($thumb, $thumb_file);
-					break;
-				case "gif":
-					header("Content-type: image/gif");
-					header('Content-Disposition: filename=' . $filename);
-					ImageGIF($thumb, $thumb_file);
-					break;
-				case "webp":
-					header("Content-type: image/webp");
-					header('Content-Disposition: filename=' . $filename);
-					ImageWEBP($thumb, $thumb_file);
-					break;
-				default:
-					bb_die('Unknown filetype: ' . $filetype);
-					break;
-			}
+/**
+ * Функция для проверки и конвертации URL в локальный путь
+ */
+function convertToLocalPath($url)
+{
+    global $bb_cfg;
 
-			// Закрываем
-			imagedestroy($thumb);
-			imagedestroy($poster);
+    // Получаем текущий хостнейм
+    $current_host = '';
+    if (isset($bb_cfg['server_name'])) {
+        $current_host = $bb_cfg['server_name'];
+    } elseif (isset($_SERVER['HTTP_HOST'])) {
+        $current_host = $_SERVER['HTTP_HOST'];
+    }
 
-			// Выводим
-			readfile($thumb_file);
-			exit;
-		}
-	} else {
-		header('Content-type: image/png');
-		header('Content-Disposition: filename=' . $no_poster_img_name);
-		readfile($no_poster);
-		exit;
-	}
+    // Если это относительный путь или уже локальный файл, возвращаем как есть
+    if (!filter_var($url, FILTER_VALIDATE_URL)) {
+        return $url;
+    }
+
+    // Парсим URL
+    $parsed_url = parse_url($url);
+    $url_host = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+
+    // Проверяем, совпадает ли хостнейм
+    if ($url_host === $current_host) {
+        // Конвертируем URL в локальный путь
+        $local_path = BB_ROOT . ltrim($parsed_url['path'], '/');
+
+        // Проверяем, существует ли локальный файл
+        if (file_exists($local_path)) {
+            // bb_log('[Thumb] Converted to local path: ' . $local_path . LOG_LF);
+            return $local_path;
+        } else {
+            // bb_log('[Thumb] Local file not found: ' . $local_path . ', using original URL' . LOG_LF);
+        }
+    }
+
+    return $url;
+}
+
+/**
+ * Функция для создания изображения из URL в зависимости от типа
+ */
+function createImageFromType($url, $type)
+{
+    switch ($type) {
+        case IMAGETYPE_JPEG:
+            return imagecreatefromjpeg($url);
+        case IMAGETYPE_PNG:
+            return imagecreatefrompng($url);
+        case IMAGETYPE_GIF:
+            return imagecreatefromgif($url);
+        default:
+            if (defined('IMAGETYPE_WEBP') && $type === IMAGETYPE_WEBP) {
+                if (function_exists('imagecreatefromwebp')) {
+                    return imagecreatefromwebp($url);
+                }
+            }
+            throw new Exception('Unsupported image type');
+    }
+}
+
+/**
+ * Функция для сохранения миниатюры
+ */
+function saveThumbnail($image, $file, $type)
+{
+    switch ($type) {
+        case IMAGETYPE_JPEG:
+            return imagejpeg($image, $file, 85);
+        case IMAGETYPE_PNG:
+            return imagepng($image, $file, 0);
+        case IMAGETYPE_GIF:
+            return imagegif($image, $file);
+        default:
+            if (defined('IMAGETYPE_WEBP') && $type === IMAGETYPE_WEBP) {
+                if (function_exists('imagewebp')) {
+                    return imagewebp($image, $file, 85);
+                }
+            }
+            throw new Exception('Unsupported image type');
+    }
+}
+
+/**
+ * Функция для отправки изображения клиенту
+ */
+function serveImage($file)
+{
+    $mime_type = '';
+    if (function_exists('mime_content_type')) {
+        $mime_type = mime_content_type($file);
+    } else {
+        $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+        switch ($extension) {
+            case 'jpg':
+            case 'jpeg':
+                $mime_type = 'image/jpeg';
+                break;
+            case 'png':
+                $mime_type = 'image/png';
+                break;
+            case 'gif':
+                $mime_type = 'image/gif';
+                break;
+            case 'webp':
+                $mime_type = 'image/webp';
+                break;
+            default:
+                $mime_type = 'application/octet-stream';
+        }
+    }
+
+    header("Content-type: $mime_type");
+    header('Content-Disposition: filename=' . basename($file));
+    readfile($file);
+    exit;
 }
