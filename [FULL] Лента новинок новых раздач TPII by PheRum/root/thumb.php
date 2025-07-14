@@ -138,11 +138,9 @@ try {
     imagedestroy($source_image);
     imagedestroy($thumb);
 } catch (Exception $e) {
-    bb_log('[Thumb] Exception: ' . $e->getMessage() . LOG_LF);
     // В случае ошибки выводим плейсхолдер
-    header('Content-type: image/png');
-    readfile(BB_ROOT . 'styles/images/noposter.png');
-    exit;
+    bb_log('[Thumb] Exception: ' . $e->getMessage() . LOG_LF);
+    serveImage('styles/images/noposter.png');
 }
 
 /**
