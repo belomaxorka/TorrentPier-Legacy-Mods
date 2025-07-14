@@ -98,9 +98,13 @@ if (file_exists($thumb_file)) {
 
 // Если миниатюры нет, создаем её
 try {
+    if (!defined('IMAGETYPE_WEBP') || !function_exists('imagecreatefromwebp')) {
+        throw new Exception('Webp images are not supported');
+    }
+
     $image_info = getimagesize($image_url);
     if (!$image_info) {
-        throw new Exception('Invalid image file');
+        throw new Exception('Invalid image file: ' . $image_url);
     }
 
     list($original_width, $original_height, $type) = $image_info;
@@ -116,8 +120,7 @@ try {
     $thumb = imagecreatetruecolor($thumb_width, $thumb_height);
 
     // Обработка прозрачности для PNG/GIF/WEBP
-    if ($type === IMAGETYPE_PNG || $type === IMAGETYPE_GIF ||
-        (defined('IMAGETYPE_WEBP') && $type === IMAGETYPE_WEBP)) {
+    if ($type === IMAGETYPE_PNG || $type === IMAGETYPE_GIF || $type === IMAGETYPE_WEBP) {
         imagecolortransparent($thumb, imagecolorallocatealpha($thumb, 0, 0, 0, 127));
         imagealphablending($thumb, false);
         imagesavealpha($thumb, true);
@@ -162,7 +165,6 @@ function convertToLocalPath($url)
         return $url;
     }
 
-    // Парсим URL
     $parsed_url = parse_url($url);
     $url_host = isset($parsed_url['host']) ? $parsed_url['host'] : '';
 
@@ -195,13 +197,10 @@ function createImageFromType($url, $type)
             return imagecreatefrompng($url);
         case IMAGETYPE_GIF:
             return imagecreatefromgif($url);
+        case IMAGETYPE_WEBP:
+            return imagecreatefromwebp($url);
         default:
-            if (defined('IMAGETYPE_WEBP') && $type === IMAGETYPE_WEBP) {
-                if (function_exists('imagecreatefromwebp')) {
-                    return imagecreatefromwebp($url);
-                }
-            }
-            throw new Exception('Unsupported image type');
+            throw new Exception('Unknown image type: ' . $type);
     }
 }
 
@@ -217,13 +216,10 @@ function saveThumbnail($image, $file, $type)
             return imagepng($image, $file, 0);
         case IMAGETYPE_GIF:
             return imagegif($image, $file);
+        case IMAGETYPE_WEBP:
+            return imagewebp($image, $file, 85);
         default:
-            if (defined('IMAGETYPE_WEBP') && $type === IMAGETYPE_WEBP) {
-                if (function_exists('imagewebp')) {
-                    return imagewebp($image, $file, 85);
-                }
-            }
-            throw new Exception('Unsupported image type');
+            throw new Exception('Unknown image type: ' . $type);
     }
 }
 
