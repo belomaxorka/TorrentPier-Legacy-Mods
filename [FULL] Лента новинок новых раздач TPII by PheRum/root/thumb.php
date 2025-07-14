@@ -107,7 +107,7 @@ try {
     $mime_type = image_type_to_mime_type($type);
 
     // Создание миниатюры
-    $max_width = 200;
+    $max_width = 100;
     $ratio = $original_width / $original_height;
     $thumb_width = $max_width;
     $thumb_height = round($thumb_width / $ratio);
