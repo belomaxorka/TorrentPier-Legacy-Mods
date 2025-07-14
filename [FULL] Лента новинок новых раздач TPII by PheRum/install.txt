@@ -168,18 +168,6 @@ index.php
 #-----[ FIND ]------------------------------------------
 #
 
-$page_cfg['load_tpl_vars'] = array(
-
-#
-#-----[ BEFORE ADD ]------------------------------------------
-#
-
-$page_cfg['include_bbcode_js'] = true;
-
-#
-#-----[ FIND ]------------------------------------------
-#
-
 $showhide = isset($_GET['sh']) ? (int) $_GET['sh'] : 0;
 
 #
