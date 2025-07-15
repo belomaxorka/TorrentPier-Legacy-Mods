@@ -48,6 +48,7 @@ INSERT INTO `bb_cron` VALUES ('', 1, 'Очистка тегов', 'clean_tags.ph
 // Теги
 $bb_cfg['show_index_new_tags'] = true; // Показывать блок "Последние теги" на главной
 $bb_cfg['new_tags_limit'] = 25;
+$bb_cfg['categories_with_required_tags'] = [];
 ======================================
 
 ======= Открыть library/includes/functions.php и вставить в конце =======
