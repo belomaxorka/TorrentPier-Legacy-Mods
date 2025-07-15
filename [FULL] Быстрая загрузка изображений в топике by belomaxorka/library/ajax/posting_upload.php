@@ -16,6 +16,8 @@ global $bb_cfg, $lang;
 // For PHP 5 (if webp are not supported)
 if (!defined('IMAGETYPE_WEBP') || !function_exists('imagecreatefromwebp')) {
     define('USE_JPG_ONLY', true);
+} else {
+    define('USE_JPG_ONLY', false);
 }
 
 $upload_dir = $bb_cfg['ajax_upload_posting_images_path'];
@@ -72,8 +74,8 @@ function convertor($inputFile, &$outputFile, $quality = 90)
         return false;
     }
 
-    define('OUTPUT_FILE_WEBP', $outputFile . '.webp');
-    define('OUTPUT_FILE_JPG', $outputFile . '.jpg');
+    $outputFileWeBP = $outputFile . '.webp';
+    $outputFileJPG = $outputFile . '.jpg';
 
     $mimeType = mime_content_type($inputFile);
     if ($mimeType === false) {
@@ -85,12 +87,12 @@ function convertor($inputFile, &$outputFile, $quality = 90)
     }
 
     if ($mimeType === 'image/webp') {
-        $outputFile = OUTPUT_FILE_WEBP;
+        $outputFile = $outputFileWeBP;
         return copy($inputFile, $outputFile);
     }
 
     if (USE_JPG_ONLY && $mimeType === 'image/jpeg') {
-        $outputFile = OUTPUT_FILE_JPG;
+        $outputFile = $outputFileJPG;
         return copy($inputFile, $outputFile);
     }
 
@@ -126,10 +128,10 @@ function convertor($inputFile, &$outputFile, $quality = 90)
     }
 
     if (USE_JPG_ONLY) {
-        $outputFile = OUTPUT_FILE_JPG;
+        $outputFile = $outputFileJPG;
         $result = imagejpeg($image, $outputFile, $quality);
     } else {
-        $outputFile = OUTPUT_FILE_WEBP;
+        $outputFile = $outputFileWeBP;
         $result = imagewebp($image, $outputFile, $quality);
     }
 
