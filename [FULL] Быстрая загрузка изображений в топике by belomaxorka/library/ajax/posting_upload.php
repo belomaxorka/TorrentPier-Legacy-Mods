@@ -8,84 +8,134 @@
  */
 
 if (!defined('IN_AJAX')) {
-	die(basename(__FILE__));
+    die(basename(__FILE__));
 }
 
 global $bb_cfg, $lang;
+
+// For PHP 5 (if webp are not supported)
+if (!defined('IMAGETYPE_WEBP') || !function_exists('imagecreatefromwebp')) {
+    define('USE_JPG_ONLY', true);
+}
 
 $upload_dir = $bb_cfg['ajax_upload_posting_images_path'];
 $posterLink = $screenshotsLink = [];
 
 if (!empty($_FILES['poster_images'])) {
-	$posterFiles = $_FILES['poster_images'];
-	foreach ($posterFiles['tmp_name'] as $key => $tmpName) {
-		if ($posterFiles['size'][$key] > $bb_cfg['ajax_upload_posting_images_size_limit']) {
-			$this->ajax_die($lang['POSTING_IMAGES_FILE_TOO_LARGE'] . humn_size($bb_cfg['ajax_upload_posting_images_size_limit']));
-		}
+    $posterFiles = $_FILES['poster_images'];
+    foreach ($posterFiles['tmp_name'] as $key => $tmpName) {
+        if ($posterFiles['size'][$key] > $bb_cfg['ajax_upload_posting_images_size_limit']) {
+            $this->ajax_die($lang['POSTING_IMAGES_FILE_TOO_LARGE'] . humn_size($bb_cfg['ajax_upload_posting_images_size_limit']));
+        }
 
-		$destination = $upload_dir . 'poster_' . TIMENOW . '_' . generateRandomName();
-		if (!convertToWebP($tmpName, $destination)) {
-			$this->ajax_die($lang['POSTING_IMAGES_ERROR']);
-		}
-		$posterLink[] = make_url(hide_bb_path($destination));
-	}
+        $outputFile = $upload_dir . 'poster_' . TIMENOW . '_' . make_rand_str(32);
+        if (!convertor($tmpName, $outputFile)) {
+            $this->ajax_die($lang['POSTING_IMAGES_ERROR']);
+        }
+        $posterLink[] = make_url(hide_bb_path($outputFile));
+    }
 }
 
 if (!empty($_FILES['screenshots_images'])) {
-	$screenshotFiles = $_FILES['screenshots_images'];
-	foreach ($screenshotFiles['tmp_name'] as $key => $tmpName) {
-		$destination = $upload_dir . 'screenshot_' . TIMENOW . '_' . generateRandomName();
-		if (!convertToWebP($tmpName, $destination)) {
-			$this->ajax_die($lang['POSTING_IMAGES_ERROR']);
-		}
-		$screenshotsLink[] = make_url(hide_bb_path($destination));
-	}
+    $screenshotFiles = $_FILES['screenshots_images'];
+    foreach ($screenshotFiles['tmp_name'] as $key => $tmpName) {
+        $outputFile = $upload_dir . 'screenshot_' . TIMENOW . '_' . make_rand_str(32);
+        if (!convertor($tmpName, $outputFile)) {
+            $this->ajax_die($lang['POSTING_IMAGES_ERROR']);
+        }
+        $screenshotsLink[] = make_url(hide_bb_path($outputFile));
+    }
 }
 
-function convertToWebP($inputFile, $outputFile, $quality = 90)
+/**
+ * Images convertor (to webp or jpg)
+ *
+ * @param string $inputFile
+ * @param string $outputFile
+ * @param int $quality
+ * @return bool
+ */
+function convertor($inputFile, &$outputFile, $quality = 90)
 {
-	$imageInfo = getimagesize($inputFile);
-	if (!$imageInfo) {
-		return false;
-	}
+    if (!file_exists($inputFile)) {
+        bb_log("[Posting Images] Input file does not exist: $inputFile" . LOG_LF);
+        return false;
+    }
 
-	if ($imageInfo['mime'] === 'image/webp') {
-		return copy($inputFile, $outputFile);
-	}
+    if (!is_readable($inputFile)) {
+        bb_log("[Posting Images] Input file is not readable: $inputFile" . LOG_LF);
+        return false;
+    }
 
-	$imageType = $imageInfo[2];
-	$image = null;
+    if ($quality < 0 || $quality > 100) {
+        bb_log("[Posting Images] Quality must be between 0 and 100, got: $quality" . LOG_LF);
+        return false;
+    }
 
-	switch ($imageType) {
-		case IMAGETYPE_JPEG:
-			$image = imagecreatefromjpeg($inputFile);
-			break;
-		case IMAGETYPE_PNG:
-			$image = @imagecreatefrompng($inputFile);
-			break;
-		case IMAGETYPE_GIF:
-			$image = imagecreatefromgif($inputFile);
-			break;
-	}
+    define('OUTPUT_FILE_WEBP', $outputFile . '.webp');
+    define('OUTPUT_FILE_JPG', $outputFile . '.jpg');
 
-	if (!$image) {
-		return false;
-	}
+    $mimeType = mime_content_type($inputFile);
+    if ($mimeType === false) {
+        bb_log("[Posting Images] Cannot determine MIME type for: $inputFile" . LOG_LF);
+        return false;
+    }
+    if (USE_JPG_ONLY && $mimeType === 'application/octet-stream') {
+        $mimeType = 'image/webp';
+    }
 
-	imagepalettetotruecolor($image);
-	imagealphablending($image, true);
-	imagesavealpha($image, true);
+    if ($mimeType === 'image/webp') {
+        $outputFile = OUTPUT_FILE_WEBP;
+        return copy($inputFile, $outputFile);
+    }
 
-	$result = imagewebp($image, $outputFile, $quality);
-	imagedestroy($image);
+    if (USE_JPG_ONLY && $mimeType === 'image/jpeg') {
+        $outputFile = OUTPUT_FILE_JPG;
+        return copy($inputFile, $outputFile);
+    }
 
-	return $result;
-}
+    $image = null;
 
-function generateRandomName()
-{
-	$fileName = make_rand_str(32);
-	return $fileName . '.webp';
+    switch ($mimeType) {
+        case 'image/jpeg':
+            $image = imagecreatefromjpeg($inputFile);
+            break;
+        case 'image/png':
+            $image = @imagecreatefrompng($inputFile);
+            break;
+        case 'image/gif':
+            $image = imagecreatefromgif($inputFile);
+            break;
+    }
+
+    if (!$image) {
+        bb_log("[Posting Images] Failed to create image from file: $inputFile" . LOG_LF);
+        return false;
+    }
+
+    if (!imagepalettetotruecolor($image)) {
+        bb_log("[Posting Images] Failed to convert palette to true color" . LOG_LF);
+        imagedestroy($image);
+        return false;
+    }
+
+    if ($mimeType === 'image/gif' || $mimeType === 'image/png') {
+        imagepalettetotruecolor($image);
+        imagealphablending($image, true);
+        imagesavealpha($image, true);
+    }
+
+    if (USE_JPG_ONLY) {
+        $outputFile = OUTPUT_FILE_JPG;
+        $result = imagejpeg($image, $outputFile, $quality);
+    } else {
+        $outputFile = OUTPUT_FILE_WEBP;
+        $result = imagewebp($image, $outputFile, $quality);
+    }
+
+    imagedestroy($image);
+
+    return $result;
 }
 
 $this->response['success'] = true;
