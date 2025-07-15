@@ -1,6 +1,6 @@
 -------------- Система тегов --------------
 Автор: belomaxorka
-Версия: v1.4.2
+Версия: v1.5.0
 Описание: Добавляет возможность устанавливать теги темам. Также имеется поиск тем по тегам (при клике на тег).
 -------------------------------------------
 
@@ -152,30 +152,31 @@ if ($bb_cfg['show_index_new_tags']) {
 =============================
 
 ======= Открыть posting.php и найти =======
-if ($submit || $refresh) {
+// Allow robots indexing
+$robots_indexing = $post_info['topic_allow_robots'] ?? true;
 ===========================================
 
 ======= Выше вставить =======
-// ------------------ Теги ------------------
-$get_tags = get_topic_tags($topic_id);
-$all_tags_list = $get_tags['all_tags'];
-
+$get_tags = get_tags_list($topic_id);
 $topic_tags_list = [];
-foreach ($get_tags['topic_tags'] as $tag) {
-	$topic_tags_list[] = $tag;
+foreach ($get_tags['topic_tags'] as &$tag) {
+    unset($tag['tag_creation_time']);
+    $topic_tags_list[] = $tag;
 }
-// ------------------------------------------
+unset($tag);
 =============================
 
 ======= Далее найти =======
-$notify_user = (int)!empty($_POST['notify']);
+if ($submit || $refresh) {
 ===========================
 
 ======= Ниже вставить =======
 // Теги
-$topic_tags = [];
+$topic_tags_list = [];
 if (!empty($_POST['topic_tags_list']) && is_array($_POST['topic_tags_list'])) {
-	$topic_tags = $_POST['topic_tags_list'];
+    $topic_tags_list = $_POST['topic_tags_list'];
+} elseif (!$preview && in_array($forums['f'][$forum_id]['cat_id'], $bb_cfg['categories_with_required_tags'])) {
+    $error_msg .= ((!empty($error_msg)) ? '<br />' . $lang['TAGS_POSTING_NO_SELECTED'] : $lang['TAGS_POSTING_NO_SELECTED']);
 }
 =============================
 
@@ -184,7 +185,7 @@ if (!empty($_POST['topic_tags_list']) && is_array($_POST['topic_tags_list'])) {
 ===========================
 
 ======= Заменить на =======
-\TorrentPier\Legacy\Post::submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_id, $post_id, $topic_type, DB()->escape($username), DB()->escape($subject), DB()->escape($message), $update_post_time, $poster_rg_id, $attach_rg_sig, (int)$robots_indexing, $topic_tags);
+\TorrentPier\Legacy\Post::submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_id, $post_id, $topic_type, DB()->escape($username), DB()->escape($subject), DB()->escape($message), $update_post_time, $poster_rg_id, $attach_rg_sig, (int)$robots_indexing, $topic_tags_list);
 ===========================
 
 ======= Если не удалось найти, то =======
@@ -192,18 +193,24 @@ if (!empty($_POST['topic_tags_list']) && is_array($_POST['topic_tags_list'])) {
 =========================================
 
 ======= Заменить на =======
-\TorrentPier\Legacy\Post::submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_id, $post_id, $topic_type, DB()->escape($username), DB()->escape($subject), DB()->escape($message), $update_post_time, $poster_rg_id, $attach_rg_sig, $topic_tags);
+\TorrentPier\Legacy\Post::submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_id, $post_id, $topic_type, DB()->escape($username), DB()->escape($subject), DB()->escape($message), $update_post_time, $poster_rg_id, $attach_rg_sig, $topic_tags_list);
 ===========================
 
 ======= Далее найти =======
-'MESSAGE' => $message,
+if ($mode == 'newtopic' || ($mode == 'editpost' && $post_data['first_post'])) {
 ===========================
 
 ======= Ниже вставить =======
-// --------------- Теги ---------------
-'ALL_TAGS_JSON' => empty($all_tags_list) ? '[]' : json_encode($all_tags_list, JSON_THROW_ON_ERROR),
-'TOPIC_TAGS_LIST' => empty($topic_tags_list) ? '[]' : json_encode($topic_tags_list, JSON_THROW_ON_ERROR),
-// ------------------------------------
+$all_tags_list = $get_tags['all_tags'];
+array_walk($all_tags_list, function (&$tag) {
+    unset($tag['tag_creation_time']);
+});
+unset($tag);
+$template->assign_vars([
+    'SHOW_TAGS' => true,
+    'ALL_TAGS_JSON' => empty($all_tags_list) ? '[]' : json_encode($all_tags_list, JSON_THROW_ON_ERROR),
+    'TOPIC_TAGS_LIST' => empty($topic_tags_list) ? '[]' : json_encode($topic_tags_list, JSON_THROW_ON_ERROR),
+]);
 =============================
 
 ======= Открыть search.php и найти =======
@@ -236,7 +243,7 @@ $egosearch = false;
 // Теги
 $tag_id = $_REQUEST['tag_id'] ?? 0;
 if (!is_array($tag_id)) {
-	$tag_id = explode(',', $tag_id);
+    $tag_id = explode(',', $tag_id);
 }
 $tags_csv = implode(', ', $tag_id);
 =============================
@@ -260,11 +267,10 @@ $join_topic_tags = ($tags_csv);
 ======= Ниже вставить =======
 // Теги
 if ($join_topic_tags) {
-	$SQL['FROM'][] = $tags_topic_tbl;
+    $SQL['FROM'][] = $tags_topic_tbl;
 }
-
 if ($join_topic_tags) {
-	$SQL['WHERE'][] = "t.topic_id = tt.topic_id AND tt.tag_id IN($tags_csv)";
+    $SQL['WHERE'][] = "t.topic_id = tt.topic_id AND tt.tag_id IN($tags_csv)";
 }
 =============================
 
@@ -274,12 +280,12 @@ if ($items_display) {
 
 ======= Ниже вставить =======
 // Теги
-$tags = get_topic_tags()['all_tags'];
+$tags = get_tags_list()['all_tags'];
 $by_tag = [];
 foreach ($tag_id as $tag) {
-	if (isset($tags[$tag]['tag_name'])) {
-		$by_tag[] = '<b>' . $tags[$tag]['tag_name'] . '</b>';
-	}
+    if (isset($tags[$tag]['tag_name'])) {
+        $by_tag[] = '<b>' . $tags[$tag]['tag_name'] . '</b>';
+    }
 }
 $by_tag = implode(', ', $by_tag);
 =============================
@@ -300,9 +306,9 @@ $by_tag = implode(', ', $by_tag);
 ======= Выше вставить =======
 // Delete topic tags
 DB()->query("
-	DELETE tt
-	FROM      " . $tmp_delete_topics . " del
-	LEFT JOIN " . BB_TOPIC_TAGS . " tt  USING(topic_id)
+    DELETE tt
+    FROM      " . $tmp_delete_topics . " del
+    LEFT JOIN " . BB_TOPIC_TAGS . " tt  USING(topic_id)
 ");
 =============================
 
@@ -339,75 +345,75 @@ if ($mode == 'newtopic') {
 ======= Ниже вставить =======
 // ----------------- Теги -----------------
 if (!empty($topic_id)) {
-	// Получаем все теги и теги, связанные с темой
-	$tags_list = get_topic_tags($topic_id);
-	$all_tags_list = $tags_list['all_tags']; // Все теги
-	$topic_tags_db = $tags_list['topic_tags']; // Теги, связанные с темой
+    // Получаем все теги и теги, связанные с темой
+    $tags_list = get_tags_list($topic_id);
+    $all_tags_list = $tags_list['all_tags']; // Все теги
+    $topic_tags_db = $tags_list['topic_tags']; // Теги, связанные с темой
 
-	// Создаем массивы для быстрого поиска
-	$all_tags_id = array_column($all_tags_list, 'tag_id'); // Массив всех tag_id
-	$all_tags_name_to_id = array_column($all_tags_list, 'tag_id', 'tag_name'); // Ассоциативный массив tag_name => tag_id
-	$topic_tags_db_ids = array_column($topic_tags_db, 'tag_id'); // Массив tag_id, связанных с темой
+    // Создаем массивы для быстрого поиска
+    $all_tags_id = array_column($all_tags_list, 'tag_id'); // Массив всех tag_id
+    $all_tags_name_to_id = array_column($all_tags_list, 'tag_id', 'tag_name'); // Ассоциативный массив tag_name => tag_id
+    $topic_tags_db_ids = array_column($topic_tags_db, 'tag_id'); // Массив tag_id, связанных с темой
 
-	$need_update_datastore = false;
+    $need_update_datastore = false;
 
-	// Если POST-запрос содержит новые теги
-	if (!empty($topic_tags)) {
-		foreach ($topic_tags as $tag) {
-			$tag = trim($tag); // Удаляем лишние пробелы
+    // Если POST-запрос содержит новые теги
+    if (!empty($topic_tags)) {
+        foreach ($topic_tags as $tag) {
+            $tag = trim($tag); // Удаляем лишние пробелы
 
-			if (ctype_digit($tag) && in_array((int)$tag, $all_tags_id)) {
-				// Если значение является числом и существует в базе данных как tag_id
-				$tag_id = (int)$tag;
-			} else {
-				// Если значение не является tag_id, считаем его tag_name
-				$tag_name = $tag;
+            if (ctype_digit($tag) && in_array((int)$tag, $all_tags_id)) {
+                // Если значение является числом и существует в базе данных как tag_id
+                $tag_id = (int)$tag;
+            } else {
+                // Если значение не является tag_id, считаем его tag_name
+                $tag_name = $tag;
 
-				if (isset($all_tags_name_to_id[$tag_name])) {
-					// Если тег уже существует, берем его ID
-					$tag_id = $all_tags_name_to_id[$tag_name];
-				} else {
-					// Если тега нет, создаем новый
-					DB()->sql_query("INSERT INTO " . BB_TAGS . " (tag_name) VALUES ('" . DB()->escape($tag_name) . "')");
-					$tag_id = DB()->sql_nextid(); // Получаем ID нового тега
-					$all_tags_id[] = $tag_id; // Добавляем новый ID в массив существующих тегов
-					$all_tags_name_to_id[$tag_name] = $tag_id; // Обновляем ассоциативный массив
-					$need_update_datastore = true;
-				}
-			}
+                if (isset($all_tags_name_to_id[$tag_name])) {
+                    // Если тег уже существует, берем его ID
+                    $tag_id = $all_tags_name_to_id[$tag_name];
+                } else {
+                    // Если тега нет, создаем новый
+                    DB()->sql_query("INSERT INTO " . BB_TAGS . " (tag_name, tag_creation_time) VALUES ('" . DB()->escape($tag_name) . "', " . TIMENOW . ")");
+                    $tag_id = DB()->sql_nextid(); // Получаем ID нового тега
+                    $all_tags_id[] = $tag_id; // Добавляем новый ID в массив существующих тегов
+                    $all_tags_name_to_id[$tag_name] = $tag_id; // Обновляем ассоциативный массив
+                    $need_update_datastore = true;
+                }
+            }
 
-			// Проверяем, что тег еще не связан с темой
-			if (!in_array($tag_id, $topic_tags_db_ids)) {
-				// Добавляем связь между темой и тегом
-				DB()->sql_query("INSERT INTO " . BB_TOPIC_TAGS . " (topic_id, tag_id) VALUES ($topic_id, $tag_id)");
-			}
-		}
-	}
+            // Проверяем, что тег еще не связан с темой
+            if (!in_array($tag_id, $topic_tags_db_ids)) {
+                // Добавляем связь между темой и тегом
+                DB()->sql_query("INSERT INTO " . BB_TOPIC_TAGS . " (topic_id, tag_id) VALUES ($topic_id, $tag_id)");
+            }
+        }
+    }
 
-	// Удаление всех связей, если POST-запрос пустой
-	if (empty($topic_tags)) {
-		// Удаляем все связи между темой и тегами
-		DB()->sql_query("DELETE FROM " . BB_TOPIC_TAGS . " WHERE topic_id = $topic_id");
-	} else {
-		// Удаление отдельных тегов, которые были отсоединены
-		foreach ($topic_tags_db_ids as $existing_tag_id) {
-			// Проверяем, есть ли этот тег в POST-запросе
-			if (!in_array((string)$existing_tag_id, $topic_tags) && !in_array($all_tags_list[$existing_tag_id]['tag_name'], $topic_tags)) {
-				// Если тега нет в POST-запросе, удаляем связь
-				DB()->sql_query("DELETE FROM " . BB_TOPIC_TAGS . " WHERE topic_id = $topic_id AND tag_id = $existing_tag_id");
-			}
-		}
-	}
+    // Удаление всех связей, если POST-запрос пустой
+    if (empty($topic_tags)) {
+        // Удаляем все связи между темой и тегами
+        DB()->sql_query("DELETE FROM " . BB_TOPIC_TAGS . " WHERE topic_id = $topic_id");
+    } else {
+        // Удаление отдельных тегов, которые были отсоединены
+        foreach ($topic_tags_db_ids as $existing_tag_id) {
+            // Проверяем, есть ли этот тег в POST-запросе
+            if (!in_array((string)$existing_tag_id, $topic_tags) && !in_array($all_tags_list[$existing_tag_id]['tag_name'], $topic_tags)) {
+                // Если тега нет в POST-запросе, удаляем связь
+                DB()->sql_query("DELETE FROM " . BB_TOPIC_TAGS . " WHERE topic_id = $topic_id AND tag_id = $existing_tag_id");
+            }
+        }
+    }
 
-	// Обновляем кэш тегов, если были созданы новые теги или удалены связи
-	if ($need_update_datastore || empty($topic_tags)) {
-		$datastore->update('tags');
-	}
+    // Обновляем кэш тегов, если были созданы новые теги или удалены связи
+    if ($need_update_datastore || empty($topic_tags)) {
+        $datastore->update('tags');
+    }
 
-	// Очистка кэша темы, если были добавлены новые теги
-	if ($mode == 'editpost') {
-		CACHE('bb_topic_tags')->rm('topic_tags_' . $topic_id);
-	}
+    // Очистка кэша темы, если были добавлены новые теги
+    if ($mode == 'editpost') {
+        CACHE('bb_topic_tags')->rm('tags_topic_' . $topic_id);
+    }
 }
 // ----------------------------------------
 =============================

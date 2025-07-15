@@ -169,29 +169,6 @@ $lang['PREFIX_ADMIN_PREFIX_COLOR_NOT_SELECTED'] = 'Не указан цвет п
 $lang['PREFIX_POSTING_NO_SELECTED'] = 'Необходимо указать хотя-бы один префикс для этой темы';
 ===========================================================================
 
-======= Открыть index.php и найти =======
-// Allow cron
-if (IS_AM) {
-=========================================
-
-======= Выше вставить =======
-// Блок: Новые теги
-if ($bb_cfg['show_index_new_tags']) {
-	$tags = get_topic_tags()['all_tags'];
-	krsort($tags);
-	$tags = array_slice($tags, 0, $bb_cfg['new_tags_limit'], true);
-
-	$latest_tags = [];
-	foreach ($tags as $tag) {
-		$latest_tags[] = '<a href="search.php?tag_id=' . $tag['tag_id'] . '">' . $tag['tag_name'] . '</a>';
-	}
-
-	$template->assign_vars([
-		'LATEST_TAGS' => !empty($latest_tags) ? implode(', ', $latest_tags) : '',
-	]);
-}
-=============================
-
 ======= Открыть posting.php и найти =======
 if ($submit || $refresh) {
 ===========================================
