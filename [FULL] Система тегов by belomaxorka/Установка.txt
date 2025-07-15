@@ -53,7 +53,7 @@ $bb_cfg['categories_with_required_tags'] = [];
 
 ======= Открыть library/includes/functions.php и вставить в конце =======
 /**
- * Возращает список тегов
+ * Возвращает список тегов
  *
  * @param string|int $topic_id
  * @return array
@@ -133,35 +133,13 @@ $lang['TAGS_LATEST_TAGS'] = 'Latest tags';
 $lang['TAGS_POSTING_NO_SELECTED'] = 'You must specify at least one tag for this topic.';
 ===========================================================================
 
-======= Открыть index.php и найти =======
-// Allow cron
-if (IS_AM) {
-=========================================
-
-======= Выше вставить =======
-// Блок: Новые теги
-if ($bb_cfg['show_index_new_tags']) {
-	$tags = get_tags_list()['all_tags'];
-	krsort($tags);
-	$tags = array_slice($tags, 0, $bb_cfg['new_tags_limit'], true);
-
-	$latest_tags = [];
-	foreach ($tags as $tag) {
-		$latest_tags[] = '<a href="search.php?tag_id=' . $tag['tag_id'] . '">' . $tag['tag_name'] . '</a>';
-	}
-
-	$template->assign_vars([
-		'LATEST_TAGS' => !empty($latest_tags) ? implode(', ', $latest_tags) : '',
-	]);
-}
-=============================
-
 ======= Открыть posting.php и найти =======
 // Allow robots indexing
 $robots_indexing = $post_info['topic_allow_robots'] ?? true;
 ===========================================
 
 ======= Ниже вставить =======
+// ------------------ Теги ------------------
 $get_tags = get_tags_list($topic_id);
 $topic_tags_list = [];
 foreach ($get_tags['topic_tags'] as &$tag) {
@@ -169,6 +147,7 @@ foreach ($get_tags['topic_tags'] as &$tag) {
     $topic_tags_list[] = $tag;
 }
 unset($tag);
+// ------------------------------------------
 =============================
 
 ======= Далее найти =======
@@ -206,6 +185,7 @@ if ($mode == 'newtopic' || ($mode == 'editpost' && $post_data['first_post'])) {
 ===========================
 
 ======= Ниже вставить =======
+// ------------------ Теги ------------------
 $all_tags_list = $get_tags['all_tags'];
 array_walk($all_tags_list, function (&$tag) {
     unset($tag['tag_creation_time']);
@@ -216,6 +196,7 @@ $template->assign_vars([
     'ALL_TAGS_JSON' => empty($all_tags_list) ? '[]' : json_encode($all_tags_list, JSON_THROW_ON_ERROR),
     'TOPIC_TAGS_LIST' => empty($topic_tags_list) ? '[]' : json_encode($topic_tags_list, JSON_THROW_ON_ERROR),
 ]);
+// ------------------------------------------
 =============================
 
 ======= Открыть search.php и найти =======
