@@ -136,7 +136,7 @@ if (IS_AM) {
 ======= Выше вставить =======
 // Блок: Новые теги
 if ($bb_cfg['show_index_new_tags']) {
-	$tags = get_topic_tags()['all_tags'];
+	$tags = get_tags_list()['all_tags'];
 	krsort($tags);
 	$tags = array_slice($tags, 0, $bb_cfg['new_tags_limit'], true);
 
@@ -156,7 +156,7 @@ if ($bb_cfg['show_index_new_tags']) {
 $robots_indexing = $post_info['topic_allow_robots'] ?? true;
 ===========================================
 
-======= Выше вставить =======
+======= Ниже вставить =======
 $get_tags = get_tags_list($topic_id);
 $topic_tags_list = [];
 foreach ($get_tags['topic_tags'] as &$tag) {
@@ -228,7 +228,7 @@ print_page('search.tpl');
 
 ======= Выше вставить =======
 // Теги
-$tags = get_topic_tags()['all_tags'];
+$tags = get_tags_list()['all_tags'];
 $template->assign_vars(array(
 	'ALL_TAGS_JSON' => empty($tags) ? '[]' : json_encode($tags, JSON_THROW_ON_ERROR),
 ));
