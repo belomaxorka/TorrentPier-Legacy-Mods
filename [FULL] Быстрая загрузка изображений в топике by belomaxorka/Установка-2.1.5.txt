@@ -8,35 +8,25 @@ $bb_cfg['ajax_upload_posting_images_path'] = DATA_DIR . '/posts_images/';
 $bb_cfg['ajax_upload_posting_images_size_limit'] = 15 * 1024 * 1024; // 15 MB
 -----------------------------------------------------------------------------
 
-------------------- Открыть src/Ajax.php и найти -------------------
-'callseed' => ['user'],
---------------------------------------------------------------------
+------------------- Открыть ajax.php и найти -------------------
+'manage_group'      => array('user'),
+----------------------------------------------------------------
 
 ------------------- Ниже вставить -------------------
-'posting_upload' => ['user'],
+'posting_upload'    => array('user'),
 -----------------------------------------------------
 
 ------------------- Далее найти -------------------
-/**
- * Call seed actions
- *
- * @return void
- */
-public function callseed()
+function sitemap()
 {
-	require AJAX_DIR . '/callseed.php';
+	require(AJAX_DIR .'sitemap.php');
 }
 ---------------------------------------------------
 
 ------------------- Ниже вставить -------------------
-/**
- * Posting Upload
- *
- * @return void
- */
-public function posting_upload()
+function posting_upload()
 {
-	require AJAX_DIR . '/posting_upload.php';
+	require(AJAX_DIR .'posting_upload.php');
 }
 -----------------------------------------------------
 
@@ -179,16 +169,3 @@ $lang['POSTING_IMAGES_SUCCESS_UPLOADED'] = 'Files uploaded successfully!';
 $lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'No files selected!';
 $lang['POSTING_IMAGES_FILE_TOO_LARGE'] = 'The image is too large. Maximum file size allowed: ';
 ---------------------------------------------------------------------------------------
-
-------------------- Открыть library/language/source/main.php и вставить -------------------
-// Постер и скрины в теме
-$lang['POSTING_IMAGES_ERROR'] = 'Error: Something went wrong during conversion...';
-$lang['POSTING_IMAGES_UPLOAD'] = 'Upload Images';
-$lang['POSTING_IMAGES_POSTER'] = 'Upload Poster';
-$lang['POSTING_IMAGES_SCREENSHOTS'] = 'Upload Screenshots';
-$lang['POSTING_IMAGES_PROCESSING_UPLOAD'] = 'Uploading...';
-$lang['POSTING_IMAGES_ERROR_UPLOADING'] = 'Error uploading files';
-$lang['POSTING_IMAGES_SUCCESS_UPLOADED'] = 'Files uploaded successfully!';
-$lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'No files selected!';
-$lang['POSTING_IMAGES_FILE_TOO_LARGE'] = 'The image is too large. Maximum file size allowed: ';
--------------------------------------------------------------------------------------------
