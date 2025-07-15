@@ -1,0 +1,194 @@
+- Автор: belomaxorka
+- Версия: v1.2.0
+- Описание: Добавляет возможность быстрой загрузки изображений в топик (постер / скриншоты).
+  Реализовано с использованием AJAX технологии. Есть конвертация в WEBP.
+
+------------------- Открыть library/config.php и вставить -------------------
+$bb_cfg['ajax_upload_posting_images_path'] = DATA_DIR . '/posts_images/';
+$bb_cfg['ajax_upload_posting_images_size_limit'] = 15 * 1024 * 1024; // 15 MB
+-----------------------------------------------------------------------------
+
+------------------- Открыть src/Ajax.php и найти -------------------
+'callseed' => ['user'],
+--------------------------------------------------------------------
+
+------------------- Ниже вставить -------------------
+'posting_upload' => ['user'],
+-----------------------------------------------------
+
+------------------- Далее найти -------------------
+/**
+ * Call seed actions
+ *
+ * @return void
+ */
+public function callseed()
+{
+	require AJAX_DIR . '/callseed.php';
+}
+---------------------------------------------------
+
+------------------- Ниже вставить -------------------
+/**
+ * Posting Upload
+ *
+ * @return void
+ */
+public function posting_upload()
+{
+	require AJAX_DIR . '/posting_upload.php';
+}
+-----------------------------------------------------
+
+------------------- Открыть posting.php и найти -------------------
+if ($mode == 'newtopic' || ($mode == 'editpost' && $post_data['first_post'])) {
+-------------------------------------------------------------------
+
+------------------- Ниже вставить -------------------
+// Show images uploader (загрузка постера / скриншотов)
+$template->assign_var('SHOW_IMAGES_UPLOADER');
+-----------------------------------------------------
+
+------------------- Открыть posting.tpl и найти -------------------
+<!-- IF IN_PM -->
+<!-- ELSEIF LOGGED_IN -->
+-------------------------------------------------------------------
+
+------------------- Ниже вставить -------------------
+<!-- IF SHOW_IMAGES_UPLOADER -->
+<tr>
+	<td class="vTop pad_4" valign="top">
+		<p><b>{L_POSTING_IMAGES_UPLOAD}</b></p>
+	</td>
+	<td class="pad_12 tCenter">
+		<label>{L_POSTING_IMAGES_POSTER}:
+			<input type="file" accept="image/*" id="poster_upload_file">
+		</label>
+		<label>{L_POSTING_IMAGES_SCREENSHOTS}:
+			<input type="file" accept="image/*" id="screenshots_upload_file"
+				   multiple>
+		</label>
+		<div id="upload-file-status"></div>
+	</td>
+</tr>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#poster_upload_file, #screenshots_upload_file').val('');
+		$('#poster_upload_file').on('change', function () {
+			uploadFile($(this), 'poster');
+		});
+		$('#screenshots_upload_file').on('change', function () {
+			uploadFile($(this), 'screenshots');
+		});
+
+		function uploadFile(input, type) {
+			const files = input[0].files;
+			if (files.length === 0) {
+				$('#upload-file-status').html('<hr><span class="leechmed">{L_POSTING_IMAGES_NO_SELECTED_FILES}</span>');
+				return;
+			}
+
+			const maxSize = {$bb_cfg['ajax_upload_posting_images_size_limit']};
+			for (let i = 0; i < files.length; i++) {
+				if (files[i].size > maxSize) {
+					$('#upload-file-status').html('<hr><span class="leechmed">{L_POSTING_IMAGES_FILE_TOO_LARGE}' + maxSize + ' MB</span>');
+					return;
+				}
+			}
+
+			const formData = new FormData();
+			formData.append('action', 'posting_upload');
+			for (let i = 0; i < files.length; i++) {
+				formData.append(type + '_images[]', files[i]);
+			}
+
+			$.ajax({
+				url: '{SITE_URL}{$bb_cfg['ajax_url']}',
+				type: 'POST',
+				dataType: 'json',
+				data: formData,
+				contentType: false,
+				processData: false,
+				cache: false,
+				beforeSend: function () {
+					$('#upload-file-status').html('<hr><span>{L_POSTING_IMAGES_PROCESSING_UPLOAD}</span>');
+					$('#post-buttons-block :button, #post-buttons-block :submit').prop('disabled', true);
+				},
+				error: function (xhr, status, error) {
+					$('#upload-file-status').html('<hr><span class="leechmed">{L_POSTING_IMAGES_ERROR_UPLOADING}</span>');
+					$('#post-buttons-block :button, #post-buttons-block :submit').prop('disabled', false);
+					console.error(error);
+				},
+				success: function (response) {
+					if (response.success) {
+						$('#post-buttons-block :button, #post-buttons-block :submit').prop('disabled', false);
+						$('#upload-file-status').html('<hr><span class="seedmed">{L_POSTING_IMAGES_SUCCESS_UPLOADED}</span>');
+
+						// BBCode [Постер]
+						response.poster.forEach(function (item) {
+							$('textarea#message').insertAtCaret('[align=center][img]' + item + '[/img][/align]\n');
+						});
+
+						// BBCode [Скрины]
+						response.screenshots.forEach(function (item, index, array) {
+							var closingTag = '';
+							var openTag = '';
+
+							if (index === 0) {
+								openTag = '[align=center]';
+							}
+
+							if (index === array.length - 1) {
+								closingTag = '[/align]';
+							}
+
+							$('textarea#message').insertAtCaret(openTag + '[thumb]' + item + '[/thumb]' + closingTag + '\n');
+						});
+					}
+				},
+			});
+		}
+	});
+</script>
+<script type="text/javascript" src="{SITE_URL}styles/js/libs/jquery.insert-at-caret.min.js"></script>
+<!-- ENDIF -->
+-----------------------------------------------------
+
+------------------- Открыть library/language/ru/main.php и вставить -------------------
+// Постер и скрины в теме
+$lang['POSTING_IMAGES_ERROR'] = 'Ошибка: При конвертации что-то пошло не так...';
+$lang['POSTING_IMAGES_UPLOAD'] = 'Загрузка изображений';
+$lang['POSTING_IMAGES_POSTER'] = 'Загрузка постера';
+$lang['POSTING_IMAGES_SCREENSHOTS'] = 'Загрузка скриншотов';
+$lang['POSTING_IMAGES_PROCESSING_UPLOAD'] = 'Загрузка...';
+$lang['POSTING_IMAGES_ERROR_UPLOADING'] = 'Ошибка при загрузке файлов';
+$lang['POSTING_IMAGES_SUCCESS_UPLOADED'] = 'Файлы успешно загружены!';
+$lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'Не выбран ни один файл!';
+$lang['POSTING_IMAGES_FILE_TOO_LARGE'] = 'Изображение весит слишком много. Максимально допустимый размер файла: ';
+---------------------------------------------------------------------------------------
+
+------------------- Открыть library/language/en/main.php и вставить -------------------
+// Постер и скрины в теме
+$lang['POSTING_IMAGES_ERROR'] = 'Error: Something went wrong during conversion...';
+$lang['POSTING_IMAGES_UPLOAD'] = 'Upload Images';
+$lang['POSTING_IMAGES_POSTER'] = 'Upload Poster';
+$lang['POSTING_IMAGES_SCREENSHOTS'] = 'Upload Screenshots';
+$lang['POSTING_IMAGES_PROCESSING_UPLOAD'] = 'Uploading...';
+$lang['POSTING_IMAGES_ERROR_UPLOADING'] = 'Error uploading files';
+$lang['POSTING_IMAGES_SUCCESS_UPLOADED'] = 'Files uploaded successfully!';
+$lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'No files selected!';
+$lang['POSTING_IMAGES_FILE_TOO_LARGE'] = 'The image is too large. Maximum file size allowed: ';
+---------------------------------------------------------------------------------------
+
+------------------- Открыть library/language/source/main.php и вставить -------------------
+// Постер и скрины в теме
+$lang['POSTING_IMAGES_ERROR'] = 'Error: Something went wrong during conversion...';
+$lang['POSTING_IMAGES_UPLOAD'] = 'Upload Images';
+$lang['POSTING_IMAGES_POSTER'] = 'Upload Poster';
+$lang['POSTING_IMAGES_SCREENSHOTS'] = 'Upload Screenshots';
+$lang['POSTING_IMAGES_PROCESSING_UPLOAD'] = 'Uploading...';
+$lang['POSTING_IMAGES_ERROR_UPLOADING'] = 'Error uploading files';
+$lang['POSTING_IMAGES_SUCCESS_UPLOADED'] = 'Files uploaded successfully!';
+$lang['POSTING_IMAGES_NO_SELECTED_FILES'] = 'No files selected!';
+$lang['POSTING_IMAGES_FILE_TOO_LARGE'] = 'The image is too large. Maximum file size allowed: ';
+-------------------------------------------------------------------------------------------
