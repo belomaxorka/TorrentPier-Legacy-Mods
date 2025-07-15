@@ -439,29 +439,27 @@ if (!empty($topic_id)) {
 ============================================================
 
 ======= Ниже вставить =======
-<link rel="stylesheet" type="text/css" href="{SITE_URL}styles/js/libs/magicsuggest.css"/>
 <fieldset>
-	<legend>{L_TAGS_SEARCH_BY}</legend>
-	<div>
-		<div id="search_tags_container"></div>
-	</div>
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('div#search_tags_container').magicSuggest({
-				data: {ALL_TAGS_JSON},
-				name: 'tag_id',
-				displayField: 'tag_name',
-				valueField: 'tag_id',
-				maxSelection: null,
-				allowFreeEntries: false,
-				expandOnFocus: true,
-				placeholder: '{L_TAGS_PLACEHOLDER}',
-				noSuggestionText: '{L_TAGS_NOT_FOUND}',
-			});
-		});
-	</script>
+    <legend>{L_TAGS_SEARCH_BY}</legend>
+    <div>
+        <div id="search_tags_container"></div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('div#search_tags_container').magicSuggest({
+                data: {ALL_TAGS_JSON},
+                allowFreeEntries: false,
+                expandOnFocus: true,
+                name: 'tag_id',
+                displayField: 'tag_name',
+                valueField: 'tag_id',
+                maxSelection: null,
+                placeholder: '{L_TAGS_PLACEHOLDER}',
+                noSuggestionText: '{L_TAGS_NOT_FOUND}',
+            });
+        });
+    </script>
 </fieldset>
-<script src="{SITE_URL}styles/js/libs/magicsuggest.js"></script>
 =============================
 
 ======= Открыть search_results.tpl (В вашем шаблоне) и найти =======
