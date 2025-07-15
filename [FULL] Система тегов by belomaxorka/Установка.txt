@@ -108,6 +108,7 @@ $lang['TAGS_NOT_FOUND'] = 'Такой тег не найден...';
 $lang['TAGS_SEARCH_RESULTS'] = 'По тегам: ';
 $lang['TAGS_SEARCH_BY'] = 'Поиск по тегам';
 $lang['TAGS_LATEST_TAGS'] = 'Последние теги';
+$lang['TAGS_POSTING_NO_SELECTED'] = 'Необходимо указать хотя-бы один тег для этой темы';
 =======================================================================
 
 ======= Открыть library/language/source/main.php и вставить в конце =======
@@ -118,6 +119,7 @@ $lang['TAGS_NOT_FOUND'] = 'No suggestions';
 $lang['TAGS_SEARCH_RESULTS'] = 'By tags: ';
 $lang['TAGS_SEARCH_BY'] = 'Search by tags';
 $lang['TAGS_LATEST_TAGS'] = 'Latest tags';
+$lang['TAGS_POSTING_NO_SELECTED'] = 'You must specify at least one tag for this topic.';
 ===========================================================================
 
 ======= Открыть library/language/en/main.php и вставить в конце ===========
@@ -128,6 +130,7 @@ $lang['TAGS_NOT_FOUND'] = 'No suggestions';
 $lang['TAGS_SEARCH_RESULTS'] = 'By tags: ';
 $lang['TAGS_SEARCH_BY'] = 'Search by tags';
 $lang['TAGS_LATEST_TAGS'] = 'Latest tags';
+$lang['TAGS_POSTING_NO_SELECTED'] = 'You must specify at least one tag for this topic.';
 ===========================================================================
 
 ======= Открыть index.php и найти =======
