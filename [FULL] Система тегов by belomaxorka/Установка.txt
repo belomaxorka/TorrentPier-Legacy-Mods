@@ -475,30 +475,30 @@ if (!empty($topic_id)) {
 =============================================================
 
 ======= Ниже вставить =======
-<link rel="stylesheet" type="text/css" href="{SITE_URL}styles/js/libs/magicsuggest.css"/>
+<!-- IF SHOW_TAGS -->
 <tr class="pad_6">
-	<td class="vTop pad_4" valign="top">
-		<p><b>{L_TAGS}</b></p>
-	</td>
-	<td>
-		<div id="topic_tags_container"></div>
-	</td>
+    <td class="vTop pad_4" valign="top">
+        <p><b>{L_TAGS}</b></p>
+    </td>
+    <td>
+        <div id="topic_tags_container"></div>
+    </td>
 </tr>
 <script type="text/javascript">
-	$(document).ready(function () {
-		$('div#topic_tags_container').magicSuggest({
-			data: {ALL_TAGS_JSON},
-			value: {TOPIC_TAGS_LIST},
-			name: 'topic_tags_list',
-			displayField: 'tag_name',
-			valueField: 'tag_id',
-			maxSelection: null,
-			placeholder: '{L_TAGS_PLACEHOLDER}',
-			noSuggestionText: '{L_TAGS_NOT_FOUND}',
-		});
-	});
+    $(document).ready(function () {
+        $('div#topic_tags_container').magicSuggest({
+            data: {ALL_TAGS_JSON},
+            value: {TOPIC_TAGS_LIST},
+            name: 'topic_tags_list',
+            displayField: 'tag_name',
+            valueField: 'tag_id',
+            maxSelection: null,
+            placeholder: '{L_TAGS_PLACEHOLDER}',
+            noSuggestionText: '{L_TAGS_NOT_FOUND}',
+        });
+    });
 </script>
-<script src="{SITE_URL}styles/js/libs/magicsuggest.js"></script>
+<!-- ENDIF -->
 =============================
 
 ======= Открыть viewtopic.tpl (В вашем шаблоне) и найти =======
