@@ -521,38 +521,6 @@ if (!empty($topic_id)) {
 .fieldsets fieldset > div {
 ===========================
 
-======= Открыть css/page_content.css (В вашем шаблоне) и найти =======
-#sidebar2 h3 {
-	padding: 0 0 4px 0;
-	margin: 0 0 2px 0;
-======================================================================
-
-======= Заменить на =======
-#sidebar2 h3 {
-	padding: 0 0 4px 0;
-	margin: 8px 0 2px 0;
-===========================
-
-======= Далее найти =======
-#user_ratio {
-	padding: 1px 6px 0 0;
-===========================
-
-======= Заменить на =======
-#user_ratio {
-===========================
-
-======= Открыть css/top.css (В вашем шаблоне) и найти =======
-#sidebar2-wrap {
-}
-=============================================================
-
-======= Заменить на =======
-#sidebar2-wrap {
-	margin-top: -8px;
-}
-===========================
-
 ======= Открыть viewtopic.php и найти =======
 $datastore->enqueue([
     'ranks',
@@ -578,12 +546,12 @@ $datastore->enqueue([
 // ------------------ Теги ------------------
 $topic_tags = [];
 
-foreach (get_topic_tags($topic_id)['topic_tags'] as $tag) {
-	$topic_tags[] = '<a href="search.php?tag_id=' . $tag['tag_id'] . '">' . $tag['tag_name'] . '</a>';
+foreach (get_tags_list($topic_id)['topic_tags'] as $tag) {
+    $topic_tags[] = '<a href="search.php?tag_id=' . $tag['tag_id'] . '">' . $tag['tag_name'] . '</a>';
 }
 
 $template->assign_vars([
-	'TAGS_LIST' => !empty($topic_tags) ? implode(', ', $topic_tags) : '',
+    'TAGS_LIST' => !empty($topic_tags) ? implode(', ', $topic_tags) : '',
 ]);
 // ------------------------------------------
 =============================
