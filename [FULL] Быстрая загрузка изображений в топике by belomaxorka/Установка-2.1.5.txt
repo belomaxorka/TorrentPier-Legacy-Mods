@@ -31,7 +31,9 @@ function posting_upload()
 -----------------------------------------------------
 
 ------------------- Открыть posting.php и найти -------------------
-if ($mode == 'newtopic' || ($mode == 'editpost' && $post_data['first_post'])) {
+$topic_type_toggle = '';
+if ( $mode == 'newtopic' || ( $mode == 'editpost' && $post_data['first_post'] ) )
+{
 -------------------------------------------------------------------
 
 ------------------- Ниже вставить -------------------
