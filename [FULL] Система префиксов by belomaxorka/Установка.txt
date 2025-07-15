@@ -52,7 +52,7 @@ INSERT INTO `bb_cron` VALUES ('', 1, 'Очистка префиксов', 'clean
  * @param string|int $topic_id
  * @return array
  */
-function get_prefixes_list($topic_id = null): array
+function get_prefixes_list($topic_id = null)
 {
     global $datastore;
 
