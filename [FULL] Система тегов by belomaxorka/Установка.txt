@@ -56,35 +56,35 @@ $bb_cfg['new_tags_limit'] = 25;
  * @param string|int $topic_id
  * @return array
  */
-function get_topic_tags($topic_id = null)
+function get_tags_list($topic_id = null): array
 {
-	global $datastore;
+    global $datastore;
 
-	if (!$tags = $datastore->get('tags')) {
-		$datastore->update('tags');
-		$tags = $datastore->get('tags');
-	}
+    if (!$tags = $datastore->get('tags')) {
+        $datastore->update('tags');
+        $tags = $datastore->get('tags');
+    }
 
-	if (isset($topic_id)) {
-		if (!$topic_tags = CACHE('bb_topic_tags')->get('topic_tags_' . $topic_id)) {
-			$topic_tags = [];
+    if (isset($topic_id)) {
+        if (!$topic_tags = CACHE('bb_topic_tags')->get('tags_topic_' . $topic_id)) {
+            $topic_tags = [];
 
-			$sql = "SELECT tt.* FROM " . BB_TOPIC_TAGS . " tt WHERE tt.topic_id = $topic_id";
-			foreach (DB()->fetch_rowset($sql) as $row) {
-				if (!isset($tags[$row['tag_id']])) {
-					continue;
-				}
-				$tag = $tags[$row['tag_id']];
-				$topic_tags[] = $tag;
-			}
+            $sql = "SELECT tt.* FROM " . BB_TOPIC_TAGS . " tt WHERE tt.topic_id = $topic_id";
+            foreach (DB()->fetch_rowset($sql) as $row) {
+                if (!isset($tags[$row['tag_id']])) {
+                    continue;
+                }
+                $tag = $tags[$row['tag_id']];
+                $topic_tags[] = $tag;
+            }
 
-			CACHE('bb_topic_tags')->set('topic_tags_' . $topic_id, $topic_tags, 3600);
-		}
-	} else {
-		$topic_tags = [];
-	}
+            CACHE('bb_topic_tags')->set('tags_topic_' . $topic_id, $topic_tags, 3600);
+        }
+    } else {
+        $topic_tags = [];
+    }
 
-	return ['topic_tags' => $topic_tags, 'all_tags' => $tags];
+    return ['topic_tags' => $topic_tags, 'all_tags' => $tags];
 }
 =========================================================================
 
