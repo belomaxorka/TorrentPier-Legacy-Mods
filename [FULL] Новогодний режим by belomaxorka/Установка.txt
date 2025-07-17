@@ -73,6 +73,48 @@ $p('{ONLOAD_FOCUS_ID}').focus();
 <!-- ENDIF -->
 
 <!-- IF $bb_cfg['new_year']['christmas_animation_footer'] -->
+<style>
+    #xmas {
+        width: 100%;
+        height: 60px;
+        bottom: 0px;
+        position: fixed;
+        z-index: 9;
+        background: url("/styles/images/xmas-bg0.png");
+        background-repeat: repeat-x;
+        background-position-y: bottom;
+        overflow: hidden;
+    }
+
+    .santa-container {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        animation: moveLeft 15s linear infinite;
+    }
+
+    .santa-link {
+        display: block;
+        text-decoration: none;
+    }
+
+    .santa-img {
+        height: 60px;
+        display: block;
+    }
+
+    @keyframes moveLeft {
+        from {
+            left: 100%;
+        }
+        to {
+            left: -200px;
+        }
+    }
+</style>
 <div id="xmas">
     <div class="santa-container">
         <a class="santa-link" title="Happy New Year!" href="#">
