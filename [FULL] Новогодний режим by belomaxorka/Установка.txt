@@ -45,7 +45,12 @@ $bb_cfg['new_year'] = array(
 	// Глобальный фрилич
 	'freeleech' => true,
 	// Дед мороз на санках мчится
-	'christmas_animation_footer' => true,
+    'christmas_animation_footer' => => array(
+        'enabled' => true,
+        'santa' => 'santa1', // Доступные значения: santa0, santa1
+        'santa_size' => '60', // Размер санты (в px)
+        'background' => 'bg0', // Доступные значения: bg0, bg1
+    ),
 );
 =============================================================
 
