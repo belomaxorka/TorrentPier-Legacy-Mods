@@ -80,7 +80,7 @@ $p('{ONLOAD_FOCUS_ID}').focus();
         bottom: 0px;
         position: fixed;
         z-index: 9;
-        background: url("/styles/images/xmas-bg0.png");
+        background: url("/styles/images/bg0.png");
         background-repeat: repeat-x;
         background-position-y: bottom;
         overflow: hidden;
