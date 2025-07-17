@@ -72,55 +72,55 @@ $p('{ONLOAD_FOCUS_ID}').focus();
 </script>
 <!-- ENDIF -->
 
-<!-- IF $bb_cfg['new_year']['christmas_animation_footer'] -->
+<!-- IF $bb_cfg['new_year']['christmas_animation_footer']['enabled'] -->
 <style>
-    #xmas {
-        width: 100%;
-        height: 60px;
-        bottom: 0px;
-        position: fixed;
-        z-index: 9;
-        background: url("/styles/images/bg0.png");
-        background-repeat: repeat-x;
-        background-position-y: bottom;
-        overflow: hidden;
-    }
+	#xmas {
+		width: 100%;
+		height: 60px;
+		bottom: 0;
+		position: fixed;
+		z-index: 9;
+		background: url("/styles/images/{$bb_cfg['new_year']['christmas_animation_footer']['background']}.png") repeat-x;
+		background-position-y: bottom;
+		overflow: hidden;
+	}
 
-    .santa-container {
-        position: absolute;
-        top: 0;
-        left: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        animation: moveLeft 15s linear infinite;
-    }
+	.santa-container {
+		position: absolute;
+		top: 0;
+		left: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		animation: moveLeft 15s linear infinite;
+	}
 
-    .santa-link {
-        display: block;
-        text-decoration: none;
-    }
+	.santa-link {
+		display: block;
+		text-decoration: none;
+	}
 
-    .santa-img {
-        height: 60px;
-        display: block;
-    }
+	.santa-img {
+		height: {$bb_cfg['new_year']['christmas_animation_footer']['santa_size']}px;
+		display: block;
+		user-select: none;
+	}
 
-    @keyframes moveLeft {
-        from {
-            left: 100%;
-        }
-        to {
-            left: -200px;
-        }
-    }
+	@keyframes moveLeft {
+		from {
+			left: 100%;
+		}
+		to {
+			left: -200px;
+		}
+	}
 </style>
 <div id="xmas">
-    <div class="santa-container">
-        <a class="santa-link" title="Happy New Year!" href="#">
-            <div class="santa-img"></div>
-        </a>
-    </div>
+	<div class="santa-container">
+		<a class="santa-link" title="Happy New Year!" href="#">
+			<img alt="" class="santa-img" src="{SITE_URL}styles/images/{$bb_cfg['new_year']['christmas_animation_footer']['santa']}.gif">
+		</a>
+	</div>
 </div>
 <!-- ENDIF -->
 =============================
