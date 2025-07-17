@@ -72,7 +72,15 @@ $p('{ONLOAD_FOCUS_ID}').focus();
 </script>
 <!-- ENDIF -->
 
-
+<!-- IF $bb_cfg['new_year']['christmas_animation_footer'] -->
+<div id="xmas">
+    <div class="santa-container">
+        <a class="santa-link" title="Happy New Year!" href="#">
+            <div class="santa-img"></div>
+        </a>
+    </div>
+</div>
+<!-- ENDIF -->
 =============================
 
 ======= Открыть styles/templates/default/page_header.tpl и найти =======
