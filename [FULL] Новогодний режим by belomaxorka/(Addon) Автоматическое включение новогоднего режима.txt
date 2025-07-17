@@ -2,10 +2,11 @@
 ОБЯЗАТЕЛЬНО: В $bb_cfg['new_year'] установите все значения ключей 'enabled' в false
 ============================================================
 
-======= Открыть library/includes/init_bb.php и найти =======
-define('CLIENT_IP', $client_ip);
-define('USER_IP', $user_ip);
-============================================================
+======= Открыть common.php и найти =======
+define('FORUM_PATH', $bb_cfg['script_path']);
+define('FULL_URL', $server_protocol . $bb_cfg['server_name'] . $server_port . $bb_cfg['script_path']);
+unset($server_protocol, $server_port);
+==========================================
 
 ======= Ниже вставить =======
 /**
