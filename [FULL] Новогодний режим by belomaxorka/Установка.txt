@@ -45,6 +45,7 @@ $bb_cfg['new_year'] = array(
 	// Глобальный фрилич
 	'freeleech' => true,
 	// Дед мороз на санках мчится
+	'christmas_animation_footer' => true,
 );
 =============================================================
 
@@ -70,6 +71,8 @@ $p('{ONLOAD_FOCUS_ID}').focus();
 	});
 </script>
 <!-- ENDIF -->
+
+
 =============================
 
 ======= Открыть styles/templates/default/page_header.tpl и найти =======

@@ -35,6 +35,7 @@ function new_year_mode()
         $bb_cfg['new_year']['new_year_default_avatar']['enabled'] = true;
         $bb_cfg['new_year']['santa_hat_avatar']['enabled'] = true;
         $bb_cfg['new_year']['freeleech'] = true;
+        $bb_cfg['new_year']['christmas_animation_footer'] = true;
     }
 }
 
