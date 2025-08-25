@@ -1,5 +1,5 @@
 --------------- Настройка индексации при создании темы ---------------
-Версия: v1.0.0
+Версия: v1.1.0
 Автор: belomaxorka
 ----------------------------------------------------------------------
 Дополнительно необходим данный мод:
@@ -19,12 +19,16 @@ $lang['ALLOW_ROBOTS_INDEXING'] = 'Разрешить индексацию роб
 -----------------------------------------------------------------------------------
 
 --------------- [ Открыть viewtopic.php и найти ] ---------------
-if ($t_data['allow_porno_topic'] && bf($userdata['user_opt'], 'user_opt', 'user_porn_forums')) {
+if ($post_id && !empty($t_data['prev_posts'])) {
 -----------------------------------------------------------------
 
---------------- [ Выше вставить ] ---------------
+--------------- [ Ниже вставить ] ---------------
 // Allow robots indexing
-$page_cfg['allow_robots'] = (bool)$t_data['topic_allow_robots'];
+if ($is_auth['auth_read']) {
+	$page_cfg['allow_robots'] = (bool)$t_data['topic_allow_robots'];
+} else {
+	$page_cfg['allow_robots'] = false;
+}
 -------------------------------------------------
 
 --------------- [ Открыть styles/templates/default/posting.tpl и найти ] ---------------
@@ -61,8 +65,13 @@ $notify_user = (int)!empty($_POST['notify']);
 -----------------------------------------------
 
 --------------- [ Выше вставить ] ---------------
+// Allow robots indexing
 if (IS_AM) {
-	$robots_indexing = !empty($_POST['robots']);
+	if ($post_info['auth_read'] == AUTH_ALL) {
+		$robots_indexing = !empty($_POST['robots']);
+	} else {
+		$robots_indexing = true;
+	}
 }
 -------------------------------------------------
 
@@ -80,7 +89,7 @@ if ($mode == 'newtopic' || ($mode == 'editpost' && $post_data['first_post'])) {
 
 --------------- [ Ниже вставить ] ---------------
 // Allow robots indexing
-if (IS_AM) {
+if (IS_AM && $post_info['auth_read'] == AUTH_ALL) {
 	$template->assign_var('SHOW_ROBOTS_CHECKBOX');
 }
 -------------------------------------------------
@@ -90,6 +99,7 @@ if (IS_AM) {
 -----------------------------------------------
 
 --------------- [ Ниже вставить ] ---------------
+// Allow robots indexing
 'S_ROBOTS_CHECKED' => ($robots_indexing) ? 'checked' : '',
 -------------------------------------------------
 
