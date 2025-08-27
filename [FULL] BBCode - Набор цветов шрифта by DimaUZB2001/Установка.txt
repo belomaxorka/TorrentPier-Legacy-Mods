@@ -1,0 +1,105 @@
+------------------ Открыть posting_editor.tpl и найти -----------------------------
+<select name="codeColor" class="text_color">
+    <option style="color: black; background: #fff;" value="black" selected>{L_QR_COLOR_SEL}:</option>
+    <option style="color: darkred;" value="darkred">&nbsp;{L_COLOR_DARK_RED}</option>
+    <option style="color: brown;" value="brown">&nbsp;{L_COLOR_BROWN}</option>
+    <option style="color: #996600;" value="#996600">&nbsp;{L_COLOR_ORANGE}</option>
+    <option style="color: red;" value="red">&nbsp;{L_COLOR_RED}</option>
+    <option style="color: #993399;" value="#993399">&nbsp;{L_COLOR_VIOLET}</option>
+    <option style="color: green;" value="green">&nbsp;{L_COLOR_GREEN}</option>
+    <option style="color: darkgreen;" value="darkgreen">&nbsp;{L_COLOR_DARK_GREEN}</option>
+    <option style="color: gray;" value="gray">&nbsp;{L_COLOR_GRAY}</option>
+    <option style="color: olive;" value="olive">&nbsp;{L_COLOR_OLIVE}</option>
+    <option style="color: blue;" value="blue">&nbsp;{L_COLOR_BLUE}</option>
+    <option style="color: darkblue;" value="darkblue">&nbsp;{L_COLOR_DARK_BLUE}</option>
+    <option style="color: indigo;" value="indigo">&nbsp;{L_COLOR_INDIGO}</option>
+    <option style="color: #006699;" value="#006699">&nbsp;{L_COLOR_STEEL_BLUE}</option>
+</select>
+
+------------------------------- Заменить на -----------------------------------------------------
+<select name="codeColor" class="text_color">
+<option style="color: black; background: #fff;" value="black" selected="selected">Цвет шрифта:</option>
+  <option value="black" style="background-color: black; color: white;">Черный</option>
+  <option value="white" style="background-color: white; color: black;">Белый</option>
+  <option value="gray" style="background-color: gray; color: white;">Серый</option>
+  <option value="darkgray" style="background-color: darkgray; color: white;">Темно-серый</option>
+  <option value="silver" style="background-color: silver; color: white;">Серебряный</option>
+  <option value="lightgray" style="background-color: lightgray; color: black;">Светло-серый</option>
+  <option value="darkred" style="background-color: darkred; color: white;">Темно-красный</option>
+  <option value="red" style="background-color: red; color: white;">Красный</option>
+  <option value="crimson" style="background-color: crimson; color: white;">Багровый</option>
+  <option value="firebrick" style="background-color: firebrick; color: white;">Огненно-красный</option>
+  <option value="pink" style="background-color: pink; color: white;">Розовый</option>
+  <option value="lightpink" style="background-color: lightpink; color: black;">Светло-розовый</option>
+  <option value="hotpink" style="background-color: hotpink; color: white;">Ярко-розовый</option>
+  <option value="deeppink" style="background-color: deeppink; color: white;">Глубокий розовый</option>
+  <option value="#FF69B4" style="background-color: #FF69B4; color: white;">Горячий розовый</option>
+  <option value="#FFB6C1" style="background-color: #FFB6C1; color: white;">Светло-розовый 2</option>
+  <option value="orange" style="background-color: orange; color: white;">Оранжевый</option>
+  <option value="darkorange" style="background-color: darkorange; color: white;">Темно-оранжевый</option>
+  <option value="gold" style="background-color: gold; color: white;">Золотой</option>
+  <option value="yellow" style="background-color: yellow; color: black;">Желтый</option>
+  <option value="lightyellow" style="background-color: lightyellow; color: black;">Светло-желтый</option>
+  <option value="green" style="background-color: green; color: white;">Зеленый</option>
+  <option value="darkgreen" style="background-color: darkgreen; color: white;">Темно-зеленый</option>
+  <option value="lime" style="background-color: lime; color: black;">Лаймовый</option>
+  <option value="olive" style="background-color: olive; color: white;">Оливковый</option>
+  <option value="forestgreen" style="background-color: forestgreen; color: white;">Лесной зеленый</option>
+  <option value="mediumseagreen" style="background-color: mediumseagreen; color: white;">Средне-зеленый</option>
+  <option value="seagreen" style="background-color: seagreen; color: white;">Морской зеленый</option>
+  <option value="springgreen" style="background-color: springgreen; color: white;">Весенний зеленый</option>
+  <option value="chartreuse" style="background-color: chartreuse; color: black;">Ярко-зеленый</option>
+  <option value="#00FF7F" style="background-color: #00FF7F; color: white;">Весенний яркий</option>
+  <option value="#32CD32" style="background-color: #32CD32; color: white;">Лайм зеленый</option>
+  <option value="#228B22" style="background-color: #228B22; color: white;">Лесной зеленый темный</option>
+  <option value="teal" style="background-color: teal; color: white;">Бирюзовый</option>
+  <option value="darkcyan" style="background-color: darkcyan; color: white;">Темно-бирюзовый</option>
+  <option value="cyan" style="background-color: cyan; color: white;">Голубой</option>
+  <option value="lightcyan" style="background-color: lightcyan; color: white;">Светло-голубой</option>
+  <option value="skyblue" style="background-color: skyblue; color: white;">Небесно-голубой</option>
+  <option value="lightskyblue" style="background-color: lightskyblue; color: white;">Светло-небесно-голубой</option>
+  <option value="deepskyblue" style="background-color: deepskyblue; color: white;">Глубокий синий</option>
+  <option value="blue" style="background-color: blue; color: white;">Синий</option>
+  <option value="darkblue" style="background-color: darkblue; color: white;">Темно-синий</option>
+  <option value="navy" style="background-color: navy; color: white;">Морской синий</option>
+  <option value="mediumblue" style="background-color: mediumblue; color: white;">Средне-синий</option>
+  <option value="royalblue" style="background-color: royalblue; color: white;">Королевский синий</option>
+  <option value="#1E90FF" style="background-color: #1E90FF; color: white;">Ярко-синий</option>
+  <option value="#4682B4" style="background-color: #4682B4; color: white;">Стальной синий</option>
+  <option value="indigo" style="background-color: indigo; color: white;">Индиго</option>
+  <option value="violet" style="background-color: violet; color: white;">Фиолетовый</option>
+  <option value="purple" style="background-color: purple; color: white;">Пурпурный</option>
+  <option value="magenta" style="background-color: magenta; color: white;">Маджента</option>
+  <option value="orchid" style="background-color: orchid; color: white;">Орхидея</option>
+  <option value="darkorchid" style="background-color: darkorchid; color: white;">Темная орхидея</option>
+  <option value="darkviolet" style="background-color: darkviolet; color: white;">Темно-фиолетовый</option>
+  <option value="plum" style="background-color: plum; color: white;">Слива</option>
+  <option value="thistle" style="background-color: thistle; color: white;">Чертополох</option>
+  <option value="lavender" style="background-color: lavender; color: white;">Лаванда</option>
+  <option value="mediumorchid" style="background-color: mediumorchid; color: white;">Средняя орхидея</option>
+  <option value="palevioletred" style="background-color: palevioletred; color: white;">Бледно-фиолетово-красный</option>
+  <option value="brown" style="background-color: brown; color: white;">Коричневый</option>
+  <option value="saddlebrown" style="background-color: saddlebrown; color: white;">Темно-коричневый</option>
+  <option value="sienna" style="background-color: sienna; color: white;">Сиенна</option>
+  <option value="maroon" style="background-color: maroon; color: white;">Бордовый</option>
+  <option value="peachpuff" style="background-color: peachpuff; color: white;">Персиковый</option>
+  <option value="khaki" style="background-color: khaki; color: white;">Хаки</option>
+  <option value="lightgoldenrodyellow" style="background-color: lightgoldenrodyellow; color: white;">Светло-золотой</option>
+  <option value="beige" style="background-color: beige; color: black;">Бежевый</option>
+  <option value="cornsilk" style="background-color: cornsilk; color: black;">Кукурузный</option>
+  <option value="#FA8072" style="background-color: #FA8072; color: white;">Лососевый</option>
+  <option value="#E9967A" style="background-color: #E9967A; color: white;">Темно-лососевый</option>
+  <option value="#F08080" style="background-color: #F08080; color: white;">Светло-красный</option>
+  <option value="#00FA9A" style="background-color: #00FA9A; color: white;">Весенний зеленый яркий</option>
+  <option value="#48D1CC" style="background-color: #48D1CC; color: white;">Средний бирюзовый</option>
+  <option value="#C71585" style="background-color: #C71585; color: white;">Средний пурпурный</option>
+  <option value="#DA70D6" style="background-color: #DA70D6; color: white;">Орхидея светлая</option>
+  <option value="#EEE8AA" style="background-color: #EEE8AA; color: white;">Бледный золотой</option>
+  <option value="#98FB98" style="background-color: #98FB98; color: black;">Бледно-зеленый</option>
+  <option value="#AFEEEE" style="background-color: #AFEEEE; color: black;">Бледно-бирюзовый</option>
+  <option value="#FFE4E1" style="background-color: #FFE4E1; color: black;">Мягкий розовый</option>
+  <option value="#D8BFD8" style="background-color: #D8BFD8; color: black;">Сиреневый</option>
+  <option value="#F5DEB3" style="background-color: #F5DEB3; color: black;">Пшеничный</option>
+  <option value="#F5F5DC" style="background-color: #F5F5DC; color: black;">Бежевый светлый</option>
+  <option value="#FFEFD5" style="background-color: #FFEFD5; color: black;">Персиковый светлый</option>
+</select>
