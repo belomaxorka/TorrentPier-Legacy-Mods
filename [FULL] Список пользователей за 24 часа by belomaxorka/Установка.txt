@@ -1,6 +1,6 @@
 ============= Список пользователей за 24 часа =============
 Автор: belomaxorka
-Версия: v1.1.1
+Версия: v1.1.2
 ===========================================================
 
 ============= Открыть library/ajax/index_data.php и найти =============
@@ -9,6 +9,9 @@ switch ($mode) {
 
 ============= Ниже вставить =============
 case 'users_today':
+	if (!defined('EXCLUDED_USERS_CSV')) {
+		define('EXCLUDED_USERS_CSV', EXCLUDED_USERS);
+	}
 	$max_users = 150;
 	$day = TIMENOW - (24 * 60 * 60); // 24 часа
 	$get_users = DB()->fetch_rowset("SELECT username, user_id, user_rank, user_opt FROM " . BB_USERS . " WHERE user_session_time > $day AND user_id NOT IN(" . EXCLUDED_USERS_CSV . ") ORDER BY RAND()");
