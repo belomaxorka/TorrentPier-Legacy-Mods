@@ -332,7 +332,7 @@ function get_attachments_from_post($post_id_array)
 
 			if (!DB()->sql_query($sql))
 			{
-				message_die(GENERAL_ERROR, $lang['ERROR_DELETED_ATTACHMENTS'], '', __LINE__, __FILE__, $sql);
+				bb_die($lang['ERROR_DELETED_ATTACHMENTS']);
 			}
 
 #
