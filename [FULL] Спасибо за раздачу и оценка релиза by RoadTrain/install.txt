@@ -1,7 +1,13 @@
+---------------------------------------------------------------------
+Автор: RoadTrain
+Автор адаптации для TPII: PheRum
+Автор адаптации для v2.2, v2.3, v2.4, v2.8: DimaUZB2001 & belomaxorka
+---------------------------------------------------------------------
 
-# 
+#
 #-----[ Сделать запрос SQL ]---------------------------------
-# 
+#
+
 ALTER TABLE `bb_attachments_desc` ADD (
 `thanks` mediumint( 8 ) NOT NULL default '0',
 `rating_sum` int(11) NOT NULL default '0',
@@ -16,44 +22,44 @@ CREATE TABLE `bb_attachments_rating` (
   PRIMARY KEY  (`attach_id`,`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-# 
+#
 #-----[ Окткрыть ]---------------------------------
-# 
+#
 
 library/includes/init_bb.php
 
-# 
+#
 #-----[ Найти ]---------------------------------
 #
 
 define('BB_ATTACHMENTS', 'bb_attachments');
 
-# 
+#
 #-----[ После ставить ]---------------------------------
 #
 
-//Thanks mod
+// Thanks mod
 define('BB_ATTACHMENTS_RATING', 'bb_attachments_rating');
-//end
 
-# 
+#
 #-----[ Открыть ]---------------------------------
-# 
-/styles/templates/default/viewtopic_attach.tpl	  
+#
 
-# 
+/styles/templates/default/viewtopic_attach.tpl
+
+#
 #-----[ Найти ]---------------------------------
 #
 
 <td width="15%" rowspan="4" class="tCenter pad_6">
 
-# 
+#
 #-----[ Заменить на ]---------------------------------
 #
 
 <td width="15%" rowspan="6" class="tCenter pad_6">
 
-# 
+#
 #-----[ Найти ]---------------------------------
 #
 
@@ -62,7 +68,7 @@ define('BB_ATTACHMENTS_RATING', 'bb_attachments_rating');
 		<td>{postrow.attach.tor_reged.TORRENT_SIZE}</td>
 	</tr>
 
-# 
+#
 #-----[ После ставить ]---------------------------------
 #
 
@@ -78,12 +84,13 @@ define('BB_ATTACHMENTS_RATING', 'bb_attachments_rating');
         <td>{postrow.attach.tor_reged.THANKED}</td>
     </tr>
 
-# 
+#
 #-----[ Открыть ]---------------------------------
-# 
+#
+
 /styles/templates/default/usercp_viewprofile.tpl
 
-# 
+#
 #-----[ Найти ]---------------------------------
 #
 
@@ -97,7 +104,7 @@ define('BB_ATTACHMENTS_RATING', 'bb_attachments_rating');
 			    </td>
 		    </tr>
 
-# 
+#
 #-----[ После ставить ]---------------------------------
 #
 
@@ -108,16 +115,17 @@ define('BB_ATTACHMENTS_RATING', 'bb_attachments_rating');
 				</td>
 			</tr>
 
-# 
+#
 #-----[ Открыть ]---------------------------------
-# 
+#
+
 /library/language/ru/main.php
 
-# 
+#
 #-----[ в конец ]---------------------------------
 #
 
-//Thanks mod
+// Thanks mod
 $lang['USER_THANKS'] = 'Спасибы пользователя' ;
 $lang['USER_THANKS_'] = 'Пользователь сказал спасибо:' ;
 $lang['USER_THANKED'] = 'Пользователю сказали спасибо:' ;
@@ -136,18 +144,18 @@ $lang['RATING_2'] = 'Так себе';
 $lang['RATING_3'] = 'Средне';
 $lang['RATING_4'] = 'Хорошо';
 $lang['RATING_5'] = 'Супер';
-//End thanks mod
 
-# 
+#
 #-----[ Открыть ]---------------------------------
-# 
+#
+
 /library/language/en/main.php
 
-# 
+#
 #-----[ в конец ]---------------------------------
 #
 
-//Thanks mod
+// Thanks mod
 $lang['USER_THANKS'] = 'Thanks of the user' ;
 $lang['USER_THANKS_'] = 'The user has told thanks:' ;
 $lang['USER_THANKED'] = 'To the user have told thanks:' ;
@@ -166,29 +174,29 @@ $lang['RATING_2'] = 'So-so';
 $lang['RATING_3'] = 'Average mark';
 $lang['RATING_4'] = 'Good';
 $lang['RATING_5'] = 'Super';
-//End thanks mod
 
-# 
+#
 #-----[ Открыть ]---------------------------------
-# 
+#
+
 /library/attach_mod/displaying_torrent.php
 
-# 
+#
 #-----[ Найти ]---------------------------------
 #
 
 $tor_file_time = bb_date($attachments['_' . $post_id][$i]['filetime']);
 
-# 
+#
 #-----[ После ставить ]---------------------------------
 #
 
-//Thanks mod
+// Thanks mod
 $rating_sum     = $attachments['_'. $post_id][$i]['rating_sum'];
 $rating_count   = $attachments['_'. $post_id][$i]['rating_count'];
 $your_vote 		= (!empty($attachments['_'. $post_id][$i]['rating'])) ? $attachments['_'. $post_id][$i]['rating'] : '';
 $thanks         = $attachments['_'. $post_id][$i]['thanks'];
-$thanked 		= (!empty($attachments['_'. $post_id][$i]['thanked'])) ? $attachments['_'. $post_id][$i]['thanked'] : ''; 
+$thanked 		= (!empty($attachments['_'. $post_id][$i]['thanked'])) ? $attachments['_'. $post_id][$i]['thanked'] : '';
 
 $stars = array('one','two','three','four','five');
     $rate_on = '<ul class="rating';
@@ -210,9 +218,8 @@ $stars = array('one','two','three','four','five');
         $rate_off .= '<li class="'.$stars[($r-1)].'"><a href="#torrent" title="'.$lang['RATING_'.$r].'"></a></li>' ;
     }
     $rate_off .='</ul>';
-//End
 
-# 
+#
 #-----[ Найти ]---------------------------------
 #
 
@@ -222,42 +229,43 @@ if ($tor_reged && $tor_info)
 	$tor_id   = $tor_info['topic_id'];
 	$tor_type = $tor_info['tor_type'];
 
-# 
+#
 #-----[ После ставить ]---------------------------------
 #
 
 	$rate_html = '';
-    
-	for ($r = 5; $r >= 1; $r-- ) 
+
+	for ($r = 5; $r >= 1; $r-- )
 	{
         $rate_html .= '<input type="radio" name="rate'.$attach_id.'" value="'.$r.'" onClick="rate('.$attach_id.','.$r.');" />'
       	. '<span onClick="rate('.$attach_id.','.$r.');">' . $lang['RATING_'.$r] . '</span>';
     }
 
-# 
+#
 #-----[ Найти ]---------------------------------
-# 
+#
+
 			'COMPLETED' => $tor_completed_count,
 
-# 
+#
 #-----[ После ставить ]---------------------------------
 #
 
-			//Thanks mod
+			// Thanks mod
             'RATING'          => '<span id="VR'.$attach_id.'" style="float:left;">'. (($userdata['user_id'] == GUEST_UID || $your_vote > 0) ? $rate_off : $rate_on) .'</span>',
             'RATING_VOTES'    => '<span id="VC'.$attach_id.'">'. $rating_count .'</span>',
             'THANKED'         => '<span id="VT'.$attach_id.'">'. $thanks .'</span>'
             					. ($thanked || ($userdata['user_id'] == $poster_id) ? '' : '<span id="VB'.$attach_id.'">'. '&nbsp; <img src="styles/images/sps.gif" onClick="say_thank(\'thank\',' . $attach_id.');" alt="'. $lang['THANKS'] .'" style="cursor:pointer" /></span>')
             					. ($thanks > 0 ? ' &nbsp; (<span id="VL'.$attach_id.'"><a href="#torrent" onClick="say_thank(\'list\','.$attach_id.');">'. $lang['THANK_LIST'] .'</a></span>)' : ''),
             'YOUR_VOTE'       => '<span id="VD'.$attach_id.'" style="margin-left:5px;">' . ($your_vote > 0 ? $lang['YOUR_VOTE'].': '.$lang['RATING_'.$your_vote]:'') . '</span>',
-            //Thanks mod End
 
-# 
+#
 #-----[ Открыть ]---------------------------------
 #
+
 /library/attach_mod/includes/functions_attach.php
 
-# 
+#
 #-----[ Найти ]---------------------------------
 #
 
@@ -265,27 +273,27 @@ function get_attachments_from_post($post_id_array)
 {
     global $attach_config;
 
-# 
+#
 #-----[ Заменить ]---------------------------------
 #
 function get_attachments_from_post($post_id_array)
 {
     global $userdata, $attach_config;
 
-# 
+#
 #-----[ Найти ]---------------------------------
 #
+
 	$attachments = [];
-	
-# 
+
+#
 #-----[ После ставить ]---------------------------------
 #
 
-//Thanks mod
+	// Thanks mod
 	$user_id = $userdata['user_id'];
-//End
 
-# 
+#
 #-----[ Найти ]---------------------------------
 #
 
@@ -294,8 +302,8 @@ function get_attachments_from_post($post_id_array)
 		WHERE a.post_id IN ($post_id_array)
 			AND a.attach_id = d.attach_id
 		ORDER BY d.filetime $display_order";
-		
-# 
+
+#
 #-----[ Заменить ]---------------------------------
 #
 
@@ -305,12 +313,13 @@ function get_attachments_from_post($post_id_array)
 		WHERE a.post_id IN ($post_id_array)
 		ORDER BY d.filetime $display_order";
 
-# 
+#
 #-----[ Открыть ]---------------------------------
 #
+
 /library/attach_mod/include/functions_delete.php
 
-# 
+#
 #-----[ Найти ]---------------------------------
 #
 
@@ -323,7 +332,7 @@ function get_attachments_from_post($post_id_array)
 				message_die(GENERAL_ERROR, $lang['ERROR_DELETED_ATTACHMENTS'], '', __LINE__, __FILE__, $sql);
 			}
 
-# 
+#
 #-----[ После ставить ]---------------------------------
 #
 
@@ -335,44 +344,49 @@ function get_attachments_from_post($post_id_array)
 			{
 				bb_die($lang['ERROR_DELETED_ATTACHMENTS']);
 			}
-# 
+
+#
 #-----[ Открыть ]---------------------------------
 #
+
 /library/includes/ucp/viewprofile.php
-# 
+
+#
 #-----[ Найти ]---------------------------------
 #
 
 require INC_DIR . '/bbcode.php';
 
-# 
+#
 #-----[ После ставить ]---------------------------------
 #
 
 require INC_DIR . '/functions_thanks.php';
 
-# 
+#
 #-----[ найти ]---------------------------------
 #
 
 	'LOCATION' => render_flag($profiledata['user_from']),
 
-# 
+#
 #-----[ После ставить ]---------------------------------
 #
 
 	'USER_THANKS_'  => get_user_thanks($profiledata['user_id']),
     'USER_THANKED_' => get_user_thanked($profiledata['user_id']),
 
-# 
+#
 #-----[ Открыть ]---------------------------------
 #
+
 /src/Ajax.php
-# 
+
+#
 #-----[ FIND THE LAST  }  AND BEFORE, ADD]---------------------------------
 #
 
-	function rate() 
+	function rate()
 	{
         global $userdata, $lang;
         $attach_id = (int) $this->request['a'];
@@ -412,7 +426,7 @@ require INC_DIR . '/functions_thanks.php';
         }
         $this->response['message'] = $result;
     }
-	
+
 	function thank()
 	{
         global $userdata, $lang;
@@ -473,20 +487,19 @@ require INC_DIR . '/functions_thanks.php';
         $this->response['message'] = $result;
     }
 
-# 
+#
 #-----[ Найти ]---------------------------------
 #
-	
+
 	'manage_group' => ['user'],
 
-# 
+#
 #-----[ После ставить ]---------------------------------
 #
 
 	'thank' => ['user'],
-        'rate' => ['user'],
+	'rate' => ['user'],
 
-	
 #
 #-----[ SAVE/CLOSE ALL FILES ]---------------------------------
 #
