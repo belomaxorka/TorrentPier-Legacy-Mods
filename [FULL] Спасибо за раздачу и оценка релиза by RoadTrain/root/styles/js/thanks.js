@@ -1,3 +1,4 @@
+// ------------ Thanks ------------
 say_thank = function (mode, attach_id) {
 	ajax.exec({
 		action: 'thank',
@@ -19,6 +20,8 @@ ajax.callback.thank = function (data) {
 
 	}
 }
+
+// ------------ Rate ------------
 rate = function (attach_id, rating) {
 	ajax.exec({
 		action: 'rate',
