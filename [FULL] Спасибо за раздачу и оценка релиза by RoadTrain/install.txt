@@ -3,23 +3,25 @@
 Автор адаптации для TPII: PheRum
 Автор адаптации для v2.2, v2.3, v2.4, v2.8: DimaUZB2001 & belomaxorka
 ---------------------------------------------------------------------
+Мод совместим с TorrentPier Cattle
+---------------------------------------------------------------------
 
 #
 #-----[ Сделать запрос SQL ]---------------------------------
 #
 
 ALTER TABLE `bb_attachments_desc` ADD (
-`thanks` mediumint( 8 ) NOT NULL default '0',
-`rating_sum` int(11) NOT NULL default '0',
-`rating_count` mediumint(8) NOT NULL default '0'
+	`thanks` mediumint( 8 ) NOT NULL default '0',
+	`rating_sum` int(11) NOT NULL default '0',
+	`rating_count` mediumint(8) NOT NULL default '0'
 );
 
 CREATE TABLE `bb_attachments_rating` (
-  `attach_id` mediumint(8) unsigned NOT NULL default '0',
-  `user_id` mediumint(9) NOT NULL default '0',
-  `thanked` tinyint(1) NOT NULL default '0',
-  `rating` tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (`attach_id`,`user_id`)
+	`attach_id` mediumint(8) unsigned NOT NULL default '0',
+	`user_id` mediumint(9) NOT NULL default '0',
+	`thanked` tinyint(1) NOT NULL default '0',
+	`rating` tinyint(1) NOT NULL default '0',
+	PRIMARY KEY  (`attach_id`,`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 #
