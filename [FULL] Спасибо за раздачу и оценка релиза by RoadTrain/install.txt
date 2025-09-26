@@ -4,7 +4,7 @@
 Автор адаптации для v2.2, v2.3, и Cattle: DimaUZB2001 & belomaxorka
 ---------------------------------------------------------------------
 Мод совместим с TorrentPier Cattle
-Версия: v1.0.0
+Версия: v1.0.1
 ---------------------------------------------------------------------
 
 #
@@ -12,17 +12,17 @@
 #
 
 ALTER TABLE `bb_attachments_desc` ADD (
-	`thanks` mediumint( 8 ) NOT NULL default '0',
-	`rating_sum` int(11) NOT NULL default '0',
-	`rating_count` mediumint(8) NOT NULL default '0'
+    `thanks` mediumint( 8 ) NOT NULL default '0',
+    `rating_sum` int(11) NOT NULL default '0',
+    `rating_count` mediumint(8) NOT NULL default '0'
 );
 
 CREATE TABLE `bb_attachments_rating` (
-	`attach_id` mediumint(8) unsigned NOT NULL default '0',
-	`user_id` mediumint(9) NOT NULL default '0',
-	`thanked` tinyint(1) NOT NULL default '0',
-	`rating` tinyint(1) NOT NULL default '0',
-	PRIMARY KEY  (`attach_id`,`user_id`)
+    `attach_id` mediumint(8) unsigned NOT NULL default '0',
+    `user_id` mediumint(9) NOT NULL default '0',
+    `thanked` tinyint(1) NOT NULL default '0',
+    `rating` tinyint(1) NOT NULL default '0',
+    PRIMARY KEY  (`attach_id`,`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 #
@@ -66,26 +66,25 @@ define('BB_ATTACHMENTS_RATING', 'bb_attachments_rating');
 #-----[ Найти ]---------------------------------
 #
 
-	<tr class="row1">
-		<td>{L_SIZE}:</td>
-		<td>{postrow.attach.tor_reged.TORRENT_SIZE}</td>
-	</tr>
+<tr class="row1">
+    <td>{L_SIZE}:</td>
+    <td>{postrow.attach.tor_reged.TORRENT_SIZE}</td>
+</tr>
 
 #
-#-----[ После ставить ]---------------------------------
+#-----[ Ниже вставить ]---------------------------------
 #
 
-	<tr class="row1">
-        <td class="genmed">{L_RATING}:&nbsp;</td>
-        <td class="genmed">{postrow.attach.tor_reged.RATING}<div class="voted" >({L_RATING_VOTES}: {postrow.attach.tor_reged.RATING_VOTES})<!-- IF postrow.attach.tor_reged.YOUR_VOTE -->{postrow.attach.tor_reged.YOUR_VOTE}<!-- ENDIF --></div>
-        </td>
-    </tr>
-    <tr class="row1">
-        <script language="JavaScript" type="text/javascript" src="./styles/js/thanks.js"></script>
-        <link rel="stylesheet" href="./styles/templates/default/css/rating.css" type="text/css" />
-        <td>{L_THANKED}:</td>
-        <td>{postrow.attach.tor_reged.THANKED}</td>
-    </tr>
+<tr class="row1">
+    <td class="genmed">{L_RATING}:&nbsp;</td>
+    <td class="genmed">{postrow.attach.tor_reged.RATING}<div class="voted">({L_RATING_VOTES}: {postrow.attach.tor_reged.RATING_VOTES})<!-- IF postrow.attach.tor_reged.YOUR_VOTE -->{postrow.attach.tor_reged.YOUR_VOTE}<!-- ENDIF --></div></td>
+</tr>
+<tr class="row1">
+    <script type="text/javascript" src="./styles/js/thanks.js"></script>
+    <link rel="stylesheet" href="./styles/templates/default/css/rating.css" type="text/css" />
+    <td>{L_THANKED}:</td>
+    <td>{postrow.attach.tor_reged.THANKED}</td>
+</tr>
 
 #
 #-----[ Открыть ]---------------------------------
@@ -97,26 +96,16 @@ define('BB_ATTACHMENTS_RATING', 'bb_attachments_rating');
 #-----[ Найти ]---------------------------------
 #
 
-					<!-- IF SHOW_PASSKEY -->
-					[ {L_BT_PASSKEY}:  <span id="passkey-btn"><a class="med" href="#" onclick="$('#passkey-gen').show(); $('#passkey-btn').hide(); return false;">{L_BT_PASSKEY_VIEW}</a></span>
-					<span id="passkey-gen" class="med" style="display: none;">
-						<b id="passkey" class="med bold">{AUTH_KEY}</b>&nbsp;
-				        <a href="#" onclick="ajax.exec({ action: 'gen_passkey', user_id  : {PROFILE_USER_ID} }); return false;">{L_BT_GEN_PASSKEY}</a>
-					</span> ]
-					<!-- ENDIF -->
-			    </td>
-		    </tr>
+<!-- IF BIRTHDAY -->
 
 #
-#-----[ После ставить ]---------------------------------
+#-----[ Выше вставить ]---------------------------------
 #
 
-			<tr>
-				<th>{L_THANK}<b>/</b>{L_THANKED}:</th>
-				<td id="u_thanks" class="gen">
-				<b>{USER_THANKS_}</b> / <b>{USER_THANKED_}</b>
-				</td>
-			</tr>
+<tr>
+    <th>{L_THANK}<b>/</b>{L_THANKED}:</th>
+    <td id="u_thanks" class="gen"><b>{USER_THANKS}</b> / <b>{USER_THANKED}</b></td>
+</tr>
 
 #
 #-----[ Открыть ]---------------------------------
@@ -125,17 +114,17 @@ define('BB_ATTACHMENTS_RATING', 'bb_attachments_rating');
 /library/language/ru/main.php
 
 #
-#-----[ в конец ]---------------------------------
+#-----[ В конце вставить ]---------------------------------
 #
 
 // Thanks mod
-$lang['USER_THANKS'] = 'Спасибы пользователя' ;
-$lang['USER_THANKS_'] = 'Пользователь сказал спасибо:' ;
-$lang['USER_THANKED'] = 'Пользователю сказали спасибо:' ;
+$lang['USER_THANKS'] = 'Спасибо пользователя';
+$lang['USER_THANKS_'] = 'Пользователь сказал спасибо:';
+$lang['USER_THANKED'] = 'Пользователю сказали спасибо:';
 $lang['THANKED'] = 'Поблагодарили';
-$lang['THANK'] = 'Поблагодарил(a)';
+$lang['THANK'] = 'Поблагодарил(а)';
 $lang['THANKS'] = 'Спасибо';
-$lang['THANK_LIST'] = 'список';
+$lang['THANK_LIST'] = 'Список';
 //
 $lang['RATING'] = 'Оценка';
 $lang['RATING_VOTES'] = 'Голосов';
@@ -155,28 +144,28 @@ $lang['RATING_5'] = 'Супер';
 /library/language/en/main.php
 
 #
-#-----[ в конец ]---------------------------------
+#-----[ В конце вставить ]---------------------------------
 #
 
 // Thanks mod
-$lang['USER_THANKS'] = 'Thanks of the user' ;
-$lang['USER_THANKS_'] = 'The user has told thanks:' ;
-$lang['USER_THANKED'] = 'To the user have told thanks:' ;
-$lang['THANKED'] = 'Have thanked';
-$lang['THANK'] = 'Has thanked';
+$lang['USER_THANKS'] = 'User’s thanks';
+$lang['USER_THANKS_'] = 'The user said thanks:';
+$lang['USER_THANKED'] = 'The user was thanked:';
+$lang['THANKED'] = 'Thanked';
+$lang['THANK'] = 'Said thanks';
 $lang['THANKS'] = 'Thanks';
 $lang['THANK_LIST'] = 'List';
 //
-$lang['RATING'] = 'Rate';
-$lang['RATING_VOTES'] = 'Vote';
-$lang['YOUR_VOTE'] = 'Your mark';
-$lang['VOTE_COUNTED'] = 'It is included';
+$lang['RATING'] = 'Rating';
+$lang['RATING_VOTES'] = 'Votes';
+$lang['YOUR_VOTE'] = 'Your rating';
+$lang['VOTE_COUNTED'] = 'counted';
 //
-$lang['RATING_1'] = 'Crap';
-$lang['RATING_2'] = 'So-so';
-$lang['RATING_3'] = 'Average mark';
+$lang['RATING_1'] = 'Terrible';
+$lang['RATING_2'] = 'Poor';
+$lang['RATING_3'] = 'Average';
 $lang['RATING_4'] = 'Good';
-$lang['RATING_5'] = 'Super';
+$lang['RATING_5'] = 'Excellent';
 
 #
 #-----[ Открыть ]---------------------------------
@@ -188,79 +177,76 @@ $lang['RATING_5'] = 'Super';
 #-----[ Найти ]---------------------------------
 #
 
-$tor_file_time = bb_date($attachments['_' . $post_id][$i]['filetime']);
+if (!$tor_reged) {
+
+#
+#-----[ Выше вставить ]---------------------------------
+#
+
+// Thanks mod
+$rating_sum = $attachments['_' . $post_id][$i]['rating_sum'];
+$rating_count = $attachments['_' . $post_id][$i]['rating_count'];
+$your_vote = (!empty($attachments['_' . $post_id][$i]['rating'])) ? $attachments['_' . $post_id][$i]['rating'] : '';
+$thanks = $attachments['_' . $post_id][$i]['thanks'];
+$thanked = (!empty($attachments['_' . $post_id][$i]['thanked'])) ? $attachments['_' . $post_id][$i]['thanked'] : '';
+
+$stars = array('one', 'two', 'three', 'four', 'five');
+$rate_on = '<ul class="rating';
+if ($rating_sum && $rating_count > 0) {
+    $rate_on .= ' ' . $stars[round($rating_sum / $rating_count, 1) - 1] . 'star">';
+} else {
+    $rate_on .= '">';
+}
+for ($r = 1; $r <= 5; $r++) {
+    $rate_on .= '<li class="' . $stars[($r - 1)] . '"><a href="#torrent" title="' . $lang['RATING_' . $r] . '" onClick="rate(' . $attach_id . ',' . $r . ');"></a></li>';
+}
+$rate_on .= '</ul>';
+
+$rate_off = '<ul class="rating';
+if ($rating_sum && $rating_count > 0) {
+    $rate_off .= ' ' . $stars[round($rating_sum / $rating_count, 1) - 1] . 'star">';
+} else {
+    $rate_off .= '">';
+}
+for ($r = 1; $r <= 5; $r++) {
+    $rate_off .= '<li class="' . $stars[($r - 1)] . '"><a href="#torrent" title="' . $lang['RATING_' . $r] . '"></a></li>';
+}
+$rate_off .= '</ul>';
+
+#
+#-----[ Далее найти ]---------------------------------
+#
+
+if ($tor_reged && $tor_info) {
+
+#
+#-----[ Ниже вставить ]---------------------------------
+#
+
+// Thanks mod
+$rate_html = '';
+for ($r = 5; $r >= 1; $r--) {
+    $rate_html .= '<input type="radio" name="rate' . $attach_id . '" value="' . $r . '" onClick="rate(' . $attach_id . ',' . $r . ');" />'
+    . '<span onClick="rate(' . $attach_id . ',' . $r . ');">' . $lang['RATING_' . $r] . '</span>';
+}
+
+#
+#-----[ Далее найти ]---------------------------------
+#
+
+'COMPLETED' => $tor_completed_count,
 
 #
 #-----[ После ставить ]---------------------------------
 #
 
 // Thanks mod
-$rating_sum     = $attachments['_'. $post_id][$i]['rating_sum'];
-$rating_count   = $attachments['_'. $post_id][$i]['rating_count'];
-$your_vote 		= (!empty($attachments['_'. $post_id][$i]['rating'])) ? $attachments['_'. $post_id][$i]['rating'] : '';
-$thanks         = $attachments['_'. $post_id][$i]['thanks'];
-$thanked 		= (!empty($attachments['_'. $post_id][$i]['thanked'])) ? $attachments['_'. $post_id][$i]['thanked'] : '';
-
-$stars = array('one','two','three','four','five');
-    $rate_on = '<ul class="rating';
-    if($rating_sum && $rating_count>0) {
-        $rate_on .= ' '.$stars[round($rating_sum/$rating_count,1)-1].'star">';
-    }
-    else {$rate_on .='">';}
-    for ($r = 1; $r <= 5; $r++ ) {
-        $rate_on .= '<li class="'.$stars[($r-1)].'"><a href="#torrent" title="'.$lang['RATING_'.$r].'" onClick="rate('.$attach_id.','.$r.');"></a></li>';
-    }
-    $rate_on .='</ul>';
-
-    $rate_off = '<ul class="rating';
-    if($rating_sum && $rating_count>0) {
-        $rate_off .= ' '.$stars[round($rating_sum/$rating_count,1)-1].'star">';
-    }
-    else {$rate_off .='">';}
-    for ($r = 1; $r <= 5; $r++ ) {
-        $rate_off .= '<li class="'.$stars[($r-1)].'"><a href="#torrent" title="'.$lang['RATING_'.$r].'"></a></li>' ;
-    }
-    $rate_off .='</ul>';
-
-#
-#-----[ Найти ]---------------------------------
-#
-
-if ($tor_reged && $tor_info)
-{
-	$tor_size = ($tor_info['size']) ? $tor_info['size'] : 0;
-	$tor_id   = $tor_info['topic_id'];
-	$tor_type = $tor_info['tor_type'];
-
-#
-#-----[ После ставить ]---------------------------------
-#
-
-	$rate_html = '';
-
-	for ($r = 5; $r >= 1; $r-- )
-	{
-        $rate_html .= '<input type="radio" name="rate'.$attach_id.'" value="'.$r.'" onClick="rate('.$attach_id.','.$r.');" />'
-      	. '<span onClick="rate('.$attach_id.','.$r.');">' . $lang['RATING_'.$r] . '</span>';
-    }
-
-#
-#-----[ Найти ]---------------------------------
-#
-
-			'COMPLETED' => $tor_completed_count,
-
-#
-#-----[ После ставить ]---------------------------------
-#
-
-			// Thanks mod
-            'RATING'          => '<span id="VR'.$attach_id.'" style="float:left;">'. (($userdata['user_id'] == GUEST_UID || $your_vote > 0) ? $rate_off : $rate_on) .'</span>',
-            'RATING_VOTES'    => '<span id="VC'.$attach_id.'">'. $rating_count .'</span>',
-            'THANKED'         => '<span id="VT'.$attach_id.'">'. $thanks .'</span>'
-            					. ($thanked || ($userdata['user_id'] == $poster_id) ? '' : '<span id="VB'.$attach_id.'">'. '&nbsp; <img src="styles/images/sps.gif" onClick="say_thank(\'thank\',' . $attach_id.');" alt="'. $lang['THANKS'] .'" style="cursor:pointer" /></span>')
-            					. ($thanks > 0 ? ' &nbsp; (<span id="VL'.$attach_id.'"><a href="#torrent" onClick="say_thank(\'list\','.$attach_id.');">'. $lang['THANK_LIST'] .'</a></span>)' : ''),
-            'YOUR_VOTE'       => '<span id="VD'.$attach_id.'" style="margin-left:5px;">' . ($your_vote > 0 ? $lang['YOUR_VOTE'].': '.$lang['RATING_'.$your_vote]:'') . '</span>',
+'RATING' => '<span id="VR' . $attach_id . '" style="float:left;">' . (($userdata['user_id'] == GUEST_UID || $your_vote > 0) ? $rate_off : $rate_on) . '</span>',
+'RATING_VOTES' => '<span id="VC' . $attach_id . '">' . $rating_count . '</span>',
+'THANKED' => '<span id="VT' . $attach_id . '">' . $thanks . '</span>'
+    . ($thanked || ($userdata['user_id'] == $poster_id) ? '' : '<span id="VB' . $attach_id . '">' . '&nbsp; <img src="styles/images/sps.gif" onClick="say_thank(\'thank\',' . $attach_id . ');" alt="' . $lang['THANKS'] . '" style="cursor:pointer" /></span>')
+    . ($thanks > 0 ? ' &nbsp; (<span id="VL' . $attach_id . '"><a href="#torrent" onClick="say_thank(\'list\',' . $attach_id . ');">' . $lang['THANK_LIST'] . '</a></span>)' : ''),
+'YOUR_VOTE' => '<span id="VD' . $attach_id . '" style="margin-left:5px;">' . ($your_vote > 0 ? $lang['YOUR_VOTE'] . ': ' . $lang['RATING_' . $your_vote] : '') . '</span>',
 
 #
 #-----[ Открыть ]---------------------------------
@@ -277,44 +263,46 @@ function get_attachments_from_post($post_id_array)
     global $attach_config;
 
 #
-#-----[ Заменить ]---------------------------------
+#-----[ Заменить на ]---------------------------------
 #
+
 function get_attachments_from_post($post_id_array)
 {
     global $userdata, $attach_config;
 
 #
-#-----[ Найти ]---------------------------------
+#-----[ Далее найти ]---------------------------------
 #
 
-	$attachments = [];
+$attachments = [];
 
 #
-#-----[ После ставить ]---------------------------------
+#-----[ Ниже вставить ]---------------------------------
 #
 
-	// Thanks mod
-	$user_id = $userdata['user_id'];
+// Thanks mod
+$user_id = $userdata['user_id'];
 
 #
-#-----[ Найти ]---------------------------------
+#-----[ Далее найти ]---------------------------------
 #
 
-	$sql = 'SELECT a.post_id, d.*
-		FROM ' . BB_ATTACHMENTS . ' a, ' . BB_ATTACHMENTS_DESC . " d
-		WHERE a.post_id IN ($post_id_array)
-			AND a.attach_id = d.attach_id
-		ORDER BY d.filetime $display_order";
+$sql = 'SELECT a.post_id, d.*
+	FROM ' . BB_ATTACHMENTS . ' a, ' . BB_ATTACHMENTS_DESC . " d
+	WHERE a.post_id IN ($post_id_array)
+		AND a.attach_id = d.attach_id
+	ORDER BY d.filetime $display_order";
 
 #
-#-----[ Заменить ]---------------------------------
+#-----[ Заменить на ]---------------------------------
 #
 
-	$sql = 'SELECT a.post_id, d.*'. ($user_id==GUEST_UID ? '' : ', r.thanked, r.rating') .'
-		FROM ' . BB_ATTACHMENTS . ' a join ' . BB_ATTACHMENTS_DESC . " d on a.attach_id = d.attach_id"
-		. ($user_id==GUEST_UID ? '' : ' left join ' . BB_ATTACHMENTS_RATING . ' r on r.attach_id=a.attach_id and r.user_id=' . $user_id) ."
-		WHERE a.post_id IN ($post_id_array)
-		ORDER BY d.filetime $display_order";
+$sql = 'SELECT a.post_id, d.*' . ($user_id == GUEST_UID ? '' : ', r.thanked, r.rating') . '
+    FROM ' . BB_ATTACHMENTS . ' a
+    JOIN ' . BB_ATTACHMENTS_DESC . ' d ON a.attach_id = d.attach_id'
+    . ($user_id == GUEST_UID ? '' : ' LEFT JOIN ' . BB_ATTACHMENTS_RATING . ' r ON r.attach_id = a.attach_id AND r.user_id = ' . (int)$user_id) . "
+    WHERE a.post_id IN ($post_id_array)
+    ORDER BY d.filetime $display_order";
 
 #
 #-----[ Открыть ]---------------------------------
@@ -326,27 +314,25 @@ function get_attachments_from_post($post_id_array)
 #-----[ Найти ]---------------------------------
 #
 
-			// Delete torrents
-			$sql = "DELETE FROM ". BB_BT_TORRENTS ."
-				WHERE attach_id IN(". implode(',', $attach_id_array) .")";
+// Delete torrents
+$sql = "DELETE FROM " . BB_BT_TORRENTS . "
+	WHERE attach_id IN(" . implode(',', $attach_id_array) . ")";
 
-			if (!DB()->sql_query($sql))
-			{
-				bb_die($lang['ERROR_DELETED_ATTACHMENTS']);
-			}
+if (!DB()->sql_query($sql)) {
+	bb_die($lang['ERROR_DELETED_ATTACHMENTS']);
+}
 
 #
-#-----[ После ставить ]---------------------------------
+#-----[ Ниже вставить ]---------------------------------
 #
 
-			// Delete thanks
-			$sql = "DELETE FROM ". BB_ATTACHMENTS_RATING ."
-				WHERE attach_id IN(". implode(',', $attach_id_array) .")";
+// Delete thanks
+$sql = "DELETE FROM " . BB_ATTACHMENTS_RATING . "
+	WHERE attach_id IN(" . implode(',', $attach_id_array) . ")";
 
-			if (!DB()->sql_query($sql))
-			{
-				bb_die($lang['ERROR_DELETED_ATTACHMENTS']);
-			}
+if (!DB()->sql_query($sql)) {
+	bb_die($lang['ERROR_DELETED_ATTACHMENTS']);
+}
 
 #
 #-----[ Открыть ]---------------------------------
@@ -361,7 +347,7 @@ function get_attachments_from_post($post_id_array)
 require INC_DIR . '/bbcode.php';
 
 #
-#-----[ После ставить ]---------------------------------
+#-----[ Ниже вставить ]---------------------------------
 #
 
 require INC_DIR . '/functions_thanks.php';
@@ -370,14 +356,14 @@ require INC_DIR . '/functions_thanks.php';
 #-----[ найти ]---------------------------------
 #
 
-	'LOCATION' => render_flag($profiledata['user_from']),
+'LOCATION' => render_flag($profiledata['user_from']),
 
 #
 #-----[ После ставить ]---------------------------------
 #
 
-	'USER_THANKS_'  => get_user_thanks($profiledata['user_id']),
-    'USER_THANKED_' => get_user_thanked($profiledata['user_id']),
+'USER_THANKS' => get_user_thanks($profiledata['user_id']),
+'USER_THANKED' => get_user_thanked($profiledata['user_id']),
 
 #
 #-----[ Открыть ]---------------------------------
@@ -386,124 +372,159 @@ require INC_DIR . '/functions_thanks.php';
 /src/Ajax.php
 
 #
-#-----[ FIND THE LAST  }  AND BEFORE, ADD ]---------------------------------
+#-----[ Найти последнюю } и перед ней добавить ]---------------------------------
 #
 
-	function rate()
-	{
+    public function rate()
+    {
         global $userdata, $lang;
-        $attach_id = (int) $this->request['a'];
-        $rating = (int) $this->request['v'];
+        $attach_id = (int)$this->request['a'];
+        $rating = (int)$this->request['v'];
+        $user_id = (int)$userdata['user_id'];
 
-        $result['error'] = false;
+        $result = array('error' => false);
 
-        if(is_numeric($rating) && is_numeric($attach_id) && $rating>=1 && $rating<=5) {
+        // Валидация входных данных
+        if ($rating < 1 || $rating > 5 || $attach_id <= 0 || $user_id <= 0) {
+            $result['error'] = true;
+            $this->response['message'] = $result;
+            return;
+        }
 
-            $sql = "insert into ". BB_ATTACHMENTS_RATING ."(attach_id,user_id,rating)values("
-                . $attach_id .",". $userdata['user_id'] .",". $rating .")on duplicate key update rating=values(rating)";
-            if(DB()->sql_query($sql)) {
-                $sql = "select sum(rating) as r, count(*) as c from ". BB_ATTACHMENTS_RATING ." where rating>0 and attach_id=". $attach_id;
-                if($res = DB()->sql_query($sql)) {
-                    if ($row = DB()->sql_fetchrow($res)) {
+        // Вставка/обновление рейтинга
+        $sql = "INSERT INTO " . BB_ATTACHMENTS_RATING . " (attach_id, user_id, rating)
+            VALUES (" . $attach_id . ", " . $user_id . ", " . $rating . ")
+            ON DUPLICATE KEY UPDATE rating = VALUES(rating)";
+
+        if (DB()->sql_query($sql)) {
+            // Получение обновленной статистики рейтинга
+            $sql = "SELECT SUM(rating) AS r, COUNT(*) AS c
+                FROM " . BB_ATTACHMENTS_RATING . "
+                WHERE rating > 0 AND attach_id = " . $attach_id;
+
+            if ($res = DB()->sql_query($sql)) {
+                if ($row = DB()->sql_fetchrow($res)) {
+                    $rating_sum = (int)$row['r'];
+                    $rating_count = (int)$row['c'];
+
+                    if ($rating_count > 0) {
                         $result['attach_id'] = $attach_id;
-                        $result['rating'] = round($row['r']/$row['c'],1);
-                        $result['rating_count'] = $row['c'];
-                        $result['your_rating'] = $lang['YOUR_VOTE'] .' '. $lang['RATING_'.$rating] .' '. $lang['VOTE_COUNTED'];
-                        $sql = "update ". BB_ATTACHMENTS_DESC ." set rating_sum=". $row['r'] .", rating_count=". $row['c'] ." where attach_id=". $attach_id;
+                        $result['rating'] = round($rating_sum / $rating_count, 1);
+                        $result['rating_count'] = $rating_count;
+                        $result['your_rating'] = $lang['YOUR_VOTE'] . ' (' . $lang['RATING_' . $rating] . ') ' . $lang['VOTE_COUNTED'];
+
+                        // Обновление кэшированных значений в основной таблице
+                        $sql = "UPDATE " . BB_ATTACHMENTS_DESC . "
+                            SET rating_sum = " . $rating_sum . ", rating_count = " . $rating_count . "
+                            WHERE attach_id = " . $attach_id;
                         DB()->sql_query($sql);
-                    }
-                    else {
+                    } else {
                         $result['error'] = true;
                     }
-                }
-                else {
+                } else {
                     $result['error'] = true;
                 }
-            }
-            else {
+            } else {
                 $result['error'] = true;
             }
-        }
-        else {
+        } else {
             $result['error'] = true;
         }
+
         $this->response['message'] = $result;
     }
 
-	function thank()
-	{
+    public function thank()
+    {
         global $userdata, $lang;
-        $mode      = (string) $this->request['m'];
-        $attach_id = (int) $this->request['a'];
-        if(is_numeric($attach_id)) {
-            $result = array('attach_id' => $attach_id, 'error' => false);
-            // Thank!
-            if($mode == 'thank') {
 
-                $sql = "INSERT INTO ". BB_ATTACHMENTS_RATING ." (attach_id,user_id,thanked) VALUES ("
-                    . $attach_id .",". $userdata['user_id'] .",1)on duplicate key update thanked=1";
+        $mode = trim((string)$this->request['m']);
+        $attach_id = (int)$this->request['a'];
+        $user_id = (int)$userdata['user_id'];
 
-                if( DB()->sql_query($sql) ) {
-                    $sql = "select sum(thanked) as c from ". BB_ATTACHMENTS_RATING ." where attach_id=". $attach_id;
+        // Валидация входных данных
+        if ($attach_id <= 0 || $user_id <= 0) {
+            $result = array('attach_id' => $attach_id, 'error' => true);
+            $this->response['message'] = $result;
+            return;
+        }
 
-                    if( $res = DB()->sql_query($sql) ) {
-                        if ($row = DB()->sql_fetchrow($res)) {
-                            $result['thanked'] = $row['c'];
-                            $result['mode'] = $mode;
-                            $result['list_button']=' &nbsp; (<span id="VL'.$attach_id.'"><a href="#torrent" onClick="thank(\'list\','.$attach_id.');">'. $lang['THANK_LIST'] .'</a></span>)';
-                            $sql = "UPDATE ". BB_ATTACHMENTS_DESC ." SET thanks=". $row['c'] ." where attach_id=". $attach_id;
-                            DB()->sql_query($sql);
-                        }
-                        else {
-                            $result['error'] = true;
-                        }
-                    }
-                    else {
+        $result = array('attach_id' => $attach_id, 'error' => false);
+
+        // Обработка благодарности
+        if ($mode === 'thank') {
+            $sql = "INSERT INTO " . BB_ATTACHMENTS_RATING . " (attach_id, user_id, thanked)
+                VALUES (" . $attach_id . ", " . $user_id . ", 1)
+                ON DUPLICATE KEY UPDATE thanked = 1";
+
+            if (DB()->sql_query($sql)) {
+                // Подсчет общего количества благодарностей
+                $sql = "SELECT SUM(thanked) AS c
+                    FROM " . BB_ATTACHMENTS_RATING . "
+                    WHERE attach_id = " . $attach_id;
+
+                if ($res = DB()->sql_query($sql)) {
+                    if ($row = DB()->sql_fetchrow($res)) {
+                        $thanks_count = (int)$row['c'];
+                        $result['thanked'] = $thanks_count;
+                        $result['mode'] = $mode;
+                        $result['list_button'] = ' &nbsp; (<span id="VL' . $attach_id . '"><a href="#torrent" onClick="thank(\'list\',' . $attach_id . ');">' . $lang['THANK_LIST'] . '</a></span>)';
+
+                        // Обновление кэшированного значения
+                        $sql = "UPDATE " . BB_ATTACHMENTS_DESC . "
+                            SET thanks = " . $thanks_count . "
+                            WHERE attach_id = " . $attach_id;
+                        DB()->sql_query($sql);
+                    } else {
                         $result['error'] = true;
                     }
-                }
-                else {
+                } else {
                     $result['error'] = true;
                 }
+            } else {
+                $result['error'] = true;
             }
-            // Thanks list
-            elseif($mode == 'list')
-            {
-                $sql = DB()->fetch_rowset("SELECT u.user_id, u.username, u.user_rank FROM ". BB_ATTACHMENTS_RATING ." r join ". BB_USERS ." u on u.user_id=r.user_id where r.thanked=1 and r.attach_id=". $attach_id);
+        } // Получение списка пользователей, поблагодаривших
+        elseif ($mode === 'list') {
+            $sql = "SELECT u.user_id, u.username, u.user_rank
+                FROM " . BB_ATTACHMENTS_RATING . " r
+                JOIN " . BB_USERS . " u ON u.user_id = r.user_id
+                WHERE r.thanked = 1 AND r.attach_id = " . $attach_id . "
+                ORDER BY u.username";
 
+            $rows = DB()->fetch_rowset($sql);
+            if (!empty($rows)) {
                 $html = '';
-                foreach    ($sql as $row)
-                {
-                    if( $html ) $html .= ', ';
+                foreach ($rows as $row) {
+                    if ($html) $html .= ', ';
                     $html .= profile_url($row);
                 }
                 $result['list'] = $html;
                 $result['mode'] = $mode;
-            }
-            else {
+            } else {
                 $result['error'] = true;
             }
-        }
-        else {
+        } else {
             $result['error'] = true;
         }
+
         $this->response['message'] = $result;
     }
 
 #
-#-----[ Найти ]---------------------------------
+#-----[ Далее найти ]---------------------------------
 #
 
-	'manage_group' => ['user'],
+'manage_group' => ['user'],
 
 #
-#-----[ После ставить ]---------------------------------
+#-----[ Ниже вставить ]---------------------------------
 #
 
-	'thank' => ['user'],
-	'rate' => ['user'],
+'thank' => ['user'],
+'rate' => ['user'],
 
 #
-#-----[ SAVE/CLOSE ALL FILES ]---------------------------------
+#-----[ Сохранить все файлы ]---------------------------------
 #
 # EoM
