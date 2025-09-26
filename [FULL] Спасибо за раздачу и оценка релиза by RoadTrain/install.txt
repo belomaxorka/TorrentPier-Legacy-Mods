@@ -118,19 +118,14 @@ define('BB_ATTACHMENTS_RATING', 'bb_attachments_rating');
 #
 
 // Thanks mod
-$lang['USER_THANKS'] = 'Спасибо пользователя';
-$lang['USER_THANKS_'] = 'Пользователь сказал спасибо:';
-$lang['USER_THANKED'] = 'Пользователю сказали спасибо:';
 $lang['THANKED'] = 'Поблагодарили';
 $lang['THANK'] = 'Поблагодарил(а)';
 $lang['THANKS'] = 'Спасибо';
 $lang['THANK_LIST'] = 'Список';
-//
 $lang['RATING'] = 'Оценка';
 $lang['RATING_VOTES'] = 'Голосов';
 $lang['YOUR_VOTE'] = 'Ваша оценка';
 $lang['VOTE_COUNTED'] = 'засчитана';
-//
 $lang['RATING_1'] = 'Отстой';
 $lang['RATING_2'] = 'Так себе';
 $lang['RATING_3'] = 'Средне';
@@ -148,19 +143,14 @@ $lang['RATING_5'] = 'Супер';
 #
 
 // Thanks mod
-$lang['USER_THANKS'] = 'User’s thanks';
-$lang['USER_THANKS_'] = 'The user said thanks:';
-$lang['USER_THANKED'] = 'The user was thanked:';
 $lang['THANKED'] = 'Thanked';
 $lang['THANK'] = 'Said thanks';
 $lang['THANKS'] = 'Thanks';
 $lang['THANK_LIST'] = 'List';
-//
 $lang['RATING'] = 'Rating';
 $lang['RATING_VOTES'] = 'Votes';
 $lang['YOUR_VOTE'] = 'Your rating';
 $lang['VOTE_COUNTED'] = 'counted';
-//
 $lang['RATING_1'] = 'Terrible';
 $lang['RATING_2'] = 'Poor';
 $lang['RATING_3'] = 'Average';
