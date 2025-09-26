@@ -386,7 +386,7 @@ require INC_DIR . '/functions_thanks.php';
 /src/Ajax.php
 
 #
-#-----[ FIND THE LAST  }  AND BEFORE, ADD]---------------------------------
+#-----[ FIND THE LAST  }  AND BEFORE, ADD ]---------------------------------
 #
 
 	function rate()
