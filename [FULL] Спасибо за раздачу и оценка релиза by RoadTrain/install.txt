@@ -78,7 +78,7 @@ define('BB_ATTACHMENTS_RATING', 'bb_attachments_rating');
         </td>
     </tr>
     <tr class="row1">
-        <script language="JavaScript" type="text/javascript" src="./styles/js/ajax.js"></script>
+        <script language="JavaScript" type="text/javascript" src="./styles/js/thanks.js"></script>
         <link rel="stylesheet" href="./styles/templates/default/css/rating.css" type="text/css" />
         <td>{L_THANKED}:</td>
         <td>{postrow.attach.tor_reged.THANKED}</td>
