@@ -1,5 +1,5 @@
 --------------- Настройка индексации при создании темы ---------------
-Версия: v1.1.0
+Версия: v1.1.1
 Автор: belomaxorka
 ----------------------------------------------------------------------
 Дополнительно необходим данный мод:
@@ -67,7 +67,7 @@ $notify_user = (int)!empty($_POST['notify']);
 
 --------------- [ Выше вставить ] ---------------
 // Allow robots indexing
-if (IS_AM) {
+if ($is_auth['auth_mod']) {
 	if ($post_info['auth_read'] == AUTH_ALL) {
 		$robots_indexing = !empty($_POST['robots']);
 	} else {
@@ -90,7 +90,7 @@ if ($mode == 'newtopic' || ($mode == 'editpost' && $post_data['first_post'])) {
 
 --------------- [ Ниже вставить ] ---------------
 // Allow robots indexing
-if (IS_AM && $post_info['auth_read'] == AUTH_ALL) {
+if ($is_auth['auth_mod'] && $post_info['auth_read'] == AUTH_ALL) {
 	$template->assign_var('SHOW_ROBOTS_CHECKBOX');
 }
 -------------------------------------------------
