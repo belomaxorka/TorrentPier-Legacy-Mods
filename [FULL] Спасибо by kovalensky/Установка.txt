@@ -1,6 +1,6 @@
 ------------------- Спасибо -------------------
 Автор: kovalensky
-Версия: v2.1.2
+Версия: v2.2.0
 -----------------------------------------------
 
 ======= Выполнить SQL запрос =======
@@ -42,7 +42,7 @@ function thx()
 // Спасибо
 $bb_cfg['tor_thank'] = true;
 $bb_cfg['tor_thanks_list_guests'] = true; // Отображать список поблагодаривших для гостей
-$bb_cfg['tor_thank_limit_per_topic'] = 50;
+$bb_cfg['tor_thank_limit_per_topic'] = 50; // Set "0" to disable limit
 =====================================================
 
 ======= Открыть library/includes/init_bb.php и найти =======
