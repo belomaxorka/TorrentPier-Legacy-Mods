@@ -10,10 +10,10 @@ $s_hidden_fields .= '<input type="hidden" name="mode" value="save" />';
 -------- Ниже вставить --------
 // Scan the ranks images folder
 $ranks_dir = '../styles/images/ranks/';
-$rank_images = [];
+$rank_images = array();
 
 if (is_dir($ranks_dir)) {
-	$allowed_extensions = ['gif', 'png', 'jpg', 'jpeg', 'bmp', 'webp', 'avif', 'ico'];
+	$allowed_extensions = array('gif', 'png', 'jpg', 'jpeg', 'bmp', 'webp', 'avif', 'ico');
 	$files = scandir($ranks_dir);
 
 	foreach ($files as $file) {
@@ -27,7 +27,7 @@ if (is_dir($ranks_dir)) {
 	sort($rank_images);
 }
 
-$template->assign_vars([
+$template->assign_vars(array(
 	'TPL_RANKS_EDIT' => true,
 
 	'RANK' => !empty($rank_info['rank_title']) ? $rank_info['rank_title'] : '',
@@ -37,18 +37,18 @@ $template->assign_vars([
 
 	'S_RANK_ACTION' => 'admin_ranks.php',
 	'S_HIDDEN_FIELDS' => $s_hidden_fields
-]);
+));
 
 // Pass the list of images to the template
 foreach ($rank_images as $img) {
 	$img_path = 'styles/images/ranks/' . $img;
 	$selected = !empty($rank_info['rank_image']) && $rank_info['rank_image'] == $img_path;
 
-	$template->assign_block_vars('rank_images', [
+	$template->assign_block_vars('rank_images', array(
 		'IMAGE_FILE' => $img,
 		'IMAGE_PATH' => $img_path,
 		'SELECTED' => $selected
-	]);
+	));
 }
 -------------------------------
 
@@ -62,10 +62,10 @@ foreach ($rank_images as $img) {
 	$img_path = 'styles/images/ranks/' . $img;
 	$selected = !empty($rank_info['rank_image']) && $rank_info['rank_image'] == $img_path;
 
-	$template->assign_block_vars('rank_images', [
+	$template->assign_block_vars('rank_images', array(
 		'IMAGE_FILE' => $img,
 		'IMAGE_PATH' => $img_path,
 		'SELECTED' => $selected
-	]);
+	));
 }
 -------------------------------
