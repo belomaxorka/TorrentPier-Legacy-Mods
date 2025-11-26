@@ -26,30 +26,6 @@ if (is_dir($ranks_dir)) {
 	}
 	sort($rank_images);
 }
-
-$template->assign_vars(array(
-	'TPL_RANKS_EDIT' => true,
-
-	'RANK' => !empty($rank_info['rank_title']) ? $rank_info['rank_title'] : '',
-	'IMAGE' => !empty($rank_info['rank_image']) ? $rank_info['rank_image'] : 'styles/images/ranks/rank_image.png',
-	'STYLE' => !empty($rank_info['rank_style']) ? $rank_info['rank_style'] : '',
-	'IMAGE_DISPLAY' => !empty($rank_info['rank_image']) ? '<img src="../' . $rank_info['rank_image'] . '" />' : '',
-
-	'S_RANK_ACTION' => 'admin_ranks.php',
-	'S_HIDDEN_FIELDS' => $s_hidden_fields
-));
-
-// Pass the list of images to the template
-foreach ($rank_images as $img) {
-	$img_path = 'styles/images/ranks/' . $img;
-	$selected = !empty($rank_info['rank_image']) && $rank_info['rank_image'] == $img_path;
-
-	$template->assign_block_vars('rank_images', array(
-		'IMAGE_FILE' => $img,
-		'IMAGE_PATH' => $img_path,
-		'SELECTED' => $selected
-	));
-}
 -------------------------------
 
 -------- Далее найти --------
