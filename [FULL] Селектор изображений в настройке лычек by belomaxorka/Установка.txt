@@ -1,0 +1,71 @@
+Автор: belomaxorka
+Версия: v1.0.0
+Совместимость: v2.1.5, LTS, v2.2.*, v2.3.*, v2.4.*
+Примечание: Начиная с версии движка v2.8.8 данный мод добавлен по умолчанию
+
+-------- Открыть admin/admin_ranks.php и найти --------
+$s_hidden_fields .= '<input type="hidden" name="mode" value="save" />';
+-------------------------------------------------------
+
+-------- Ниже вставить --------
+// Scan the ranks images folder
+$ranks_dir = '../styles/images/ranks/';
+$rank_images = [];
+
+if (is_dir($ranks_dir)) {
+	$allowed_extensions = ['gif', 'png', 'jpg', 'jpeg', 'bmp', 'webp', 'avif', 'ico'];
+	$files = scandir($ranks_dir);
+
+	foreach ($files as $file) {
+		if ($file != '.' && $file != '..') {
+			$ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+			if (in_array($ext, $allowed_extensions)) {
+				$rank_images[] = $file;
+			}
+		}
+	}
+	sort($rank_images);
+}
+
+$template->assign_vars([
+	'TPL_RANKS_EDIT' => true,
+
+	'RANK' => !empty($rank_info['rank_title']) ? $rank_info['rank_title'] : '',
+	'IMAGE' => !empty($rank_info['rank_image']) ? $rank_info['rank_image'] : 'styles/images/ranks/rank_image.png',
+	'STYLE' => !empty($rank_info['rank_style']) ? $rank_info['rank_style'] : '',
+	'IMAGE_DISPLAY' => !empty($rank_info['rank_image']) ? '<img src="../' . $rank_info['rank_image'] . '" />' : '',
+
+	'S_RANK_ACTION' => 'admin_ranks.php',
+	'S_HIDDEN_FIELDS' => $s_hidden_fields
+]);
+
+// Pass the list of images to the template
+foreach ($rank_images as $img) {
+	$img_path = 'styles/images/ranks/' . $img;
+	$selected = !empty($rank_info['rank_image']) && $rank_info['rank_image'] == $img_path;
+
+	$template->assign_block_vars('rank_images', [
+		'IMAGE_FILE' => $img,
+		'IMAGE_PATH' => $img_path,
+		'SELECTED' => $selected
+	]);
+}
+-------------------------------
+
+-------- Далее найти --------
+} elseif ($mode == 'save') {
+-----------------------------
+
+-------- Выше вставить --------
+// Pass the list of images to the template
+foreach ($rank_images as $img) {
+	$img_path = 'styles/images/ranks/' . $img;
+	$selected = !empty($rank_info['rank_image']) && $rank_info['rank_image'] == $img_path;
+
+	$template->assign_block_vars('rank_images', [
+		'IMAGE_FILE' => $img,
+		'IMAGE_PATH' => $img_path,
+		'SELECTED' => $selected
+	]);
+}
+-------------------------------
