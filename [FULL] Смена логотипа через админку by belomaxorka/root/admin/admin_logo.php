@@ -26,14 +26,11 @@ if (isset($_POST['delete_logo']) && isset($_POST['confirm_delete'])) {
 		$delete_path = BB_PATH . '/' . $logo_to_delete;
 
 		if (file_exists($delete_path) && is_file($delete_path)) {
-			// Check if file is in logo directory
 			$real_delete_path = realpath($delete_path);
 			$real_logo_dir = realpath($logo_dir);
 
-			// Replace str_starts_with() with substr() or strpos()
 			if ($real_delete_path && $real_logo_dir && strpos($real_delete_path, $real_logo_dir) === 0) {
 				if (unlink($delete_path)) {
-					// If deleted logo was current, reset to default
 					$current = isset($bb_cfg['site_logo']) ? $bb_cfg['site_logo'] : '';
 					if ($current === $logo_to_delete) {
 						bb_update_config(array('site_logo' => $default_logo));
