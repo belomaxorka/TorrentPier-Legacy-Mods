@@ -1,0 +1,17 @@
+Патчи безопасности за Октябрь 2025
+
+https://torrentpier.com/threads/nakopitel-nye-patci-bezopasnosti-dla-vladel-cev-staryh-versij.42208/
+
+Исправляет критическую уязвимость: https://github.com/torrentpier/torrentpier/security/advisories/GHSA-4rwr-8c3m-55f6
+
+-------- Открыть modcp.php и найти --------
+$forum_id = $_REQUEST[POST_FORUM_URL] ?? 0;
+$topic_id = $_REQUEST[POST_TOPIC_URL] ?? 0;
+$post_id = $_REQUEST[POST_POST_URL] ?? 0;
+-------------------------------------------
+
+-------- Заменить на --------
+$forum_id = isset($_REQUEST[POST_FORUM_URL]) ? (int)$_REQUEST[POST_FORUM_URL] : 0;
+$topic_id = isset($_REQUEST[POST_TOPIC_URL]) ? (int)$_REQUEST[POST_TOPIC_URL] : 0;
+$post_id = isset($_REQUEST[POST_POST_URL]) ? (int)$_REQUEST[POST_POST_URL] : 0;
+-----------------------------

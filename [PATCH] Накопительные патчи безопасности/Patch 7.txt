@@ -1,6 +1,9 @@
 Патчи безопасности за Июль 2024
 
-Исправляет критическую уязвимость.
+https://torrentpier.com/threads/nakopitel-nye-patci-bezopasnosti-dla-vladel-cev-staryh-versij.42208/
+
+Исправляет критическую уязвимость: https://fluidattacks.com/advisories/xavi
+
 Чтобы исправить уязвимость, следуйте этому коммиту:
 https://github.com/torrentpier/torrentpier-lts/commit/864844e6ddd9449562c3aae675723325aacdedf2
 
