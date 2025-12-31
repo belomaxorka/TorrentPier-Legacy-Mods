@@ -1,0 +1,31 @@
+Патчи безопасности за Июнь 2024
+
+-------- Открыть posting.php и найти --------
+// hide user passkey
+$message = preg_replace('#(?<=\?uk=)[a-zA-Z0-9]{10}(?=&)#', 'passkey', $message);
+// hide sid
+$message = preg_replace('#(?<=[\?&;]sid=)[a-zA-Z0-9]{12}#', 'sid', $message);
+----------------------------------------------
+
+-------- Заменить на --------
+// hide user passkey
+$message = preg_replace('#(?<=[\?&;]' . $bb_cfg['passkey_key'] . '=)[a-zA-Z0-9]{' . BT_AUTH_KEY_LENGTH . '}#', 'passkey', $message);
+// hide sid
+$message = preg_replace('#(?<=[\?&;]sid=)[a-zA-Z0-9]{' . SID_LENGTH . '}#', 'sid', $message);
+-----------------------------
+
+-------- Открыть library/ajax/posts.php и найти --------
+// hide user passkey
+$message = preg_replace('#(?<=\?uk=)[a-zA-Z0-9]{10}(?=&)#', 'passkey', $message);
+// hide sid
+$message = preg_replace('#(?<=[\?&;]sid=)[a-zA-Z0-9]{12}#', 'sid', $message);
+----------------------------------------------
+
+-------- Заменить на --------
+// hide user passkey
+$message = preg_replace('#(?<=[\?&;]' . $bb_cfg['passkey_key'] . '=)[a-zA-Z0-9]{' . BT_AUTH_KEY_LENGTH . '}#', 'passkey', $message);
+// hide sid
+$message = preg_replace('#(?<=[\?&;]sid=)[a-zA-Z0-9]{' . SID_LENGTH . '}#', 'sid', $message);
+-----------------------------
+
+Уязвимость нашёл наш разработчик - belomaxorka.

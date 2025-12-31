@@ -1,0 +1,13 @@
+Патчи безопасности за Январь 2024
+
+-------- Открыть functions.php и найти (в некоторых ревизиях может немного отличаться) --------
+$row = DB()->fetch_row("SELECT username FROM " . BB_USERS . " WHERE user_id = $user_id LIMIT 1");
+// Или же...
+$row = DB()->fetch_row("SELECT username FROM ". BB_USERS ." WHERE user_id = $user_id LIMIT 1");
+-----------------------------------------------------------------------------------------------
+
+-------- Заменить на --------
+$row = DB()->fetch_row("SELECT username FROM ". BB_USERS ." WHERE user_id = '". DB()->escape($user_id) ."' LIMIT 1");
+-----------------------------
+
+Уязвимость нашёл наш разработчик - belomaxorka.
