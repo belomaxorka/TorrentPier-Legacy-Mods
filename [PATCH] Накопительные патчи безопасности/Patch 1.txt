@@ -1,5 +1,7 @@
 Патчи безопасности за Ноябрь 2023
 
+https://torrentpier.com/threads/nakopitel-nye-patci-bezopasnosti-dla-vladel-cev-staryh-versij.42208/
+
 -------- Открыть privmsg.php и найти (в некоторых ревизиях может немного отличаться) --------
 $mode = isset($_REQUEST['mode']) ? (string) $_REQUEST['mode'] : '';
 ---------------------------------------------------------------------------------------------

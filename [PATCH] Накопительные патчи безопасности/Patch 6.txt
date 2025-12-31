@@ -1,5 +1,7 @@
 Патчи безопасности за Июнь 2024
 
+https://torrentpier.com/threads/nakopitel-nye-patci-bezopasnosti-dla-vladel-cev-staryh-versij.42208/
+
 -------- Открыть posting.php и найти --------
 // hide user passkey
 $message = preg_replace('#(?<=\?uk=)[a-zA-Z0-9]{10}(?=&)#', 'passkey', $message);

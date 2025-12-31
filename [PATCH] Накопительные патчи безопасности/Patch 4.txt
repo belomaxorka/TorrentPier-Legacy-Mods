@@ -1,5 +1,7 @@
 Патчи безопасности за Декабрь 2023
 
+https://torrentpier.com/threads/nakopitel-nye-patci-bezopasnosti-dla-vladel-cev-staryh-versij.42208/
+
 -------- Открыть tracker.php и найти (в некоторых ревизиях может немного отличаться) --------
 AND search_id = '$search_id'
 --------------------------------------------------------------------------------------------

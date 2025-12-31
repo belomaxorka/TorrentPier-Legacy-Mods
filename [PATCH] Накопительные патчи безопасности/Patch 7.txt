@@ -1,0 +1,7 @@
+Патчи безопасности за Июль 2024
+
+Исправляет критическую уязвимость.
+Чтобы исправить уязвимость, следуйте этому коммиту:
+https://github.com/torrentpier/torrentpier-lts/commit/864844e6ddd9449562c3aae675723325aacdedf2
+
+* Для версии 2.2.0 и выше - src/Legacy/Common/User.php

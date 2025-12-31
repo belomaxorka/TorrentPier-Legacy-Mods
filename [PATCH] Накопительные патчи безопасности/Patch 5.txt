@@ -1,5 +1,7 @@
 Патчи безопасности за Январь 2024
 
+https://torrentpier.com/threads/nakopitel-nye-patci-bezopasnosti-dla-vladel-cev-staryh-versij.42208/
+
 -------- Открыть functions.php и найти (в некоторых ревизиях может немного отличаться) --------
 $row = DB()->fetch_row("SELECT username FROM " . BB_USERS . " WHERE user_id = $user_id LIMIT 1");
 // Или же...
