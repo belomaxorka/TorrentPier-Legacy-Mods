@@ -18,7 +18,7 @@ $logo_dir = BB_PATH . '/styles/images/logo/';
 $logo_url = 'styles/images/logo/';
 
 // Delete logo
-if (isset($_POST['delete_logo'], $_POST['confirm_delete'])) {
+if (isset($_POST['delete_logo']) && isset($_POST['confirm_delete'])) {
 	$logo_to_delete = isset($_POST['logo_to_delete']) ? $_POST['logo_to_delete'] : '';
 	$default_logo = 'styles/images/logo/logo.png';
 
