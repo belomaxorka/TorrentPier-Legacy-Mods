@@ -376,10 +376,20 @@ $log_action->mod('mod_topic_change_tor_status', array(
 =============================
 
 ======= Открыть library/includes/functions_torrent.php и найти =======
+a.post_id, d.physical_filename, d.extension, d.tracker_status,
+t.topic_first_post_id,
+======================================================================
+
+======= Заменить на =======
+a.post_id, d.physical_filename, d.extension, d.tracker_status,
+t.topic_first_post_id, t.topic_title,
+===========================
+
+======= Далее найти =======
 function delete_torrent ($attach_id, $mode = '')
 {
 	global $lang, $reg_mode, $topic_id;
-======================================================================
+===========================
 
 ======= Заменить на =======
 function delete_torrent ($attach_id, $mode = '')
