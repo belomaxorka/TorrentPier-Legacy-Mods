@@ -203,66 +203,6 @@ foreach ($log_topics as $topic_id => $topic_title)
 'mod_topic_poll_edited' => 24,
 =============================
 
-======= Открыть library/includes/functions_torrent.php и найти =======
-a.post_id, d.physical_filename, d.extension, d.tracker_status,
-t.topic_first_post_id,
-======================================================================
-
-======= Заменить на =======
-a.post_id, d.physical_filename, d.extension, d.tracker_status,
-t.topic_first_post_id, t.topic_title,
-===========================
-
-======= Далее найти =======
-function tracker_unregister ($attach_id, $mode = '')
-{
-	global $lang, $bb_cfg;
-===========================
-
-======= Ниже вставить =======
-global $log_action;
-=============================
-
-======= Далее найти =======
-$post_id = $topic_id = $forum_id = $info_hash = null;
-===========================
-
-======= Заменить на =======
-$post_id = $topic_id = $topic_title = $forum_id = $info_hash = null;
-===========================
-
-======= Далее найти =======
-// Get torrent info
-if ($torrent = get_torrent_info($attach_id))
-{
-	$post_id  = $torrent['post_id'];
-	$topic_id = $torrent['topic_id'];
-	$forum_id = $torrent['forum_id'];
-===========================
-
-======= Ниже вставить =======
-$topic_title = $torrent['topic_title'];
-=============================
-
-======= Далее найти =======
-// Remove peers from tracker
-$sql = "DELETE FROM ". BB_BT_TRACKER ." WHERE topic_id = $topic_id";
-
-if (!DB()->sql_query($sql))
-{
-	bb_die('Could not delete peers');
-}
-===========================
-
-======= Ниже вставить =======
-// Log action
-$log_action->mod('mod_topic_tor_unregister', array(
-	'forum_id'    => $forum_id,
-	'topic_id'    => $topic_id,
-	'topic_title' => $topic_title,
-));
-=============================
-
 ======= Открыть library/ajax/change_torrent.php и найти =======
 global $userdata, $bb_cfg, $lang;
 ===============================================================
