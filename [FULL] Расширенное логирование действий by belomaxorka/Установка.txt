@@ -409,32 +409,6 @@ $log_action->mod('mod_topic_change_tor_status', array(
 ));
 =============================
 
-======= Далее найти =======
-tracker_register($attach_id);
-===========================
-
-======= Ниже вставить =======
-// Log action
-$log_action->mod('mod_topic_tor_register', array(
-	'forum_id'    => $torrent['forum_id'],
-	'topic_id'    => $torrent['topic_id'],
-	'topic_title' => $torrent['topic_title'],
-));
-=============================
-
-======= Далее найти =======
-tracker_unregister($attach_id);
-===========================
-
-======= Ниже вставить =======
-// Log action
-$log_action->mod('mod_topic_tor_unregister', array(
-	'forum_id'    => $torrent['forum_id'],
-	'topic_id'    => $torrent['topic_id'],
-	'topic_title' => $torrent['topic_title'],
-));
-=============================
-
 ======= Открыть library/includes/functions_torrent.php и найти =======
 function delete_torrent ($attach_id, $mode = '')
 {
