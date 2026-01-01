@@ -1,14 +1,21 @@
 ------------------- Расширенное логирование действий -------------------
 Автор: belomaxorka
-Версия: v1.2.0
+Версия: v1.3.0
 Описание: Добавляет в лог действий новые действия.
 Список новых действий:
-- Закрепление / открепление темы
+- Закрепление / открепление поста
 - Смена статуса темы на скачивание разрешено / запрещено
 - Переименование темы
 - Изменение статуса торрента
 - Изменение типа торрента (серебро / золото)
 - Разрегистрация торрента
+- Регистрация торрента
+- Удаление торрента
+- Опрос начат
+- Опрос завершен
+- Опрос удален
+- Опрос создан
+- Опрос отредактирован
 ------------------------------------------------------------------------
 
 ======= Открыть admin/admin_log.php и найти =======
@@ -23,7 +30,14 @@ case $log_type['mod_topic_unset_downloaded']:
 case $log_type['mod_topic_change_tor_status']:
 case $log_type['mod_topic_change_tor_type']:
 case $log_type['mod_topic_tor_unregister']:
+case $log_type['mod_topic_tor_register']:
+case $log_type['mod_topic_tor_delete']:
 case $log_type['mod_topic_renamed']:
+case $log_type['mod_topic_poll_started']:
+case $log_type['mod_topic_poll_finished']:
+case $log_type['mod_topic_poll_deleted']:
+case $log_type['mod_topic_poll_added']:
+case $log_type['mod_topic_poll_edited']:
 =============================
 
 ======= Открыть library/language/en/main.php и найти =======
@@ -46,7 +60,14 @@ $lang['TOR_STATUS_LOG_ACTION'] = 'New status: %s.<br>Previous status: %s.';
 'mod_topic_change_tor_status' => 'Topic:<br /> <b>changed torrent status</b>',
 'mod_topic_change_tor_type' => 'Topic:<br /> <b>changed torrent type</b>',
 'mod_topic_tor_unregister' => 'Topic:<br /> <b>torrent unregistered</b>',
+'mod_topic_tor_register' => 'Topic:<br /> <b>torrent registered</b>',
+'mod_topic_tor_delete' => 'Topic:<br /> <b>torrent deleted</b>',
 'mod_topic_renamed' => 'Topic:<br /> <b>renamed</b>',
+'mod_topic_poll_started' => 'Topic:<br /> <b>poll started</b>',
+'mod_topic_poll_finished' => 'Topic:<br /> <b>poll finished</b>',
+'mod_topic_poll_deleted' => 'Topic:<br /> <b>poll deleted</b>',
+'mod_topic_poll_added' => 'Topic:<br /> <b>poll added</b>',
+'mod_topic_poll_edited' => 'Topic:<br /> <b>poll edited</b>',
 =============================
 
 ======= Открыть library/language/ru/main.php и найти =======
@@ -69,7 +90,14 @@ $lang['TOR_STATUS_LOG_ACTION'] = 'Новый статус: %s.<br>Предыду
 'mod_topic_change_tor_status' => 'Топик:<br /> <b>изменен статус раздачи</b>',
 'mod_topic_change_tor_type' => 'Топик:<br /> <b>изменен тип торрента</b>',
 'mod_topic_tor_unregister' => 'Топик:<br /> <b>торрент разрегистрирован</b>',
+'mod_topic_tor_register' => 'Топик:<br /> <b>торрент зарегистрирован</b>',
+'mod_topic_tor_delete' => 'Топик:<br /> <b>торрент удален</b>',
 'mod_topic_renamed' => 'Топик:<br /> <b>переименован</b>',
+'mod_topic_poll_started' => 'Топик:<br /> <b>опрос начат</b>',
+'mod_topic_poll_finished' => 'Топик:<br /> <b>опрос завершен</b>',
+'mod_topic_poll_deleted' => 'Топик:<br /> <b>опрос удален</b>',
+'mod_topic_poll_added' => 'Топик:<br /> <b>опрос создан</b>',
+'mod_topic_poll_edited' => 'Топик:<br /> <b>опрос отредактирован</b>',
 =============================
 
 ======= Открыть library/language/uk/main.php и найти =======
@@ -92,7 +120,14 @@ $lang['TOR_STATUS_LOG_ACTION'] = 'Новий статус: %s.<br>Поперед
 'mod_topic_change_tor_status' => 'Топік:<br /> <b>змінено статус роздачі</b>',
 'mod_topic_change_tor_type' => 'Топік:<br /> <b>змінено тип торрента</b>',
 'mod_topic_tor_unregister' => 'Топік:<br /> <b>торрент разреєстрован</b>',
+'mod_topic_tor_register' => 'Топік:<br /> <b>торрент зареєстрований</b>',
+'mod_topic_tor_delete' => 'Топік:<br /> <b>торрент видалено</b>',
 'mod_topic_renamed' => 'Топік:<br /> <b>перейменовано</b>',
+'mod_topic_poll_started' => 'Топік:<br /> <b>опитування розпочато</b>',
+'mod_topic_poll_finished' => 'Топік:<br /> <b>опитування завершено</b>',
+'mod_topic_poll_deleted' => 'Топік:<br /> <b>опитування видалено</b>',
+'mod_topic_poll_added' => 'Топік:<br /> <b>опитування створено</b>',
+'mod_topic_poll_edited' => 'Топік:<br /> <b>опитування відредаговано</b>',
 =============================
 
 ======= Открыть modcp.php и найти =======
@@ -159,6 +194,13 @@ foreach ($log_topics as $topic_id => $topic_title)
 'mod_topic_change_tor_status' => 15,
 'mod_topic_change_tor_type' => 16,
 'mod_topic_tor_unregister' => 17,
+'mod_topic_tor_register' => 18,
+'mod_topic_tor_delete' => 19,
+'mod_topic_poll_started' => 20,
+'mod_topic_poll_finished' => 21,
+'mod_topic_poll_deleted' => 22,
+'mod_topic_poll_added' => 23,
+'mod_topic_poll_edited' => 24,
 =============================
 
 ======= Открыть library/includes/functions_torrent.php и найти =======
@@ -364,5 +406,127 @@ $log_action->mod('mod_topic_change_tor_status', array(
 	'topic_title' => $tor['topic_title'],
 	'user_id'     => $userdata['user_id'],
 	'log_msg'     => $log_msg . '<br>-------------',
+));
+=============================
+
+======= Далее найти =======
+tracker_register($attach_id);
+===========================
+
+======= Ниже вставить =======
+// Log action
+$log_action->mod('mod_topic_tor_register', array(
+	'forum_id'    => $torrent['forum_id'],
+	'topic_id'    => $torrent['topic_id'],
+	'topic_title' => $torrent['topic_title'],
+));
+=============================
+
+======= Далее найти =======
+tracker_unregister($attach_id);
+===========================
+
+======= Ниже вставить =======
+// Log action
+$log_action->mod('mod_topic_tor_unregister', array(
+	'forum_id'    => $torrent['forum_id'],
+	'topic_id'    => $torrent['topic_id'],
+	'topic_title' => $torrent['topic_title'],
+));
+=============================
+
+======= Открыть library/includes/functions_torrent.php и найти =======
+function delete_torrent ($attach_id, $mode = '')
+{
+	global $lang, $reg_mode, $topic_id;
+======================================================================
+
+======= Заменить на =======
+function delete_torrent ($attach_id, $mode = '')
+{
+	global $lang, $reg_mode, $topic_id, $log_action;
+===========================
+
+======= Далее найти =======
+tracker_unregister($attach_id);
+delete_attachment(0, $attach_id);
+===========================
+
+======= Ниже вставить =======
+// Log action
+$log_action->mod('mod_topic_tor_delete', array(
+	'forum_id'    => $forum_id,
+	'topic_id'    => $topic_id,
+	'topic_title' => $torrent['topic_title'],
+));
+=============================
+
+======= Открыть poll.php и найти =======
+// Starting the poll
+DB()->query('UPDATE ' . BB_TOPICS . ' SET topic_vote = ' . POLL_STARTED . " WHERE topic_id = {$topic_id}");
+========================================
+
+======= Выше вставить =======
+// Log action
+$log_action->mod('mod_topic_poll_started', array(
+	'forum_id'    => $forum_id,
+	'topic_id'    => $topic_id,
+	'topic_title' => $t_data['topic_title'],
+));
+=============================
+
+======= Далее найти =======
+// Finishing the poll
+DB()->query('UPDATE ' . BB_TOPICS . ' SET topic_vote = ' . POLL_FINISHED . " WHERE topic_id = {$topic_id}");
+===========================
+
+======= Выше вставить =======
+// Log action
+$log_action->mod('mod_topic_poll_finished', array(
+	'forum_id'    => $forum_id,
+	'topic_id'    => $topic_id,
+	'topic_title' => $t_data['topic_title'],
+));
+=============================
+
+======= Далее найти =======
+// Removing poll from database
+$poll->delete_poll($topic_id);
+===========================
+
+======= Выше вставить =======
+// Log action
+$log_action->mod('mod_topic_poll_deleted', array(
+	'forum_id'    => $forum_id,
+	'topic_id'    => $topic_id,
+	'topic_title' => $t_data['topic_title'],
+));
+=============================
+
+======= Далее найти =======
+// Adding poll info to the database
+$poll->insert_votes_into_db($topic_id);
+===========================
+
+======= Выше вставить =======
+// Log action
+$log_action->mod('mod_topic_poll_added', array(
+	'forum_id'    => $forum_id,
+	'topic_id'    => $topic_id,
+	'topic_title' => $t_data['topic_title'],
+));
+=============================
+
+======= Далее найти =======
+// Updating poll info to the database
+$poll->insert_votes_into_db($topic_id);
+===========================
+
+======= Выше вставить =======
+// Log action
+$log_action->mod('mod_topic_poll_edited', array(
+	'forum_id'    => $forum_id,
+	'topic_id'    => $topic_id,
+	'topic_title' => $t_data['topic_title'],
 ));
 =============================
