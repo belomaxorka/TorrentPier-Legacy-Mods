@@ -462,8 +462,7 @@ $log_action->mod('mod_topic_tor_delete', array(
 =============================
 
 ======= Открыть poll.php и найти =======
-// Starting the poll
-DB()->query('UPDATE ' . BB_TOPICS . ' SET topic_vote = ' . POLL_STARTED . " WHERE topic_id = {$topic_id}");
+DB()->query("UPDATE ". BB_TOPICS ." SET topic_vote = " . POLL_STARTED . " WHERE topic_id = $topic_id LIMIT 1");
 ========================================
 
 ======= Выше вставить =======
@@ -476,8 +475,7 @@ $log_action->mod('mod_topic_poll_started', array(
 =============================
 
 ======= Далее найти =======
-// Finishing the poll
-DB()->query('UPDATE ' . BB_TOPICS . ' SET topic_vote = ' . POLL_FINISHED . " WHERE topic_id = {$topic_id}");
+DB()->query("UPDATE ". BB_TOPICS ." SET topic_vote = ". POLL_FINISHED ." WHERE topic_id = $topic_id LIMIT 1");
 ===========================
 
 ======= Выше вставить =======
@@ -490,7 +488,6 @@ $log_action->mod('mod_topic_poll_finished', array(
 =============================
 
 ======= Далее найти =======
-// Removing poll from database
 $poll->delete_poll($topic_id);
 ===========================
 
@@ -504,7 +501,6 @@ $log_action->mod('mod_topic_poll_deleted', array(
 =============================
 
 ======= Далее найти =======
-// Adding poll info to the database
 $poll->insert_votes_into_db($topic_id);
 ===========================
 
@@ -518,7 +514,6 @@ $log_action->mod('mod_topic_poll_added', array(
 =============================
 
 ======= Далее найти =======
-// Updating poll info to the database
 $poll->insert_votes_into_db($topic_id);
 ===========================
 
