@@ -319,6 +319,32 @@ $log_action->mod('mod_topic_change_tor_type', array(
 ));
 =============================
 
+======= Далее найти =======
+case 'reg':
+	tracker_register($attach_id);
+===========================
+
+======= Ниже вставить =======
+$log_action->mod('mod_topic_tor_register', array(
+	'forum_id'    => $torrent['forum_id'],
+	'topic_id'    => $torrent['topic_id'],
+	'topic_title' => $torrent['topic_title'],
+));
+=============================
+
+======= Далее найти =======
+case 'unreg':
+	tracker_unregister($attach_id);
+===========================
+
+======= Ниже вставить =======
+$log_action->mod('mod_topic_tor_unregister', array(
+	'forum_id'    => $torrent['forum_id'],
+	'topic_id'    => $torrent['topic_id'],
+	'topic_title' => $torrent['topic_title'],
+));
+=============================
+
 ======= Открыть library/ajax/mod_action.php и найти =======
 global $userdata, $bb_cfg, $lang, $datastore;
 ===========================================================
