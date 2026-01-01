@@ -413,6 +413,8 @@ $log_action->mod('mod_topic_tor_delete', array(
 
 ======= Открыть poll.php и найти =======
 DB()->query("UPDATE ". BB_TOPICS ." SET topic_vote = " . POLL_STARTED . " WHERE topic_id = $topic_id LIMIT 1");
+=========== или найти ==================
+DB()->query("UPDATE ". BB_TOPICS ." SET topic_vote = 1 WHERE topic_id = $topic_id LIMIT 1");
 ========================================
 
 ======= Выше вставить =======
