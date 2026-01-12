@@ -3,6 +3,13 @@
 Совместимость: v2.1.5, LTS, v2.2.*, v2.3.*, v2.4.*
 Начиная с версии TorrentPier v2.8.9 мод встроен по умолчанию
 
+---------- SQL ----------
+ALTER TABLE `bb_cron`
+ADD COLUMN `execution_time` DECIMAL(10, 4) NOT NULL DEFAULT 0.0000
+COMMENT 'Last execution time in seconds'
+AFTER `run_counter`;
+-------------------------
+
 ---------- Открыть admin/admin_cron.php и найти ----------
 foreach ($sql as $i => $row) {
 ----------------------------------------------------------
