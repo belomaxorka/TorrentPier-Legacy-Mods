@@ -101,3 +101,11 @@ $start_time = microtime(true);
 require($job_script);
 $execution_time = microtime(true) - $start_time;
 ---------------------------------
+
+---------- Далее найти ----------
+run_counter = run_counter + 1,
+---------------------------------
+
+---------- Ниже вставить ----------
+execution_time = " . (float)$execution_time . ",
+-----------------------------------
