@@ -94,15 +94,6 @@ if ($bb_cfg['prevent_multiposting'] && !IS_GUEST && !IS_AM)
 'L_EDIT_LAST_POST'       => $lang['EDIT_LAST_POST'],
 -----------------------------------
 
----------- Далее найти ----------
-// Quick Reply
-if ($bb_cfg['show_quick_reply']) {
----------------------------------
-
----------- Заменить на ----------
-if ($bb_cfg['show_quick_reply'] && !$suggest_edit_last_post) {
----------------------------------
-
 ---------- Открыть library/ajax/posts.php и найти ----------
 		if ($last_msg == $message) {
 			$this->ajax_die($lang['DOUBLE_POST_ERROR']);
@@ -129,3 +120,6 @@ if ($bb_cfg['prevent_multiposting'] && !IS_AM) {
 	}
 }
 -----------------------------------
+
+---------- Открыть src/Legacy/Post.php и найти ----------
+---- [v2.1.5]
