@@ -83,3 +83,13 @@ if ($bb_cfg['prevent_multiposting'] && !IS_GUEST && !IS_AM)
 	}
 }
 -----------------------------------
+
+---------- Далее найти ----------
+'U_SEARCH_SELF'       => "search.php?uid={$userdata['user_id']}&t=$topic_id&dm=1",
+---------------------------------
+
+---------- Ниже вставить ----------
+'SUGGEST_EDIT_LAST_POST' => $suggest_edit_last_post,
+'U_EDIT_LAST_POST'       => $edit_last_post_url,
+'L_EDIT_LAST_POST'       => $lang['EDIT_LAST_POST'],
+-----------------------------------
