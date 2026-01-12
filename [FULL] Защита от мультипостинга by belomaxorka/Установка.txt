@@ -28,3 +28,58 @@ $lang['MULTIPOST_ERROR'] = 'You cannot post multiple messages in a row. Please e
 -----------------------------------
 Сделать по аналогии с остальными нужными вам языками
 -----------------------------------
+
+---------- Открыть styles/templates/default/viewtopic.tpl и найти ----------
+<a href="{U_POST_REPLY_TOPIC}"><img src="{REPLY_IMG}" alt="{T_POST_REPLY}" /></a>
+----------------------------------------------------------------------------
+
+---------- Заменить на ----------
+<!-- IF SUGGEST_EDIT_LAST_POST -->
+<a href="{U_EDIT_LAST_POST}" title="{L_EDIT_LAST_POST}"><img src="{REPLY_IMG}" alt="{L_EDIT_LAST_POST}" /></a>
+<!-- ELSE -->
+<a href="{U_POST_REPLY_TOPIC}"><img src="{REPLY_IMG}" alt="{T_POST_REPLY}" /></a>
+<!-- ENDIF -->
+---------------------------------
+
+---------- Далее найти ----------
+<a href="{U_POST_REPLY_TOPIC}"><img src="{REPLY_IMG}" alt="{T_POST_REPLY}" /></a>
+---------------------------------
+
+---------- Заменить на ----------
+<!-- IF SUGGEST_EDIT_LAST_POST -->
+<a href="{U_EDIT_LAST_POST}" title="{L_EDIT_LAST_POST}"><img src="{REPLY_IMG}" alt="{L_EDIT_LAST_POST}" /></a>
+<!-- ELSE -->
+<a href="{U_POST_REPLY_TOPIC}"><img src="{REPLY_IMG}" alt="{T_POST_REPLY}" /></a>
+<!-- ENDIF -->
+---------------------------------
+
+---------- Открыть viewtopic.php и найти ----------
+$view_prev_topic_url = TOPIC_URL . $topic_id . "&amp;view=previous#newest";
+$view_next_topic_url = TOPIC_URL . $topic_id . "&amp;view=next#newest";
+---------------------------------------------------
+
+---------- Ниже вставить ----------
+// Prevent multiposting - suggest editing last post instead of creating new one
+$suggest_edit_last_post = false;
+$edit_last_post_url = '';
+
+if ($bb_cfg['prevent_multiposting'] && !IS_GUEST && !IS_AM)
+{
+	$last_post_info = DB()->fetch_row("
+		SELECT poster_id, post_time, post_id
+		FROM " . BB_POSTS . "
+		WHERE post_id = " . (int) $t_data['topic_last_post_id'] . "
+		LIMIT 1
+	");
+
+	if ($last_post_info
+		&& $last_post_info['poster_id'] == $userdata['user_id']
+		&& (TIMENOW - $last_post_info['post_time']) < $bb_cfg['prevent_multiposting_time']
+		&& $t_data['topic_status'] != TOPIC_LOCKED
+		&& $t_data['forum_status'] != FORUM_LOCKED
+	) {
+		$suggest_edit_last_post = true;
+		$edit_last_post_url = POSTING_URL . "?mode=editpost&amp;p=" . $last_post_info['post_id'];
+	}
+}
+-----------------------------------
