@@ -1,0 +1,30 @@
+Автор: belomaxorka
+Версия: v1.0.0
+Совместимость: v2.1.5, LTS, v2.2.*, v2.3.*, v2.4.*
+
+---------- Открыть library/config.php и добавить в конце ----------
+// Multiposting prevention: if enabled, users (except admins/mods) cannot reply to a topic
+// if they are the last poster within the time window. Instead, they are prompted to edit their last post.
+$bb_cfg['prevent_multiposting'] = true;
+$bb_cfg['prevent_multiposting_time'] = 600; // Time window in seconds (600 = 10 minutes)
+-------------------------------------------------------------------
+
+---------- Открыть library/language/source/main.php и найти ----------
+$lang['REPLY_TO_TOPIC'] = 'Reply to topic';
+----------------------------------------------------------------------
+
+---------- Ниже вставить ----------
+$lang['EDIT_LAST_POST'] = 'Edit last post';
+-----------------------------------
+
+---------- Далее найти ----------
+$lang['DOUBLE_POST_ERROR'] = 'You cannot make another post with the exact same text as your last.';
+---------------------------------
+
+---------- Ниже вставить ----------
+$lang['MULTIPOST_ERROR'] = 'You cannot post multiple messages in a row. Please edit your last post instead.';
+-----------------------------------
+
+-----------------------------------
+Сделать по аналогии с остальными нужными вам языками
+-----------------------------------
