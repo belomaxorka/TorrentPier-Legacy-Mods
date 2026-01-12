@@ -122,4 +122,26 @@ if ($bb_cfg['prevent_multiposting'] && !IS_AM) {
 -----------------------------------
 
 ---------- Открыть src/Legacy/Post.php и найти ----------
----- [v2.1.5]
+----- [v2.1.5] library/includes/functions_post.php ------
+// Double Post Control
+if ($mode != 'editpost' && !empty($row['last_post_time']) && !IS_AM) {
+---------------------------------------------------------
+
+---------- Выше вставить ----------
+// Multiposting prevention - block reply if user is last poster within time window
+if ($mode == 'reply' && $bb_cfg['prevent_multiposting'] && !IS_AM) {
+	$sql = 'SELECT p.poster_id, p.post_time
+		FROM ' . BB_POSTS . ' p, ' . BB_TOPICS . " t
+		WHERE t.topic_id = {$topic_id}
+			AND p.post_id = t.topic_last_post_id
+		LIMIT 1";
+
+	if ($last_post = DB()->fetch_row($sql)) {
+		if ($last_post['poster_id'] == $userdata['user_id']
+			&& (TIMENOW - $last_post['post_time']) < $bb_cfg['prevent_multiposting_time']
+		) {
+			bb_die($lang['MULTIPOST_ERROR']);
+		}
+	}
+}
+-----------------------------------
