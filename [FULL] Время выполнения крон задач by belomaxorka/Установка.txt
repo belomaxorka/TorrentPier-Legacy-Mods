@@ -1,0 +1,68 @@
+Автор: belomaxorka
+Версия: v1.0.0
+Совместимость: v2.1.5, LTS, v2.2.*, v2.3.*, v2.4.*
+Начиная с версии TorrentPier v2.8.9 мод встроен по умолчанию
+
+---------- Открыть admin/admin_cron.php и найти ----------
+foreach ($sql as $i => $row) {
+----------------------------------------------------------
+
+---------- Ниже вставить ----------
+$execution_time = isset($row['execution_time']) ? $row['execution_time'] : 0;
+
+if ($execution_time > 0) {
+	$execution_time_formatted = number_format($execution_time, 4) . ' ' . $lang['SEC'];
+
+	if ($execution_time < 1) {
+		$time_color = '#286e0f';
+	} elseif ($execution_time < 10) {
+		$time_color = '#d7b101';
+	} else {
+		$time_color = '#bc2a4d';
+	}
+
+	$execution_time_formatted = '<span style="color: ' . $time_color . ';"><b>' . $execution_time_formatted . '</b></span>';
+} else {
+	$execution_time_formatted = '—';
+}
+-----------------------------------
+
+---------- Далее найти ----------
+'RUN_COUNT' => $row['run_counter'],
+---------------------------------
+
+---------- Ниже вставить ----------
+'EXECUTION_TIME' => $execution_time_formatted,
+-----------------------------------
+
+---------- Открыть library/includes/cron/cron_run.php и найти ----------
+set_time_limit(600);
+require($job_script);
+------------------------------------------------------------------------
+
+---------- Заменить на ----------
+set_time_limit(600);
+$job_start_time = microtime(true);
+require($job_script);
+$job_execution_time = microtime(true) - $job_start_time;
+---------------------------------
+
+---------- Далее найти ----------
+run_counter = run_counter + 1,
+---------------------------------
+
+---------- Ниже вставить ----------
+execution_time = " . (float)$job_execution_time . ",
+-----------------------------------
+
+---------- Открыть library/language/source/main.php и найти ----------
+$lang['CRON_RUN_COUNT'] = 'Runs';
+-------------------------------------------------------------------------
+
+---------- Ниже вставить ----------
+$lang['CRON_EXECUTION_TIME'] = 'Execution Time';
+-----------------------------------
+
+-----------------------------------
+Сделать по аналогии с остальными нужными вам языками
+-----------------------------------
