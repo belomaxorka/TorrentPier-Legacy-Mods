@@ -90,3 +90,14 @@ $lang['CRON_EXECUTION_TIME'] = 'Execution Time';
 ---------- Ниже вставить ----------
 <td class="nowrap tCenter">{list.EXECUTION_TIME}</td>
 -----------------------------------
+
+---------- Открыть src/Legacy/Admin/Cron.php и найти -------------
+------- [v2.1.5] library/includes/functions_admin_cron.php -------
+require($job_script);
+------------------------------------------------------------------
+
+---------- Заменить на ----------
+$start_time = microtime(true);
+require($job_script);
+$execution_time = microtime(true) - $start_time;
+---------------------------------
