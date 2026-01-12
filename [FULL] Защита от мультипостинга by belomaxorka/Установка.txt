@@ -93,3 +93,30 @@ if ($bb_cfg['prevent_multiposting'] && !IS_GUEST && !IS_AM)
 'U_EDIT_LAST_POST'       => $edit_last_post_url,
 'L_EDIT_LAST_POST'       => $lang['EDIT_LAST_POST'],
 -----------------------------------
+
+---------- Открыть library/ajax/posts.php и найти ----------
+		if ($last_msg == $message) {
+			$this->ajax_die($lang['DOUBLE_POST_ERROR']);
+		}
+	}
+}
+------------------------------------------------------------
+
+---------- Ниже вставить ----------
+// Multiposting prevention - block reply if user is last poster within time window
+if ($bb_cfg['prevent_multiposting'] && !IS_AM) {
+	$sql = 'SELECT p.poster_id, p.post_time
+		FROM ' . BB_POSTS . ' p, ' . BB_TOPICS . " t
+		WHERE t.topic_id = {$topic_id}
+			AND p.post_id = t.topic_last_post_id
+		LIMIT 1";
+
+	if ($last_post = DB()->fetch_row($sql)) {
+		if ($last_post['poster_id'] == $userdata['user_id']
+			&& (TIMENOW - $last_post['post_time']) < $bb_cfg['prevent_multiposting_time']
+		) {
+			$this->ajax_die($lang['MULTIPOST_ERROR']);
+		}
+	}
+}
+-----------------------------------
