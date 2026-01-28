@@ -11,12 +11,14 @@ ALTER TABLE `bb_users` ADD `user_speed_down` TINYINT(1) NOT NULL DEFAULT '0';
 
 ------------------ Открыть library/language/ru/main.php и в конце добавить ------------------
 // Скорость интернета пользователя
+$lang['USER_INTERNET_SPEED'] = 'Скорость интернета';
 $lang['USER_DOWN_SPEED'] = 'Загрузка';
 $lang['USER_UP_SPEED'] = 'Отдача';
 ---------------------------------------------------------------------------------------------
 
 ------------------ Открыть library/language/en/main.php и в конце добавить ------------------
 // Скорость интернета пользователя
+$lang['USER_INTERNET_SPEED'] = 'Internet speed';
 $lang['USER_DOWN_SPEED'] = 'Download';
 $lang['USER_UP_SPEED'] = 'Upload';
 ---------------------------------------------------------------------------------------------
@@ -115,4 +117,18 @@ case 'user_speed_down':
 	}
 	$tp_data['USER_SPEED_DOWN'] = build_select('user_speed_down', array_flip($bb_cfg['user_internet_speed']), $pr_data['user_speed_down']);
 	break;
+---------------------------------------------------
+
+------------------ Открыть usercp_viewprofile.tpl (В вашем шаблоне) и найти ------------------
+<!-- IF LOCATION -->
+----------------------------------------------------------------------------------------------
+
+------------------ Выше вставить ------------------
+<!-- IF USER_SPEED_DOWN or USER_SPEED_UP -->
+<tr>
+	<th>{L_USER_INTERNET_SPEED}:</th>
+		<td id="user_relationships"><b class="editable">{RELATIONSHIPS}</b>
+	</td>
+</tr>
+<!-- ENDIF -->
 ---------------------------------------------------
