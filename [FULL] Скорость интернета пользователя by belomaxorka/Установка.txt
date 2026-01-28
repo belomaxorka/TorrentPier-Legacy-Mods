@@ -99,4 +99,20 @@ case 'user_speed_up':
 	}
 	$tp_data['USER_SPEED_UP'] = build_select('user_speed_up', array_flip($bb_cfg['user_internet_speed']), $pr_data['user_speed_up']);
 	break;
+
+/**
+ *  Скорость интернета пользователя [Download] (edit)
+ */
+case 'user_speed_down':
+	$speed_down = isset($_POST['user_speed_down']) ? (int) $_POST['user_speed_down'] : $pr_data['user_speed_down'];
+	if ($submit && $speed_down != $pr_data['user_speed_down'])
+	{
+		if (isset($bb_cfg['user_internet_speed'][$speed_down]))
+		{
+			$pr_data['user_speed_down'] = $speed_down;
+			$db_data['user_speed_down'] = (int) $speed_down;
+		}
+	}
+	$tp_data['USER_SPEED_DOWN'] = build_select('user_speed_down', array_flip($bb_cfg['user_internet_speed']), $pr_data['user_speed_down']);
+	break;
 ---------------------------------------------------
