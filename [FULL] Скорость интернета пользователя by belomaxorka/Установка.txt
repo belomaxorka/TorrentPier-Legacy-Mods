@@ -127,7 +127,7 @@ case 'user_speed_down':
 <!-- IF USER_SPEED_DOWN or USER_SPEED_UP -->
 <tr>
 	<th>{L_USER_INTERNET_SPEED}:</th>
-	<td><!-- IF USER_SPEED_UP -->{L_USER_UP_SPEED}: <b>{USER_SPEED_UP}</b> |<!-- ENDIF --><!-- IF USER_SPEED_DOWN -->&nbsp;{L_USER_DOWN_SPEED}: <b>{USER_SPEED_DOWN}</b><!-- ENDIF --></td>
+	<td><!-- IF USER_SPEED_UP -->{L_USER_UP_SPEED}: <b>{USER_SPEED_UP}</b><!-- ENDIF -->&nbsp;<!-- IF USER_SPEED_DOWN and USER_SPEED_UP -->|<!-- ENDIF -->&nbsp;<!-- IF USER_SPEED_DOWN -->{L_USER_DOWN_SPEED}: <b>{USER_SPEED_DOWN}</b><!-- ENDIF --></td>
 </tr>
 <!-- ENDIF -->
 ---------------------------------------------------
