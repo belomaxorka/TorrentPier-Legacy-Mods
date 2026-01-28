@@ -66,8 +66,8 @@ $bb_cfg['user_internet_speed'] = array(
 
 ------------------ Ниже вставить ------------------
 // Скорость интернета пользователя
-'USER_SPEED_UP'   => (isset($bb_cfg['user_internet_speed'][$profiledata['user_speed_up']])) ? $bb_cfg['user_internet_speed'][$profiledata['user_speed_up']] : '',
-'USER_SPEED_DOWN' => (isset($bb_cfg['user_internet_speed'][$profiledata['user_speed_down']])) ? $bb_cfg['user_internet_speed'][$profiledata['user_speed_down']] : '',
+'USER_SPEED_UP'   => (isset($bb_cfg['user_internet_speed'][$profiledata['user_speed_up']]) && $profiledata['user_speed_up'] != 0) ? $bb_cfg['user_internet_speed'][$profiledata['user_speed_up']] : '',
+'USER_SPEED_DOWN' => (isset($bb_cfg['user_internet_speed'][$profiledata['user_speed_down']]) && $profiledata['user_speed_down'] != 0) ? $bb_cfg['user_internet_speed'][$profiledata['user_speed_down']] : '',
 ---------------------------------------------------
 
 ------------------ Открыть library/includes/ucp/register.php и найти ------------------
