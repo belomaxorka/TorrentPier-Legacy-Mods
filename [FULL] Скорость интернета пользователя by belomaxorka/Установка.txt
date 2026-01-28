@@ -127,8 +127,7 @@ case 'user_speed_down':
 <!-- IF USER_SPEED_DOWN or USER_SPEED_UP -->
 <tr>
 	<th>{L_USER_INTERNET_SPEED}:</th>
-		<td id="user_relationships"><b class="editable">{RELATIONSHIPS}</b>
-	</td>
+	<td><!-- IF USER_SPEED_UP -->{L_USER_UP_SPEED}: <b>{USER_SPEED_UP}</b> |<!-- ENDIF --><!-- IF USER_SPEED_DOWN -->&nbsp;{L_USER_DOWN_SPEED}: <b>{USER_SPEED_DOWN}</b><!-- ENDIF --></td>
 </tr>
 <!-- ENDIF -->
 ---------------------------------------------------
