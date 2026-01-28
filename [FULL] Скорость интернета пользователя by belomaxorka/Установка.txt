@@ -51,3 +51,13 @@ $bb_cfg['user_internet_speed'] = array(
 	30 => '3 Gb/s',
 );
 -----------------------------------------------------------------------------------
+
+------------------ Открыть library/includes/ucp/viewprofile.php и найти ------------------
+'INTERESTS'            => $profiledata['user_interests'],
+------------------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+// Скорость интернета пользователя
+'USER_SPEED_UP'   => (isset($bb_cfg['user_internet_speed'][$profiledata['user_speed_up']])) ? $bb_cfg['user_internet_speed'][$profiledata['user_speed_up']] : '',
+'USER_SPEED_DOWN' => (isset($bb_cfg['user_internet_speed'][$profiledata['user_speed_down']])) ? $bb_cfg['user_internet_speed'][$profiledata['user_speed_down']] : '',
+---------------------------------------------------
