@@ -15,6 +15,12 @@ $lang['USER_DOWN_SPEED'] = 'Загрузка';
 $lang['USER_UP_SPEED'] = 'Отдача';
 ---------------------------------------------------------------------------------------------
 
+------------------ Открыть library/language/en/main.php и в конце добавить ------------------
+// Скорость интернета пользователя
+$lang['USER_DOWN_SPEED'] = 'Download';
+$lang['USER_UP_SPEED'] = 'Upload';
+---------------------------------------------------------------------------------------------
+
 ------------------ Открыть library/config.php и в конце добавить ------------------
 // Скорость интернета пользователя
 $bb_cfg['user_internet_speed'] = array(
@@ -61,3 +67,18 @@ $bb_cfg['user_internet_speed'] = array(
 'USER_SPEED_UP'   => (isset($bb_cfg['user_internet_speed'][$profiledata['user_speed_up']])) ? $bb_cfg['user_internet_speed'][$profiledata['user_speed_up']] : '',
 'USER_SPEED_DOWN' => (isset($bb_cfg['user_internet_speed'][$profiledata['user_speed_down']])) ? $bb_cfg['user_internet_speed'][$profiledata['user_speed_down']] : '',
 ---------------------------------------------------
+
+------------------ Открыть library/includes/ucp/register.php и найти ------------------
+'user_interests'   => true,
+---------------------------------------------------------------------------------------
+
+------------------ Ниже вставить ------------------
+// Скорость интернета пользователя
+'user_speed_up' => true,
+'user_speed_down' => true,
+---------------------------------------------------
+
+------------------ Далее найти ------------------
+$tp_data['USER_INTERESTS'] = $pr_data['user_interests'];
+break;
+-------------------------------------------------
