@@ -140,6 +140,6 @@ case 'user_speed_down':
 ------------------ Выше вставить ------------------
 <tr>
 	<td class="prof-title">{L_USER_INTERNET_SPEED}:</td>
-	<td>{L_USER_UP_SPEED}: {USER_SPEED_UP}&nbsp;|&nbsp;{L_USER_DOWN_SPEED}: {USER_SPEED_DOWN}</td>
+	<td>{L_USER_UP_SPEED}: {USER_SPEED_UP}<br/>{L_USER_DOWN_SPEED}: {USER_SPEED_DOWN}</td>
 </tr>
 ---------------------------------------------------
