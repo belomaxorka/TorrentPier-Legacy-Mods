@@ -82,3 +82,21 @@ $bb_cfg['user_internet_speed'] = array(
 $tp_data['USER_INTERESTS'] = $pr_data['user_interests'];
 break;
 -------------------------------------------------
+
+------------------ Ниже вставить ------------------
+/**
+ *  Скорость интернета пользователя [Upload] (edit)
+ */
+case 'user_speed_up':
+	$speed_up = isset($_POST['user_speed_up']) ? (int) $_POST['user_speed_up'] : $pr_data['user_speed_up'];
+	if ($submit && $speed_up != $pr_data['user_speed_up'])
+	{
+		if (isset($bb_cfg['user_internet_speed'][$speed_up]))
+		{
+			$pr_data['user_speed_up'] = $speed_up;
+			$db_data['user_speed_up'] = (int) $speed_up;
+		}
+	}
+	$tp_data['USER_SPEED_UP'] = build_select('user_speed_up', array_flip($bb_cfg['user_internet_speed']), $pr_data['user_speed_up']);
+	break;
+---------------------------------------------------
