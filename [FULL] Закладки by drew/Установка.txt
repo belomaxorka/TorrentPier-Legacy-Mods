@@ -159,6 +159,20 @@ DB()->query("
 ");
 ---------------------------------------------------
 
+------------------ Далее найти ------------------
+DB()->query("UPDATE ". BB_PRIVMSGS ." SET privmsgs_from_userid = ". DELETED ." WHERE privmsgs_from_userid IN($user_csv)");
+DB()->query("UPDATE ". BB_PRIVMSGS ." SET privmsgs_to_userid = ". DELETED ." WHERE privmsgs_to_userid IN($user_csv)");
+-------------------------------------------------
+
+------------------ Ниже вставить ------------------
+// Закладки [Удаление закладок]
+DB()->query("
+	DELETE book
+	FROM " . BB_BOOK . " book
+	WHERE book.user_id IN($user_csv)
+");
+---------------------------------------------------
+
 ------------------ Открыть page_header.tpl (В вашем шаблоне) и найти ------------------
 <a href="{U_OPTIONS}"><b>{L_OPTIONS}</b></a> &#0183;
 ---------------------------------------------------------------------------------------
