@@ -63,7 +63,7 @@ while ($pm_text = DB()->sql_fetchrow($result)) {
         'TO'        => profile_url(array('username' => $pm_text['username_2'], 'user_id' => $pm_text['user_id_2'], 'user_rank' => $pm_text['user_rank_2'])),
         'DATE'      => bb_date($pm_text['privmsgs_date']),
         'STATUS'    => '<span class="' . $status_class . '">' . $status . '</span>',
-        'IP'        => ($pm_text['privmsgs_ip'] != '7f000001') ? TorrentPier\Helpers\IPHelper::decode($pm_text['privmsgs_ip']) : '0.0.0.0',
+        'IP'        => ($pm_text['privmsgs_ip'] != '7f000001') ? decode_ip($pm_text['privmsgs_ip']) : '0.0.0.0',
         'MESSAGE'   => '<div class="post_wrap"><div class="post_body">' . bbcode2html($pm_text['privmsgs_text']) . '</div></div>',
     ));
 
