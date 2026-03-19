@@ -98,6 +98,13 @@ class MovieWidget {
   renderPlayer(element, ids) {
     const iframeUrl = this.buildCollapseUrl(ids);
 
+    // Если у элемента не задана высота, устанавливаем соотношение 16:9
+    if (!element.style.height || element.style.height === 'auto') {
+      const width = element.offsetWidth || 720;
+      const height = Math.round(width * 9 / 16);
+      element.style.height = height + 'px';
+    }
+
     // Создаем iframe напрямую без wrapper
     const iframe = document.createElement('iframe');
     iframe.src = iframeUrl;
@@ -150,4 +157,7 @@ if (typeof module !== 'undefined' && module.exports) {
 // Глобальная инициализация
 if (typeof window !== 'undefined') {
   window.MovieWidget = MovieWidget;
+  
+  // Автоматическая инициализация при загрузке
+  new MovieWidget();
 }
