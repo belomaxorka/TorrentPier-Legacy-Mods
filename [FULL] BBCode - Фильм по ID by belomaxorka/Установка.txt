@@ -3,6 +3,16 @@
 Автор: belomaxorka
 ---------------------------------------------------
 
+--------------- [ Открыть styles/templates/default/page_footer.tpl и найти ] ---------------
+<!-- IF ONLOAD_FOCUS_ID -->
+--------------------------------------------------------------------------------------------
+
+--------------- [ Вставить выше ] ---------------
+<!-- IF INCLUDE_BBCODE_JS -->
+<script src="{SITE_URL}styles/js/movie.js"></script>
+<!-- ENDIF / INCLUDE_BBCODE_JS -->
+-------------------------------------------------
+
 --------------- [ Открыть styles\templates\default\posting_editor.tpl и найти ] ---------------
 <div class="buttons floatR">
 -----------------------------------------------------------------------------------------------
@@ -45,7 +55,6 @@ HTML;
 // Movie
 	$bbcode_tpl['movie'] = <<<HTML
 	<div style="width: 720px; height: auto; margin-left: auto; margin-right: auto;" data-\\1="\\2"></div>
-	<script src="styles/js/movie.js"></script>
 HTML;
 -------------------------------------------------
 
